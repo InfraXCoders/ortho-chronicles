@@ -44,9 +44,22 @@ const observer = new IntersectionObserver((entries) => {
 
 counters.forEach(c => observer.observe(c));
 
+// Blog submission form
+const submissionForm = document.getElementById('submissionForm');
+const formSuccess = document.getElementById('formSuccess');
+
+if (submissionForm) {
+  submissionForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    submissionForm.style.display = 'none';
+    formSuccess.style.display = 'block';
+    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
+
 // Scroll reveal
 const revealEls = document.querySelectorAll(
-  '.service-card, .highlight, .exp-item, .testimonial-card, .contact-card'
+  '.service-card, .highlight, .exp-item, .blog-card, .contact-card'
 );
 
 const revealObserver = new IntersectionObserver((entries) => {

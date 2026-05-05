@@ -24,6 +24,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#blog">Blog</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="tel:9779212479" class="btn-nav">Book Appointment</a></li>
       </ul>
@@ -342,45 +343,137 @@
     </div>
   </section>
 
-  <!-- ======= TESTIMONIALS ======= -->
-  <section class="section testimonials">
+  <!-- ======= BLOG ======= -->
+  <section id="blog" class="section blog">
     <div class="container">
       <div class="section-header">
-        <div class="section-label">Patient Stories</div>
-        <h2 class="section-title">What Patients Say</h2>
+        <div class="section-label">Knowledge Hub</div>
+        <h2 class="section-title">OrthoChronicles Blog</h2>
+        <p class="section-sub">Insights on orthopedic health, surgical advances, and recovery — from the desk of Dr. Maninder Singh and our community of contributors.</p>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p>"Dr. Maninder Singh performed my knee replacement surgery and I was walking without pain within weeks. His expertise and care are exceptional."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar"><i class="fas fa-user"></i></div>
-            <div>
-              <strong>Gurpreet Kaur</strong>
-              <span>Knee Replacement Patient, Amritsar</span>
+
+      <!-- Featured Articles -->
+      <div class="blog-grid">
+        <article class="blog-card featured">
+          <div class="blog-img-wrap">
+            <div class="blog-img-placeholder blue">
+              <i class="fas fa-bone"></i>
             </div>
+            <span class="blog-tag">Joint Replacement</span>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta">
+              <span><i class="fas fa-user-md"></i> Dr. Maninder Singh</span>
+              <span><i class="fas fa-calendar"></i> May 2025</span>
+            </div>
+            <h3>When Is the Right Time for Knee Replacement?</h3>
+            <p>Pain that limits your daily activities, stiffness that doesn't improve with medication, and failed conservative treatment — these are the signals your joint sends before it's time for surgery.</p>
+            <a href="#" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-img-wrap">
+            <div class="blog-img-placeholder teal">
+              <i class="fas fa-running"></i>
+            </div>
+            <span class="blog-tag">Recovery</span>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta">
+              <span><i class="fas fa-user-md"></i> Dr. Maninder Singh</span>
+              <span><i class="fas fa-calendar"></i> April 2025</span>
+            </div>
+            <h3>Life After Hip Replacement: A Complete Recovery Guide</h3>
+            <p>Most patients walk within 24 hours and return home in 3–4 days. Here's what to expect week by week during your recovery journey.</p>
+            <a href="#" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-img-wrap">
+            <div class="blog-img-placeholder blue">
+              <i class="fas fa-first-aid"></i>
+            </div>
+            <span class="blog-tag">Trauma</span>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta">
+              <span><i class="fas fa-user-md"></i> Dr. Maninder Singh</span>
+              <span><i class="fas fa-calendar"></i> March 2025</span>
+            </div>
+            <h3>Managing Road Accident Fractures: The Golden Hour</h3>
+            <p>Early intervention in the first hour after a fracture dramatically improves outcomes. Understanding what happens in trauma care can save lives and limbs.</p>
+            <a href="#" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Write for Us CTA -->
+      <div class="write-for-us">
+        <div class="write-cta-wrap">
+          <div class="write-cta-icon"><i class="fas fa-pen-nib"></i></div>
+          <div class="write-cta-text">
+            <h3>Share Your Voice — Get Published on OrthoChronicles</h3>
+            <p>Are you a patient, caregiver, physiotherapist, medical student, or healthcare professional? We welcome your stories, experiences, case insights, and health tips. Every perspective matters — your article could help someone make a better health decision today.</p>
+            <ul class="write-perks">
+              <li><i class="fas fa-check-circle"></i> Open to patients, doctors, physios &amp; health writers</li>
+              <li><i class="fas fa-check-circle"></i> Articles reviewed by Dr. Maninder Singh's team</li>
+              <li><i class="fas fa-check-circle"></i> Published with your name &amp; bio</li>
+              <li><i class="fas fa-check-circle"></i> Topics: recovery stories, orthopedic tips, surgical Q&amp;A, lifestyle</li>
+            </ul>
           </div>
         </div>
-        <div class="testimonial-card">
-          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p>"After a severe road accident, Dr. Singh's trauma team handled my complex fractures brilliantly. I have regained full mobility thanks to his skilled surgery."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar"><i class="fas fa-user"></i></div>
-            <div>
-              <strong>Rajinder Singh</strong>
-              <span>Trauma Surgery Patient, Tarn Taran</span>
+
+        <!-- Submission Form -->
+        <div class="submission-form-wrap">
+          <h4><i class="fas fa-paper-plane"></i> Submit Your Article</h4>
+          <form class="submission-form" id="submissionForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sub-name">Your Full Name *</label>
+                <input type="text" id="sub-name" placeholder="e.g. Dr. Gurpreet Kaur" required />
+              </div>
+              <div class="form-group">
+                <label for="sub-email">Email Address *</label>
+                <input type="email" id="sub-email" placeholder="your@email.com" required />
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p>"My hip replacement was done with precision and the recovery was smooth. Dr. Singh explained everything clearly and followed up personally. Highly recommend."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar"><i class="fas fa-user"></i></div>
-            <div>
-              <strong>Harjit Kaur</strong>
-              <span>Hip Replacement Patient, Batala</span>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sub-role">Your Role</label>
+                <select id="sub-role">
+                  <option value="">Select your background</option>
+                  <option>Patient / Caregiver</option>
+                  <option>Orthopedic Surgeon</option>
+                  <option>Physiotherapist</option>
+                  <option>Medical Student / Resident</option>
+                  <option>Health Writer / Journalist</option>
+                  <option>Other Healthcare Professional</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sub-topic">Article Topic *</label>
+                <input type="text" id="sub-topic" placeholder="e.g. My knee replacement journey" required />
+              </div>
             </div>
+            <div class="form-group full">
+              <label for="sub-content">Article Content or Summary *</label>
+              <textarea id="sub-content" rows="6" placeholder="Paste your full article or a detailed summary here. Minimum 200 words recommended." required></textarea>
+            </div>
+            <div class="form-group full">
+              <label for="sub-bio">Short Bio (will appear with your article)</label>
+              <input type="text" id="sub-bio" placeholder="e.g. Physiotherapist with 8 years experience in post-surgical rehabilitation, Amritsar" />
+            </div>
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-paper-plane"></i> Submit for Review
+            </button>
+            <p class="form-note">We review all submissions within 5–7 working days. By submitting, you agree that your article may be edited for clarity before publication.</p>
+          </form>
+          <div class="form-success" id="formSuccess" style="display:none;">
+            <i class="fas fa-check-circle"></i>
+            <h4>Submission Received!</h4>
+            <p>Thank you for contributing to OrthoChronicles. Dr. Singh's team will review your article and get back to you within 5–7 working days.</p>
           </div>
         </div>
       </div>
