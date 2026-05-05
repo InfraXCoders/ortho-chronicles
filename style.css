@@ -366,7 +366,36 @@ img { max-width: 100%; display: block; }
 .ms-plus { font-size: 1.3rem; font-weight: 800; color: var(--teal-dark); }
 .ms-label { display: block; font-size: .76rem; color: var(--gray-600); font-weight: 500; margin-top: 4px; }
 
-.mentor-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.mentor-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+/* Clickable mentor card */
+.mentor-card-link {
+  text-decoration: none; color: inherit;
+  display: flex; cursor: pointer;
+  transition: var(--trans);
+}
+.mentor-card-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 50px rgba(26,63,122,.14);
+  border-color: var(--teal);
+}
+
+.mentor-profile-btn {
+  pointer-events: none;
+}
+
+.btn-outline-sm {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 2px solid var(--blue); color: var(--blue);
+  padding: 10px 20px; border-radius: var(--radius);
+  font-weight: 600; font-size: .88rem; transition: var(--trans);
+}
+.btn-outline-sm:hover { background: var(--blue); color: #fff; }
+
+.mentor-click-hint {
+  margin-top: 14px; font-size: .78rem; color: var(--gray-400);
+  display: flex; align-items: center; gap: 6px;
+}
 
 /* ===== WHY CONTRIBUTE ===== */
 .why-contribute { background: var(--off-white); }
