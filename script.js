@@ -44,6 +44,38 @@ const observer = new IntersectionObserver((entries) => {
 
 counters.forEach(c => observer.observe(c));
 
+// YouTube video modal
+const ytModal      = document.getElementById('ytModal');
+const ytIframe     = document.getElementById('ytIframe');
+const ytModalClose = document.getElementById('ytModalClose');
+
+document.querySelectorAll('.yt-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const id = card.dataset.videoid;
+    if (!id || id.startsWith('VIDEO_ID')) {
+      window.open('https://www.youtube.com/@Orthochronicles/videos', '_blank');
+      return;
+    }
+    ytIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    ytModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+if (ytModalClose) {
+  ytModalClose.addEventListener('click', closeYtModal);
+}
+if (ytModal) {
+  ytModal.addEventListener('click', (e) => { if (e.target === ytModal) closeYtModal(); });
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeYtModal(); });
+
+function closeYtModal() {
+  ytModal.classList.remove('open');
+  ytIframe.src = '';
+  document.body.style.overflow = '';
+}
+
 // Blog submission form — sends to Web3Forms, email stored server-side only
 const submissionForm = document.getElementById('submissionForm');
 const formSuccess  = document.getElementById('formSuccess');

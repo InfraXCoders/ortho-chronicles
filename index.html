@@ -23,6 +23,7 @@
         <li><a href="#community">Community</a></li>
         <li><a href="#publish">What We Publish</a></li>
         <li><a href="#blog">Blog</a></li>
+        <li><a href="#videos">Videos</a></li>
         <li><a href="#mentor">About Dr. Singh</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#submit" class="btn-nav">Submit Article</a></li>
@@ -222,6 +223,102 @@
           <h4>Build a Peer Network</h4>
           <p>Connect with like-minded professionals and contribute to a growing knowledge base that benefits the entire orthopedic field.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= YOUTUBE ======= -->
+  <section id="videos" class="section yt-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label"><i class="fab fa-youtube"></i> &nbsp;YouTube</div>
+        <h2 class="section-title">Bone &amp; Beyond</h2>
+        <p class="section-sub">Watch surgical insights, orthopedic education and community conversations on our YouTube channel — curated by Dr. Maninder Singh</p>
+      </div>
+
+      <div class="yt-channel-strip">
+        <div class="yt-channel-info">
+          <div class="yt-channel-avatar"><i class="fab fa-youtube"></i></div>
+          <div>
+            <strong>Bone &amp; Beyond</strong>
+            <span>@Orthochronicles</span>
+          </div>
+        </div>
+        <a href="https://www.youtube.com/@Orthochronicles/videos" target="_blank" rel="noopener" class="yt-subscribe-btn">
+          <i class="fab fa-youtube"></i> Visit Channel
+        </a>
+      </div>
+
+      <!-- Video playcards grid -->
+      <div class="yt-grid" id="ytGrid">
+        <!-- Cards injected by JS; fallback static cards shown if JS fails -->
+        <div class="yt-card" data-videoid="VIDEO_ID_1">
+          <div class="yt-thumb-wrap">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_1/hqdefault.jpg" alt="Video 1" class="yt-thumb" onerror="this.style.display='none'" />
+            <div class="yt-thumb-fallback"><i class="fab fa-youtube"></i></div>
+            <div class="yt-play-btn"><i class="fas fa-play"></i></div>
+          </div>
+          <div class="yt-card-body">
+            <span class="yt-tag">Orthopedics</span>
+            <h4>Latest Video — Bone &amp; Beyond</h4>
+            <p class="yt-meta"><i class="fab fa-youtube"></i> Bone &amp; Beyond &nbsp;·&nbsp; @Orthochronicles</p>
+          </div>
+        </div>
+
+        <div class="yt-card" data-videoid="VIDEO_ID_2">
+          <div class="yt-thumb-wrap">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_2/hqdefault.jpg" alt="Video 2" class="yt-thumb" onerror="this.style.display='none'" />
+            <div class="yt-thumb-fallback"><i class="fab fa-youtube"></i></div>
+            <div class="yt-play-btn"><i class="fas fa-play"></i></div>
+          </div>
+          <div class="yt-card-body">
+            <span class="yt-tag">Surgery</span>
+            <h4>Trauma &amp; Joint Insights</h4>
+            <p class="yt-meta"><i class="fab fa-youtube"></i> Bone &amp; Beyond &nbsp;·&nbsp; @Orthochronicles</p>
+          </div>
+        </div>
+
+        <div class="yt-card" data-videoid="VIDEO_ID_3">
+          <div class="yt-thumb-wrap">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_3/hqdefault.jpg" alt="Video 3" class="yt-thumb" onerror="this.style.display='none'" />
+            <div class="yt-thumb-fallback"><i class="fab fa-youtube"></i></div>
+            <div class="yt-play-btn"><i class="fas fa-play"></i></div>
+          </div>
+          <div class="yt-card-body">
+            <span class="yt-tag">Recovery</span>
+            <h4>Post-Surgery Recovery Guide</h4>
+            <p class="yt-meta"><i class="fab fa-youtube"></i> Bone &amp; Beyond &nbsp;·&nbsp; @Orthochronicles</p>
+          </div>
+        </div>
+
+        <div class="yt-card" data-videoid="VIDEO_ID_4">
+          <div class="yt-thumb-wrap">
+            <img src="https://img.youtube.com/vi/VIDEO_ID_4/hqdefault.jpg" alt="Video 4" class="yt-thumb" onerror="this.style.display='none'" />
+            <div class="yt-thumb-fallback"><i class="fab fa-youtube"></i></div>
+            <div class="yt-play-btn"><i class="fas fa-play"></i></div>
+          </div>
+          <div class="yt-card-body">
+            <span class="yt-tag">Community</span>
+            <h4>Community Q&amp;A — Ask Dr. Singh</h4>
+            <p class="yt-meta"><i class="fab fa-youtube"></i> Bone &amp; Beyond &nbsp;·&nbsp; @Orthochronicles</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal player -->
+      <div class="yt-modal" id="ytModal">
+        <div class="yt-modal-inner">
+          <button class="yt-modal-close" id="ytModalClose" aria-label="Close video"><i class="fas fa-times"></i></button>
+          <div class="yt-iframe-wrap">
+            <iframe id="ytIframe" src="" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="yt-cta-wrap">
+        <a href="https://www.youtube.com/@Orthochronicles/videos" target="_blank" rel="noopener" class="btn-primary">
+          <i class="fab fa-youtube"></i> Watch All Videos on YouTube
+        </a>
       </div>
     </div>
   </section>
