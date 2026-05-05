@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dr. Maninder Singh | MS Orthopedic Surgeon | Amritsar</title>
-  <meta name="description" content="Dr. Maninder Singh - MS Orthopedic Surgeon, Trauma & Joint Replacement Specialist. Associate Professor at Government Medical College and Hospital, Amritsar." />
+  <title>OrthoChronicles — The Orthopedic Community Platform</title>
+  <meta name="description" content="OrthoChronicles is an open community platform for orthopedic surgeons, researchers, physiotherapists, medical students and patients to share blogs, articles, journals and medical cases." />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,16 +17,15 @@
   <header id="header">
     <nav class="navbar">
       <a href="#home" class="nav-logo">
-        <img src="assets/logo.png" alt="OrthoChronicles Logo" />
+        <img src="assets/logo.png" alt="OrthoChronicles" />
       </a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#publish">What We Publish</a></li>
         <li><a href="#blog">Blog</a></li>
+        <li><a href="#mentor">About Dr. Singh</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="tel:9779212479" class="btn-nav">Book Appointment</a></li>
+        <li><a href="#submit" class="btn-nav">Submit Article</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -37,307 +36,191 @@
   <!-- ======= HERO ======= -->
   <section id="home" class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-content">
-      <div class="hero-text">
-        <span class="hero-badge">Trauma & Joint Replacement Specialist</span>
-        <h1>Dr. Maninder Singh</h1>
-        <p class="hero-quals">MS Orthopedics &nbsp;|&nbsp; Associate Professor</p>
-        <p class="hero-hospital">
-          <i class="fas fa-hospital"></i>
-          Guru Nanak Dev Hospital<br />
-          Govt. Medical College &amp; Hospital, Amritsar
-        </p>
-        <div class="hero-cta">
-          <a href="tel:9779212479" class="btn-primary">
-            <i class="fas fa-phone-alt"></i> Call for Appointment
-          </a>
-          <a href="#services" class="btn-outline">Our Services</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat"><span class="stat-num">25+</span><span class="stat-label">Years Experience</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">10000+</span><span class="stat-label">Surgeries Done</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">40000+</span><span class="stat-label">OPD Patients</span></div>
-        </div>
+    <div class="hero-content hero-centered">
+      <span class="hero-badge"><i class="fas fa-users"></i> Open to the Entire Ortho Community</span>
+      <h1>Where Orthopedic Knowledge<br />Comes Together</h1>
+      <p class="hero-tagline">OrthoChronicles is a common platform for orthopedic surgeons, researchers, physiotherapists, medical students and patients to share <strong>thoughts, blogs, articles, journals</strong> and <strong>medical cases</strong> — building a richer body of knowledge for everyone.</p>
+      <div class="hero-cta hero-cta-center">
+        <a href="#submit" class="btn-primary"><i class="fas fa-pen-nib"></i> Submit Your Article</a>
+        <a href="#blog" class="btn-outline"><i class="fas fa-book-open"></i> Explore Content</a>
       </div>
-      <div class="hero-image">
-        <div class="hero-card">
-          <div class="hero-card-inner">
-            <div class="doctor-avatar">
-              <img src="assets/doctor.jpg" alt="Dr. Maninder Singh" />
-            </div>
-            <div class="hero-card-info">
-              <strong>Dr. Maninder Singh</strong>
-              <span>MS Orthopedics</span>
-              <span class="badge-verified"><i class="fas fa-check-circle"></i> Verified Specialist</span>
-            </div>
-          </div>
-          <div class="availability">
-            <span class="dot"></span> Available for Consultations
-          </div>
+      <div class="hero-community-stats">
+        <div class="hcs-item">
+          <i class="fas fa-file-medical-alt"></i>
+          <span>Blogs &amp; Articles</span>
         </div>
-        <div class="floating-badge f1">
-          <i class="fas fa-bone"></i>
-          <span>Joint Replacement</span>
+        <div class="hcs-divider"></div>
+        <div class="hcs-item">
+          <i class="fas fa-flask"></i>
+          <span>Research &amp; Journals</span>
         </div>
-        <div class="floating-badge f2">
-          <i class="fas fa-first-aid"></i>
-          <span>Trauma Surgery</span>
+        <div class="hcs-divider"></div>
+        <div class="hcs-item">
+          <i class="fas fa-x-ray"></i>
+          <span>Medical Cases</span>
+        </div>
+        <div class="hcs-divider"></div>
+        <div class="hcs-item">
+          <i class="fas fa-comments"></i>
+          <span>Community Discussions</span>
         </div>
       </div>
     </div>
     <div class="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
   </section>
 
-  <!-- ======= QUICK CONTACT BAR ======= -->
-  <div class="quick-bar">
-    <div class="quick-bar-inner">
-      <div class="quick-item">
-        <i class="fas fa-phone-alt"></i>
-        <div>
-          <span>Call Us</span>
-          <a href="tel:9779212479">+91 97792 12479</a>
-        </div>
-      </div>
-      <div class="quick-item">
-        <i class="fas fa-map-marker-alt"></i>
-        <div>
-          <span>Location</span>
-          <a href="#contact">Govt. Medical College, Amritsar</a>
-        </div>
-      </div>
-      <div class="quick-item">
-        <i class="fas fa-clock"></i>
-        <div>
-          <span>OPD Timing</span>
-          <strong>Mon – Sat: 9:00 AM – 2:00 PM</strong>
-        </div>
-      </div>
-      <div class="quick-item">
-        <i class="fas fa-ambulance"></i>
-        <div>
-          <span>Emergency</span>
-          <strong>24 × 7 Available</strong>
-        </div>
+  <!-- ======= WHO CAN CONTRIBUTE BAR ======= -->
+  <div id="community" class="community-bar">
+    <div class="community-bar-inner">
+      <div class="cb-label">Who Can Contribute?</div>
+      <div class="cb-items">
+        <div class="cb-item"><i class="fas fa-user-md"></i><span>Orthopedic Surgeons</span></div>
+        <div class="cb-item"><i class="fas fa-microscope"></i><span>Researchers</span></div>
+        <div class="cb-item"><i class="fas fa-running"></i><span>Physiotherapists</span></div>
+        <div class="cb-item"><i class="fas fa-graduation-cap"></i><span>Medical Students</span></div>
+        <div class="cb-item"><i class="fas fa-heartbeat"></i><span>Patients &amp; Caregivers</span></div>
+        <div class="cb-item"><i class="fas fa-pen"></i><span>Health Writers</span></div>
       </div>
     </div>
   </div>
 
-  <!-- ======= ABOUT ======= -->
-  <section id="about" class="section about">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-image-wrap">
-          <div class="about-img-box">
-            <img src="assets/doctor.jpg" alt="Dr. Maninder Singh - Orthopedic Surgeon" class="doctor-photo" />
-            <div class="about-exp-badge">
-              <span class="exp-num">25+</span>
-              <span class="exp-txt">Years of<br/>Excellence</span>
-            </div>
-          </div>
-          <div class="about-logo-wrap">
-            <img src="assets/logo.png" alt="OrthoChronicles" />
-          </div>
-        </div>
-
-        <div class="about-content">
-          <div class="section-label">About the Doctor</div>
-          <h2 class="section-title">Dr. Maninder Singh</h2>
-          <p class="about-subtitle">MS Orthopedics &nbsp;|&nbsp; Associate Professor &nbsp;|&nbsp; Trauma &amp; Joint Replacement Surgeon</p>
-
-          <p class="about-text">
-            Dr. Maninder Singh is a distinguished orthopedic surgeon and Associate Professor at the prestigious
-            Government Medical College and Hospital, Amritsar. With over 15 years of expertise in Trauma Surgery
-            and Joint Replacement, he has transformed the lives of thousands of patients across Punjab and beyond.
-          </p>
-          <p class="about-text">
-            Practicing at Guru Nanak Dev Hospital, one of the largest teaching hospitals in North India,
-            Dr. Singh combines cutting-edge surgical techniques with compassionate patient care. His expertise spans
-            complex fracture management, total knee replacement, hip replacement, and sports injuries.
-          </p>
-
-          <div class="about-highlights">
-            <div class="highlight">
-              <i class="fas fa-graduation-cap"></i>
-              <div>
-                <strong>MS Orthopedics</strong>
-                <span>Government Medical College</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <i class="fas fa-chalkboard-teacher"></i>
-              <div>
-                <strong>Associate Professor</strong>
-                <span>Dept. of Orthopedics, GMCH Amritsar</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <i class="fas fa-hospital"></i>
-              <div>
-                <strong>Guru Nanak Dev Hospital</strong>
-                <span>Govt. Medical College, Amritsar – 143001</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <i class="fas fa-award"></i>
-              <div>
-                <strong>Specialization</strong>
-                <span>Trauma Surgery &amp; Joint Replacement</span>
-              </div>
-            </div>
-          </div>
-
-          <a href="tel:9779212479" class="btn-primary">
-            <i class="fas fa-calendar-check"></i> Schedule a Consultation
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======= SERVICES ======= -->
-  <section id="services" class="section services">
+  <!-- ======= WHAT WE PUBLISH ======= -->
+  <section id="publish" class="section publish">
     <div class="container">
       <div class="section-header">
-        <div class="section-label">What We Treat</div>
-        <h2 class="section-title">Specialized Services</h2>
-        <p class="section-sub">Comprehensive orthopedic care with the latest surgical techniques and technology</p>
+        <div class="section-label">Content Categories</div>
+        <h2 class="section-title">What We Publish</h2>
+        <p class="section-sub">Every format of orthopedic knowledge — from lived patient experiences to peer-level clinical insights</p>
       </div>
-      <div class="services-grid">
+      <div class="publish-grid">
 
-        <div class="service-card">
-          <div class="service-icon teal">
-            <i class="fas fa-bone"></i>
-          </div>
-          <h3>Total Knee Replacement</h3>
-          <p>Advanced knee arthroplasty for arthritis and degenerative joint disease, restoring pain-free movement and mobility.</p>
+        <div class="publish-card">
+          <div class="publish-icon teal"><i class="fas fa-blog"></i></div>
+          <h3>Blogs &amp; Opinion Pieces</h3>
+          <p>Share your perspective on orthopedic care, surgical trends, rehabilitation approaches, or patient-facing health education.</p>
+          <a href="#submit" class="publish-cta">Write a Blog <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon blue">
-            <i class="fas fa-running"></i>
-          </div>
-          <h3>Hip Replacement</h3>
-          <p>Total and partial hip replacement surgeries using the latest implants for long-lasting, natural joint function.</p>
+        <div class="publish-card">
+          <div class="publish-icon blue"><i class="fas fa-file-alt"></i></div>
+          <h3>Research Articles</h3>
+          <p>Original research, systematic reviews, meta-analyses and evidence-based studies on orthopedic surgery and musculoskeletal medicine.</p>
+          <a href="#submit" class="publish-cta">Submit Research <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon teal">
-            <i class="fas fa-first-aid"></i>
-          </div>
-          <h3>Trauma Surgery</h3>
-          <p>Expert management of complex fractures, road traffic accidents, and polytrauma with modern fixation techniques.</p>
+        <div class="publish-card">
+          <div class="publish-icon teal"><i class="fas fa-x-ray"></i></div>
+          <h3>Medical Case Studies</h3>
+          <p>Interesting, rare or instructive clinical cases — fractures, implant outcomes, complications, and the decisions made along the way.</p>
+          <a href="#submit" class="publish-cta">Share a Case <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon blue">
-            <i class="fas fa-dumbbell"></i>
-          </div>
-          <h3>Sports Injuries</h3>
-          <p>Ligament repairs, ACL reconstruction, meniscus surgery, and shoulder stabilization for athletes of all levels.</p>
+        <div class="publish-card">
+          <div class="publish-icon blue"><i class="fas fa-book-medical"></i></div>
+          <h3>Journal Summaries</h3>
+          <p>Break down important papers from JBJS, CORR, Bone &amp; Joint and other ortho journals into accessible summaries for the community.</p>
+          <a href="#submit" class="publish-cta">Summarise a Journal <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon teal">
-            <i class="fas fa-spine"></i>
-          </div>
-          <h3>Spine Disorders</h3>
-          <p>Diagnosis and surgical management of disc herniation, spinal stenosis, and vertebral fractures.</p>
+        <div class="publish-card">
+          <div class="publish-icon teal"><i class="fas fa-heartbeat"></i></div>
+          <h3>Patient Stories</h3>
+          <p>Recovery journeys, life before and after surgery, managing chronic conditions — real stories that help and inspire others.</p>
+          <a href="#submit" class="publish-cta">Share Your Story <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon blue">
-            <i class="fas fa-hand-holding-medical"></i>
-          </div>
-          <h3>Shoulder & Elbow</h3>
-          <p>Rotator cuff repairs, shoulder replacement, elbow arthroscopy, and tendon reconstruction procedures.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon teal">
-            <i class="fas fa-child"></i>
-          </div>
-          <h3>Pediatric Orthopedics</h3>
-          <p>Treatment of congenital deformities, growth-related conditions, and fractures in children and adolescents.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon blue">
-            <i class="fas fa-x-ray"></i>
-          </div>
-          <h3>Revision Surgery</h3>
-          <p>Complex revision arthroplasty for failed implants, infections, and instability after previous joint surgeries.</p>
+        <div class="publish-card">
+          <div class="publish-icon blue"><i class="fas fa-chalkboard-teacher"></i></div>
+          <h3>Clinical Techniques</h3>
+          <p>Step-by-step surgical approaches, implant selection rationale, physiotherapy protocols, and post-op rehabilitation guides.</p>
+          <a href="#submit" class="publish-cta">Share a Technique <i class="fas fa-arrow-right"></i></a>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ======= EXPERTISE / WHY CHOOSE ======= -->
-  <section id="expertise" class="section expertise">
+  <!-- ======= DR. MANINDER SINGH — SUPERVISOR / MENTOR ======= -->
+  <section id="mentor" class="section mentor">
     <div class="container">
-      <div class="expertise-grid">
-        <div class="expertise-content">
-          <div class="section-label">Why Choose Dr. Singh</div>
-          <h2 class="section-title">Expert Care You Can Trust</h2>
-          <p class="about-text">
-            At Government Medical College and Hospital, Amritsar, Dr. Maninder Singh brings together
-            academic excellence and hands-on surgical mastery to deliver the highest standard of
-            orthopedic care to every patient.
-          </p>
+      <div class="section-header">
+        <div class="section-label">Platform Supervisor &amp; Mentor</div>
+        <h2 class="section-title">Guided by an Orthopedic Expert</h2>
+        <p class="section-sub">Every article, case and journal published on OrthoChronicles is reviewed and curated under the supervision of</p>
+      </div>
 
-          <div class="expertise-list">
-            <div class="exp-item">
-              <div class="exp-icon"><i class="fas fa-microscope"></i></div>
-              <div>
-                <h4>Advanced Surgical Techniques</h4>
-                <p>Using minimally invasive approaches and computer-assisted navigation for precise implant placement.</p>
-              </div>
-            </div>
-            <div class="exp-item">
-              <div class="exp-icon"><i class="fas fa-user-shield"></i></div>
-              <div>
-                <h4>Patient-Centered Approach</h4>
-                <p>Every treatment plan is personalized — combining surgical skill with thorough pre- and post-operative care.</p>
-              </div>
-            </div>
-            <div class="exp-item">
-              <div class="exp-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-              <div>
-                <h4>Academic Excellence</h4>
-                <p>As Associate Professor, Dr. Singh trains the next generation of surgeons while staying at the forefront of research.</p>
-              </div>
-            </div>
-            <div class="exp-item">
-              <div class="exp-icon"><i class="fas fa-ambulance"></i></div>
-              <div>
-                <h4>24 × 7 Emergency Care</h4>
-                <p>Round-the-clock availability for trauma cases and orthopedic emergencies at Guru Nanak Dev Hospital.</p>
-              </div>
-            </div>
+      <div class="mentor-card">
+        <div class="mentor-photo-wrap">
+          <div class="mentor-photo-ring">
+            <img src="assets/doctor.jpg" alt="Dr. Maninder Singh" class="mentor-photo" />
           </div>
+          <div class="mentor-badge-teal"><i class="fas fa-shield-alt"></i> Verified Supervisor</div>
         </div>
 
-        <div class="expertise-stats">
-          <div class="stats-card">
-            <div class="big-stat">
-              <span class="big-num counter" data-target="10000">0</span><span class="plus">+</span>
-              <span class="big-label">Successful Surgeries</span>
+        <div class="mentor-info">
+          <h3>Dr. Maninder Singh</h3>
+          <p class="mentor-title">MS Orthopedics &nbsp;·&nbsp; Associate Professor &nbsp;·&nbsp; Trauma &amp; Joint Replacement Surgeon</p>
+          <p class="mentor-hospital"><i class="fas fa-hospital"></i> Guru Nanak Dev Hospital, Govt. Medical College &amp; Hospital, Amritsar – 143001</p>
+
+          <p class="mentor-bio">
+            Dr. Maninder Singh is a distinguished orthopedic surgeon and Associate Professor at Government Medical College &amp; Hospital, Amritsar. With 25+ years of expertise spanning Trauma Surgery and Joint Replacement, he brings academic rigour and hands-on clinical wisdom to every piece published on OrthoChronicles.
+          </p>
+          <p class="mentor-bio">
+            As the platform's Supervisor and Mentor, Dr. Singh oversees the quality, accuracy and clinical relevance of all content — ensuring that OrthoChronicles remains a trusted resource for the orthopedic community worldwide.
+          </p>
+
+          <div class="mentor-stats">
+            <div class="ms-item">
+              <span class="ms-num counter" data-target="25">0</span><span class="ms-plus">+</span>
+              <span class="ms-label">Years Experience</span>
             </div>
-            <div class="big-stat">
-              <span class="big-num counter" data-target="25">0</span><span class="plus">+</span>
-              <span class="big-label">Years of Experience</span>
+            <div class="ms-item">
+              <span class="ms-num counter" data-target="10000">0</span><span class="ms-plus">+</span>
+              <span class="ms-label">Surgeries</span>
             </div>
-            <div class="big-stat">
-              <span class="big-num counter" data-target="40000">0</span><span class="plus">+</span>
-              <span class="big-label">OPD Patients</span>
-            </div>
-            <div class="big-stat">
-              <span class="big-num counter" data-target="98">0</span><span class="plus">%</span>
-              <span class="big-label">Patient Satisfaction</span>
+            <div class="ms-item">
+              <span class="ms-num counter" data-target="40000">0</span><span class="ms-plus">+</span>
+              <span class="ms-label">OPD Patients</span>
             </div>
           </div>
+
+          <div class="mentor-actions">
+            <a href="tel:9779212479" class="btn-primary"><i class="fas fa-phone-alt"></i> Contact Dr. Singh</a>
+            <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="btn-wa-sm"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= WHY CONTRIBUTE ======= -->
+  <section class="section why-contribute">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Join the Community</div>
+        <h2 class="section-title">Why Contribute to OrthoChronicles?</h2>
+        <p class="section-sub">Your knowledge matters. Sharing it here creates impact far beyond the consulting room.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-globe-asia"></i></div>
+          <h4>Reach the Ortho Community</h4>
+          <p>Your article reaches surgeons, researchers, physios and students across India and beyond — building your professional visibility.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-award"></i></div>
+          <h4>Published Under Expert Review</h4>
+          <p>All content is supervised by Dr. Maninder Singh, lending credibility and academic rigour to your published work.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-hands-helping"></i></div>
+          <h4>Help Patients Make Better Decisions</h4>
+          <p>Patient stories, recovery tips and surgical explanations directly help people navigate their orthopedic health journey.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-users"></i></div>
+          <h4>Build a Peer Network</h4>
+          <p>Connect with like-minded professionals and contribute to a growing knowledge base that benefits the entire orthopedic field.</p>
         </div>
       </div>
     </div>
@@ -347,18 +230,15 @@
   <section id="blog" class="section blog">
     <div class="container">
       <div class="section-header">
-        <div class="section-label">Knowledge Hub</div>
+        <div class="section-label">Latest from the Community</div>
         <h2 class="section-title">OrthoChronicles Blog</h2>
-        <p class="section-sub">Insights on orthopedic health, surgical advances, and recovery — from the desk of Dr. Maninder Singh and our community of contributors.</p>
+        <p class="section-sub">Insights on orthopedic health, surgical advances and recovery — from Dr. Maninder Singh and our growing community of contributors.</p>
       </div>
 
-      <!-- Featured Articles -->
       <div class="blog-grid">
         <article class="blog-card featured">
           <div class="blog-img-wrap">
-            <div class="blog-img-placeholder blue">
-              <i class="fas fa-bone"></i>
-            </div>
+            <div class="blog-img-placeholder blue"><i class="fas fa-bone"></i></div>
             <span class="blog-tag">Joint Replacement</span>
           </div>
           <div class="blog-body">
@@ -374,9 +254,7 @@
 
         <article class="blog-card">
           <div class="blog-img-wrap">
-            <div class="blog-img-placeholder teal">
-              <i class="fas fa-running"></i>
-            </div>
+            <div class="blog-img-placeholder teal"><i class="fas fa-running"></i></div>
             <span class="blog-tag">Recovery</span>
           </div>
           <div class="blog-body">
@@ -392,9 +270,7 @@
 
         <article class="blog-card">
           <div class="blog-img-wrap">
-            <div class="blog-img-placeholder blue">
-              <i class="fas fa-first-aid"></i>
-            </div>
+            <div class="blog-img-placeholder blue"><i class="fas fa-first-aid"></i></div>
             <span class="blog-tag">Trauma</span>
           </div>
           <div class="blog-body">
@@ -409,30 +285,28 @@
         </article>
       </div>
 
-      <!-- Write for Us CTA -->
-      <div class="write-for-us">
+      <!-- Submit / Write for Us -->
+      <div id="submit" class="write-for-us">
         <div class="write-cta-wrap">
           <div class="write-cta-icon"><i class="fas fa-pen-nib"></i></div>
           <div class="write-cta-text">
             <h3>Share Your Voice — Get Published on OrthoChronicles</h3>
-            <p>Are you a patient, caregiver, physiotherapist, medical student, or healthcare professional? We welcome your stories, experiences, case insights, and health tips. Every perspective matters — your article could help someone make a better health decision today.</p>
+            <p>Whether you're a surgeon with a clinical insight, a researcher with a finding, a physio with a protocol, or a patient with a story — your viewpoint deserves an audience. Every submission is personally reviewed by Dr. Maninder Singh and his team before publication.</p>
             <ul class="write-perks">
-              <li><i class="fas fa-check-circle"></i> Open to patients, doctors, physios &amp; health writers</li>
-              <li><i class="fas fa-check-circle"></i> Articles reviewed by Dr. Maninder Singh's team</li>
-              <li><i class="fas fa-check-circle"></i> Published with your name &amp; bio</li>
-              <li><i class="fas fa-check-circle"></i> Topics: recovery stories, orthopedic tips, surgical Q&amp;A, lifestyle</li>
+              <li><i class="fas fa-check-circle"></i> Open to all — patients, doctors, physios, researchers &amp; writers</li>
+              <li><i class="fas fa-check-circle"></i> Reviewed &amp; supervised by Dr. Maninder Singh</li>
+              <li><i class="fas fa-check-circle"></i> Published with your name, designation &amp; bio</li>
+              <li><i class="fas fa-check-circle"></i> Blogs, articles, journals, medical cases &amp; patient stories all welcome</li>
             </ul>
           </div>
         </div>
 
-        <!-- Submission Form -->
         <div class="submission-form-wrap">
-          <h4><i class="fas fa-paper-plane"></i> Submit Your Article</h4>
+          <h4><i class="fas fa-paper-plane"></i> Submit Your Contribution</h4>
           <form class="submission-form" id="submissionForm">
-            <!-- Web3Forms: access key only — recipient email is stored on their servers, not here -->
             <input type="hidden" name="access_key" value="184b0c41-f80f-4a0b-b27d-b787404fa207" />
-            <input type="hidden" name="subject" value="New Article Submission — OrthoChronicles.info" />
-            <input type="hidden" name="from_name" value="OrthoChronicles Blog" />
+            <input type="hidden" name="subject" value="New Submission — OrthoChronicles Community" />
+            <input type="hidden" name="from_name" value="OrthoChronicles Platform" />
             <input type="checkbox" name="botcheck" style="display:none;" />
 
             <div class="form-row">
@@ -454,45 +328,58 @@
                   <option>Orthopedic Surgeon</option>
                   <option>Physiotherapist</option>
                   <option>Medical Student / Resident</option>
+                  <option>Researcher</option>
                   <option>Health Writer / Journalist</option>
                   <option>Other Healthcare Professional</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="sub-topic">Article Topic *</label>
-                <input type="text" id="sub-topic" name="article_topic" placeholder="e.g. My knee replacement journey" required />
+                <label for="sub-type">Content Type *</label>
+                <select id="sub-type" name="content_type" required>
+                  <option value="">Select content type</option>
+                  <option>Blog / Opinion Piece</option>
+                  <option>Research Article</option>
+                  <option>Medical Case Study</option>
+                  <option>Journal Summary</option>
+                  <option>Patient Story</option>
+                  <option>Clinical Technique</option>
+                </select>
               </div>
             </div>
             <div class="form-group full">
-              <label for="sub-content">Article Content or Summary *</label>
-              <textarea id="sub-content" name="article_content" rows="6" placeholder="Paste your full article or a detailed summary here. Minimum 200 words recommended." required></textarea>
+              <label for="sub-topic">Title / Topic *</label>
+              <input type="text" id="sub-topic" name="article_topic" placeholder="e.g. Managing ACL tears in young athletes — a physiotherapist's perspective" required />
             </div>
             <div class="form-group full">
-              <label for="sub-bio">Short Bio (will appear with your article)</label>
-              <input type="text" id="sub-bio" name="author_bio" placeholder="e.g. Physiotherapist with 8 years experience in post-surgical rehabilitation, Amritsar" />
+              <label for="sub-content">Your Article / Content *</label>
+              <textarea id="sub-content" name="article_content" rows="8" placeholder="Paste your full article, case summary or content here. Include any key findings, personal experience or clinical insights." required></textarea>
+            </div>
+            <div class="form-group full">
+              <label for="sub-bio">Your Bio (will appear with your published article)</label>
+              <input type="text" id="sub-bio" name="author_bio" placeholder="e.g. MS Orthopedics, 12 years in trauma surgery, Amritsar" />
             </div>
             <button type="submit" class="btn-submit" id="submitBtn">
               <i class="fas fa-paper-plane"></i> Submit for Review
             </button>
-            <p class="form-note">We review all submissions within 5–7 working days. By submitting, you agree that your article may be edited for clarity before publication.</p>
+            <p class="form-note">All submissions are reviewed by Dr. Maninder Singh's team within 5–7 working days. By submitting you agree your article may be edited for clarity and accuracy before publication.</p>
           </form>
           <div class="form-success" id="formSuccess" style="display:none;">
             <i class="fas fa-check-circle"></i>
             <h4>Submission Received!</h4>
-            <p>Thank you for contributing to OrthoChronicles. Dr. Singh's team will review your article and get back to you within 5–7 working days.</p>
+            <p>Thank you for contributing to OrthoChronicles. Dr. Maninder Singh's team will review your submission and get back to you within 5–7 working days.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======= CONTACT + MAP ======= -->
+  <!-- ======= CONTACT ======= -->
   <section id="contact" class="section contact">
     <div class="container">
       <div class="section-header">
         <div class="section-label">Get In Touch</div>
-        <h2 class="section-title">Contact & Location</h2>
-        <p class="section-sub">Reach out to book an appointment or visit us at the hospital</p>
+        <h2 class="section-title">Contact &amp; Location</h2>
+        <p class="section-sub">Reach out to Dr. Maninder Singh for platform queries, article review, or clinical appointments</p>
       </div>
       <div class="contact-grid">
         <div class="contact-info">
@@ -506,7 +393,6 @@
               Amritsar, Punjab – 143001</p>
             </div>
           </div>
-
           <div class="contact-card">
             <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
             <div>
@@ -514,34 +400,22 @@
               <a href="tel:9779212479">+91 97792 12479</a>
             </div>
           </div>
-
           <div class="contact-card">
             <div class="contact-icon"><i class="fas fa-clock"></i></div>
             <div>
               <h4>OPD Hours</h4>
-              <p>Monday – Saturday<br />
-              <strong>9:00 AM – 2:00 PM</strong></p>
-              <p style="margin-top:8px;">Emergency Services<br />
-              <strong>24 Hours, 7 Days</strong></p>
+              <p>Monday – Saturday &nbsp;<strong>9:00 AM – 2:00 PM</strong></p>
+              <p style="margin-top:6px;">Emergency &nbsp;<strong>24 × 7</strong></p>
             </div>
           </div>
-
-          <a href="tel:9779212479" class="btn-primary full-width">
-            <i class="fas fa-phone-alt"></i> Call +91 97792 12479
-          </a>
-
-          <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="btn-whatsapp full-width">
-            <i class="fab fa-whatsapp"></i> WhatsApp Us
-          </a>
+          <a href="tel:9779212479" class="btn-primary full-width"><i class="fas fa-phone-alt"></i> Call +91 97792 12479</a>
+          <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="btn-whatsapp full-width"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
         </div>
-
         <div class="map-container">
           <iframe
             title="Government Medical College and Hospital Amritsar"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.8635897456!2d74.87070331513!3d31.633941981334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391964b5b7e14f4b%3A0xb2b4f0b0e8e1c6b!2sGovernment%20Medical%20College%2C%20Amritsar!5e0!3m2!1sen!2sin!4v1683000000000!5m2!1sen!2sin"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
           </iframe>
           <a class="directions-btn" href="https://maps.google.com/?q=Government+Medical+College+Amritsar" target="_blank" rel="noopener">
             <i class="fas fa-directions"></i> Get Directions
@@ -557,34 +431,30 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="assets/logo.png" alt="OrthoChronicles" />
-          <p>Dr. Maninder Singh<br />MS Orthopedics | Associate Professor<br />Trauma &amp; Joint Replacement Surgeon</p>
-          <p class="footer-hospital">Guru Nanak Dev Hospital<br />Govt. Medical College &amp; Hospital<br />Amritsar – 143001</p>
+          <p>A community platform for the orthopedic world — curated and supervised by Dr. Maninder Singh, MS Orthopedics, Associate Professor, GMCH Amritsar.</p>
         </div>
-
         <div class="footer-links">
-          <h4>Quick Links</h4>
+          <h4>Platform</h4>
           <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Dr. Singh</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#expertise">Expertise</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#publish">What We Publish</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#submit">Submit Article</a></li>
           </ul>
         </div>
-
         <div class="footer-links">
-          <h4>Specializations</h4>
+          <h4>Content Types</h4>
           <ul>
-            <li><a href="#services">Total Knee Replacement</a></li>
-            <li><a href="#services">Hip Replacement</a></li>
-            <li><a href="#services">Trauma Surgery</a></li>
-            <li><a href="#services">Sports Injuries</a></li>
-            <li><a href="#services">Spine Disorders</a></li>
+            <li><a href="#submit">Blogs &amp; Opinions</a></li>
+            <li><a href="#submit">Research Articles</a></li>
+            <li><a href="#submit">Medical Cases</a></li>
+            <li><a href="#submit">Journal Summaries</a></li>
+            <li><a href="#submit">Patient Stories</a></li>
           </ul>
         </div>
-
         <div class="footer-contact">
-          <h4>Contact Us</h4>
+          <h4>Contact Dr. Singh</h4>
           <p><i class="fas fa-phone-alt"></i> <a href="tel:9779212479">+91 97792 12479</a></p>
           <p><i class="fas fa-map-marker-alt"></i> GMCH, Amritsar – 143001</p>
           <p><i class="fas fa-clock"></i> OPD: Mon–Sat, 9 AM – 2 PM</p>
@@ -595,19 +465,14 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Dr. Maninder Singh &mdash; orthochronicles.info &nbsp;|&nbsp; All rights reserved.</p>
-        <p class="disclaimer">This website is for informational purposes only. Please consult the doctor for medical advice.</p>
+        <p>&copy; 2025 OrthoChronicles.info &nbsp;|&nbsp; Supervised by Dr. Maninder Singh, MS Orthopedics &nbsp;|&nbsp; All rights reserved.</p>
+        <p class="disclaimer">Content published on this platform is for educational and informational purposes. Always consult a qualified physician for medical advice.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Floating Call Button -->
-  <a href="tel:9779212479" class="float-call" aria-label="Call Dr. Maninder Singh">
-    <i class="fas fa-phone-alt"></i>
-  </a>
-
   <!-- Floating WhatsApp -->
-  <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="float-wa" aria-label="WhatsApp">
+  <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="float-wa" aria-label="WhatsApp Dr. Singh">
     <i class="fab fa-whatsapp"></i>
   </a>
 
