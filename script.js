@@ -44,16 +44,40 @@ const observer = new IntersectionObserver((entries) => {
 
 counters.forEach(c => observer.observe(c));
 
-// Blog submission form
+// Blog submission form — sends to Web3Forms, email stored server-side only
 const submissionForm = document.getElementById('submissionForm');
-const formSuccess = document.getElementById('formSuccess');
+const formSuccess  = document.getElementById('formSuccess');
+const submitBtn    = document.getElementById('submitBtn');
 
 if (submissionForm) {
-  submissionForm.addEventListener('submit', (e) => {
+  submissionForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    submissionForm.style.display = 'none';
-    formSuccess.style.display = 'block';
-    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(submissionForm)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        submissionForm.style.display = 'none';
+        formSuccess.style.display = 'block';
+        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+        alert('Something went wrong. Please try again or contact us directly.');
+      }
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+      alert('Network error. Please check your connection and try again.');
+    }
   });
 }
 
