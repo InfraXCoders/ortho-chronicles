@@ -371,7 +371,7 @@ img { max-width: 100%; display: block; }
 /* Clickable mentor card */
 .mentor-card-link {
   text-decoration: none; color: inherit;
-  display: flex; cursor: pointer;
+  display: flex; width: 100%; cursor: pointer;
   transition: var(--trans);
 }
 .mentor-card-link:hover {
