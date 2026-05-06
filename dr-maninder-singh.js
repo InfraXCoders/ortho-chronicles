@@ -8,25 +8,16 @@ window.addEventListener('scroll', () => {
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');
 
-const overlay = document.createElement('div');
-overlay.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s ease;';
-document.body.appendChild(overlay);
-
 function openNav() {
   navLinks.classList.add('open');
-  overlay.style.opacity = '1';
-  overlay.style.pointerEvents = 'auto';
   document.body.style.overflow = 'hidden';
 }
 function closeNav() {
   navLinks.classList.remove('open');
-  overlay.style.opacity = '0';
-  overlay.style.pointerEvents = 'none';
   document.body.style.overflow = '';
 }
 
 hamburger.addEventListener('click', () => navLinks.classList.contains('open') ? closeNav() : openNav());
-overlay.addEventListener('click', closeNav);
 navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeNav));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 

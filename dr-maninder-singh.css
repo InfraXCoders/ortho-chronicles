@@ -403,16 +403,17 @@ img { max-width: 100%; display: block; }
   /* Navbar */
   .hamburger { display: flex; }
   .nav-links {
-    position: fixed; top: 0; right: -100%;
-    width: 260px; height: 100vh;
+    position: fixed; inset: 0;
+    width: 100%; height: 100vh;
     background: var(--blue-dark);
     flex-direction: column; justify-content: center;
-    align-items: flex-start; padding: 40px 28px; gap: 24px;
-    transition: right .35s ease; z-index: 1001;
-    box-shadow: -8px 0 40px rgba(0,0,0,.3);
+    align-items: center; gap: 28px;
+    transform: translateX(100%);
+    transition: transform .35s ease; z-index: 1001;
   }
-  .nav-links.open { right: 0; }
-  .nav-links a { font-size: 1rem; }
+  .nav-links.open { transform: translateX(0); }
+  .nav-links a { font-size: 1.2rem; font-weight: 600; color: #fff; }
+  .nav-back { font-size: 1rem !important; }
   .navbar { height: 64px; }
 
   /* Hero */
