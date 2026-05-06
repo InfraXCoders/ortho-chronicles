@@ -9,7 +9,7 @@ const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 
 const overlay = document.createElement('div');
-overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s ease;';
+overlay.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s ease;';
 document.body.appendChild(overlay);
 
 function openNav() {
