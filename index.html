@@ -1132,6 +1132,63 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- ══════════════════════════════════════════════
+       MEDICAL LATEST NEWS WIDGET
+  ══════════════════════════════════════════════ -->
+  <div class="mnw-widget" id="mnwWidget">
+
+    <!-- Sticky tab (always visible on right edge) -->
+    <button class="mnw-tab" id="mnwTab" aria-label="Toggle Medical News panel">
+      <span class="mnw-live-dot"></span>
+      <i class="fas fa-newspaper mnw-tab-icon"></i>
+      <span class="mnw-tab-label">Medical News</span>
+    </button>
+
+    <!-- Sliding panel -->
+    <div class="mnw-panel" id="mnwPanel" role="complementary" aria-label="Medical latest news">
+
+      <!-- Header -->
+      <div class="mnw-header">
+        <div class="mnw-header-left">
+          <span class="mnw-live-dot"></span>
+          <i class="fas fa-newspaper"></i>
+          <span>Medical Latest News</span>
+        </div>
+        <div class="mnw-header-right">
+          <button class="mnw-icon-btn" id="mnwRefresh" title="Refresh news">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="mnw-icon-btn" id="mnwClose" title="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Source strip -->
+      <div class="mnw-source-strip">
+        <i class="fab fa-google"></i> Google News &nbsp;·&nbsp;
+        <i class="fas fa-globe-asia"></i> Medical News Today &nbsp;·&nbsp;
+        <i class="fas fa-flask"></i> Research Journals
+      </div>
+
+      <!-- Scrolling news list -->
+      <div class="mnw-scroll-area">
+        <div class="mnw-list" id="mnwList">
+          <div class="mnw-loading"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading latest news…</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="mnw-footer">
+        <span id="mnwUpdated">Connecting…</span>
+        <a href="https://news.google.com/search?q=orthopedic+medical+surgery+news&hl=en-IN" target="_blank" rel="noopener" class="mnw-more-link">
+          More <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+
+    </div><!-- /mnw-panel -->
+  </div><!-- /mnw-widget -->
+
   <script src="script.js"></script>
 
   <!-- ── Slides: dynamic load, filter, presenter, PPTX upload, form ── -->
@@ -1783,6 +1840,159 @@
     function supSetProg(pct) {
       document.getElementById('supProgFill').style.width = pct+'%';
     }
+
+  })();
+  </script>
+  <!-- ── Medical News Widget Script ── -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── RSS feeds (via rss2json.com free proxy) ── */
+    const PROXY = 'https://api.rss2json.com/v1/api.json?count=10&rss_url=';
+    const FEEDS = [
+      'https://news.google.com/rss/search?q=orthopedic+surgery+news&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=bone+fracture+joint+replacement+treatment&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=medical+surgery+research+latest&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=spine+trauma+orthopaedics+news&hl=en&gl=IN&ceid=IN:en',
+      'https://www.medicalnewstoday.com/rss',
+    ];
+    const REFRESH_MS = 10 * 60 * 1000; /* 10 minutes */
+
+    let allItems  = [];
+    let loaded    = false;
+    let isOpen    = false;
+    let scrollRAF = null;
+    let scrollPos = 0;
+
+    const tab        = document.getElementById('mnwTab');
+    const panel      = document.getElementById('mnwPanel');
+    const list       = document.getElementById('mnwList');
+    const refreshBtn = document.getElementById('mnwRefresh');
+    const closeBtn   = document.getElementById('mnwClose');
+    const updatedEl  = document.getElementById('mnwUpdated');
+
+    /* ── Toggle panel ── */
+    tab.addEventListener('click', () => {
+      isOpen = !isOpen;
+      panel.classList.toggle('open', isOpen);
+      if (isOpen && !loaded) fetchAll();
+      if (isOpen) startScroll();
+      else        stopScroll();
+    });
+    closeBtn.addEventListener('click', () => {
+      isOpen = false;
+      panel.classList.remove('open');
+      stopScroll();
+    });
+    refreshBtn.addEventListener('click', fetchAll);
+
+    /* ── Fetch all feeds ── */
+    async function fetchAll() {
+      list.innerHTML = '<div class="mnw-loading"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading latest news…</div>';
+      refreshBtn.querySelector('i').style.animation = 'mnwSpin .7s linear infinite';
+      updatedEl.textContent = 'Updating…';
+      stopScroll();
+
+      const settled = await Promise.allSettled(FEEDS.map(fetchFeed));
+      allItems = [];
+      settled.forEach(r => { if (r.status === 'fulfilled' && r.value) allItems.push(...r.value); });
+
+      /* Deduplicate by title */
+      const seen = new Set();
+      allItems = allItems.filter(it => {
+        const k = it.title.trim().slice(0, 60).toLowerCase();
+        if (seen.has(k)) return false;
+        seen.add(k); return true;
+      });
+
+      /* Sort newest first */
+      allItems.sort((a, b) => new Date(b.pubDate || 0) - new Date(a.pubDate || 0));
+
+      renderItems();
+      loaded = true;
+      refreshBtn.querySelector('i').style.animation = '';
+      const t = new Date();
+      updatedEl.textContent = 'Updated ' + t.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      if (isOpen) startScroll();
+    }
+
+    async function fetchFeed(url) {
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), 9000);
+      try {
+        const r = await fetch(PROXY + encodeURIComponent(url), { signal: ctrl.signal });
+        const d = await r.json();
+        return (d.status === 'ok' && Array.isArray(d.items)) ? d.items : null;
+      } catch { return null; }
+      finally { clearTimeout(tid); }
+    }
+
+    /* ── Render items ── */
+    function renderItems() {
+      if (!allItems.length) {
+        list.innerHTML = '<div class="mnw-error"><i class="fas fa-exclamation-circle"></i>&nbsp; Could not load news. Please check your connection.</div>';
+        return;
+      }
+      const cap   = Math.min(allItems.length, 25);
+      const items = allItems.slice(0, cap);
+      const html  = items.map(it => {
+        const src   = cleanSrc(it.author || (it.source && it.source.name) || 'Medical News');
+        const title = (it.title || '').replace(/<[^>]+>/g, '').trim();
+        const date  = it.pubDate
+          ? new Date(it.pubDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+          : '';
+        const link  = it.link || '#';
+        return `<a class="mnw-item" href="${link}" target="_blank" rel="noopener noreferrer">
+          <div class="mnw-item-source">${src}</div>
+          <div class="mnw-item-title">${title}</div>
+          <div class="mnw-item-date">${date}</div>
+        </a>`;
+      }).join('');
+
+      /* Duplicate list for seamless infinite scroll */
+      list.innerHTML = html + html;
+      scrollPos = 0;
+      list.style.transform = 'translateY(0)';
+    }
+
+    function cleanSrc(s) {
+      return String(s).replace(/https?:\/\/[^\s]*/gi, '').replace(/\s+/g, ' ').trim().slice(0, 45) || 'Medical News';
+    }
+
+    /* ── Smooth continuous scroll ── */
+    function startScroll() {
+      stopScroll();
+      const SPEED = 0.45; /* px per frame */
+      function tick() {
+        const half = list.scrollHeight / 2;
+        if (!half) { scrollRAF = requestAnimationFrame(tick); return; }
+        scrollPos += SPEED;
+        if (scrollPos >= half) scrollPos = 0;
+        list.style.transform = 'translateY(-' + scrollPos + 'px)';
+        scrollRAF = requestAnimationFrame(tick);
+      }
+      scrollRAF = requestAnimationFrame(tick);
+    }
+    function stopScroll() {
+      if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+    }
+
+    /* Pause scroll on hover */
+    list.addEventListener('mouseenter', stopScroll);
+    list.addEventListener('mouseleave', () => { if (isOpen) startScroll(); });
+
+    /* Touch: pause while touching */
+    list.addEventListener('touchstart', stopScroll, { passive: true });
+    list.addEventListener('touchend',   () => { if (isOpen) startScroll(); }, { passive: true });
+
+    /* ── Auto-refresh every 10 min ── */
+    setInterval(() => { if (isOpen) fetchAll(); }, REFRESH_MS);
+
+    /* ── Close on Escape ── */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && isOpen) { isOpen = false; panel.classList.remove('open'); stopScroll(); }
+    });
 
   })();
   </script>
