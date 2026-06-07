@@ -526,10 +526,101 @@
               <label for="sub-bio">Your Bio (will appear with your published article)</label>
               <input type="text" id="sub-bio" name="author_bio" placeholder="e.g. MS Orthopedics, 12 years in trauma surgery, Amritsar" />
             </div>
+
+            <!-- ── MEDIA UPLOAD SECTION ── -->
+            <div class="media-upload-section">
+              <div class="media-section-header">
+                <i class="fas fa-photo-video"></i>
+                <div>
+                  <h5>Attach Photos &amp; Videos <span class="media-optional">Optional</span></h5>
+                  <p>Add intraoperative photos, X-rays, clinical images, or procedure videos to enrich your submission.</p>
+                </div>
+              </div>
+
+              <!-- Photo upload -->
+              <div class="media-block">
+                <div class="media-block-label">
+                  <i class="fas fa-images"></i>
+                  <span>Photos &amp; Images</span>
+                  <span class="media-formats">JPG · PNG · GIF · WEBP · BMP · TIFF · SVG · HEIC — up to 10 files, 5 MB each</span>
+                </div>
+                <div class="photo-drop-zone" id="photoDropZone">
+                  <div class="drop-zone-inner" id="dropZoneInner">
+                    <div class="drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p class="drop-text">Drag &amp; drop photos here, or <label for="photoInput" class="drop-browse">browse files</label></p>
+                    <p class="drop-hint">Supports: JPG, PNG, GIF, WEBP, BMP, TIFF, SVG, HEIC</p>
+                  </div>
+                  <input type="file" id="photoInput" name="photos" multiple
+                    accept="image/*,.jpg,.jpeg,.png,.gif,.webp,.bmp,.tiff,.tif,.svg,.heic,.heif"
+                    style="display:none;" />
+                  <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+                </div>
+                <!-- Cloud link fallback for large images -->
+                <div class="media-link-row">
+                  <i class="fas fa-link"></i>
+                  <input type="url" name="photo_link" id="photoLink"
+                    placeholder="Or paste a Google Drive / Dropbox link for large image sets" />
+                </div>
+              </div>
+
+              <!-- Video upload -->
+              <div class="media-block">
+                <div class="media-block-label">
+                  <i class="fas fa-video"></i>
+                  <span>Videos</span>
+                  <span class="media-formats">MP4 · MOV · AVI · MKV · WEBM · WMV · FLV · 3GP — up to 3 files, 100 MB each</span>
+                </div>
+
+                <!-- Toggle: upload vs link -->
+                <div class="video-tab-row" id="videoTabRow">
+                  <button type="button" class="vtab active" data-vtab="upload" id="vtabUpload">
+                    <i class="fas fa-upload"></i> Upload File
+                  </button>
+                  <button type="button" class="vtab" data-vtab="link" id="vtabLink">
+                    <i class="fas fa-link"></i> Share a Link
+                  </button>
+                </div>
+
+                <!-- Upload panel -->
+                <div class="video-panel" id="videoPanelUpload">
+                  <div class="video-drop-zone" id="videoDropZone">
+                    <div class="drop-zone-inner" id="videoDropZoneInner">
+                      <div class="drop-icon video"><i class="fas fa-film"></i></div>
+                      <p class="drop-text">Drag &amp; drop videos here, or <label for="videoInput" class="drop-browse">browse files</label></p>
+                      <p class="drop-hint">Supports: MP4, MOV, AVI, MKV, WEBM, WMV, FLV, 3GP · Max 100 MB per file</p>
+                    </div>
+                    <input type="file" id="videoInput" name="videos" multiple
+                      accept="video/*,.mp4,.mov,.avi,.mkv,.webm,.wmv,.flv,.3gp,.m4v,.ts"
+                      style="display:none;" />
+                    <div class="video-file-list" id="videoFileList"></div>
+                  </div>
+                </div>
+
+                <!-- Link panel -->
+                <div class="video-panel" id="videoPanelLink" style="display:none;">
+                  <div class="video-links-wrap">
+                    <div class="video-link-item">
+                      <div class="vl-icon yt"><i class="fab fa-youtube"></i></div>
+                      <input type="url" name="video_youtube" placeholder="YouTube video link (https://youtu.be/...)" />
+                    </div>
+                    <div class="video-link-item">
+                      <div class="vl-icon drive"><i class="fab fa-google-drive"></i></div>
+                      <input type="url" name="video_drive" placeholder="Google Drive video link (set sharing to Anyone)" />
+                    </div>
+                    <div class="video-link-item">
+                      <div class="vl-icon vimeo"><i class="fab fa-vimeo-v"></i></div>
+                      <input type="url" name="video_vimeo" placeholder="Vimeo / Other video link" />
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /video block -->
+
+            </div><!-- /media-upload-section -->
+
             <button type="submit" class="btn-submit" id="submitBtn">
               <i class="fas fa-paper-plane"></i> Submit for Review
             </button>
-            <p class="form-note">All submissions are reviewed by Dr. Maninder Singh's team within 5–7 working days. By submitting you agree your article may be edited for clarity and accuracy before publication.</p>
+            <p class="form-note">All submissions are reviewed by Dr. Maninder Singh's team within 5–7 working days. By submitting you agree your content may be edited for clarity and accuracy before publication.</p>
           </form>
           <div class="form-success" id="formSuccess" style="display:none;">
             <i class="fas fa-check-circle"></i>
