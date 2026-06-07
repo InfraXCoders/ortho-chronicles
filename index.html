@@ -1007,9 +1007,27 @@
               <textarea id="sl-desc" name="description" rows="4" placeholder="Describe what your presentation covers, the target audience, and any key learning points. Minimum 100 words recommended." required></textarea>
             </div>
             <div class="form-group full">
-              <label for="sl-link">Google Drive / OneDrive / Dropbox Link to your PPTX *</label>
-              <input type="url" id="sl-link" name="file_link" placeholder="https://drive.google.com/file/d/..." required />
-              <span class="form-hint"><i class="fas fa-info-circle"></i> Upload your .pptx to Google Drive, set sharing to "Anyone with link can view", and paste the link here.</span>
+              <label>Upload Your Presentation File *</label>
+              <div class="pptx-drop-zone" id="pptxDropZone">
+                <div class="pptx-drop-inner" id="pptxDropInner">
+                  <div class="pptx-drop-icon"><i class="fas fa-file-powerpoint"></i></div>
+                  <div class="pptx-drop-text">
+                    <p><strong>Drag &amp; drop your .pptx or .ppt file here</strong></p>
+                    <p>or <label for="pptxInput" class="pptx-browse-btn">browse to select</label></p>
+                    <p class="pptx-size-note">Accepted: .pptx &nbsp;·&nbsp; .ppt &nbsp;·&nbsp; Max 25 MB</p>
+                  </div>
+                </div>
+                <div class="pptx-selected" id="pptxSelected" style="display:none;">
+                  <div class="pptx-selected-icon"><i class="fas fa-file-powerpoint"></i></div>
+                  <div class="pptx-selected-info">
+                    <div class="pptx-selected-name" id="pptxSelectedName">presentation.pptx</div>
+                    <div class="pptx-selected-size" id="pptxSelectedSize">Ready to upload</div>
+                  </div>
+                  <button type="button" class="pptx-remove-btn" id="pptxRemoveBtn" title="Remove file"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <input type="file" id="pptxInput" name="pptx_file" accept=".pptx,.ppt" style="display:none;" />
+              <span class="form-hint"><i class="fas fa-info-circle"></i> Upload your presentation directly (max 25 MB). For larger files, share a Google Drive link in the description field above.</span>
             </div>
             <div class="form-group full">
               <label for="sl-bio">Your Short Bio (will appear with the slide deck)</label>
@@ -1031,14 +1049,36 @@
     </div>
   </section>
 
-  <!-- Slide Preview Modal -->
+  <!-- Slide Presenter Modal -->
   <div class="slide-modal" id="slideModal">
-    <div class="slide-modal-inner">
-      <button class="slide-modal-close" id="slideModalClose"><i class="fas fa-times"></i></button>
-      <div class="slide-modal-content" id="slideModalContent">
-        <div class="slide-mock-deck" id="slideMockDeck">
-          <!-- Injected by JS -->
+    <div class="sp-wrap">
+      <!-- Top bar -->
+      <div class="sp-bar">
+        <div class="sp-bar-left">
+          <i class="fas fa-file-powerpoint"></i>
+          <span id="spDeckTitle">Presentation</span>
         </div>
+        <div class="sp-bar-right">
+          <span class="sp-counter" id="spCounter">1 / 6</span>
+          <button class="sp-close-btn" id="slideModalClose" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <!-- Stage -->
+      <div class="sp-stage">
+        <button class="sp-nav-btn sp-prev" id="spPrev" aria-label="Previous slide" disabled>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="sp-viewport" id="spViewport">
+          <!-- Slides injected by JS -->
+        </div>
+        <button class="sp-nav-btn sp-next" id="spNext" aria-label="Next slide">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <!-- Footer -->
+      <div class="sp-foot">
+        <div class="sp-dots" id="spDots"></div>
+        <span class="sp-coming-tag"><i class="fas fa-hourglass-half"></i> Full PPTX deck coming soon</span>
       </div>
     </div>
   </div>
@@ -1291,163 +1331,424 @@
 
   <script src="script.js"></script>
 
-  <!-- ── Slides: filter, modal, form ── -->
+  <!-- ── Slides: filter, presenter, PPTX upload, form ── -->
   <script>
   (function(){
 
     /* ── Category filter ── */
     const filterBtns = document.querySelectorAll('.sf-btn');
     const slideCards = document.querySelectorAll('#slidesGrid .slide-card');
-
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const cat = btn.dataset.cat;
         slideCards.forEach(card => {
-          if (cat === 'all' || card.dataset.cat === cat) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
+          card.classList.toggle('hidden', cat !== 'all' && card.dataset.cat !== cat);
         });
       });
     });
 
-    /* ── Modal preview data ── */
-    const previewData = {
+    /* ══════════════════════════════════════════════
+       SLIDE PRESENTER
+    ══════════════════════════════════════════════ */
+    const slidesData = {
       tkr: {
-        title: 'Total Knee Replacement — Surgical Technique & Implant Selection',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~30 slides',
-        toc: [
-          'Anatomy & Biomechanics of the Knee Joint',
-          'Indications & Patient Selection Criteria',
-          'Pre-operative Planning & Templating',
-          'Surgical Approach — Medial Parapatellar',
-          'Bone Cuts — Femoral, Tibial & Patellar',
-          'Implant Types: CR vs PS vs UC Designs',
-          'Cemented vs Cementless Fixation',
-          'Component Alignment & Balancing',
-          'Post-operative Protocol & Rehabilitation',
-          'Complications & Revision Strategies'
+        title: 'Total Knee Replacement',
+        sub: 'Surgical Technique & Implant Selection',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Total Knee Replacement', subtitle:'Surgical Technique & Implant Selection', meta:['MS Orthopedics','GMCH Amritsar','~30 Slides'] },
+          { type:'content', heading:'Learning Objectives', bullets:[
+            'Understand knee anatomy &amp; biomechanics relevant to TKR',
+            'Learn patient selection criteria and pre-operative planning',
+            'Master the key steps of the surgical technique step by step',
+            'Compare cemented vs. cementless and CR vs. PS implant designs'
+          ]},
+          { type:'section', sectionNum:'01', label:'Patient &amp; Pre-op', title:'Indications, Imaging &amp; Surgical Planning' },
+          { type:'content', heading:'Indications &amp; Pre-operative Planning', bullets:[
+            'End-stage OA (Grade IV Kellgren–Lawrence) with failed conservative management',
+            'Inflammatory arthropathies — RA, psoriatic, crystal arthropathy',
+            'Weight-bearing X-rays: AP standing, lateral 30° flexion, skyline patellar view',
+            'Limb axis templating — measure HKA angle, plan component size on scaled films',
+            'Pre-op bloods: CBC, coagulation, HbA1c &lt;8.0%, cardiac clearance if needed'
+          ]},
+          { type:'section', sectionNum:'02', label:'Surgical Technique', title:'Approach, Bone Cuts &amp; Component Placement' },
+          { type:'content', heading:'Key Surgical Steps', bullets:[
+            'Medial parapatellar approach — skin incision, arthrotomy, eversion of patella',
+            'Femoral preparation: sizing, 3° external rotation, 4-in-1 cutting block',
+            'Tibial cut: 90° to mechanical axis, 5–7 mm resection below lowest point',
+            'Patellar resurfacing: maintain 12–15 mm residual patellar thickness',
+            'Trial reduction: assess flex/ext gap balance and range of motion',
+            'Cementing sequence: tibia → femur → patella; pressurize and remove excess cement'
+          ]},
+          { type:'end', icon:'fa-star', heading:'Key Takeaways', body:'Proper patient selection, meticulous bone preparation, and gap balancing are the cornerstones of a successful TKR. Download the full deck for annotated OT photos.' }
         ]
       },
       femur: {
-        title: 'Proximal Femur Fractures — Classification & Management',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~25 slides',
-        toc: [
-          'Epidemiology & Mechanism of Injury',
-          'Garden & AO/OTA Classification Systems',
-          'Pre-operative Assessment & Imaging',
-          'DHS vs PFNA — Indications & Technique',
-          'Hemiarthroplasty vs THA — Decision Making',
-          'Intertrochanteric vs Subtrochanteric Fractures',
-          'Intramedullary Nailing Technique',
-          'Peri-operative Care & Blood Management',
-          'Rehabilitation & Weight-bearing Protocol',
-          'Outcomes & Long-term Follow-up'
+        title: 'Proximal Femur Fractures',
+        sub: 'Classification &amp; Management',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Proximal Femur Fractures', subtitle:'Classification &amp; Surgical Management', meta:['MS Orthopedics','GMCH Amritsar','~25 Slides'] },
+          { type:'content', heading:'Learning Objectives', bullets:[
+            'Apply Garden and AO/OTA classification systems confidently',
+            'Distinguish stable vs. unstable intertrochanteric fracture patterns',
+            'Select the right implant: DHS, PFNA, or arthroplasty',
+            'Understand peri-operative management and early rehabilitation'
+          ]},
+          { type:'section', sectionNum:'01', label:'Classification', title:'Fracture Types &amp; Imaging Interpretation' },
+          { type:'content', heading:'Classification Systems', bullets:[
+            'Garden I–IV for femoral neck fractures (displacement &amp; angulation)',
+            'AO/OTA 31-A (intertrochanteric) vs 31-B (femoral neck) vs 31-C (subtrochanteric)',
+            'Stable 2-part intertrochanteric (31-A1) vs. unstable reverse-obliquity (31-A3)',
+            'Evans classification: medial cortical support determines stability',
+            'CT indications: comminuted patterns, implant planning in complex fractures'
+          ]},
+          { type:'section', sectionNum:'02', label:'Management', title:'Surgical Options &amp; Technique Tips' },
+          { type:'content', heading:'Implant Selection &amp; Technique', bullets:[
+            'Garden I/II — cannulated screws: inverted triangle, apex inferior configuration',
+            'Garden III/IV age &gt;60 — bipolar hemiarthroplasty or THA if pre-existing OA',
+            'Stable 31-A1: DHS (135° plate) — lag screw in centre-centre position on AP &amp; lateral',
+            'Unstable 31-A2/A3: PFNA or Gamma nail — anti-rotation blade, long nail preferred',
+            'Subtrochanteric: long cephalomedullary nail; reduce in traction before nailing'
+          ]},
+          { type:'end', icon:'fa-bone', heading:'Clinical Pearl', body:'Delay beyond 24–48 hours increases mortality in elderly patients. Optimise medically and operate early. Download the full deck for classification images and case examples.' }
         ]
       },
       shoulder: {
-        title: 'Shoulder Joint Anatomy & Biomechanics',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~40 slides',
-        toc: [
-          'Bony Architecture — Glenoid, Humerus, Scapula',
-          'Glenohumeral Joint Capsule & Ligaments',
-          'Rotator Cuff Muscles — Origin, Insertion & Function',
-          'Neurovascular Supply of the Shoulder',
-          'Biomechanics of Shoulder Elevation & Rotation',
-          'Scapulothoracic Rhythm',
-          'Shoulder Instability Mechanisms',
-          'Rotator Cuff Tear Pathomechanics',
-          'Clinical Examination Correlations',
-          'Surgical Approach Anatomy'
+        title: 'Shoulder Joint Anatomy',
+        sub: 'Anatomy &amp; Biomechanics',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Shoulder Joint Anatomy &amp; Biomechanics', subtitle:'For Surgical Planning &amp; Clinical Practice', meta:['MS Orthopedics','GMCH Amritsar','~40 Slides'] },
+          { type:'content', heading:'Learning Objectives', bullets:[
+            'Identify bony landmarks, capsuloligamentous structures, and rotator cuff anatomy',
+            'Understand glenohumeral biomechanics and the force couple concept',
+            'Correlate anatomy with clinical examination findings',
+            'Apply surgical approach anatomy to common shoulder operations'
+          ]},
+          { type:'section', sectionNum:'01', label:'Anatomy', title:'Bony, Ligamentous &amp; Muscular Anatomy' },
+          { type:'content', heading:'Glenohumeral Joint Anatomy', bullets:[
+            'Glenoid: pear-shaped socket, 30° retroversion; labrum deepens socket by 50%',
+            'Glenohumeral ligaments: SGHL, MGHL, IGHL — anterior &amp; posterior bands',
+            'Rotator cuff: supraspinatus (abduction initiator), infraspinatus &amp; teres minor (ER), subscapularis (IR)',
+            'Long head of biceps — supraglenoid tubercle; SLAP tears at this anchor',
+            'Axillary nerve: anterior to subscapularis, posterior to quadrilateral space — at risk in surgery'
+          ]},
+          { type:'section', sectionNum:'02', label:'Biomechanics', title:'Force Couples, Kinematics &amp; Instability' },
+          { type:'content', heading:'Shoulder Biomechanics', bullets:[
+            'Scapulothoracic rhythm: 2:1 ratio (2° glenohumeral : 1° scapular rotation)',
+            'Rotator cuff force couple: superiorly directed deltoid force balanced by inferior cuff compression',
+            'Cuff tear → loss of couple → superior head migration → subacromial impingement',
+            'Bankart lesion: anteroinferior labral avulsion in traumatic anterior dislocation',
+            'Hill-Sachs defect: posterolateral humeral head impression from anterior dislocation'
+          ]},
+          { type:'end', icon:'fa-book-medical', heading:'Summary', body:'Thorough knowledge of shoulder anatomy is the foundation of accurate diagnosis and safe surgery. Full deck includes 3D anatomy illustrations, clinical test correlations, and approach diagrams.' }
         ]
       },
       rehab: {
-        title: 'Post-operative Rehabilitation After Joint Replacement',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~20 slides',
-        toc: [
-          'Goals of Post-operative Rehabilitation',
-          'Phase 1 — Immediate Post-op (Day 0–3)',
-          'Phase 2 — Early Mobilisation (Week 1–6)',
-          'Phase 3 — Strengthening Phase (Week 6–12)',
-          'Phase 4 — Functional Return (Month 3–6)',
-          'DVT Prophylaxis & Early Ambulation',
-          'Exercise Progressions & Home Programme',
-          'Physiotherapy Milestones & Discharge Criteria',
-          'Return to ADL, Work & Sports',
-          'Red Flags & When to Refer Back'
+        title: 'Post-operative Rehabilitation',
+        sub: 'After Joint Replacement',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Post-operative Rehabilitation', subtitle:'After Total Joint Replacement Surgery', meta:['MS Orthopedics','GMCH Amritsar','~20 Slides'] },
+          { type:'content', heading:'Rehabilitation Goals', bullets:[
+            'Restore full range of motion and functional strength',
+            'Prevent post-operative complications (DVT, wound issues, stiffness)',
+            'Achieve safe, independent ambulation with appropriate walking aids',
+            'Return patient to activities of daily living, work, and leisure'
+          ]},
+          { type:'section', sectionNum:'01', label:'Early Phase', title:'Day 0 to Week 6 — Mobilisation &amp; Protection' },
+          { type:'content', heading:'Phase 1 &amp; 2 Protocol', bullets:[
+            'Day 0–3: ankle pumps, quadriceps sets, SLR; sit-out-of-bed with walker',
+            'DVT prophylaxis: LMWH + TED stockings + early ambulation (ERAS protocol)',
+            'Week 1–2: stair climbing (one step at a time), weight-bearing as tolerated',
+            'Week 2–6: open-chain quads, closed-chain mini-squats, progressive walking distance',
+            'Wound monitoring: check for redness, warmth, discharge at each session'
+          ]},
+          { type:'section', sectionNum:'02', label:'Later Phase', title:'Month 2–6 — Strengthening &amp; Return to Function' },
+          { type:'content', heading:'Phase 3 &amp; 4 — Functional Milestones', bullets:[
+            'Week 6–12: resistance band exercises, stationary cycling, hydrotherapy sessions',
+            'Month 3: return to driving (right TKR → 6 weeks; left TKR → 1 week)',
+            'Month 3–6: return to sedentary work, light domestic activity, stairs without aid',
+            'Month 6+: return to low-impact leisure — swimming, walking, golf',
+            'Red flags requiring urgent review: fever &gt;38.5°C, wound breakdown, inability to WB'
+          ]},
+          { type:'end', icon:'fa-running', heading:'Return to Function', body:'Structured, phase-wise rehabilitation is as important as the surgery itself. Patient education and compliance are key predictors of outcome. Full deck includes exercise illustrations and discharge checklists.' }
         ]
       },
       radiology: {
-        title: 'Reading Orthopedic X-rays — A Systematic Approach',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~35 slides',
-        toc: [
-          'Standard Orthopedic Radiographic Views',
-          'Systematic X-ray Analysis Framework (ABC\'s)',
-          'Fracture Description — Pattern, Displacement, Angulation',
-          'AO/OTA Fracture Classification Overview',
-          'Bone Lesion Analysis — Benign vs Malignant',
-          'Joint Space Assessment & Osteoarthritis Grading',
-          'Post-operative Implant Radiography',
-          'Common Pitfalls & Missed Diagnoses',
-          'CT & MRI Correlations',
-          'Case-based X-ray Quiz'
+        title: 'Reading Orthopaedic X-rays',
+        sub: 'A Systematic Approach',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Reading Orthopaedic X-rays', subtitle:'A Systematic Approach for Residents &amp; Students', meta:['MS Orthopedics','GMCH Amritsar','~35 Slides'] },
+          { type:'content', heading:'Learning Objectives', bullets:[
+            'Apply the A-B-C-S systematic framework to every orthopaedic X-ray',
+            'Describe fractures using standard terminology (pattern, displacement, angulation)',
+            'Recognise common orthopaedic pathologies on plain radiographs',
+            'Interpret post-operative implant X-rays and detect complications'
+          ]},
+          { type:'section', sectionNum:'01', label:'Framework', title:'The A-B-C-S Systematic Method' },
+          { type:'content', heading:'A-B-C-S Framework', bullets:[
+            'A — Alignment: assess overall alignment of bones and joints on both views',
+            'B — Bone: check cortical integrity, trabecular pattern, density changes',
+            'C — Cartilage: evaluate joint space width (normal 2–4 mm, should be symmetric)',
+            'S — Soft tissues: look for swelling, calcification, gas, foreign bodies',
+            'Always review TWO views at 90° — AP and lateral; add oblique if uncertain'
+          ]},
+          { type:'section', sectionNum:'02', label:'Fracture Description', title:'Terminology &amp; Classification' },
+          { type:'content', heading:'Fracture Description Terminology', bullets:[
+            'Pattern: transverse, oblique, spiral, comminuted, segmental, impacted',
+            'Displacement: percentage shift of distal fragment relative to proximal (0–100%)',
+            'Angulation: direction apex points (varus/valgus/anterior/posterior) in degrees',
+            'Rotation: difficult on plain X-ray — always assess clinically',
+            'AO/OTA: A (simple), B (wedge), C (complex/comminuted) for each long bone segment'
+          ]},
+          { type:'end', icon:'fa-x-ray', heading:'Practice Makes Perfect', body:'Systematic X-ray reading is a skill built through repetition. The full deck includes 15 annotated case X-rays with diagnosis and classification — ideal exam preparation.' }
         ]
       },
       thr: {
-        title: 'Total Hip Arthroplasty — Approaches & Outcomes',
-        sub: 'Dr. Maninder Singh · GMCH Amritsar · ~28 slides',
-        toc: [
-          'Hip Joint Anatomy for Surgeons',
-          'Indications & Contraindications for THA',
-          'Posterior vs Anterolateral Approach Comparison',
-          'Acetabular Cup — Position, Fixation & Bearing Surfaces',
-          'Femoral Stem — Cemented vs Cementless',
-          'Leg Length Equalisation Techniques',
-          'Minimally Invasive THA Approaches',
-          'Peri-operative Blood & Anticoagulation Management',
-          'Dislocation Prevention & Posterior Precautions',
-          '10-Year Survivorship & Revision Data'
+        title: 'Total Hip Arthroplasty',
+        sub: 'Approaches &amp; Outcomes',
+        author: 'Dr. Maninder Singh · GMCH Amritsar',
+        slides: [
+          { type:'title', title:'Total Hip Arthroplasty', subtitle:'Surgical Approaches, Technique &amp; Long-term Outcomes', meta:['MS Orthopedics','GMCH Amritsar','~28 Slides'] },
+          { type:'content', heading:'Learning Objectives', bullets:[
+            'Identify indications and contraindications for primary THA',
+            'Compare posterior vs. anterolateral approach — access, risks, and outcomes',
+            'Understand cup and stem fixation principles and bearing surface choices',
+            'Review 10-year survivorship data and common failure modes'
+          ]},
+          { type:'section', sectionNum:'01', label:'Approaches', title:'Posterior vs. Anterolateral — Decision Making' },
+          { type:'content', heading:'Surgical Approach Comparison', bullets:[
+            'Posterior (Moore): excellent cup visibility, highest dislocation risk — repair capsule + short ERs',
+            'Anterolateral (Watson-Jones): lower dislocation risk, Trendelenburg risk from abductor damage',
+            'Direct Anterior (DAA): minimum soft tissue damage, faster recovery, steep learning curve',
+            'Positioning: lateral decubitus (posterior/anterolateral) vs. supine (DAA)',
+            'Posterior soft tissue repair at closure reduces dislocation rate to &lt;1%'
+          ]},
+          { type:'section', sectionNum:'02', label:'Implants &amp; Outcomes', title:'Fixation, Bearing Surfaces &amp; Survivorship' },
+          { type:'content', heading:'Implant Selection &amp; Outcomes', bullets:[
+            'Cemented vs. cementless: cementless preferred in &lt;75 years with good bone stock',
+            'Cup target: 40° inclination ±10°, 15–20° anteversion (Lewinnek safe zone)',
+            'Bearing surfaces: CoC (lowest wear), CoP (safe, moderate wear), MoM (avoid)',
+            'Short femoral stems for bone preservation in younger, active patients',
+            'ODEP 10A* survivorship &gt;95% at 10 years for modern cup/stem combinations'
+          ]},
+          { type:'end', icon:'fa-award', heading:'Clinical Excellence', body:'THA is one of the most successful operations in all of medicine. Proper technique, implant choice, and approach determine long-term outcomes. Full deck includes 10-year survivorship tables and revision case examples.' }
         ]
       }
     };
 
-    /* ── Open modal ── */
+    /* ── Presenter state ── */
+    let spKey = null;
+    let spIdx = 0;
+
+    function renderSlide(slide, num, total, author) {
+      if (slide.type === 'title') {
+        return '<div class="sp-slide-logo"><i class="fas fa-file-powerpoint"></i></div>' +
+          '<div class="sp-slide-title">' + slide.title + '</div>' +
+          '<div class="sp-slide-sub">' + slide.subtitle + '</div>' +
+          '<div class="sp-slide-meta">' +
+            slide.meta.map(function(m){ return '<span><i class="fas fa-circle" style="font-size:.35rem;opacity:.5;"></i> ' + m + '</span>'; }).join('') +
+          '</div>';
+      }
+      if (slide.type === 'section') {
+        return '<div class="sp-section-num">' + slide.sectionNum + '</div>' +
+          '<div class="sp-section-label">' + slide.label + '</div>' +
+          '<div class="sp-section-title">' + slide.title + '</div>';
+      }
+      if (slide.type === 'content') {
+        return '<div class="sp-content-header">' +
+            '<div class="sp-slide-num">' + num + '</div>' +
+            '<div class="sp-content-title">' + slide.heading + '</div>' +
+          '</div>' +
+          '<div class="sp-content-body">' +
+            '<ul class="sp-bullet-list">' +
+              slide.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') +
+            '</ul>' +
+          '</div>' +
+          '<div class="sp-content-footer">' +
+            '<span><i class="fas fa-file-powerpoint" style="color:#d04a02;margin-right:5px;"></i>' + author + '</span>' +
+            '<span>Slide ' + num + ' / ' + total + '</span>' +
+          '</div>';
+      }
+      if (slide.type === 'end') {
+        return '<div class="sp-end-icon"><i class="fas ' + slide.icon + '"></i></div>' +
+          '<h3>' + slide.heading + '</h3>' +
+          '<p>' + slide.body + '</p>';
+      }
+      return '';
+    }
+
+    function goToSlide(idx) {
+      const deck = slidesData[spKey];
+      if (!deck) return;
+      const slides = document.querySelectorAll('#spViewport .sp-slide');
+      const dots   = document.querySelectorAll('#spDots .sp-dot');
+      if (slides[spIdx]) slides[spIdx].classList.remove('active');
+      if (dots[spIdx])   dots[spIdx].classList.remove('active');
+      spIdx = idx;
+      if (slides[spIdx]) slides[spIdx].classList.add('active');
+      if (dots[spIdx])   dots[spIdx].classList.add('active');
+      updateBar(deck.slides.length);
+    }
+
+    function updateBar(total) {
+      document.getElementById('spCounter').textContent = (spIdx + 1) + ' / ' + total;
+      document.getElementById('spPrev').disabled = spIdx === 0;
+      document.getElementById('spNext').disabled = spIdx === total - 1;
+    }
+
     window.openSlidePreview = function(key) {
-      const data = previewData[key];
-      if (!data) return;
-      const tocHtml = data.toc.map((item, i) =>
-        '<li><span class="snum">' + (i+1) + '</span>' + item + '</li>'
-      ).join('');
-      document.getElementById('slideMockDeck').innerHTML =
-        '<div class="slide-mock-header"><h2>' + data.title + '</h2><p>' + data.sub + '</p></div>' +
-        '<div class="slide-mock-body"><h4><i class="fas fa-list-ul" style="color:var(--orange);margin-right:8px;"></i>Slide Contents</h4><ul class="slide-toc-list">' + tocHtml + '</ul></div>' +
-        '<div class="slide-mock-footer"><span><i class="fas fa-file-powerpoint" style="color:#d04a02;margin-right:6px;"></i>PowerPoint (.pptx) format</span><span class="slide-coming-note"><i class="fas fa-hourglass-half"></i> Full deck coming soon — submit the form below to be notified</span></div>';
+      const deck = slidesData[key];
+      if (!deck) return;
+      spKey = key;
+      spIdx = 0;
+
+      document.getElementById('spDeckTitle').textContent = deck.title + ' — ' + deck.sub;
+
+      const vp = document.getElementById('spViewport');
+      vp.innerHTML = '';
+      deck.slides.forEach(function(slide, i) {
+        var el = document.createElement('div');
+        el.className = 'sp-slide type-' + slide.type + (i === 0 ? ' active' : '');
+        el.dataset.idx = i;
+        el.innerHTML = renderSlide(slide, i + 1, deck.slides.length, deck.author);
+        vp.appendChild(el);
+      });
+
+      const dotsEl = document.getElementById('spDots');
+      dotsEl.innerHTML = '';
+      deck.slides.forEach(function(_, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'sp-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', function(){ goToSlide(i); });
+        dotsEl.appendChild(dot);
+      });
+
+      updateBar(deck.slides.length);
       document.getElementById('slideModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     };
 
-    /* ── Close modal ── */
-    document.getElementById('slideModalClose').addEventListener('click', closeModal);
-    document.getElementById('slideModal').addEventListener('click', function(e){
-      if (e.target === this) closeModal();
+    /* ── Presenter controls ── */
+    document.getElementById('spPrev').addEventListener('click', function() {
+      if (spIdx > 0) goToSlide(spIdx - 1);
     });
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
-    function closeModal(){
+    document.getElementById('spNext').addEventListener('click', function() {
+      const deck = slidesData[spKey];
+      if (deck && spIdx < deck.slides.length - 1) goToSlide(spIdx + 1);
+    });
+
+    /* ── Close presenter ── */
+    document.getElementById('slideModalClose').addEventListener('click', closePresenter);
+    document.getElementById('slideModal').addEventListener('click', function(e){
+      if (e.target === this) closePresenter();
+    });
+    function closePresenter(){
       document.getElementById('slideModal').classList.remove('open');
       document.body.style.overflow = '';
     }
 
-    /* ── Slides submission form ── */
+    /* ── Keyboard navigation ── */
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('slideModal').classList.contains('open')) return;
+      const deck = slidesData[spKey];
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (deck && spIdx < deck.slides.length - 1) goToSlide(spIdx + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (spIdx > 0) goToSlide(spIdx - 1);
+      } else if (e.key === 'Escape') {
+        closePresenter();
+      }
+    });
+
+    /* ══════════════════════════════════════════════
+       PPTX FILE UPLOAD
+    ══════════════════════════════════════════════ */
+    function fmtFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    const pptxDropZone   = document.getElementById('pptxDropZone');
+    const pptxInput      = document.getElementById('pptxInput');
+    const pptxDropInner  = document.getElementById('pptxDropInner');
+    const pptxSelected   = document.getElementById('pptxSelected');
+    const pptxSelName    = document.getElementById('pptxSelectedName');
+    const pptxSelSize    = document.getElementById('pptxSelectedSize');
+    const pptxRemoveBtn  = document.getElementById('pptxRemoveBtn');
+
+    function handlePptxFile(file) {
+      if (!file) return;
+      if (!file.name.match(/\.(pptx?|ppt)$/i)) {
+        alert('Please upload a .pptx or .ppt file only.'); return;
+      }
+      if (file.size > 25 * 1024 * 1024) {
+        alert('File exceeds 25 MB. Please share a Google Drive link in the description field instead.'); return;
+      }
+      pptxSelName.textContent = file.name;
+      pptxSelSize.textContent = fmtFileSize(file.size) + ' · Ready to upload';
+      pptxSelected.style.display = 'flex';
+      pptxDropInner.style.display = 'none';
+
+      // Sync into input via DataTransfer
+      try {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        pptxInput.files = dt.files;
+      } catch(err) { /* fallback — file already set by input.change */ }
+    }
+
+    if (pptxDropZone) {
+      pptxDropZone.addEventListener('click', function(e) {
+        if (!e.target.closest('.pptx-remove-btn') && !e.target.closest('.pptx-browse-btn')) {
+          pptxInput.click();
+        }
+      });
+      var browseLabel = document.querySelector('label[for="pptxInput"]');
+      if (browseLabel) {
+        browseLabel.addEventListener('click', function(e) {
+          e.stopPropagation(); pptxInput.click();
+        });
+      }
+      pptxInput.addEventListener('change', function() {
+        if (pptxInput.files[0]) handlePptxFile(pptxInput.files[0]);
+      });
+      pptxDropZone.addEventListener('dragover', function(e) {
+        e.preventDefault(); pptxDropZone.classList.add('drag-over');
+      });
+      pptxDropZone.addEventListener('dragleave', function() {
+        pptxDropZone.classList.remove('drag-over');
+      });
+      pptxDropZone.addEventListener('drop', function(e) {
+        e.preventDefault(); pptxDropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files[0]) handlePptxFile(e.dataTransfer.files[0]);
+      });
+      pptxRemoveBtn.addEventListener('click', function() {
+        pptxInput.value = '';
+        pptxSelected.style.display = 'none';
+        pptxDropInner.style.display = 'flex';
+      });
+    }
+
+    /* ══════════════════════════════════════════════
+       SLIDES SUBMISSION FORM
+    ══════════════════════════════════════════════ */
     const slidesForm = document.getElementById('slidesForm');
     if (slidesForm) {
       slidesForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = document.getElementById('slidesSubmitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
         try {
           const res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
