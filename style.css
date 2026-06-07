@@ -586,6 +586,33 @@ img { max-width: 100%; display: block; }
 }
 .blog-read-more:hover { gap: 10px; color: var(--teal); }
 
+/* Blog numbered steps list */
+.blog-steps {
+  padding-left: 1.2rem;
+  margin: 12px 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.blog-steps li {
+  font-size: .82rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+.blog-steps li strong { color: var(--gray-800); }
+
+/* Blog note / disclaimer line */
+.blog-note {
+  font-size: .78rem !important;
+  color: var(--gray-500) !important;
+  background: #f0fafa;
+  border-left: 3px solid var(--teal);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 14px !important;
+}
+.blog-note i { color: var(--teal); margin-right: 4px; }
+
 /* ===== WRITE FOR US / SUBMIT ===== */
 .write-for-us {
   background: var(--off-white); border-radius: var(--radius-lg);
