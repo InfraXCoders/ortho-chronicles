@@ -1139,9 +1139,10 @@
 
     <!-- Sticky tab (always visible on right edge) -->
     <button class="mnw-tab" id="mnwTab" aria-label="Toggle Medical News panel">
-      <span class="mnw-live-dot"></span>
+      <span class="mnw-tab-live"><span class="mnw-live-dot"></span>LIVE</span>
       <i class="fas fa-newspaper mnw-tab-icon"></i>
-      <span class="mnw-tab-label">Medical News</span>
+      <span class="mnw-tab-label">Medical</span>
+      <span class="mnw-tab-label">News</span>
     </button>
 
     <!-- Sliding panel -->
@@ -1150,9 +1151,14 @@
       <!-- Header -->
       <div class="mnw-header">
         <div class="mnw-header-left">
-          <span class="mnw-live-dot"></span>
-          <i class="fas fa-newspaper"></i>
-          <span>Medical Latest News</span>
+          <div class="mnw-header-title">
+            <i class="fas fa-newspaper"></i>
+            Medical Latest News
+          </div>
+          <div class="mnw-header-sub">
+            <span class="mnw-live-dot"></span>
+            Live feed &nbsp;·&nbsp; Auto-refreshes every 10 min
+          </div>
         </div>
         <div class="mnw-header-right">
           <button class="mnw-icon-btn" id="mnwRefresh" title="Refresh news">
@@ -1164,25 +1170,32 @@
         </div>
       </div>
 
-      <!-- Source strip -->
+      <!-- Source chips -->
       <div class="mnw-source-strip">
-        <i class="fab fa-google"></i> Google News &nbsp;·&nbsp;
-        <i class="fas fa-globe-asia"></i> Medical News Today &nbsp;·&nbsp;
-        <i class="fas fa-flask"></i> Research Journals
+        <span class="mnw-chip active"><i class="fab fa-google"></i> Google News</span>
+        <span class="mnw-chip"><i class="fas fa-globe-asia"></i> Medical News Today</span>
+        <span class="mnw-chip"><i class="fas fa-flask"></i> Research</span>
+        <span class="mnw-chip"><i class="fas fa-bone"></i> Orthopaedics</span>
       </div>
 
       <!-- Scrolling news list -->
       <div class="mnw-scroll-area">
         <div class="mnw-list" id="mnwList">
-          <div class="mnw-loading"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading latest news…</div>
+          <div class="mnw-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Loading latest medical news…</span>
+          </div>
         </div>
       </div>
 
       <!-- Footer -->
       <div class="mnw-footer">
-        <span id="mnwUpdated">Connecting…</span>
+        <div class="mnw-footer-left">
+          <i class="fas fa-clock"></i>
+          <span id="mnwUpdated">Connecting…</span>
+        </div>
         <a href="https://news.google.com/search?q=orthopedic+medical+surgery+news&hl=en-IN" target="_blank" rel="noopener" class="mnw-more-link">
-          More <i class="fas fa-external-link-alt"></i>
+          More news <i class="fas fa-arrow-right"></i>
         </a>
       </div>
 
@@ -1931,7 +1944,7 @@
     /* ── Render items ── */
     function renderItems() {
       if (!allItems.length) {
-        list.innerHTML = '<div class="mnw-error"><i class="fas fa-exclamation-circle"></i>&nbsp; Could not load news. Please check your connection.</div>';
+        list.innerHTML = '<div class="mnw-error"><i class="fas fa-exclamation-circle"></i><span>Could not load news. Please check your connection.</span></div>';
         return;
       }
       const cap   = Math.min(allItems.length, 25);
@@ -1946,7 +1959,10 @@
         return `<a class="mnw-item" href="${link}" target="_blank" rel="noopener noreferrer">
           <div class="mnw-item-source">${src}</div>
           <div class="mnw-item-title">${title}</div>
-          <div class="mnw-item-date">${date}</div>
+          <div class="mnw-item-meta">
+            <span class="mnw-item-date"><i class="fas fa-calendar-alt"></i> ${date}</span>
+            <span class="mnw-item-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
         </a>`;
       }).join('');
 
