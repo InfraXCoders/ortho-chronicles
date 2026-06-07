@@ -1490,8 +1490,20 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: stretch;
   pointer-events: none;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
 }
 .mnw-widget > * { pointer-events: auto; }
+
+/* Minimized: slide entire widget off-screen, only 3px orange border sliver shows */
+.mnw-minimized {
+  transform: translateY(-50%) translateX(calc(100% - 3px));
+  cursor: pointer;
+  pointer-events: auto;
+}
+/* Hover on sliver → peek the tab */
+.mnw-minimized:hover {
+  transform: translateY(-50%) translateX(calc(100% - 34px));
+}
 
 /* ═══ LIVE DOT ═══ */
 .mnw-live-dot {
@@ -1544,22 +1556,6 @@ img { max-width: 100%; display: block; }
 .mnw-tab-icon { font-size: .85rem; color: var(--orange-light); transition: color .25s; }
 .mnw-tab:hover .mnw-tab-icon { color: #fff; }
 
-/* ═══ MINIMIZED STATE — tiny tab peeks from right edge ═══ */
-.mnw-minimized .mnw-tab {
-  opacity: .75;
-  background: #0f0f0f;
-  box-shadow: -3px 0 10px rgba(232,105,44,.2);
-  border-left-color: rgba(232,105,44,.5);
-}
-.mnw-minimized .mnw-tab:hover {
-  opacity: 1;
-  box-shadow: -5px 0 16px rgba(232,105,44,.4);
-  border-left-color: var(--orange);
-}
-/* Live dot pulses more gently when minimized */
-.mnw-minimized .mnw-live-dot {
-  width: 5px; height: 5px;
-}
 
 /* ═══ PANEL ═══ */
 .mnw-panel {
