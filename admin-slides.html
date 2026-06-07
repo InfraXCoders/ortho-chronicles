@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slides Admin — OrthoChronicles</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .admin-header {
+      background: linear-gradient(135deg, #C4521A, #E8692C);
+      color: #fff;
+      padding: 16px 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .admin-header i { font-size: 1.4rem; }
+    .admin-header h1 { font-size: 1.1rem; font-weight: 700; }
+    .admin-header span { font-size: .8rem; opacity: .85; margin-left: auto; }
+
+    /* ── Layout ── */
+    .admin-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e5e5e5;
+      padding: 28px 28px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: .95rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .card-title i { color: #E8692C; font-size: 1rem; }
+
+    /* ── Token section ── */
+    .token-row {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .token-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 9px;
+      font-size: .88rem;
+      font-family: monospace;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .token-row input:focus { border-color: #E8692C; }
+    .token-status {
+      font-size: .78rem;
+      margin-top: 8px;
+      display: flex; align-items: center; gap: 6px;
+      color: #666;
+    }
+    .token-status.ok  { color: #16a34a; }
+    .token-status.err { color: #dc2626; }
+
+    /* ── Form grid ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-group label {
+      display: block;
+      font-size: .78rem; font-weight: 600; color: #555;
+      margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid #ddd;
+      border-radius: 9px;
+      font-size: .88rem;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color .2s;
+      background: #fff;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #E8692C; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* ── File drop zone ── */
+    .file-drop {
+      border: 2px dashed #ddd;
+      border-radius: 12px;
+      background: #fafafa;
+      min-height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .file-drop:hover, .file-drop.drag-over {
+      border-color: #E8692C;
+      background: rgba(232,105,44,.04);
+    }
+    .file-drop-inner {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; padding: 28px 20px; text-align: center; pointer-events: none;
+    }
+    .file-drop-inner i { font-size: 2.4rem; color: #E8692C; margin-bottom: 4px; }
+    .file-drop-inner p { font-size: .88rem; color: #555; margin: 0; }
+    .file-drop-inner strong { color: #111; }
+    .file-drop-inner .browse { pointer-events: all; color: #E8692C; font-weight: 700; text-decoration: underline; cursor: pointer; }
+    .file-drop-inner .hint { font-size: .76rem; color: #aaa; }
+
+    .file-selected {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; width: 100%;
+    }
+    .file-selected-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(208,74,2,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: #d04a02; flex-shrink: 0;
+    }
+    .file-selected-info { flex: 1; min-width: 0; }
+    .file-selected-name { font-weight: 700; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-selected-size { font-size: .76rem; color: #888; margin-top: 3px; }
+    .file-remove {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #eee; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; color: #555; flex-shrink: 0; transition: background .2s;
+    }
+    .file-remove:hover { background: #fee2e2; color: #dc2626; }
+
+    /* ── Cover color picker ── */
+    .cover-pick { display: flex; gap: 12px; }
+    .cover-opt { display: none; }
+    .cover-opt + label {
+      width: 36px; height: 36px; border-radius: 8px;
+      cursor: pointer; border: 3px solid transparent;
+      transition: border-color .2s;
+    }
+    .cover-opt[value="orange"] + label { background: linear-gradient(135deg, #C4521A, #E8692C); }
+    .cover-opt[value="gray"]   + label { background: linear-gradient(135deg, #1E1E1E, #555); }
+    .cover-opt:checked + label { border-color: #000; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 11px 24px; border-radius: 9px;
+      background: linear-gradient(135deg, #E8692C, #C4521A);
+      color: #fff; font-size: .9rem; font-weight: 700;
+      border: none; cursor: pointer; transition: opacity .2s, transform .1s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: .9; transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 18px; border-radius: 9px;
+      background: #f0f0f0; color: #333;
+      font-size: .85rem; font-weight: 600;
+      border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: #e5e5e5; }
+
+    /* ── Progress / status ── */
+    .progress-wrap {
+      display: none;
+      background: #f5f5f5; border-radius: 9px;
+      padding: 16px 18px; margin-top: 14px;
+    }
+    .progress-wrap.show { display: block; }
+    .progress-bar-bg {
+      background: #e5e5e5; border-radius: 100px; height: 8px; margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(135deg, #E8692C, #C4521A);
+      height: 100%; border-radius: 100px;
+      transition: width .4s ease;
+      width: 0%;
+    }
+    .progress-steps { display: flex; flex-direction: column; gap: 6px; }
+    .progress-step {
+      display: flex; align-items: center; gap: 9px;
+      font-size: .8rem; color: #888;
+    }
+    .progress-step.done  { color: #16a34a; }
+    .progress-step.active{ color: #E8692C; }
+    .progress-step.error { color: #dc2626; }
+    .progress-step i { width: 16px; text-align: center; }
+
+    /* ── Published slides list ── */
+    .pub-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px;
+    }
+    .pub-card {
+      border: 1.5px solid #e5e5e5; border-radius: 11px; overflow: hidden;
+      font-size: .8rem;
+    }
+    .pub-card-cover {
+      height: 60px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: rgba(255,255,255,.5);
+    }
+    .pub-card-cover.orange { background: linear-gradient(135deg, #C4521A, #E8692C); }
+    .pub-card-cover.gray   { background: linear-gradient(135deg, #1E1E1E, #555); }
+    .pub-card-body { padding: 12px 14px; }
+    .pub-card-title { font-weight: 700; font-size: .83rem; color: #111; margin-bottom: 4px; line-height: 1.35; }
+    .pub-card-meta { font-size: .72rem; color: #888; }
+    .pub-card-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 100px;
+      font-size: .68rem; font-weight: 700; letter-spacing: .05em;
+      margin-bottom: 6px;
+    }
+    .pub-card-badge.available { background: #dcfce7; color: #16a34a; }
+    .pub-card-badge.coming-soon { background: #fef9c3; color: #a16207; }
+    .pub-card-delete {
+      margin-top: 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: 6px;
+      background: #fee2e2; color: #dc2626;
+      border: none; font-size: .72rem; font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background .2s;
+    }
+    .pub-card-delete:hover { background: #fca5a5; }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #fff7ed; border: 1.5px solid #fed7aa;
+      border-radius: 10px; padding: 14px 16px;
+      font-size: .82rem; color: #7c3302; line-height: 1.65;
+      margin-bottom: 24px;
+    }
+    .info-box i { color: #E8692C; margin-right: 6px; }
+    .info-box a { color: #E8692C; }
+
+    .success-banner {
+      background: #f0fdf4; border: 1.5px solid #86efac;
+      border-radius: 10px; padding: 18px 20px;
+      display: none;
+      font-size: .9rem; color: #14532d; align-items: center; gap: 12px;
+    }
+    .success-banner.show { display: flex; }
+    .success-banner i { font-size: 1.5rem; color: #16a34a; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="admin-header">
+  <i class="fas fa-shield-alt"></i>
+  <h1>OrthoChronicles · Slides Admin</h1>
+  <span id="headerStatus">Not connected</span>
+</div>
+
+<div class="admin-body">
+
+  <!-- Info banner -->
+  <div class="info-box">
+    <i class="fas fa-info-circle"></i>
+    <strong>How it works:</strong> Upload a PPTX/PPT file here. It will be saved directly to the website's GitHub repository and appear in the Slides section within <strong>1–2 minutes</strong> (GitHub Pages rebuild time).
+    You need a <a href="https://github.com/settings/tokens/new?scopes=repo&description=OrthoChronicles+Slides+Admin" target="_blank">GitHub Personal Access Token</a> with <code>repo</code> scope.
+  </div>
+
+  <!-- Step 1: GitHub Token -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-key"></i> GitHub Connection</div>
+    <div class="token-row">
+      <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+      <button class="btn-secondary" onclick="testToken()"><i class="fas fa-plug"></i> Connect</button>
+    </div>
+    <div class="token-status" id="tokenStatus"><i class="fas fa-circle-info"></i> Token stored locally in your browser — never sent anywhere except GitHub's API.</div>
+  </div>
+
+  <!-- Step 2: Upload Form -->
+  <div class="card" id="uploadCard" style="opacity:.5; pointer-events:none;">
+    <div class="card-title"><i class="fas fa-upload"></i> Upload New Presentation</div>
+
+    <!-- File drop zone -->
+    <div class="file-drop" id="fileDrop" style="margin-bottom:20px;">
+      <div class="file-drop-inner" id="fileDropInner">
+        <i class="fas fa-file-powerpoint"></i>
+        <p><strong>Drag &amp; drop your .pptx or .ppt file here</strong></p>
+        <p>or <label for="fileInput" class="browse">browse to select</label></p>
+        <p class="hint">Accepted: .pptx &nbsp;·&nbsp; .ppt &nbsp;·&nbsp; Max 50 MB</p>
+      </div>
+      <div class="file-selected" id="fileSelectedView" style="display:none;">
+        <div class="file-selected-icon"><i class="fas fa-file-powerpoint"></i></div>
+        <div class="file-selected-info">
+          <div class="file-selected-name" id="fileSelName">–</div>
+          <div class="file-selected-size" id="fileSelSize">–</div>
+        </div>
+        <button type="button" class="file-remove" id="fileRemoveBtn" title="Remove"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <input type="file" id="fileInput" accept=".pptx,.ppt" style="display:none;" />
+
+    <!-- Metadata -->
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Presentation Title *</label>
+        <input type="text" id="fTitle" placeholder="e.g. ACL Reconstruction Techniques" />
+      </div>
+      <div class="form-group">
+        <label>Presenter Name *</label>
+        <input type="text" id="fAuthor" placeholder="e.g. Dr. Maninder Singh" value="Dr. Maninder Singh" />
+      </div>
+      <div class="form-group">
+        <label>Institution</label>
+        <input type="text" id="fInstitution" placeholder="e.g. GMCH Amritsar" value="GMCH Amritsar" />
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="fCategory">
+          <option value="">Select category</option>
+          <option value="joint-replacement">Joint Replacement</option>
+          <option value="trauma">Trauma &amp; Fractures</option>
+          <option value="anatomy">Anatomy</option>
+          <option value="rehabilitation">Rehabilitation</option>
+          <option value="radiology">Radiology</option>
+          <option value="sports-injuries">Sports Injuries</option>
+          <option value="spine">Spine</option>
+          <option value="paediatric">Paediatric Orthopaedics</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Number of Slides</label>
+        <input type="number" id="fSlideCount" placeholder="e.g. 30" min="1" max="300" />
+      </div>
+      <div class="form-group full">
+        <label>Short Description (shown on the website card)</label>
+        <textarea id="fDesc" placeholder="Brief summary of what this presentation covers…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Cover Colour</label>
+        <div class="cover-pick">
+          <input class="cover-opt" type="radio" name="cover" id="coverOrange" value="orange" checked />
+          <label for="coverOrange" title="Orange"></label>
+          <input class="cover-opt" type="radio" name="cover" id="coverGray" value="gray" />
+          <label for="coverGray" title="Dark gray"></label>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <button class="btn-primary" id="publishBtn" onclick="publishSlide()">
+        <i class="fas fa-rocket"></i> Publish to Website
+      </button>
+      <span style="font-size:.78rem; color:#888;">Site updates within ~1–2 minutes after publishing.</span>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-steps" id="progressSteps"></div>
+    </div>
+
+    <!-- Success -->
+    <div class="success-banner" id="successBanner">
+      <i class="fas fa-check-circle"></i>
+      <div>
+        <strong>Published successfully!</strong><br />
+        <span id="successMsg">The presentation will appear on the website within 1–2 minutes.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current slides list -->
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between;">
+      <span><i class="fas fa-layer-group"></i> Published Presentations</span>
+      <button class="btn-secondary" onclick="loadCurrentSlides()" style="padding:6px 12px; font-size:.78rem;">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+    <div id="pubGrid" class="pub-grid">
+      <p style="color:#aaa; font-size:.85rem;">Connect to GitHub to see the list.</p>
+    </div>
+  </div>
+
+</div><!-- /admin-body -->
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+const REPO   = 'InfraXCoders/ortho-chronicles';
+const BRANCH = 'production';
+const API    = 'https://api.github.com';
+
+let ghToken = localStorage.getItem('oc_gh_token') || '';
+let selectedFile = null;
+
+/* pre-fill token input */
+if (ghToken) {
+  document.getElementById('tokenInput').value = ghToken;
+  verifyTokenUI();
+}
+
+/* ══════════════════════════════════════════════
+   TOKEN HANDLING
+══════════════════════════════════════════════ */
+async function testToken() {
+  const val = document.getElementById('tokenInput').value.trim();
+  if (!val) { setTokenStatus('error', 'Please enter a token.'); return; }
+  setTokenStatus('loading', 'Connecting…');
+  try {
+    const res = await ghFetch('GET', `repos/${REPO}`, null, val);
+    if (res.ok) {
+      ghToken = val;
+      localStorage.setItem('oc_gh_token', ghToken);
+      verifyTokenUI();
+      loadCurrentSlides();
+    } else {
+      setTokenStatus('error', 'Invalid token or no access to this repo.');
+    }
+  } catch(e) {
+    setTokenStatus('error', 'Network error. Check your connection.');
+  }
+}
+
+function verifyTokenUI() {
+  setTokenStatus('ok', 'Connected to ' + REPO);
+  document.getElementById('headerStatus').textContent = 'Connected';
+  const card = document.getElementById('uploadCard');
+  card.style.opacity = '1';
+  card.style.pointerEvents = '';
+}
+
+function setTokenStatus(type, msg) {
+  const el = document.getElementById('tokenStatus');
+  el.className = 'token-status' + (type === 'ok' ? ' ok' : type === 'error' ? ' err' : '');
+  const icons = { ok: 'fa-check-circle', error: 'fa-exclamation-circle', loading: 'fa-spinner fa-spin', '': 'fa-circle-info' };
+  el.innerHTML = '<i class="fas ' + (icons[type] || 'fa-circle-info') + '"></i> ' + msg;
+}
+
+/* ══════════════════════════════════════════════
+   FILE DROP ZONE
+══════════════════════════════════════════════ */
+const fileDrop    = document.getElementById('fileDrop');
+const fileInput   = document.getElementById('fileInput');
+const dropInner   = document.getElementById('fileDropInner');
+const selectedView= document.getElementById('fileSelectedView');
+
+fileDrop.addEventListener('click', e => {
+  if (!e.target.closest('#fileRemoveBtn') && !e.target.closest('.browse')) fileInput.click();
+});
+document.querySelector('label.browse').addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+fileInput.addEventListener('change', () => fileInput.files[0] && handleFile(fileInput.files[0]));
+
+fileDrop.addEventListener('dragover',  e => { e.preventDefault(); fileDrop.classList.add('drag-over'); });
+fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('drag-over'));
+fileDrop.addEventListener('drop', e => {
+  e.preventDefault(); fileDrop.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+document.getElementById('fileRemoveBtn').addEventListener('click', () => {
+  selectedFile = null;
+  fileInput.value = '';
+  selectedView.style.display = 'none';
+  dropInner.style.display = 'flex';
+});
+
+function handleFile(f) {
+  if (!f.name.match(/\.(pptx?|ppt)$/i)) { alert('Please upload a .pptx or .ppt file.'); return; }
+  if (f.size > 50 * 1024 * 1024) { alert('File is too large (max 50 MB). Please compress the PPTX first.'); return; }
+  selectedFile = f;
+  document.getElementById('fileSelName').textContent = f.name;
+  document.getElementById('fileSelSize').textContent = fmtSize(f.size);
+  selectedView.style.display = 'flex';
+  dropInner.style.display = 'none';
+
+  // Auto-fill slide count from filename if not set
+  const countMatch = f.name.match(/(\d+)\s*slide/i);
+  if (countMatch && !document.getElementById('fSlideCount').value) {
+    document.getElementById('fSlideCount').value = countMatch[1];
+  }
+}
+
+function fmtSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+/* ══════════════════════════════════════════════
+   PUBLISH SLIDE
+══════════════════════════════════════════════ */
+async function publishSlide() {
+  /* Validate */
+  if (!ghToken) { alert('Please connect your GitHub token first.'); return; }
+  if (!selectedFile) { alert('Please select a PPTX file to upload.'); return; }
+  if (!document.getElementById('fTitle').value.trim()) { alert('Please enter a presentation title.'); return; }
+  if (!document.getElementById('fCategory').value)     { alert('Please select a category.'); return; }
+
+  const title       = document.getElementById('fTitle').value.trim();
+  const author      = document.getElementById('fAuthor').value.trim() || 'Dr. Maninder Singh';
+  const institution = document.getElementById('fInstitution').value.trim() || 'GMCH Amritsar';
+  const category    = document.getElementById('fCategory').value;
+  const slideCount  = parseInt(document.getElementById('fSlideCount').value) || 20;
+  const desc        = document.getElementById('fDesc').value.trim() || title;
+  const cover       = document.querySelector('input[name="cover"]:checked').value;
+
+  /* Clean filename: lowercase, spaces→hyphens, remove special chars */
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const ext  = selectedFile.name.endsWith('.ppt') ? '.ppt' : '.pptx';
+  const filename = slug + ext;
+
+  /* New slide entry */
+  const today = new Date().toISOString().slice(0, 10);
+  const newEntry = { id: slug, title, category, author, institution, description: desc,
+                     slideCount, cover, status: 'available', file: filename, date: today };
+
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  document.getElementById('successBanner').classList.remove('show');
+  showProgress([
+    { id:'s1', text:'Reading current slides data…' },
+    { id:'s2', text:'Uploading PPTX file…' },
+    { id:'s3', text:'Updating slides list…' },
+    { id:'s4', text:'Done!' }
+  ]);
+
+  try {
+    /* Step 1: Read current slides-data.json */
+    setStep('s1', 'active');
+    const jsonPath = 'slides/slides-data.json';
+    const jsonRes  = await ghFetch('GET', `repos/${REPO}/contents/${jsonPath}?ref=${BRANCH}`);
+    if (!jsonRes.ok && jsonRes.status !== 404) throw new Error('Could not read slides-data.json');
+    let jsonSha = null;
+    let currentData = [];
+    if (jsonRes.ok) {
+      const jsonInfo = await jsonRes.json();
+      jsonSha = jsonInfo.sha;
+      currentData = JSON.parse(atob(jsonInfo.content.replace(/\n/g, '')));
+    }
+    setStep('s1', 'done'); setProgress(25);
+
+    /* Step 2: Upload PPTX */
+    setStep('s2', 'active');
+    const b64 = await fileToBase64(selectedFile);
+    const pptxPath = 'slides/' + filename;
+    /* Check if file already exists (need SHA to update) */
+    let pptxSha = null;
+    const existRes = await ghFetch('GET', `repos/${REPO}/contents/${pptxPath}?ref=${BRANCH}`);
+    if (existRes.ok) pptxSha = (await existRes.json()).sha;
+    await ghPut(`repos/${REPO}/contents/${pptxPath}`, {
+      message: 'Upload slide deck: ' + title,
+      content: b64,
+      branch: BRANCH,
+      ...(pptxSha ? { sha: pptxSha } : {})
+    });
+    setStep('s2', 'done'); setProgress(65);
+
+    /* Step 3: Update slides-data.json */
+    setStep('s3', 'active');
+    /* Remove any existing entry with same id or filename */
+    const filtered = currentData.filter(s => s.id !== newEntry.id && s.file !== filename);
+    filtered.push(newEntry);
+    const newJsonB64 = btoa(unescape(encodeURIComponent(JSON.stringify(filtered, null, 2))));
+    await ghPut(`repos/${REPO}/contents/${jsonPath}`, {
+      message: 'Add slide to index: ' + title,
+      content: newJsonB64,
+      branch: BRANCH,
+      ...(jsonSha ? { sha: jsonSha } : {})
+    });
+    setStep('s3', 'done'); setProgress(90);
+
+    /* Done */
+    setStep('s4', 'done'); setProgress(100);
+    document.getElementById('successMsg').textContent =
+      '"' + title + '" published! It will appear on the website within 1–2 minutes.';
+    document.getElementById('successBanner').classList.add('show');
+
+    /* Reset form */
+    selectedFile = null;
+    fileInput.value = '';
+    selectedView.style.display = 'none';
+    dropInner.style.display = 'flex';
+    ['fTitle','fDesc','fSlideCount'].forEach(id => document.getElementById(id).value = '');
+
+    /* Refresh list */
+    setTimeout(loadCurrentSlides, 1500);
+
+  } catch(err) {
+    console.error(err);
+    alert('Error: ' + err.message);
+    /* Mark last active step as error */
+    document.querySelectorAll('.progress-step.active').forEach(el => {
+      el.classList.remove('active'); el.classList.add('error');
+      el.querySelector('i').className = 'fas fa-exclamation-circle';
+    });
+  }
+
+  btn.disabled = false;
+}
+
+/* ══════════════════════════════════════════════
+   LOAD CURRENT SLIDES LIST
+══════════════════════════════════════════════ */
+async function loadCurrentSlides() {
+  if (!ghToken) return;
+  const grid = document.getElementById('pubGrid');
+  grid.innerHTML = '<p style="color:#aaa;font-size:.85rem;"><i class="fas fa-spinner fa-spin"></i> Loading…</p>';
+  try {
+    const res = await ghFetch('GET', `repos/${REPO}/contents/slides/slides-data.json?ref=${BRANCH}`);
+    if (!res.ok) throw new Error('Not found');
+    const info = await res.json();
+    const data = JSON.parse(atob(info.content.replace(/\n/g, '')));
+    if (!data.length) { grid.innerHTML = '<p style="color:#aaa;font-size:.85rem;">No presentations yet.</p>'; return; }
+    grid.innerHTML = data.map(s => `
+      <div class="pub-card">
+        <div class="pub-card-cover ${s.cover || 'orange'}"><i class="fas fa-file-powerpoint"></i></div>
+        <div class="pub-card-body">
+          <div class="pub-card-badge ${s.status}">${s.status === 'available' ? 'Available' : 'Coming Soon'}</div>
+          <div class="pub-card-title">${s.title}</div>
+          <div class="pub-card-meta">${s.author} · ${s.slideCount} slides${s.date ? ' · ' + s.date : ''}</div>
+          ${s.status === 'available'
+            ? `<button class="pub-card-delete" onclick="deleteSlide('${s.id}','${s.file}')"><i class="fas fa-trash"></i> Remove</button>`
+            : ''}
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    grid.innerHTML = '<p style="color:#aaa;font-size:.85rem;">Could not load list.</p>';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   DELETE A SLIDE
+══════════════════════════════════════════════ */
+async function deleteSlide(id, filename) {
+  if (!confirm('Remove "' + id + '" from the website? The PPTX file will also be deleted.')) return;
+  try {
+    /* Read JSON */
+    const jsonPath = 'slides/slides-data.json';
+    const jr = await ghFetch('GET', `repos/${REPO}/contents/${jsonPath}?ref=${BRANCH}`);
+    if (!jr.ok) throw new Error('Could not read JSON');
+    const jinfo = await jr.json();
+    const data = JSON.parse(atob(jinfo.content.replace(/\n/g, '')));
+    const updated = data.filter(s => s.id !== id);
+
+    /* Update JSON */
+    const newB64 = btoa(unescape(encodeURIComponent(JSON.stringify(updated, null, 2))));
+    await ghPut(`repos/${REPO}/contents/${jsonPath}`, {
+      message: 'Remove slide: ' + id, content: newB64, branch: BRANCH, sha: jinfo.sha
+    });
+
+    /* Delete PPTX file if it exists */
+    if (filename) {
+      const pptxPath = 'slides/' + filename;
+      const pr = await ghFetch('GET', `repos/${REPO}/contents/${pptxPath}?ref=${BRANCH}`);
+      if (pr.ok) {
+        const pinfo = await pr.json();
+        await ghFetch('DELETE', `repos/${REPO}/contents/${pptxPath}`, {
+          message: 'Delete PPTX: ' + filename, branch: BRANCH, sha: pinfo.sha
+        });
+      }
+    }
+
+    alert('Removed! The site will update within 1–2 minutes.');
+    loadCurrentSlides();
+  } catch(e) {
+    alert('Error removing slide: ' + e.message);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   GITHUB API HELPERS
+══════════════════════════════════════════════ */
+function ghFetch(method, path, body = null, tok = null) {
+  const t = tok || ghToken;
+  const opts = {
+    method,
+    headers: {
+      'Authorization': 'Bearer ' + t,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  return fetch(API + '/' + path, opts);
+}
+
+async function ghPut(path, body) {
+  const res = await ghFetch('PUT', path, body);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'GitHub API error ' + res.status);
+  }
+  return res.json();
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   PROGRESS HELPERS
+══════════════════════════════════════════════ */
+function showProgress(steps) {
+  const wrap = document.getElementById('progressWrap');
+  wrap.classList.add('show');
+  setProgress(0);
+  document.getElementById('progressSteps').innerHTML = steps.map(s =>
+    `<div class="progress-step" id="${s.id}"><i class="fas fa-circle" style="font-size:.5rem;opacity:.5;"></i> ${s.text}</div>`
+  ).join('');
+}
+function setStep(id, state) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'progress-step ' + state;
+  const icons = { done:'fa-check-circle', active:'fa-spinner fa-spin', error:'fa-exclamation-circle' };
+  el.querySelector('i').className = 'fas ' + (icons[state] || 'fa-circle');
+}
+function setProgress(pct) {
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+</script>
+</body>
+</html>
