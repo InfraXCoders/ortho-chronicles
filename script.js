@@ -54,16 +54,32 @@ const ytModal      = document.getElementById('ytModal');
 const ytIframe     = document.getElementById('ytIframe');
 const ytModalClose = document.getElementById('ytModalClose');
 
+function openYtModal(id) {
+  if (!id || id.startsWith('VIDEO_ID')) {
+    window.open('https://www.youtube.com/@Orthochronicles/videos', '_blank');
+    return;
+  }
+  ytIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+  ytModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// Regular video cards
 document.querySelectorAll('.yt-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const id = card.dataset.videoid;
-    if (!id || id.startsWith('VIDEO_ID')) {
-      window.open('https://www.youtube.com/@Orthochronicles/videos', '_blank');
-      return;
-    }
-    ytIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-    ytModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+  card.addEventListener('click', () => openYtModal(card.dataset.videoid));
+});
+
+// Featured card — clicking anywhere on it opens modal
+const ytFeatured = document.getElementById('ytFeatured');
+if (ytFeatured) {
+  ytFeatured.addEventListener('click', () => openYtModal(ytFeatured.dataset.videoid));
+}
+
+// Featured "Watch Full Video" button
+document.querySelectorAll('.yt-featured-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation(); // card click already handles it, but stop double-fire
+    openYtModal(btn.dataset.videoid);
   });
 });
 
