@@ -755,123 +755,90 @@
         </div>
       </div><!-- /slides-grid -->
 
-      <!-- Submit your slides CTA -->
-      <div class="slides-submit-wrap">
-        <div class="slides-submit-banner">
-          <div class="ssb-icon"><i class="fas fa-presentation"></i><i class="fas fa-chalkboard" style="font-size:2.2rem;color:rgba(255,255,255,.9);position:absolute;"></i></div>
-          <div class="ssb-text">
-            <h3>Share Your Presentation with the Community</h3>
-            <p>Are you a surgeon, resident, physiotherapist or medical educator? Submit your slide deck for peer review. Once approved by Dr. Maninder Singh's team, your presentation will be published here — freely downloadable by the entire OrthoChronicles community.</p>
-            <ul class="ssb-perks">
-              <li><i class="fas fa-check-circle"></i> Open to all healthcare professionals &amp; students</li>
-              <li><i class="fas fa-check-circle"></i> Reviewed &amp; approved by Dr. Maninder Singh</li>
-              <li><i class="fas fa-check-circle"></i> Published with your name &amp; designation</li>
-              <li><i class="fas fa-check-circle"></i> Topics: surgical techniques, clinical cases, anatomy, radiology, rehab</li>
-            </ul>
+      <!-- Direct slide upload panel -->
+      <div class="sup-panel" id="supPanel">
+
+        <div class="sup-panel-header">
+          <div class="sup-panel-title">
+            <i class="fas fa-upload"></i>
+            <span>Upload a Presentation</span>
+          </div>
+          <button class="sup-gear-btn" id="supGearBtn" title="Set GitHub token"><i class="fas fa-cog"></i></button>
+        </div>
+
+        <!-- Token row (hidden until gear clicked) -->
+        <div class="sup-token-row" id="supTokenRow" style="display:none;">
+          <i class="fas fa-key"></i>
+          <input type="password" id="supTokenInput" placeholder="GitHub token  (ghp_…)" autocomplete="off" />
+          <button class="sup-token-save" id="supTokenSave">Save</button>
+          <span class="sup-token-status" id="supTokenStatus"></span>
+        </div>
+
+        <!-- Drop zone -->
+        <div class="pptx-drop-zone" id="supDrop">
+          <div class="pptx-drop-inner" id="supDropInner">
+            <div class="pptx-drop-icon"><i class="fas fa-file-powerpoint"></i></div>
+            <div class="pptx-drop-text">
+              <p><strong>Drag &amp; drop your .pptx or .ppt file here</strong></p>
+              <p>or <label for="supFileInput" class="pptx-browse-btn">browse to select</label></p>
+              <p class="pptx-size-note">Accepted: .pptx &nbsp;·&nbsp; .ppt &nbsp;·&nbsp; Max 50 MB</p>
+            </div>
+          </div>
+          <div class="pptx-selected" id="supFileSelected" style="display:none;">
+            <div class="pptx-selected-icon"><i class="fas fa-file-powerpoint"></i></div>
+            <div class="pptx-selected-info">
+              <div class="pptx-selected-name" id="supFileName">–</div>
+              <div class="pptx-selected-size" id="supFileSize">–</div>
+            </div>
+            <button type="button" class="pptx-remove-btn" id="supFileRemove" title="Remove"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+        <input type="file" id="supFileInput" accept=".pptx,.ppt" style="display:none;" />
+
+        <!-- Minimal metadata (shown once file picked) -->
+        <div class="sup-meta" id="supMeta" style="display:none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="supTitle">Title</label>
+              <input type="text" id="supTitle" placeholder="Presentation title" />
+            </div>
+            <div class="form-group">
+              <label for="supCategory">Category</label>
+              <select id="supCategory">
+                <option value="trauma">Trauma &amp; Fractures</option>
+                <option value="joint-replacement">Joint Replacement</option>
+                <option value="anatomy">Anatomy</option>
+                <option value="rehabilitation">Rehabilitation</option>
+                <option value="radiology">Radiology</option>
+                <option value="sports-injuries">Sports Injuries</option>
+                <option value="spine">Spine</option>
+                <option value="paediatric">Paediatric Orthopaedics</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-submit-slide" id="supPublishBtn">
+            <i class="fas fa-rocket"></i> Publish to Website
+          </button>
+        </div>
+
+        <!-- Progress -->
+        <div class="sup-progress" id="supProgress" style="display:none;">
+          <div class="sup-prog-bar-bg"><div class="sup-prog-bar-fill" id="supProgFill"></div></div>
+          <div class="sup-prog-steps" id="supProgSteps"></div>
+        </div>
+
+        <!-- Success -->
+        <div class="sup-success" id="supSuccess" style="display:none;">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong id="supSuccessTitle">Published!</strong><br />
+            <span>The presentation is now live in the Slides section.</span>
           </div>
         </div>
 
-        <!-- Submission Form -->
-        <div class="slides-form-wrap">
-          <h4><i class="fas fa-paper-plane"></i> Submit Your Slide Deck</h4>
-          <form class="slides-form" id="slidesForm">
-            <input type="hidden" name="access_key" value="184b0c41-f80f-4a0b-b27d-b787404fa207" />
-            <input type="hidden" name="subject" value="New Slide Deck Submission — OrthoChronicles.info" />
-            <input type="hidden" name="from_name" value="OrthoChronicles Slides" />
-            <input type="checkbox" name="botcheck" style="display:none;" />
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="sl-name">Your Full Name *</label>
-                <input type="text" id="sl-name" name="name" placeholder="e.g. Dr. Pawanpreet Singh" required />
-              </div>
-              <div class="form-group">
-                <label for="sl-email">Email Address *</label>
-                <input type="email" id="sl-email" name="email" placeholder="your@email.com" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="sl-role">Your Role</label>
-                <select id="sl-role" name="role">
-                  <option value="">Select your background</option>
-                  <option>Orthopedic Surgeon</option>
-                  <option>Resident / PG Student</option>
-                  <option>Physiotherapist</option>
-                  <option>Medical Student (MBBS)</option>
-                  <option>Radiologist</option>
-                  <option>Other Healthcare Professional</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="sl-topic">Presentation Topic *</label>
-                <input type="text" id="sl-topic" name="slide_topic" placeholder="e.g. ACL Reconstruction Techniques" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="sl-category">Category *</label>
-                <select id="sl-category" name="category" required>
-                  <option value="">Select a category</option>
-                  <option>Joint Replacement</option>
-                  <option>Trauma &amp; Fractures</option>
-                  <option>Anatomy</option>
-                  <option>Rehabilitation</option>
-                  <option>Radiology</option>
-                  <option>Sports Injuries</option>
-                  <option>Spine</option>
-                  <option>Paediatric Orthopaedics</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="sl-slides">No. of Slides</label>
-                <input type="number" id="sl-slides" name="slide_count" placeholder="e.g. 35" min="1" max="200" />
-              </div>
-            </div>
-            <div class="form-group full">
-              <label for="sl-desc">Brief Description of the Presentation *</label>
-              <textarea id="sl-desc" name="description" rows="4" placeholder="Describe what your presentation covers, the target audience, and any key learning points. Minimum 100 words recommended." required></textarea>
-            </div>
-            <div class="form-group full">
-              <label>Upload Your Presentation File *</label>
-              <div class="pptx-drop-zone" id="pptxDropZone">
-                <div class="pptx-drop-inner" id="pptxDropInner">
-                  <div class="pptx-drop-icon"><i class="fas fa-file-powerpoint"></i></div>
-                  <div class="pptx-drop-text">
-                    <p><strong>Drag &amp; drop your .pptx or .ppt file here</strong></p>
-                    <p>or <label for="pptxInput" class="pptx-browse-btn">browse to select</label></p>
-                    <p class="pptx-size-note">Accepted: .pptx &nbsp;·&nbsp; .ppt &nbsp;·&nbsp; Max 25 MB</p>
-                  </div>
-                </div>
-                <div class="pptx-selected" id="pptxSelected" style="display:none;">
-                  <div class="pptx-selected-icon"><i class="fas fa-file-powerpoint"></i></div>
-                  <div class="pptx-selected-info">
-                    <div class="pptx-selected-name" id="pptxSelectedName">presentation.pptx</div>
-                    <div class="pptx-selected-size" id="pptxSelectedSize">Ready to upload</div>
-                  </div>
-                  <button type="button" class="pptx-remove-btn" id="pptxRemoveBtn" title="Remove file"><i class="fas fa-times"></i></button>
-                </div>
-              </div>
-              <input type="file" id="pptxInput" name="pptx_file" accept=".pptx,.ppt" style="display:none;" />
-              <span class="form-hint"><i class="fas fa-info-circle"></i> Upload your presentation directly (max 25 MB). For larger files, share a Google Drive link in the description field above.</span>
-            </div>
-            <div class="form-group full">
-              <label for="sl-bio">Your Short Bio (will appear with the slide deck)</label>
-              <input type="text" id="sl-bio" name="author_bio" placeholder="e.g. Orthopaedic Surgeon, 10 years experience, AIIMS New Delhi" />
-            </div>
-            <button type="submit" class="btn-submit-slide" id="slidesSubmitBtn">
-              <i class="fas fa-paper-plane"></i> Submit for Review
-            </button>
-            <p class="form-note">Submissions are reviewed within 5–7 working days. By submitting, you confirm the content is your original work and agree it may be lightly edited before publication.</p>
-          </form>
-          <div class="slides-form-success" id="slidesFormSuccess" style="display:none;">
-            <i class="fas fa-check-circle"></i>
-            <h4>Submission Received!</h4>
-            <p>Thank you for contributing to OrthoChronicles. Dr. Singh's team will review your slides and get back to you within 5–7 working days.</p>
-          </div>
-        </div>
-      </div><!-- /slides-submit-wrap -->
+      </div><!-- /sup-panel -->
 
     </div>
   </section>
@@ -1622,103 +1589,199 @@
     });
 
     /* ══════════════════════════════════════════════
-       PPTX FILE UPLOAD
+       DIRECT SLIDE UPLOAD — GitHub API
     ══════════════════════════════════════════════ */
-    function fmtFileSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    var SUP_REPO   = 'InfraXCoders/ortho-chronicles';
+    var SUP_BRANCH = 'production';
+    var supToken   = localStorage.getItem('oc_admin_token') || '';
+    var supFile    = null;
+
+    function supFmtSize(b) {
+      if (b < 1048576) return (b/1024).toFixed(0) + ' KB';
+      return (b/1048576).toFixed(1) + ' MB';
     }
 
-    const pptxDropZone   = document.getElementById('pptxDropZone');
-    const pptxInput      = document.getElementById('pptxInput');
-    const pptxDropInner  = document.getElementById('pptxDropInner');
-    const pptxSelected   = document.getElementById('pptxSelected');
-    const pptxSelName    = document.getElementById('pptxSelectedName');
-    const pptxSelSize    = document.getElementById('pptxSelectedSize');
-    const pptxRemoveBtn  = document.getElementById('pptxRemoveBtn');
+    /* ── Token gear ── */
+    var supGearBtn    = document.getElementById('supGearBtn');
+    var supTokenRow   = document.getElementById('supTokenRow');
+    var supTokenInput = document.getElementById('supTokenInput');
+    var supTokenSave  = document.getElementById('supTokenSave');
+    var supTokenStat  = document.getElementById('supTokenStatus');
 
-    function handlePptxFile(file) {
-      if (!file) return;
-      if (!file.name.match(/\.(pptx?|ppt)$/i)) {
-        alert('Please upload a .pptx or .ppt file only.'); return;
-      }
-      if (file.size > 25 * 1024 * 1024) {
-        alert('File exceeds 25 MB. Please share a Google Drive link in the description field instead.'); return;
-      }
-      pptxSelName.textContent = file.name;
-      pptxSelSize.textContent = fmtFileSize(file.size) + ' · Ready to upload';
-      pptxSelected.style.display = 'flex';
-      pptxDropInner.style.display = 'none';
+    if (supToken) supTokenInput.value = supToken;
 
-      // Sync into input via DataTransfer
+    supGearBtn.addEventListener('click', function() {
+      supTokenRow.style.display = supTokenRow.style.display === 'none' ? 'flex' : 'none';
+    });
+    supTokenSave.addEventListener('click', function() {
+      var t = supTokenInput.value.trim();
+      if (!t) { supTokenStat.textContent = 'Enter a token first.'; return; }
+      supToken = t;
+      localStorage.setItem('oc_admin_token', t);
+      supTokenStat.textContent = '✓ Saved';
+      setTimeout(function(){ supTokenRow.style.display = 'none'; supTokenStat.textContent = ''; }, 1200);
+    });
+
+    /* ── Drop zone ── */
+    var supDrop       = document.getElementById('supDrop');
+    var supFileInput  = document.getElementById('supFileInput');
+    var supDropInner  = document.getElementById('supDropInner');
+    var supFileSel    = document.getElementById('supFileSelected');
+    var supFileRemove = document.getElementById('supFileRemove');
+
+    supDrop.addEventListener('click', function(e) {
+      if (!e.target.closest('.pptx-remove-btn') && !e.target.closest('.pptx-browse-btn')) supFileInput.click();
+    });
+    var supBrowse = document.querySelector('label[for="supFileInput"]');
+    if (supBrowse) supBrowse.addEventListener('click', function(e){ e.stopPropagation(); supFileInput.click(); });
+    supFileInput.addEventListener('change', function(){ if(supFileInput.files[0]) supHandleFile(supFileInput.files[0]); });
+    supDrop.addEventListener('dragover',  function(e){ e.preventDefault(); supDrop.classList.add('drag-over'); });
+    supDrop.addEventListener('dragleave', function(){ supDrop.classList.remove('drag-over'); });
+    supDrop.addEventListener('drop', function(e){
+      e.preventDefault(); supDrop.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) supHandleFile(e.dataTransfer.files[0]);
+    });
+    supFileRemove.addEventListener('click', function(){
+      supFile = null; supFileInput.value = '';
+      supFileSel.style.display = 'none'; supDropInner.style.display = 'flex';
+      document.getElementById('supMeta').style.display = 'none';
+      document.getElementById('supSuccess').style.display = 'none';
+      document.getElementById('supProgress').style.display = 'none';
+    });
+
+    function supHandleFile(f) {
+      if (!f.name.match(/\.(pptx?|ppt)$/i)) { alert('Please upload a .pptx or .ppt file.'); return; }
+      if (f.size > 50 * 1024 * 1024) { alert('File too large (max 50 MB). Please compress the PPTX first.'); return; }
+      supFile = f;
+      document.getElementById('supFileName').textContent = f.name;
+      document.getElementById('supFileSize').textContent = supFmtSize(f.size);
+      supFileSel.style.display = 'flex';
+      supDropInner.style.display = 'none';
+      /* Auto-fill title from filename */
+      var autoTitle = f.name.replace(/\.(pptx?|ppt)$/i,'').replace(/[-_]+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+      document.getElementById('supTitle').value = autoTitle;
+      document.getElementById('supMeta').style.display = 'block';
+      document.getElementById('supSuccess').style.display = 'none';
+    }
+
+    /* ── Publish ── */
+    document.getElementById('supPublishBtn').addEventListener('click', async function() {
+      if (!supToken) {
+        supTokenRow.style.display = 'flex';
+        supTokenInput.focus();
+        alert('Please save your GitHub token first (click the ⚙ gear icon).');
+        return;
+      }
+      if (!supFile) { alert('Please select a PPTX file.'); return; }
+      var title    = document.getElementById('supTitle').value.trim() || supFile.name.replace(/\.(pptx?|ppt)$/i,'');
+      var category = document.getElementById('supCategory').value;
+
+      var slug = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      var ext  = supFile.name.toLowerCase().endsWith('.ppt') ? '.ppt' : '.pptx';
+      var filename = slug + ext;
+      var today    = new Date().toISOString().slice(0,10);
+
+      var newEntry = {
+        id: slug, title: title, category: category,
+        author: 'Dr. Maninder Singh', institution: 'GMCH Amritsar',
+        description: title,
+        slideCount: 20, cover: 'orange', status: 'available',
+        file: filename, date: today
+      };
+
+      var btn = document.getElementById('supPublishBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing…';
+      document.getElementById('supSuccess').style.display = 'none';
+
+      supShowProgress([
+        { id:'sp1', text:'Reading slides list…' },
+        { id:'sp2', text:'Uploading PPTX file…' },
+        { id:'sp3', text:'Updating slides index…' }
+      ]);
+
       try {
-        const dt = new DataTransfer();
-        dt.items.add(file);
-        pptxInput.files = dt.files;
-      } catch(err) { /* fallback — file already set by input.change */ }
-    }
+        /* Step 1 — read current JSON */
+        supSetStep('sp1','active');
+        var jsonPath = 'slides/slides-data.json';
+        var jr = await supGhFetch('GET', 'repos/'+SUP_REPO+'/contents/'+jsonPath+'?ref='+SUP_BRANCH);
+        var jsonSha = null; var currentData = [];
+        if (jr.ok) { var ji = await jr.json(); jsonSha = ji.sha; currentData = JSON.parse(atob(ji.content.replace(/\n/g,''))); }
+        supSetStep('sp1','done'); supSetProg(30);
 
-    if (pptxDropZone) {
-      pptxDropZone.addEventListener('click', function(e) {
-        if (!e.target.closest('.pptx-remove-btn') && !e.target.closest('.pptx-browse-btn')) {
-          pptxInput.click();
-        }
-      });
-      var browseLabel = document.querySelector('label[for="pptxInput"]');
-      if (browseLabel) {
-        browseLabel.addEventListener('click', function(e) {
-          e.stopPropagation(); pptxInput.click();
+        /* Step 2 — upload PPTX */
+        supSetStep('sp2','active');
+        var b64 = await supToBase64(supFile);
+        var pptxPath = 'slides/'+filename;
+        var existSha = null;
+        var er = await supGhFetch('GET','repos/'+SUP_REPO+'/contents/'+pptxPath+'?ref='+SUP_BRANCH);
+        if (er.ok) existSha = (await er.json()).sha;
+        var putBody = { message:'Upload: '+title, content:b64, branch:SUP_BRANCH };
+        if (existSha) putBody.sha = existSha;
+        var pr = await supGhFetch('PUT','repos/'+SUP_REPO+'/contents/'+pptxPath, putBody);
+        if (!pr.ok) { var pe = await pr.json(); throw new Error(pe.message||'Upload failed'); }
+        supSetStep('sp2','done'); supSetProg(70);
+
+        /* Step 3 — update JSON */
+        supSetStep('sp3','active');
+        var filtered = currentData.filter(function(s){ return s.id !== newEntry.id && s.file !== filename; });
+        filtered.unshift(newEntry);
+        var newB64 = btoa(unescape(encodeURIComponent(JSON.stringify(filtered,null,2))));
+        var jBody = { message:'Publish slide: '+title, content:newB64, branch:SUP_BRANCH };
+        if (jsonSha) jBody.sha = jsonSha;
+        var jpr = await supGhFetch('PUT','repos/'+SUP_REPO+'/contents/'+jsonPath, jBody);
+        if (!jpr.ok) { var je = await jpr.json(); throw new Error(je.message||'Index update failed'); }
+        supSetStep('sp3','done'); supSetProg(100);
+
+        /* Success */
+        document.getElementById('supSuccessTitle').textContent = '"'+title+'" is now live!';
+        document.getElementById('supSuccess').style.display = 'flex';
+        /* Reset */
+        supFile = null; supFileInput.value = '';
+        supFileSel.style.display = 'none'; supDropInner.style.display = 'flex';
+        document.getElementById('supMeta').style.display = 'none';
+        /* Reload grid after 2 s */
+        setTimeout(loadSlides, 2000);
+
+      } catch(err) {
+        document.querySelectorAll('.sup-step.active').forEach(function(el){
+          el.className='sup-step error'; el.querySelector('i').className='fas fa-exclamation-circle';
         });
+        alert('Error: '+err.message);
       }
-      pptxInput.addEventListener('change', function() {
-        if (pptxInput.files[0]) handlePptxFile(pptxInput.files[0]);
-      });
-      pptxDropZone.addEventListener('dragover', function(e) {
-        e.preventDefault(); pptxDropZone.classList.add('drag-over');
-      });
-      pptxDropZone.addEventListener('dragleave', function() {
-        pptxDropZone.classList.remove('drag-over');
-      });
-      pptxDropZone.addEventListener('drop', function(e) {
-        e.preventDefault(); pptxDropZone.classList.remove('drag-over');
-        if (e.dataTransfer.files[0]) handlePptxFile(e.dataTransfer.files[0]);
-      });
-      pptxRemoveBtn.addEventListener('click', function() {
-        pptxInput.value = '';
-        pptxSelected.style.display = 'none';
-        pptxDropInner.style.display = 'flex';
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-rocket"></i> Publish to Website';
+    });
+
+    function supGhFetch(method, path, body) {
+      var opts = { method:method, headers:{ 'Authorization':'Bearer '+supToken, 'Accept':'application/vnd.github.v3+json', 'Content-Type':'application/json' } };
+      if (body) opts.body = JSON.stringify(body);
+      return fetch('https://api.github.com/'+path, opts);
+    }
+    function supToBase64(file) {
+      return new Promise(function(res,rej){
+        var r = new FileReader();
+        r.onload = function(){ res(r.result.split(',')[1]); };
+        r.onerror = rej;
+        r.readAsDataURL(file);
       });
     }
-
-    /* ══════════════════════════════════════════════
-       SLIDES SUBMISSION FORM
-    ══════════════════════════════════════════════ */
-    const slidesForm = document.getElementById('slidesForm');
-    if (slidesForm) {
-      slidesForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const btn = document.getElementById('slidesSubmitBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            body: new FormData(slidesForm)
-          });
-          const json = await res.json();
-          if (json.success) {
-            slidesForm.style.display = 'none';
-            document.getElementById('slidesFormSuccess').style.display = 'block';
-          } else {
-            throw new Error('Submission failed');
-          }
-        } catch(err) {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
-          alert('Something went wrong. Please try again or contact us directly.');
-        }
-      });
+    function supShowProgress(steps) {
+      var wrap = document.getElementById('supProgress');
+      wrap.style.display = 'block'; supSetProg(0);
+      document.getElementById('supProgSteps').innerHTML = steps.map(function(s){
+        return '<div class="sup-step" id="'+s.id+'"><i class="fas fa-circle" style="font-size:.4rem;opacity:.4;"></i> '+s.text+'</div>';
+      }).join('');
+    }
+    function supSetStep(id, state) {
+      var el = document.getElementById(id); if(!el) return;
+      el.className = 'sup-step '+state;
+      var icons = { done:'fa-check-circle', active:'fa-spinner fa-spin', error:'fa-exclamation-circle' };
+      el.querySelector('i').className = 'fas '+(icons[state]||'fa-circle');
+    }
+    function supSetProg(pct) {
+      document.getElementById('supProgFill').style.width = pct+'%';
     }
 
   })();
