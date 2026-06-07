@@ -601,6 +601,21 @@ img { max-width: 100%; display: block; }
 }
 .blog-steps li strong { color: var(--gray-800); }
 
+/* Blog card step-preview pills */
+.blog-step-preview {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  margin: 10px 0 14px;
+}
+.blog-step-preview span {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: .72rem; font-weight: 600;
+  background: linear-gradient(135deg, rgba(0,180,160,.1), rgba(26,63,122,.08));
+  color: var(--teal-dark);
+  padding: 4px 10px; border-radius: 100px;
+  border: 1px solid rgba(0,180,160,.2);
+}
+.blog-step-preview i { font-size: .68rem; }
+
 /* Blog note / disclaimer line */
 .blog-note {
   font-size: .78rem !important;
