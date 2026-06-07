@@ -1507,36 +1507,29 @@ img { max-width: 100%; display: block; }
   100%{ box-shadow: 0 0 0 0 rgba(239,68,68,0); }
 }
 
-/* ═══ TAB BUTTON ═══ */
+/* ═══ TAB BUTTON — compact icon-only strip ═══ */
 .mnw-tab {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 22px 13px;
+  justify-content: center;
+  gap: 7px;
+  width: 32px;
+  padding: 13px 0;
   border: none;
   cursor: pointer;
-  border-radius: 14px 0 0 14px;
-  /* Dark slate + orange left-edge glow */
+  border-radius: 10px 0 0 10px;
   background: #141414;
   border-left: 3px solid var(--orange);
   color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-size: .65rem;
-  font-weight: 800;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  box-shadow: -6px 0 28px rgba(232,105,44,.35),
-              -2px 0 8px rgba(0,0,0,.45);
-  transition: background .25s, border-color .25s, box-shadow .25s;
+  box-shadow: -4px 0 18px rgba(232,105,44,.38),
+              -1px 0 6px rgba(0,0,0,.45);
+  transition: background .25s, box-shadow .25s, opacity .25s;
   position: relative;
   z-index: 2;
   flex-shrink: 0;
   overflow: hidden;
 }
-/* Subtle orange sweep on hover */
 .mnw-tab::after {
   content: '';
   position: absolute;
@@ -1545,23 +1538,27 @@ img { max-width: 100%; display: block; }
   opacity: 0;
   transition: opacity .25s;
 }
-.mnw-tab:hover::after { opacity: 1; }
+.mnw-tab:hover::after { opacity: .8; }
 .mnw-tab > * { position: relative; z-index: 1; }
 
-.mnw-tab-icon { font-size: 1rem; color: var(--orange-light); transition: color .25s; }
+.mnw-tab-icon { font-size: .85rem; color: var(--orange-light); transition: color .25s; }
 .mnw-tab:hover .mnw-tab-icon { color: #fff; }
 
-/* "LIVE" badge on the tab */
-.mnw-tab-live {
-  display: flex; align-items: center; gap: 4px;
-  background: rgba(239,68,68,.2);
-  border: 1px solid rgba(239,68,68,.4);
-  border-radius: 100px;
-  padding: 2px 6px;
-  font-size: .55rem;
-  font-weight: 900;
-  color: #fc8181;
-  letter-spacing: .1em;
+/* ═══ MINIMIZED STATE — tiny tab peeks from right edge ═══ */
+.mnw-minimized .mnw-tab {
+  opacity: .75;
+  background: #0f0f0f;
+  box-shadow: -3px 0 10px rgba(232,105,44,.2);
+  border-left-color: rgba(232,105,44,.5);
+}
+.mnw-minimized .mnw-tab:hover {
+  opacity: 1;
+  box-shadow: -5px 0 16px rgba(232,105,44,.4);
+  border-left-color: var(--orange);
+}
+/* Live dot pulses more gently when minimized */
+.mnw-minimized .mnw-live-dot {
+  width: 5px; height: 5px;
 }
 
 /* ═══ PANEL ═══ */
@@ -1824,7 +1821,8 @@ img { max-width: 100%; display: block; }
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 600px) {
   .mnw-panel  { width: calc(100vw - 50px); height: 72vh; border-radius: 12px 0 0 12px; }
-  .mnw-tab    { padding: 18px 10px; font-size: .6rem; gap: 8px; }
+  .mnw-tab    { width: 28px; padding: 11px 0; gap: 6px; }
+  .mnw-tab-icon { font-size: .75rem; }
   .mnw-widget { top: auto; bottom: 110px; transform: none; }
   .mnw-list   { padding: 6px 8px; }
 }

@@ -1137,12 +1137,10 @@
   ══════════════════════════════════════════════ -->
   <div class="mnw-widget" id="mnwWidget">
 
-    <!-- Sticky tab (always visible on right edge) -->
-    <button class="mnw-tab" id="mnwTab" aria-label="Toggle Medical News panel">
-      <span class="mnw-tab-live"><span class="mnw-live-dot"></span>LIVE</span>
+    <!-- Mini tab (always visible, compact) -->
+    <button class="mnw-tab" id="mnwTab" aria-label="Open Medical News">
+      <span class="mnw-live-dot"></span>
       <i class="fas fa-newspaper mnw-tab-icon"></i>
-      <span class="mnw-tab-label">Medical</span>
-      <span class="mnw-tab-label">News</span>
     </button>
 
     <!-- Sliding panel -->
@@ -1887,6 +1885,8 @@
 
     /* ── Toggle panel ── */
     tab.addEventListener('click', () => {
+      const widget = document.getElementById('mnwWidget');
+      widget.classList.remove('mnw-minimized');
       isOpen = !isOpen;
       panel.classList.toggle('open', isOpen);
       if (isOpen && !loaded) fetchAll();
@@ -1896,6 +1896,7 @@
     closeBtn.addEventListener('click', () => {
       isOpen = false;
       panel.classList.remove('open');
+      document.getElementById('mnwWidget').classList.add('mnw-minimized');
       stopScroll();
     });
     refreshBtn.addEventListener('click', fetchAll);
@@ -1979,7 +1980,7 @@
     /* ── Smooth continuous scroll ── */
     function startScroll() {
       stopScroll();
-      const SPEED = 0.45; /* px per frame */
+      const SPEED = 0.22; /* px per frame — slow drift */
       function tick() {
         const half = list.scrollHeight / 2;
         if (!half) { scrollRAF = requestAnimationFrame(tick); return; }
