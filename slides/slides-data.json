@@ -1,5 +1,18 @@
 [
   {
+    "id": "soft-tissue-injuries",
+    "title": "Soft Tissue Injuries",
+    "category": "trauma",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "Comprehensive guide to soft tissue injuries — classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "soft-tissue-injuries.pptx",
+    "date": "2026-06-08"
+  },
+  {
     "id": "tkr",
     "title": "Total Knee Replacement — Surgical Technique & Implant Selection",
     "category": "joint-replacement",
@@ -7,7 +20,7 @@
     "institution": "GMCH Amritsar",
     "description": "Step-by-step TKR technique covering medial parapatellar approach, bone cuts, implant selection (CR vs PS), cemented vs cementless fixation, gap balancing, and post-op protocol.",
     "slideCount": 30,
-    "cover": "orange",
+    "cover": "gray",
     "status": "coming-soon",
     "file": null,
     "date": null
@@ -20,7 +33,7 @@
     "institution": "GMCH Amritsar",
     "description": "Garden & AO/OTA classification, DHS vs PFNA decision-making, hemiarthroplasty indications, intramedullary nailing technique, and peri-operative management.",
     "slideCount": 25,
-    "cover": "gray",
+    "cover": "orange",
     "status": "coming-soon",
     "file": null,
     "date": null
@@ -33,7 +46,7 @@
     "institution": "GMCH Amritsar",
     "description": "Glenohumeral joint anatomy, rotator cuff muscles, neurovascular supply, and biomechanical principles for surgical planning.",
     "slideCount": 40,
-    "cover": "orange",
+    "cover": "gray",
     "status": "coming-soon",
     "file": null,
     "date": null
@@ -46,7 +59,7 @@
     "institution": "GMCH Amritsar",
     "description": "Phase-wise rehabilitation protocol for TKR and THR — exercise progressions, physiotherapy milestones, and return-to-function criteria.",
     "slideCount": 20,
-    "cover": "gray",
+    "cover": "orange",
     "status": "coming-soon",
     "file": null,
     "date": null
@@ -59,7 +72,7 @@
     "institution": "GMCH Amritsar",
     "description": "Systematic X-ray analysis framework, fracture classification systems, implant assessment, and post-operative imaging interpretation.",
     "slideCount": 35,
-    "cover": "orange",
+    "cover": "gray",
     "status": "coming-soon",
     "file": null,
     "date": null
@@ -72,7 +85,7 @@
     "institution": "GMCH Amritsar",
     "description": "Posterior vs anterolateral approach comparison, cup & stem fixation techniques, bearing surfaces, and 10-year outcome data.",
     "slideCount": 28,
-    "cover": "gray",
+    "cover": "orange",
     "status": "coming-soon",
     "file": null,
     "date": null
