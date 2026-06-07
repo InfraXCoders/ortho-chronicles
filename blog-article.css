@@ -6,7 +6,7 @@
 /* ── Article Hero ── */
 .article-hero {
   position: relative;
-  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, #0d4f6e 100%);
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, #2D2D2D 100%);
   padding: 120px 0 60px;
   overflow: hidden;
 }
@@ -33,7 +33,7 @@
   padding: 5px 14px; border-radius: 100px;
   border: 1px solid rgba(255,255,255,.2);
 }
-.article-tag.teal { background: rgba(0,180,160,.25); border-color: var(--teal); color: var(--teal-light); }
+.article-tag.teal { background: rgba(232,105,44,.25); border-color: var(--teal); color: var(--teal-light); }
 
 .article-title {
   font-family: 'Playfair Display', serif;
@@ -209,8 +209,8 @@
   border-radius: var(--radius);
   border-left: 4px solid;
 }
-.info-box.blue { background: #eef3ff; border-color: var(--blue); }
-.info-box.teal { background: #e6faf8; border-color: var(--teal); }
+.info-box.blue { background: #F5EDE4; border-color: var(--blue); }
+.info-box.teal { background: #FEF0E6; border-color: var(--teal); }
 .info-box h5 {
   font-size: .82rem; font-weight: 700; margin-bottom: 10px;
   display: flex; align-items: center; gap: 8px;
@@ -396,7 +396,7 @@
 /* X-ray mini */
 .xray-mini {
   display: flex; align-items: center; gap: 12px;
-  margin-top: 16px; background: #0f1923;
+  margin-top: 16px; background: #1a1a1a;
   border-radius: var(--radius); padding: 10px 12px;
 }
 .xray-mini img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; }
@@ -425,7 +425,7 @@
 }
 @media (max-width: 600px) { .xray-gallery { grid-template-columns: 1fr; } }
 .xray-card {
-  background: #0f1923; border-radius: var(--radius);
+  background: #1a1a1a; border-radius: var(--radius);
   overflow: hidden; box-shadow: var(--shadow-md);
 }
 .xray-card figure { margin: 0; }
