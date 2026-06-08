@@ -1836,9 +1836,19 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: stretch;
   pointer-events: none;
-  transition: opacity .35s ease;
+  transition: transform .45s cubic-bezier(.4,0,.2,1), opacity .35s ease;
 }
 .elw-widget > * { pointer-events: auto; }
+
+/* Minimized: slide entire widget off-screen to the left, only 3px orange border sliver shows */
+.elw-minimized {
+  transform: translateY(-50%) translateX(calc(-100% + 3px));
+  pointer-events: auto;
+  cursor: pointer;
+}
+.elw-minimized:hover {
+  transform: translateY(-50%) translateX(calc(-100% + 34px));
+}
 
 /* ── Panel ── */
 .elw-panel {

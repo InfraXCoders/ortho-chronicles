@@ -2124,11 +2124,18 @@
   <!-- ── External Links widget toggle ── -->
   <script>
   (function () {
+    const widget   = document.getElementById('elwWidget');
     const panel    = document.getElementById('elwPanel');
     const tab      = document.getElementById('elwTab');
     const closeBtn = document.getElementById('elwClose');
-    tab.addEventListener('click', () => panel.classList.toggle('open'));
-    closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+    tab.addEventListener('click', () => {
+      widget.classList.remove('elw-minimized');
+      panel.classList.toggle('open');
+    });
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('open');
+      widget.classList.add('elw-minimized');
+    });
   })();
   </script>
 </body>
