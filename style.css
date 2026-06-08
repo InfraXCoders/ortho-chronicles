@@ -1829,6 +1829,135 @@ img { max-width: 100%; display: block; }
 }
 
 /* ╔══════════════════════════════════════════════════════╗
+   ║       CME & CONFERENCE TICKER (below header)         ║
+   ╚══════════════════════════════════════════════════════╝ */
+
+.cme-ticker {
+  position: fixed;
+  left: 0; right: 0;
+  top: 68px; /* overridden by JS */
+  z-index: 990;
+  height: 40px;
+  display: flex;
+  align-items: stretch;
+  background: #0d0d0d;
+  border-bottom: 2px solid rgba(232,105,44,.45);
+  box-shadow: 0 3px 18px rgba(0,0,0,.35);
+  transition: transform .4s ease, opacity .4s ease, top .3s ease;
+  overflow: hidden;
+}
+
+/* Pulsing label on the left */
+.cme-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px 0 12px;
+  background: linear-gradient(90deg, #1a0a00, #1f0f02);
+  border-right: 2px solid var(--orange);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.cme-pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #ef4444;
+  animation: cmePulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes cmePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.6); opacity: 1; }
+  50%       { box-shadow: 0 0 0 6px rgba(239,68,68,0); opacity: .8; }
+}
+.cme-label-icon { color: var(--orange); font-size: .72rem; }
+.cme-label-text {
+  font-size: .6rem; font-weight: 900; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--orange-light);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrolling track */
+.cme-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+}
+.cme-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: cmeScroll 90s linear infinite;
+  will-change: transform;
+}
+.cme-inner { display: inline-flex; align-items: center; }
+@keyframes cmeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.cme-loading {
+  color: rgba(255,255,255,.4); font-size: .72rem;
+  font-family: 'Inter', sans-serif; padding: 0 20px;
+}
+
+/* Event chip */
+.cme-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  text-decoration: none;
+  color: inherit;
+  cursor: default;
+  transition: background .2s;
+  height: 40px;
+}
+a.cme-chip { cursor: pointer; }
+a.cme-chip:hover { background: rgba(232,105,44,.12); }
+a.cme-chip:hover .cme-chip-title { color: var(--orange-light); }
+.cme-chip-src {
+  font-size: .55rem; font-weight: 900; letter-spacing: .1em;
+  text-transform: uppercase; background: var(--orange);
+  color: #fff; padding: 2px 6px; border-radius: 4px;
+  flex-shrink: 0; font-family: 'Inter', sans-serif;
+}
+.cme-chip-title {
+  font-size: .73rem; font-weight: 600; color: rgba(255,255,255,.88);
+  font-family: 'Inter', sans-serif;
+  transition: color .2s;
+}
+.cme-chip-meta {
+  font-size: .65rem; color: rgba(255,255,255,.4);
+  font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; gap: 3px;
+  flex-shrink: 0;
+}
+.cme-chip-meta i { color: rgba(232,105,44,.55); font-size: .6rem; }
+.cme-chip-meta:empty { display: none; }
+.cme-sep {
+  color: rgba(232,105,44,.4); font-size: .65rem;
+  padding: 0 8px; flex-shrink: 0;
+}
+
+/* Dismiss button */
+.cme-dismiss {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; flex-shrink: 0;
+  background: none; border: none; border-left: 1px solid rgba(255,255,255,.07);
+  color: rgba(255,255,255,.3); font-size: .7rem; cursor: pointer;
+  transition: color .2s, background .2s;
+}
+.cme-dismiss:hover { color: #fff; background: rgba(232,105,44,.15); }
+
+@media (max-width: 600px) {
+  .cme-label-text { display: none; }
+  .cme-label { padding: 0 10px; gap: 5px; }
+  .cme-chip-meta { display: none; }
+  .cme-chip-title { font-size: .68rem; }
+}
+
+/* ╔══════════════════════════════════════════════════════╗
    ║         EXTERNAL LINKS WIDGET  (left side)           ║
    ╚══════════════════════════════════════════════════════╝ */
 

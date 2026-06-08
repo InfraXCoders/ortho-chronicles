@@ -1204,6 +1204,25 @@
   </a>
 
   <!-- ══════════════════════════════════════════════
+       CME & CONFERENCE TICKER
+  ══════════════════════════════════════════════ -->
+  <div class="cme-ticker" id="cmeTicker">
+    <div class="cme-label">
+      <span class="cme-pulse-dot"></span>
+      <i class="fas fa-calendar-alt cme-label-icon"></i>
+      <span class="cme-label-text">CME &amp; CONF</span>
+    </div>
+    <div class="cme-track-wrap" aria-live="off">
+      <div class="cme-track" id="cmeTrack">
+        <span class="cme-loading"><i class="fas fa-spinner fa-spin"></i> Loading events…</span>
+      </div>
+    </div>
+    <button class="cme-dismiss" id="cmeDismiss" title="Dismiss ticker">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
        MEDICAL LATEST NEWS WIDGET
   ══════════════════════════════════════════════ -->
   <div class="mnw-widget" id="mnwWidget">
@@ -2107,6 +2126,106 @@
         widget.style.pointerEvents = '';
       }
     }, { passive: true });
+
+  })();
+  </script>
+
+  <!-- ── CME & Conference Ticker ── -->
+  <script>
+  (function () {
+    const ticker  = document.getElementById('cmeTicker');
+    const track   = document.getElementById('cmeTrack');
+    const dismiss = document.getElementById('cmeDismiss');
+    const header  = document.getElementById('header');
+    const PROXY   = 'https://api.rss2json.com/v1/api.json?count=12&rss_url=';
+
+    /* ── Position below header (updates on scroll/resize) ── */
+    function pinBelow() {
+      if (ticker) ticker.style.top = (header ? header.offsetHeight : 68) + 'px';
+    }
+    pinBelow();
+    window.addEventListener('scroll', pinBelow, { passive: true });
+    window.addEventListener('resize', pinBelow, { passive: true });
+
+    /* ── Dismiss ── */
+    dismiss.addEventListener('click', () => {
+      ticker.style.transform = 'translateY(-110%)';
+      ticker.style.opacity = '0';
+      setTimeout(() => { ticker.style.display = 'none'; }, 400);
+    });
+
+    /* ── Static Indian Orthopaedic CME/Conference data (always shown) ── */
+    const STATIC = [
+      { title: 'IOACON 2025 — IOA Annual National Conference',   when: 'Dec 2025',    place: 'Bengaluru',    src: 'IOA',    url: 'https://ioaindia.org' },
+      { title: 'Punjab Orthopaedic Society Annual CME',          when: 'Oct 2025',    place: 'Amritsar',     src: 'POS',    url: 'https://pmc.org.in' },
+      { title: 'OrthoTV Live CME Series — Arthroplasty Update',  when: 'Monthly',     place: 'Online',       src: 'OrthoTV',url: 'https://orthoindia.org' },
+      { title: 'APOSI 2025 — Asia Pacific Orthopaedic Infection',when: 'Nov 2025',    place: 'New Delhi',    src: 'APOSI',  url: '#' },
+      { title: 'NOSS Annual Meeting 2025',                        when: 'Sep 2025',    place: 'Mumbai',       src: 'NOSS',   url: '#' },
+      { title: 'PMC Punjab — Accredited Orthopaedic CME',        when: 'Quarterly',   place: 'Punjab',       src: 'PMC',    url: 'https://pmc.org.in' },
+      { title: 'SICOT World Orthopaedic Congress',               when: '2025',        place: 'International',src: 'SICOT',  url: 'https://sicot.org' },
+      { title: 'AAOS Annual Meeting 2026',                        when: 'Mar 2026',    place: 'USA',          src: 'AAOS',   url: 'https://aaos.org' },
+      { title: 'Delhi Orthopaedic Association Annual CME',        when: 'Nov 2025',    place: 'New Delhi',    src: 'DOA',    url: '#' },
+      { title: 'Maharashtra Orthopaedic Society MOSACON',         when: 'Oct 2025',    place: 'Mumbai',       src: 'MOS',    url: '#' },
+      { title: 'TNOSCON 2025 — Tamil Nadu Orthopaedic Society',  when: 'Dec 2025',    place: 'Chennai',      src: 'TNOS',   url: '#' },
+      { title: 'KSOS Annual Spine & Ortho CME',                  when: 'Sep 2025',    place: 'Bengaluru',    src: 'KSOS',   url: '#' },
+      { title: 'Gujarat Orthopaedic Society GOACON',             when: 'Nov 2025',    place: 'Ahmedabad',    src: 'GOS',    url: '#' },
+      { title: 'UP Orthopaedic Association Conference',           when: 'Oct 2025',    place: 'Lucknow',      src: 'UPOA',   url: '#' },
+      { title: 'Rajasthan Orthopaedic Association CME',           when: 'Sep 2025',    place: 'Jaipur',       src: 'ROA',    url: '#' },
+      { title: 'ESSKA Congress 2026 — Knee, Foot & Sports',      when: '2026',        place: 'Europe',       src: 'ESSKA',  url: 'https://esska.net' },
+      { title: 'BOA Annual Congress 2025',                        when: 'Oct 2025',    place: 'UK',           src: 'BOA',    url: 'https://boa.ac.uk' },
+      { title: 'CME Tracker — India State Council Events',        when: 'Ongoing',     place: 'Pan India',    src: 'CME-T',  url: 'https://cmetracker.net' },
+      { title: 'Haryana Orthopaedic Association Annual CME',      when: 'Nov 2025',    place: 'Chandigarh',   src: 'HOA',    url: '#' },
+      { title: 'ISKS International Knee Surgery Congress',        when: '2026',        place: 'International',src: 'ISKS',   url: '#' },
+    ];
+
+    /* ── RSS feeds for live supplement ── */
+    const FEEDS = [
+      'https://news.google.com/rss/search?q=Indian+Orthopaedic+Association+conference+CME+2025&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=orthopaedic+conference+India+CME+2025+2026&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=IOACON+APOSI+NOSS+orthopedic+conference+India&hl=en&gl=IN&ceid=IN:en',
+    ];
+
+    /* ── Build HTML for one event chip ── */
+    function chip(title, when, place, src, url) {
+      const href = (url && url !== '#') ? `href="${url}" target="_blank" rel="noopener"` : '';
+      const Tag  = href ? 'a' : 'span';
+      return `<${Tag} class="cme-chip" ${href}>
+        <span class="cme-chip-src">${src}</span>
+        <span class="cme-chip-title">${title}</span>
+        <span class="cme-chip-meta"><i class="fas fa-calendar-day"></i>${when}</span>
+        <span class="cme-chip-meta"><i class="fas fa-map-marker-alt"></i>${place}</span>
+      </${Tag}><span class="cme-sep">◆</span>`;
+    }
+
+    /* ── Render items into the track (duplicated for seamless loop) ── */
+    function render(items) {
+      const html = items.map(e => chip(e.title, e.when || e.date || 'TBA', e.place || e.location || '', e.src || e.source || 'Event', e.url || '#')).join('');
+      track.innerHTML = `<span class="cme-inner">${html}</span><span class="cme-inner" aria-hidden="true">${html}</span>`;
+      /* Pause animation on hover */
+      track.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
+      track.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
+    }
+
+    /* ── Fetch live feed (optional supplement) ── */
+    async function fetchFeed(url) {
+      try {
+        const res  = await fetch(PROXY + encodeURIComponent(url));
+        const json = await res.json();
+        if (json.status !== 'ok' || !json.items) return [];
+        return json.items.slice(0, 5).map(it => ({
+          title: it.title.replace(/ - .*$/, '').slice(0, 80),
+          when: new Date(it.pubDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+          place: '', src: 'News', url: it.link
+        }));
+      } catch { return []; }
+    }
+
+    /* ── Init ── */
+    render(STATIC); /* Show static data immediately */
+    Promise.allSettled(FEEDS.map(fetchFeed)).then(results => {
+      const live = results.flatMap(r => r.status === 'fulfilled' ? r.value : []);
+      if (live.length > 0) render([...live, ...STATIC]);
+    });
 
   })();
   </script>
