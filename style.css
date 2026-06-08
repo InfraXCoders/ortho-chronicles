@@ -1843,6 +1843,7 @@ img { max-width: 100%; display: block; }
 /* ── Panel ── */
 .elw-panel {
   width: 260px;
+  max-height: min(90vh, 520px);
   background: #fff;
   border-radius: 0 14px 14px 0;
   box-shadow: 8px 0 36px rgba(0,0,0,.18),
