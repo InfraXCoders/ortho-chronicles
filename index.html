@@ -2237,14 +2237,30 @@
     const panel    = document.getElementById('elwPanel');
     const tab      = document.getElementById('elwTab');
     const closeBtn = document.getElementById('elwClose');
+
+    /* Tab click: restore from minimized + toggle panel */
     tab.addEventListener('click', () => {
       widget.classList.remove('elw-minimized');
       panel.classList.toggle('open');
     });
+
+    /* Close: minimize only (3px orange sliver visible at bottom) */
     closeBtn.addEventListener('click', () => {
       panel.classList.remove('open');
       widget.classList.add('elw-minimized');
     });
+
+    /* Pin to first screen only — same as news widget */
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > window.innerHeight * 0.85) {
+        widget.style.opacity = '0';
+        widget.style.pointerEvents = 'none';
+        panel.classList.remove('open');
+      } else {
+        widget.style.opacity = '1';
+        widget.style.pointerEvents = '';
+      }
+    }, { passive: true });
   })();
   </script>
 </body>

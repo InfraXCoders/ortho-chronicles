@@ -1496,14 +1496,14 @@ img { max-width: 100%; display: block; }
 }
 .mnw-widget > * { pointer-events: auto; }
 
-/* Minimized: slide widget down, only 3px orange top-border sliver visible */
+/* Minimized: push tab just below viewport edge — only 3px orange top border peeks */
 .mnw-minimized {
-  transform: translateY(calc(100% - 3px));
+  transform: translateY(37px); /* tab≈40px, leave 3px border visible */
   cursor: pointer;
   pointer-events: auto;
 }
 .mnw-minimized:hover {
-  transform: translateY(calc(100% - 42px));
+  transform: translateY(0); /* full tab visible on hover */
 }
 
 /* ═══ LIVE DOT ═══ */
@@ -1976,14 +1976,14 @@ a.cme-chip:hover .cme-chip-title { color: var(--orange-light); }
 }
 .elw-widget > * { pointer-events: auto; }
 
-/* Minimized: slide widget down, only 3px orange top-border sliver visible */
+/* Minimized: push tab just below viewport edge — only 3px orange top border peeks */
 .elw-minimized {
-  transform: translateY(calc(100% - 3px));
+  transform: translateY(37px);
   cursor: pointer;
   pointer-events: auto;
 }
 .elw-minimized:hover {
-  transform: translateY(calc(100% - 42px));
+  transform: translateY(0);
 }
 
 /* ── Panel ── */
