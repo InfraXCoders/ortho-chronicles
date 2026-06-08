@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+  <rect width="480" height="300" fill="#13181f"/>
+  <rect width="480" height="3" fill="#E8692C"/>
+  <!-- cross / medical symbol -->
+  <rect x="224" y="100" width="32" height="90" rx="6" fill="#E8692C" opacity=".18"/>
+  <rect x="195" y="129" width="90" height="32" rx="6" fill="#E8692C" opacity=".18"/>
+  <!-- outer circle -->
+  <circle cx="240" cy="145" r="68" fill="none" stroke="#E8692C" stroke-width="1.5" opacity=".18"/>
+  <text x="240" y="216" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.3)"
+        font-family="Inter,Arial,sans-serif" letter-spacing="1">MEDICAL ILLUSTRATION</text>
+</svg>
