@@ -1,5 +1,18 @@
 [
   {
+    "id": "computer-radiography-vs-digital-radiography-better-slide",
+    "title": "Computer Radiography vs Digital Radiography better slide",
+    "category": "radiology",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "Computer Radiography vs Digital Radiography better slide",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "computer-radiography-vs-digital-radiography-better-slide.pptx",
+    "date": "2026-06-08"
+  },
+  {
     "id": "computer-radiography-vs-digital-radiography",
     "title": "Computer Radiography vs Digital Radiography",
     "category": "radiology",
@@ -18,7 +31,7 @@
     "category": "trauma",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
-    "description": "Comprehensive guide to soft tissue injuries â classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
+    "description": "Comprehensive guide to soft tissue injuries Ã¢ÂÂ classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
     "slideCount": 20,
     "cover": "orange",
     "status": "available",
@@ -27,7 +40,7 @@
   },
   {
     "id": "tkr",
-    "title": "Total Knee Replacement â Surgical Technique & Implant Selection",
+    "title": "Total Knee Replacement Ã¢ÂÂ Surgical Technique & Implant Selection",
     "category": "joint-replacement",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -40,7 +53,7 @@
   },
   {
     "id": "femur",
-    "title": "Proximal Femur Fractures â Classification & Management",
+    "title": "Proximal Femur Fractures Ã¢ÂÂ Classification & Management",
     "category": "trauma",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -70,7 +83,7 @@
     "category": "rehabilitation",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
-    "description": "Phase-wise rehabilitation protocol for TKR and THR â exercise progressions, physiotherapy milestones, and return-to-function criteria.",
+    "description": "Phase-wise rehabilitation protocol for TKR and THR Ã¢ÂÂ exercise progressions, physiotherapy milestones, and return-to-function criteria.",
     "slideCount": 20,
     "cover": "orange",
     "status": "available",
@@ -79,7 +92,7 @@
   },
   {
     "id": "radiology",
-    "title": "Reading Orthopedic X-rays â A Systematic Approach",
+    "title": "Reading Orthopedic X-rays Ã¢ÂÂ A Systematic Approach",
     "category": "radiology",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -92,7 +105,7 @@
   },
   {
     "id": "thr",
-    "title": "Total Hip Arthroplasty â Approaches & Outcomes",
+    "title": "Total Hip Arthroplasty Ã¢ÂÂ Approaches & Outcomes",
     "category": "joint-replacement",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
