@@ -783,13 +783,11 @@
             <i class="fas fa-upload"></i>
             <span>Upload a Presentation</span>
           </div>
-          <button class="sup-gear-btn" id="supGearBtn" title="Set GitHub token"><i class="fas fa-cog"></i></button>
         </div>
-
-        <!-- Token row (hidden until gear clicked) -->
+        <!-- hidden one-time setup row — visible only when ?setup in URL -->
         <div class="sup-token-row" id="supTokenRow" style="display:none;">
           <i class="fas fa-key"></i>
-          <input type="password" id="supTokenInput" placeholder="GitHub token  (ghp_…)" autocomplete="off" />
+          <input type="password" id="supTokenInput" placeholder="GitHub token (ghp_…)" autocomplete="off" />
           <button class="sup-token-save" id="supTokenSave">Save</button>
           <span class="sup-token-status" id="supTokenStatus"></span>
         </div>
@@ -1734,33 +1732,36 @@
     ══════════════════════════════════════════════ */
     var SUP_REPO   = 'InfraXCoders/ortho-chronicles';
     var SUP_BRANCH = 'production';
-    var supToken   = localStorage.getItem('oc_admin_token') || '';
-    var supFile    = null;
+
+    /* Token is stored once in localStorage and never asked again.
+       To set/update it: open the page with ?setup in the URL, e.g.
+       https://www.orthochronicles.info/?setup
+       Then enter your GitHub token and click Save — done forever. */
+    var supToken = localStorage.getItem('oc_admin_token') || '';
+    var supFile  = null;
 
     function supFmtSize(b) {
       if (b < 1048576) return (b/1024).toFixed(0) + ' KB';
       return (b/1048576).toFixed(1) + ' MB';
     }
 
-    /* ── Token gear ── */
-    var supGearBtn    = document.getElementById('supGearBtn');
+    /* ── One-time setup row (shown only when ?setup in URL) ── */
     var supTokenRow   = document.getElementById('supTokenRow');
     var supTokenInput = document.getElementById('supTokenInput');
     var supTokenSave  = document.getElementById('supTokenSave');
     var supTokenStat  = document.getElementById('supTokenStatus');
 
-    if (supToken) supTokenInput.value = supToken;
-
-    supGearBtn.addEventListener('click', function() {
-      supTokenRow.style.display = supTokenRow.style.display === 'none' ? 'flex' : 'none';
-    });
+    if (new URLSearchParams(window.location.search).has('setup')) {
+      supTokenRow.style.display = 'flex';
+      if (supToken) supTokenInput.value = supToken;
+    }
     supTokenSave.addEventListener('click', function() {
       var t = supTokenInput.value.trim();
       if (!t) { supTokenStat.textContent = 'Enter a token first.'; return; }
       supToken = t;
       localStorage.setItem('oc_admin_token', t);
-      supTokenStat.textContent = '✓ Saved';
-      setTimeout(function(){ supTokenRow.style.display = 'none'; supTokenStat.textContent = ''; }, 1200);
+      supTokenStat.textContent = '✓ Saved — you can now close this panel.';
+      setTimeout(function(){ supTokenRow.style.display = 'none'; supTokenStat.textContent = ''; }, 2500);
     });
 
     /* ── Drop zone ── */
@@ -1808,9 +1809,7 @@
     /* ── Publish ── */
     document.getElementById('supPublishBtn').addEventListener('click', async function() {
       if (!supToken) {
-        supTokenRow.style.display = 'flex';
-        supTokenInput.focus();
-        alert('Please save your GitHub token first (click the ⚙ gear icon).');
+        alert('Admin setup required.\n\nOpen: ' + window.location.origin + window.location.pathname + '?setup\n\nEnter your GitHub token there once — uploads will work automatically after that.');
         return;
       }
       if (!supFile) { alert('Please select a PPTX file.'); return; }
