@@ -2174,6 +2174,258 @@ a.cme-chip:hover .cme-chip-title { color: var(--orange-light); }
 
 @media (max-width: 600px) {
   .elw-widget { left: 0; width: 50%; }
-  .elw-panel  { border-radius: 12px 12px 0 0; }
-  .elw-tab    { padding: 9px 12px; font-size: .62rem; }
+  .elw-panel  { border-radius: 12px 0 0 0; max-height: 70vh; }
+  .elw-tab    { padding: 9px 8px; font-size: .58rem; gap: 5px; }
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║          COMPREHENSIVE MOBILE OVERHAUL                       ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── A. Fix news widget width on mobile (was 100%, covers links widget) ── */
+@media (max-width: 600px) {
+  .mnw-widget { right: 0; width: 50% !important; }
+  .mnw-panel  { height: 70vh; border-radius: 0 12px 0 0; }
+  .mnw-tab    { padding: 9px 6px; font-size: .58rem; gap: 4px; }
+}
+
+/* ── B. Lift WhatsApp FAB above bottom widgets ── */
+@media (max-width: 768px) {
+  .float-wa { bottom: 58px; right: 12px; width: 46px; height: 46px; font-size: 1.2rem; }
+}
+
+/* ── C. iOS input zoom prevention (font-size < 16px triggers zoom on Safari) ── */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ── D. Touch-target improvements — min 44px for interactive elements ── */
+@media (max-width: 768px) {
+  .hamburger { padding: 10px 6px; }
+  .btn-primary, .btn-outline, .btn-whatsapp, .btn-nav {
+    padding: 13px 22px; min-height: 44px;
+  }
+  .btn-wa-sm { padding: 12px 20px; min-height: 44px; }
+  .btn-download, .btn-download-slide { min-height: 44px; padding: 12px 18px; }
+  .nav-links a { padding: 8px 0; }
+}
+
+/* ── E. Navbar — tighter on mobile, logo readable ── */
+@media (max-width: 480px) {
+  .nav-logo img { height: 42px; }
+  #header.scrolled .nav-logo img { height: 36px; }
+  .navbar { padding: 10px 14px; }
+}
+
+/* ── F. Hero section — better small-phone layout ── */
+@media (max-width: 480px) {
+  .hero-content { padding: 50px 14px 70px; }
+  .hero-content h1 { font-size: clamp(1.65rem, 8vw, 2.2rem); line-height: 1.22; }
+  .hero-tagline { font-size: .88rem; line-height: 1.75; margin-bottom: 28px; }
+  .hero-badge { font-size: .7rem; padding: 6px 12px; }
+  .hero-cta-center { gap: 10px; }
+  .hero-cta-center .btn-primary,
+  .hero-cta-center .btn-outline { width: 100%; max-width: 100%; justify-content: center; }
+}
+
+/* Hero community stats — horizontal scroll on tiny screens so it doesn't stack weirdly */
+@media (max-width: 420px) {
+  .hero-community-stats {
+    overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap;
+    justify-content: flex-start; padding: 14px 16px; gap: 0;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius);
+  }
+  .hero-community-stats::-webkit-scrollbar { display: none; }
+  .hcs-item { flex-shrink: 0; padding: 4px 14px; }
+  .hcs-divider { display: block; width: 1px; height: 28px; flex-shrink: 0; }
+}
+
+/* ── G. Community bar — scrollable row on mobile ── */
+@media (max-width: 480px) {
+  .community-bar-inner { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .cb-items { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; width: 100%;
+    -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .cb-items::-webkit-scrollbar { display: none; }
+  .cb-item { flex-shrink: 0; border-right: 1px solid rgba(255,255,255,.15); }
+}
+
+/* ── H. Publish grid — full-width cards with better padding ── */
+@media (max-width: 480px) {
+  .publish-card { padding: 24px 18px; }
+  .publish-icon { width: 48px; height: 48px; font-size: 1.1rem; }
+}
+
+/* ── I. Mentor card — mobile portrait ── */
+@media (max-width: 480px) {
+  .mentor-card { padding: 24px 16px; gap: 20px; }
+  .mentor-photo-ring { width: 140px; height: 140px; }
+  .mentor-info h3 { font-size: 1.45rem; }
+  .mentor-title { font-size: .82rem; }
+  .mentor-hospital { font-size: .8rem; }
+  .mentor-tags span { font-size: .76rem; padding: 5px 10px; }
+  .mentor-actions .btn-primary { width: 100%; justify-content: center; font-size: .88rem; }
+}
+
+/* ── J. Why Contribute grid ── */
+@media (max-width: 480px) {
+  .why-card { padding: 24px 18px; }
+  .why-icon { width: 52px; height: 52px; font-size: 1.1rem; }
+}
+
+/* ── K. YouTube section — single column on very small phones ── */
+@media (max-width: 480px) {
+  .yt-channel-strip { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .yt-subscribe-btn { width: 100%; justify-content: center; }
+  .yt-grid { grid-template-columns: 1fr; gap: 14px; }
+  .yt-featured-card { grid-template-columns: 1fr; }
+  .yt-featured-info { padding: 18px 16px; }
+}
+
+/* ── L. Blog section ── */
+@media (max-width: 480px) {
+  .blog-grid { gap: 16px; }
+  .blog-body { padding: 18px 16px; }
+  .blog-card.featured .blog-img-placeholder,
+  .blog-img-placeholder { height: 160px; }
+  .blog-meta { gap: 10px; }
+}
+
+/* ── M. Books section ── */
+@media (max-width: 480px) {
+  .books-stats-bar { padding: 14px 12px; gap: 0; }
+  .bstat { padding: 10px 12px; font-size: .8rem; }
+  .books-coming-soon { padding: 20px 16px; }
+  .book-info { padding: 16px 16px 14px; }
+  .book-info h3 { font-size: .93rem; }
+}
+
+/* ── N. Slides section ── */
+@media (max-width: 480px) {
+  .slides-grid { gap: 16px; }
+  .slide-info { padding: 16px 16px; }
+  .slide-actions { flex-direction: column; }
+  .btn-preview-slide { justify-content: center; }
+}
+
+/* ── O. Submit / Write-for-us section ── */
+@media (max-width: 480px) {
+  .write-cta-wrap { padding: 22px 16px; gap: 16px; }
+  .write-cta-icon { width: 52px; height: 52px; font-size: 1.3rem; }
+  .write-cta-text h3 { font-size: 1.25rem; }
+  .submission-form-wrap { padding: 20px 14px 24px; }
+  .btn-submit { width: 100%; justify-content: center; }
+  .form-note { font-size: .74rem; }
+  .media-block { padding: 14px 14px 16px; }
+  .media-section-header { padding: 14px 14px 12px; }
+}
+
+/* ── P. Contact section ── */
+@media (max-width: 480px) {
+  .contact-card { padding: 16px 0; gap: 12px; }
+  .contact-icon { width: 38px; height: 38px; border-radius: 8px; font-size: .9rem; }
+  .contact-card p, .contact-card a { font-size: .85rem; }
+  .map-container iframe { height: 220px; }
+}
+
+/* ── Q. Footer ── */
+@media (max-width: 480px) {
+  .footer { padding: 40px 0 0; }
+  .footer-grid { gap: 24px; padding-bottom: 36px; }
+  .footer-brand img { height: 48px; }
+  .footer-bottom { padding: 18px 14px; }
+  .footer-bottom p { font-size: .78rem; }
+}
+
+/* ── R. CME Ticker — tighter on small phones ── */
+@media (max-width: 480px) {
+  .cme-ticker { height: 36px; }
+  .cme-label { padding: 0 8px; gap: 4px; }
+  .cme-chip { padding: 0 10px; height: 36px; }
+  .cme-chip-title { font-size: .65rem; }
+  @keyframes cmeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+/* ── S. Section headers ── */
+@media (max-width: 480px) {
+  .section-header { margin-bottom: 32px; }
+  .section-title { font-size: 1.55rem; }
+  .section-sub { font-size: .88rem; }
+  .section-label { font-size: .72rem; padding: 5px 13px; }
+}
+
+/* ── T. Slide presenter modal — full screen on mobile ── */
+@media (max-width: 600px) {
+  .sp-wrap { width: 100%; max-width: 100%; max-height: 100svh; max-height: 100vh; border-radius: 0; }
+  .sp-bar { padding: 10px 14px; }
+  .sp-bar-left span { max-width: 160px; }
+  .sp-nav-btn { width: 34px; }
+  .sp-content-header { padding: 12px 14px; }
+  .sp-content-body { padding: 14px 16px; font-size: .85rem; }
+  .sp-content-footer { padding: 9px 14px; }
+  .sp-slide.type-title,
+  .sp-slide.type-section,
+  .sp-slide.type-end { padding: 24px 18px; }
+  .sp-dots { flex-wrap: wrap; max-width: calc(100% - 120px); gap: 4px; }
+  .sp-dot { width: 6px; height: 6px; }
+  .sp-dot.active { width: 16px; }
+}
+
+/* ── U. Video modal ── */
+@media (max-width: 480px) {
+  .yt-modal-inner { margin: 0 8px; }
+  .yt-modal-close { top: -40px; width: 32px; height: 32px; font-size: .9rem; }
+}
+
+/* ── V. Section spacing on small phones ── */
+@media (max-width: 360px) {
+  .section { padding: 40px 0; }
+  .container { padding: 0 12px; }
+  .hero-content h1 { font-size: 1.5rem; }
+  .mentor-photo-ring { width: 120px; height: 120px; }
+  .hero-cta-center .btn-primary,
+  .hero-cta-center .btn-outline { font-size: .85rem; padding: 12px 18px; }
+  .btn-nav { padding: 8px 16px; font-size: .82rem; }
+}
+
+/* ── W. Scroll-reveal smoother on low-power mobile ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ── X. Safe-area insets for notched phones (iPhone X+) ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mnw-widget, .elw-widget {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .mnw-tab, .elw-tab {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ── Y. Better tap highlight ── */
+@media (max-width: 768px) {
+  a, button { -webkit-tap-highlight-color: rgba(232,105,44,.15); }
+}
+
+/* ── Z. Scrollable horizontal stats bars on tiny screens ── */
+@media (max-width: 400px) {
+  .books-stats-bar { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .books-stats-bar::-webkit-scrollbar { display: none; }
+  .bstat { flex-shrink: 0; border-right: 1px solid rgba(255,255,255,.2); border-bottom: none; }
+  .slides-stats-bar { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .slides-stats-bar::-webkit-scrollbar { display: none; }
+  .sstat { flex-shrink: 0; border-right: 1px solid rgba(255,255,255,.2); border-bottom: none;
+    min-width: auto; }
 }

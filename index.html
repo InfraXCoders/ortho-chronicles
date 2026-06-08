@@ -2254,6 +2254,55 @@
   })();
   </script>
 
+  <!-- ── Navbar: scroll-style + hamburger + close-on-link ── -->
+  <script>
+  (function () {
+    const header    = document.getElementById('header');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+
+    /* Scrolled class */
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+    /* Apply immediately if page loads mid-scroll */
+    if (window.scrollY > 40) header.classList.add('scrolled');
+
+    /* Hamburger toggle */
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open);
+      /* Animate the 3 bars into X when open */
+      const bars = hamburger.querySelectorAll('span');
+      if (open) {
+        bars[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
+        bars[1].style.cssText = 'opacity:0;transform:scaleX(0)';
+        bars[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
+      } else {
+        bars.forEach(b => b.style.cssText = '');
+      }
+    });
+
+    /* Close menu when any nav link is clicked */
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.querySelectorAll('span').forEach(b => b.style.cssText = '');
+      });
+    });
+
+    /* Close on overlay click (tap outside) */
+    navLinks.addEventListener('click', e => {
+      if (e.target === navLinks) navLinks.classList.remove('open');
+    });
+
+    /* Close on Escape */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') navLinks.classList.remove('open');
+    });
+  })();
+  </script>
+
   <!-- ── External Links widget toggle ── -->
   <script>
   (function () {
