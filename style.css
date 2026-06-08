@@ -2,28 +2,28 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* ── Orange primary ── */
-  --orange:       #E8692C;
-  --orange-dark:  #C4521A;
-  --orange-light: #F08C4A;
+  /* ── Olive green primary ── */
+  --orange:       #6B7C2E;
+  --orange-dark:  #4D5920;
+  --orange-light: #9AAD50;
 
   /* ── Legacy aliases so every var(--teal/--blue) auto-recolours ── */
-  --teal:         #E8692C;   /* orange */
-  --teal-dark:    #C4521A;   /* dark orange */
-  --teal-light:   #FABA8A;   /* pale orange */
+  --teal:         #6B7C2E;   /* olive green */
+  --teal-dark:    #4D5920;   /* dark olive */
+  --teal-light:   #B8C87A;   /* sage / light olive */
 
-  --blue:         #3D3D3D;   /* charcoal gray */
-  --blue-dark:    #1E1E1E;   /* near-black */
-  --blue-light:   #555555;   /* medium gray */
+  --blue:         #2E4018;   /* dark olive (dark sections) */
+  --blue-dark:    #1A2A0D;   /* deep forest (hero / footer) */
+  --blue-light:   #3D5420;   /* medium olive */
 
   /* ── Neutrals ── */
   --white:        #ffffff;
-  --off-white:    #FDF8F3;   /* warm cream */
-  --gray-100:     #F5EDE4;   /* warm light */
-  --gray-200:     #E8DDD4;   /* warm border */
+  --off-white:    #F8FAF2;   /* faint sage white */
+  --gray-100:     #EFF3E4;   /* light sage */
+  --gray-200:     #D6DFBF;   /* sage border */
   --gray-400:     #9E9E9E;
   --gray-600:     #5C5C5C;
-  --gray-800:     #1E1E1E;
+  --gray-800:     #1A2A0D;
   --text:         #2A2A2A;
 
   --shadow-sm:  0 2px 8px rgba(0,0,0,.08);
@@ -174,7 +174,7 @@ img { max-width: 100%; display: block; }
 
 .hero-bg {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 45%, #2D2D2D 100%);
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 45%, #263717 100%);
   z-index: 0;
 }
 
@@ -777,7 +777,7 @@ img { max-width: 100%; display: block; }
 .write-cta-wrap {
   display: flex; gap: 30px; align-items: flex-start;
   padding: 40px 40px 32px;
-  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, #2D2D2D 100%);
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, #263717 100%);
 }
 
 .write-cta-icon {
@@ -1028,7 +1028,7 @@ img { max-width: 100%; display: block; }
 }
 .vfc-icon {
   width: 34px; height: 34px; border-radius: 8px;
-  background: linear-gradient(135deg, #3D3D3D, #1E1E1E);
+  background: linear-gradient(135deg, #2E4018, #1A2A0D);
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: .85rem; flex-shrink: 0;
 }
@@ -1349,7 +1349,7 @@ img { max-width: 100%; display: block; }
   background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 100%);
 }
 .book-cover.teal {
-  background: linear-gradient(135deg, #111111 0%, var(--teal-dark) 60%, var(--teal-light) 100%);
+  background: linear-gradient(135deg, #0F1F08 0%, var(--teal-dark) 60%, var(--teal-light) 100%);
 }
 .book-cover > i {
   font-size: 3.2rem;
@@ -1901,7 +1901,7 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 7px;
   padding: 0 14px 0 12px;
-  background: linear-gradient(90deg, #1a0a00, #1f0f02);
+  background: linear-gradient(90deg, #1A2A0D, #1E3310);
   border-right: 2px solid var(--orange);
   flex-shrink: 0;
   white-space: nowrap;
