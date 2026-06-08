@@ -1445,6 +1445,30 @@ img { max-width: 100%; display: block; }
 }
 .btn-download i { font-size: .85rem; }
 
+/* Book action row — Read + Download side by side */
+.book-actions {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.book-actions .btn-download { flex: 1; min-width: 0; }
+
+.btn-read {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex: 1; min-width: 0;
+  padding: 11px 18px; border-radius: 10px;
+  background: transparent;
+  border: 2px solid var(--teal);
+  color: var(--teal); font-size: .83rem; font-weight: 700;
+  letter-spacing: .02em;
+  transition: var(--trans);
+}
+.btn-read:hover {
+  background: var(--teal);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232,105,44,.25);
+}
+.btn-read i { font-size: .85rem; }
+
 /* Coming soon banner */
 .books-coming-soon {
   display: flex; gap: 20px; align-items: flex-start;
