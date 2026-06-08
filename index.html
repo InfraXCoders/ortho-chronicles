@@ -2158,6 +2158,7 @@
     const STATIC = [
       { title: 'IOACON 2025 — IOA Annual National Conference',   when: 'Dec 2025',    place: 'Bengaluru',    src: 'IOA',    url: 'https://ioaindia.org' },
       { title: 'Punjab Orthopaedic Society Annual CME',          when: 'Oct 2025',    place: 'Amritsar',     src: 'POS',    url: 'https://pmc.org.in' },
+      { title: 'Punjab Orthopaedic Association — Annual Conference & CME', when: '2025–26', place: 'Punjab', src: 'POA', url: '#', highlight: true },
       { title: 'OrthoTV Live CME Series — Arthroplasty Update',  when: 'Monthly',     place: 'Online',       src: 'OrthoTV',url: 'https://orthoindia.org' },
       { title: 'APOSI 2025 — Asia Pacific Orthopaedic Infection',when: 'Nov 2025',    place: 'New Delhi',    src: 'APOSI',  url: '#' },
       { title: 'NOSS Annual Meeting 2025',                        when: 'Sep 2025',    place: 'Mumbai',       src: 'NOSS',   url: '#' },
@@ -2186,11 +2187,13 @@
     ];
 
     /* ── Build HTML for one event chip ── */
-    function chip(title, when, place, src, url) {
+    function chip(title, when, place, src, url, highlight) {
       const href = (url && url !== '#') ? `href="${url}" target="_blank" rel="noopener"` : '';
       const Tag  = href ? 'a' : 'span';
-      return `<${Tag} class="cme-chip" ${href}>
-        <span class="cme-chip-src">${src}</span>
+      const cls  = highlight ? 'cme-chip cme-chip--hl' : 'cme-chip';
+      const star = highlight ? '<i class="fas fa-star cme-chip-star"></i>' : '';
+      return `<${Tag} class="${cls}" ${href}>
+        ${star}<span class="cme-chip-src${highlight ? ' cme-chip-src--hl' : ''}">${src}</span>
         <span class="cme-chip-title">${title}</span>
         <span class="cme-chip-meta"><i class="fas fa-calendar-day"></i>${when}</span>
         <span class="cme-chip-meta"><i class="fas fa-map-marker-alt"></i>${place}</span>
@@ -2199,7 +2202,7 @@
 
     /* ── Render items into the track (duplicated for seamless loop) ── */
     function render(items) {
-      const html = items.map(e => chip(e.title, e.when || e.date || 'TBA', e.place || e.location || '', e.src || e.source || 'Event', e.url || '#')).join('');
+      const html = items.map(e => chip(e.title, e.when || e.date || 'TBA', e.place || e.location || '', e.src || e.source || 'Event', e.url || '#', e.highlight)).join('');
       track.innerHTML = `<span class="cme-inner">${html}</span><span class="cme-inner" aria-hidden="true">${html}</span>`;
       /* Pause animation on hover */
       track.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
