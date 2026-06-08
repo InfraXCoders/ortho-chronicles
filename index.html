@@ -1127,6 +1127,43 @@
     </div>
   </footer>
 
+  <!-- ══════════════════════════════════════════════
+       EXTERNAL LINKS WIDGET (left side)
+  ══════════════════════════════════════════════ -->
+  <div class="elw-widget" id="elwWidget">
+
+    <!-- Panel slides in from the left -->
+    <div class="elw-panel" id="elwPanel">
+      <div class="elw-header">
+        <div class="elw-header-title">
+          <i class="fas fa-external-link-alt"></i>
+          <span>External Links</span>
+        </div>
+        <button class="elw-close" id="elwClose" aria-label="Close panel"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="elw-list">
+
+        <a class="elw-item" href="https://bfuhs.ggsmch.org/download-exam-branch/" target="_blank" rel="noopener noreferrer">
+          <span class="elw-item-icon"><i class="fas fa-graduation-cap"></i></span>
+          <span class="elw-item-body">
+            <span class="elw-item-name">Thesis</span>
+            <span class="elw-item-host">bfuhs.ggsmch.org</span>
+          </span>
+          <span class="elw-item-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Compact tab sticking out on the right edge of the widget -->
+    <button class="elw-tab" id="elwTab" aria-label="Open External Links">
+      <i class="fas fa-link elw-tab-icon"></i>
+      <span class="elw-tab-label">Links</span>
+    </button>
+
+  </div>
+
   <!-- Floating WhatsApp -->
   <a href="https://wa.me/919779212479" target="_blank" rel="noopener" class="float-wa" aria-label="WhatsApp Dr. Singh">
     <i class="fab fa-whatsapp"></i>
@@ -2036,6 +2073,17 @@
       }
     }, { passive: true });
 
+  })();
+  </script>
+
+  <!-- ── External Links widget toggle ── -->
+  <script>
+  (function () {
+    const panel    = document.getElementById('elwPanel');
+    const tab      = document.getElementById('elwTab');
+    const closeBtn = document.getElementById('elwClose');
+    tab.addEventListener('click', () => panel.classList.toggle('open'));
+    closeBtn.addEventListener('click', () => panel.classList.remove('open'));
   })();
   </script>
 </body>
