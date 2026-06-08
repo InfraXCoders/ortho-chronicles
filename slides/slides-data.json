@@ -21,9 +21,9 @@
     "description": "Step-by-step TKR technique covering medial parapatellar approach, bone cuts, implant selection (CR vs PS), cemented vs cementless fixation, gap balancing, and post-op protocol.",
     "slideCount": 30,
     "cover": "gray",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "total-knee-replacement.pptx",
+    "date": "2026-06-08"
   },
   {
     "id": "femur",
@@ -34,9 +34,9 @@
     "description": "Garden & AO/OTA classification, DHS vs PFNA decision-making, hemiarthroplasty indications, intramedullary nailing technique, and peri-operative management.",
     "slideCount": 25,
     "cover": "orange",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "proximal-femur-fractures.pptx",
+    "date": "2026-06-08"
   },
   {
     "id": "shoulder",
@@ -47,9 +47,9 @@
     "description": "Glenohumeral joint anatomy, rotator cuff muscles, neurovascular supply, and biomechanical principles for surgical planning.",
     "slideCount": 40,
     "cover": "gray",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "shoulder-anatomy.pptx",
+    "date": "2026-06-08"
   },
   {
     "id": "rehab",
@@ -60,9 +60,9 @@
     "description": "Phase-wise rehabilitation protocol for TKR and THR — exercise progressions, physiotherapy milestones, and return-to-function criteria.",
     "slideCount": 20,
     "cover": "orange",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "post-operative-rehabilitation.pptx",
+    "date": "2026-06-08"
   },
   {
     "id": "radiology",
@@ -73,9 +73,9 @@
     "description": "Systematic X-ray analysis framework, fracture classification systems, implant assessment, and post-operative imaging interpretation.",
     "slideCount": 35,
     "cover": "gray",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "reading-orthopedic-xrays.pptx",
+    "date": "2026-06-08"
   },
   {
     "id": "thr",
@@ -86,8 +86,8 @@
     "description": "Posterior vs anterolateral approach comparison, cup & stem fixation techniques, bearing surfaces, and 10-year outcome data.",
     "slideCount": 28,
     "cover": "orange",
-    "status": "coming-soon",
-    "file": null,
-    "date": null
+    "status": "available",
+    "file": "total-hip-arthroplasty.pptx",
+    "date": "2026-06-08"
   }
 ]
