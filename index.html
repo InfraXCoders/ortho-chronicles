@@ -2155,35 +2155,56 @@
     });
 
     /* ── Static Indian Orthopaedic CME/Conference data (always shown) ── */
+    /* ── Only UPCOMING events (Jun 2026 onwards) with verified links ── */
     const STATIC = [
-      { title: 'IOACON 2025 — IOA Annual National Conference',   when: 'Dec 2025',    place: 'Bengaluru',    src: 'IOA',    url: 'https://ioaindia.org' },
-      { title: 'Punjab Orthopaedic Society Annual CME',          when: 'Oct 2025',    place: 'Amritsar',     src: 'POS',    url: 'https://pmc.org.in' },
-      { title: 'Punjab Orthopaedic Association — Annual Conference & CME', when: '2025–26', place: 'Punjab', src: 'POA', url: '#', highlight: true },
-      { title: 'OrthoTV Live CME Series — Arthroplasty Update',  when: 'Monthly',     place: 'Online',       src: 'OrthoTV',url: 'https://orthoindia.org' },
-      { title: 'APOSI 2025 — Asia Pacific Orthopaedic Infection',when: 'Nov 2025',    place: 'New Delhi',    src: 'APOSI',  url: '#' },
-      { title: 'NOSS Annual Meeting 2025',                        when: 'Sep 2025',    place: 'Mumbai',       src: 'NOSS',   url: '#' },
-      { title: 'PMC Punjab — Accredited Orthopaedic CME',        when: 'Quarterly',   place: 'Punjab',       src: 'PMC',    url: 'https://pmc.org.in' },
-      { title: 'SICOT World Orthopaedic Congress',               when: '2025',        place: 'International',src: 'SICOT',  url: 'https://sicot.org' },
-      { title: 'AAOS Annual Meeting 2026',                        when: 'Mar 2026',    place: 'USA',          src: 'AAOS',   url: 'https://aaos.org' },
-      { title: 'Delhi Orthopaedic Association Annual CME',        when: 'Nov 2025',    place: 'New Delhi',    src: 'DOA',    url: '#' },
-      { title: 'Maharashtra Orthopaedic Society MOSACON',         when: 'Oct 2025',    place: 'Mumbai',       src: 'MOS',    url: '#' },
-      { title: 'TNOSCON 2025 — Tamil Nadu Orthopaedic Society',  when: 'Dec 2025',    place: 'Chennai',      src: 'TNOS',   url: '#' },
-      { title: 'KSOS Annual Spine & Ortho CME',                  when: 'Sep 2025',    place: 'Bengaluru',    src: 'KSOS',   url: '#' },
-      { title: 'Gujarat Orthopaedic Society GOACON',             when: 'Nov 2025',    place: 'Ahmedabad',    src: 'GOS',    url: '#' },
-      { title: 'UP Orthopaedic Association Conference',           when: 'Oct 2025',    place: 'Lucknow',      src: 'UPOA',   url: '#' },
-      { title: 'Rajasthan Orthopaedic Association CME',           when: 'Sep 2025',    place: 'Jaipur',       src: 'ROA',    url: '#' },
-      { title: 'ESSKA Congress 2026 — Knee, Foot & Sports',      when: '2026',        place: 'Europe',       src: 'ESSKA',  url: 'https://esska.net' },
-      { title: 'BOA Annual Congress 2025',                        when: 'Oct 2025',    place: 'UK',           src: 'BOA',    url: 'https://boa.ac.uk' },
-      { title: 'CME Tracker — India State Council Events',        when: 'Ongoing',     place: 'Pan India',    src: 'CME-T',  url: 'https://cmetracker.net' },
-      { title: 'Haryana Orthopaedic Association Annual CME',      when: 'Nov 2025',    place: 'Chandigarh',   src: 'HOA',    url: '#' },
-      { title: 'ISKS International Knee Surgery Congress',        when: '2026',        place: 'International',src: 'ISKS',   url: '#' },
+      /* ★ Highlighted — local/state */
+      { title: 'Punjab Orthopaedic Association — Annual Conference & CME',
+        when: 'Jul–Dec 2026', place: 'Punjab',      src: 'POA',
+        url: 'https://app.punjabmedicalcouncil.in/get_upcoming_cme_detail', highlight: true },
+      { title: 'PMC Punjab — Upcoming Accredited CME List',
+        when: 'Ongoing',      place: 'Punjab',      src: 'PMC',
+        url: 'https://app.punjabmedicalcouncil.in/get_upcoming_cme_detail', highlight: true },
+
+      /* National */
+      { title: 'IOA WBOA PG Course 2026',
+        when: '19 Jun 2026',  place: 'India',       src: 'IOA',
+        url: 'https://ioaindia.org/Webview/OngoingAcedemics' },
+      { title: 'Foot & Ankle Principal Course 2026',
+        when: '26 Jun 2026',  place: 'India',       src: 'IOA',
+        url: 'https://ioaindia.org/Webview/OngoingAcedemics' },
+      { title: 'IATSCON 2026 — IOA Trauma Society',
+        when: '27 Jun 2026',  place: 'India',       src: 'IOA',
+        url: 'https://ioaindia.org/Webview/OngoingAcedemics' },
+      { title: 'PJCON 2026 — Paediatric Joint Conference',
+        when: '11 Jul 2026',  place: 'India',       src: 'IOA',
+        url: 'https://ioaindia.org/Webview/OngoingAcedemics' },
+      { title: 'IOA Upcoming Academic Events 2026',
+        when: 'View All',     place: 'Pan India',   src: 'IOA',
+        url: 'https://ioaindia.org/Webview/OngoingAcedemics' },
+      { title: 'IOACON 2026 — 71st IOA Annual National Conference',
+        when: 'Dec 2026',     place: 'Gujarat',     src: 'IOA',
+        url: 'https://www.ioacon2026gujarat.com/' },
+      { title: 'OrthoTV Live CME & Webinar Series',
+        when: 'Weekly',       place: 'Online',      src: 'OrthoTV',
+        url: 'https://orthotvonline.com/' },
+
+      /* International */
+      { title: 'SICOT 46th World Orthopaedic Congress',
+        when: '29 Sep–1 Oct 2026', place: 'Kyoto, Japan', src: 'SICOT',
+        url: 'https://sicot-congress.org/' },
+      { title: 'Upcoming Orthopedic Conferences India 2026',
+        when: 'View All',     place: 'India',       src: 'Conf',
+        url: 'https://conferencealerts.co.in/orthopedic' },
+      { title: 'AAOS Orthopaedic Conference Calendar',
+        when: 'Ongoing',      place: 'Global',      src: 'AAOS',
+        url: 'https://ams.aaos.org/Events/Calendar-of-Events?type=1&format=&location=&cme=&skills=&sponsor=&after=&before=&keyword=&interest=&action=Search' },
     ];
 
-    /* ── RSS feeds for live supplement ── */
+    /* ── RSS feeds — updated for 2026 ── */
     const FEEDS = [
-      'https://news.google.com/rss/search?q=Indian+Orthopaedic+Association+conference+CME+2025&hl=en&gl=IN&ceid=IN:en',
-      'https://news.google.com/rss/search?q=orthopaedic+conference+India+CME+2025+2026&hl=en&gl=IN&ceid=IN:en',
-      'https://news.google.com/rss/search?q=IOACON+APOSI+NOSS+orthopedic+conference+India&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=Indian+Orthopaedic+Association+conference+CME+2026&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=orthopaedic+conference+India+CME+2026+upcoming&hl=en&gl=IN&ceid=IN:en',
+      'https://news.google.com/rss/search?q=IOACON+2026+Gujarat+orthopaedic+conference&hl=en&gl=IN&ceid=IN:en',
     ];
 
     /* ── Build HTML for one event chip ── */
