@@ -2018,6 +2018,24 @@
       fetchAll();
     }, 1200);
 
+    /* ── Hide widget when user scrolls past first screen ── */
+    const widget = document.getElementById('mnwWidget');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > window.innerHeight * 0.85) {
+        widget.style.opacity = '0';
+        widget.style.pointerEvents = 'none';
+        /* Close panel silently so it doesn't reopen mid-page */
+        if (isOpen) {
+          isOpen = false;
+          panel.classList.remove('open');
+          stopScroll();
+        }
+      } else {
+        widget.style.opacity = '1';
+        widget.style.pointerEvents = '';
+      }
+    }, { passive: true });
+
   })();
   </script>
 </body>
