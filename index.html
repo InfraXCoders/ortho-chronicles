@@ -2043,12 +2043,14 @@
       if (e.key === 'Escape' && isOpen) { isOpen = false; panel.classList.remove('open'); stopScroll(); }
     });
 
-    /* ── Auto-open on page load (1.2 s delay so page renders first) ── */
-    setTimeout(() => {
-      isOpen = true;
-      panel.classList.add('open');
-      fetchAll();
-    }, 1200);
+    /* ── Auto-open on page load — desktop only (mobile: too intrusive, user taps tab) ── */
+    if (window.innerWidth > 600) {
+      setTimeout(() => {
+        isOpen = true;
+        panel.classList.add('open');
+        fetchAll();
+      }, 1200);
+    }
 
     /* ── Hide widget when user scrolls past first screen ── */
     const widget = document.getElementById('mnwWidget');

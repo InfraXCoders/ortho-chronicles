@@ -1837,10 +1837,19 @@ img { max-width: 100%; display: block; }
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 600px) {
-  .mnw-widget { right: 0; width: 100%; }
-  .mnw-panel  { height: 65vh; border-radius: 12px 12px 0 0; }
-  .mnw-tab    { padding: 9px 14px; font-size: .65rem; }
+  /* Both widgets sit side-by-side — each 50% width */
+  .mnw-widget {
+    right: 0;
+    width: 50%;
+  }
+  .mnw-panel  { height: 65vh; border-radius: 14px 0 0 0; }
+  .mnw-tab    { padding: 10px 6px; font-size: .6rem; gap: 5px; letter-spacing: .04em; }
   .mnw-list   { padding: 6px 8px; }
+
+  /* On mobile there is no hover — disable the translateY minimise entirely.
+     The tab stays fully visible at the bottom at all times.               */
+  .mnw-minimized          { transform: translateY(0) !important; }
+  .mnw-minimized:hover    { transform: translateY(0) !important; }
 }
 
 /* ╔══════════════════════════════════════════════════════╗
@@ -2189,20 +2198,19 @@ a.cme-chip:hover .cme-chip-title { color: var(--orange-light); }
 
 @media (max-width: 600px) {
   .elw-widget { left: 0; width: 50%; }
-  .elw-panel  { border-radius: 12px 0 0 0; max-height: 70vh; }
-  .elw-tab    { padding: 9px 8px; font-size: .58rem; gap: 5px; }
+  .elw-panel  { border-radius: 0 14px 0 0; max-height: 65vh; }
+  .elw-tab    { padding: 10px 6px; font-size: .6rem; gap: 5px; letter-spacing: .04em; }
+
+  /* Same fix: no hover on mobile — keep tab always visible */
+  .elw-minimized          { transform: translateY(0) !important; }
+  .elw-minimized:hover    { transform: translateY(0) !important; }
 }
 
 /* ╔══════════════════════════════════════════════════════════════╗
    ║          COMPREHENSIVE MOBILE OVERHAUL                       ║
    ╚══════════════════════════════════════════════════════════════╝ */
 
-/* ── A. Fix news widget width on mobile (was 100%, covers links widget) ── */
-@media (max-width: 600px) {
-  .mnw-widget { right: 0; width: 50% !important; }
-  .mnw-panel  { height: 70vh; border-radius: 0 12px 0 0; }
-  .mnw-tab    { padding: 9px 6px; font-size: .58rem; gap: 4px; }
-}
+/* ── A. News widget width on mobile — handled in widget's own @media block above ── */
 
 /* ── B. Lift WhatsApp FAB above bottom widgets ── */
 @media (max-width: 768px) {
