@@ -179,7 +179,8 @@ img { max-width: 100%; display: block; }
   /* On desktop sit inside the header bar */
   position: fixed; top: 0; left: 50%; transform: translateX(-50%);
   height: 84px; /* match navbar height */
-  z-index: 999; list-style: none; margin: 0; padding: 0 8px;
+  z-index: 1001; /* above header (1000) so links are clickable */
+  list-style: none; margin: 0; padding: 0 8px;
   background: transparent;
   white-space: nowrap;
 }
