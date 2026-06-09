@@ -1323,6 +1323,45 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- ═══════════════════════════════════════
+       HAMMER  —  OrthoChronicles Chatbot
+  ═══════════════════════════════════════ -->
+
+  <!-- Trigger button -->
+  <button class="hmr-btn" id="hmrBtn" aria-label="Open Hammer chatbot">
+    <i class="fas fa-hammer"></i>
+    <span class="hmr-badge" id="hmrBadge">1</span>
+  </button>
+
+  <!-- Chat panel -->
+  <div class="hmr-panel" id="hmrPanel" role="dialog" aria-label="Hammer chatbot">
+
+    <!-- Header -->
+    <div class="hmr-header">
+      <div class="hmr-hdr-left">
+        <div class="hmr-avatar"><i class="fas fa-hammer"></i></div>
+        <div class="hmr-hdr-info">
+          <span class="hmr-name">Hammer</span>
+          <span class="hmr-status"><span class="hmr-dot"></span>Ortho Assistant · Online</span>
+        </div>
+      </div>
+      <button class="hmr-close" id="hmrClose" aria-label="Close chat"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Messages -->
+    <div class="hmr-messages" id="hmrMessages"></div>
+
+    <!-- Quick replies -->
+    <div class="hmr-quick" id="hmrQuick"></div>
+
+    <!-- Input -->
+    <div class="hmr-input-row">
+      <input type="text" id="hmrInput" placeholder="Ask me about orthopedics…" autocomplete="off" maxlength="300" />
+      <button id="hmrSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+  </div><!-- /hmr-panel -->
+
   <!-- ══════════════════════════════════════════════
        CME & CONFERENCE TICKER
   ══════════════════════════════════════════════ -->
@@ -2541,6 +2580,286 @@
         widget.style.pointerEvents = '';
       }
     }, { passive: true });
+  })();
+  </script>
+
+  <!-- ═══════════════════════════════════════
+       HAMMER CHATBOT  —  Script
+  ═══════════════════════════════════════ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Knowledge base ── */
+    const KB = [
+      {
+        id: 'greeting',
+        keys: ['hi','hello','hey','hii','namaste','good morning','good afternoon','good evening'],
+        reply: "Hello! 👋 I'm <strong>Hammer</strong>, your OrthoChronicles assistant. I can help you with orthopedic queries, book recommendations, and guidance about treatments.<br><br>What would you like to know?",
+        quick: ['Knee Replacement','Hip Replacement','Shoulder Surgery','Fractures & Trauma','Recovery Tips','Find a Book','Contact Dr. Singh']
+      },
+      {
+        id: 'knee',
+        keys: ['knee','tkr','total knee','knee pain','knee replacement','knee surgery','knee arthritis'],
+        reply: "🦴 <strong>Knee Replacement (TKR)</strong><br><br>Total Knee Arthroplasty is recommended when:<ul><li>Severe pain limits daily activities</li><li>Stiffness persists despite medication</li><li>Conservative treatments have failed</li><li>X-ray shows significant cartilage loss</li></ul><br>Recovery typically takes <strong>6–12 weeks</strong> to return to normal activities. Dr. Maninder Singh performs TKR at GMCH Amritsar.",
+        quick: ['When is surgery needed?','Recovery timeline','Knee exercises','Hip Replacement','Contact Dr. Singh']
+      },
+      {
+        id: 'hip',
+        keys: ['hip','thr','total hip','hip pain','hip replacement','hip surgery','hip arthritis','avascular necrosis'],
+        reply: "🦴 <strong>Hip Replacement (THR)</strong><br><br>Hip replacement is considered when:<ul><li>Hip pain persists even at rest</li><li>Pain affects sleep and daily life</li><li>Stiffness limits bending or walking</li><li>Arthritis or AVN is confirmed on imaging</li></ul><br>Most patients <strong>walk within 24 hours</strong> and are home in 3–4 days. Full recovery in 3–6 months.",
+        quick: ['Recovery timeline','Post-op care','Knee Replacement','Contact Dr. Singh']
+      },
+      {
+        id: 'shoulder',
+        keys: ['shoulder','rotator cuff','shoulder pain','shoulder replacement','tsa','shoulder surgery','shoulder arthritis'],
+        reply: "🦴 <strong>Shoulder Replacement</strong><br><br>Shoulder arthroplasty is indicated for:<ul><li>Severe glenohumeral arthritis</li><li>Irreparable rotator cuff tears</li><li>Complex proximal humerus fractures</li><li>Failed previous shoulder surgeries</li></ul><br>We have a detailed step-by-step surgical guide on OrthoChronicles — <a href='shoulder-replacement.html' style='color:var(--teal);font-weight:700;'>read the full article →</a>",
+        quick: ['Read shoulder article','Recovery tips','Contact Dr. Singh']
+      },
+      {
+        id: 'fracture',
+        keys: ['fracture','broken bone','break','fractures','trauma','accident','road accident','fall','injury','broken'],
+        reply: "🚑 <strong>Fracture & Trauma</strong><br><br><strong>Immediate steps after a fracture:</strong><ul><li>Immobilise the injured limb — do not force movement</li><li>Apply ice (wrapped in cloth) to reduce swelling</li><li>Go to the nearest emergency department immediately</li><li>The <em>golden hour</em> — early treatment dramatically improves outcomes</li></ul><br>For complex fractures, Dr. Maninder Singh's team at GMCH Amritsar provides comprehensive trauma care.",
+        quick: ['Road accident care','Golden hour info','Book resources','Contact Dr. Singh']
+      },
+      {
+        id: 'recovery',
+        keys: ['recovery','recover','rehabilitation','physio','physiotherapy','exercise','after surgery','post-op','post op','heal','healing'],
+        reply: "💪 <strong>Recovery & Rehabilitation</strong><br><br><strong>General recovery milestones:</strong><ul><li><em>Day 1–3:</em> Mobilise with support, ice & elevation</li><li><em>Week 1–2:</em> Gentle range-of-motion exercises</li><li><em>Week 3–6:</em> Progressive weight-bearing as tolerated</li><li><em>Week 6–12:</em> Strengthening exercises, return to light activity</li></ul><br>Always follow your surgeon's specific protocol — timelines vary by procedure.",
+        quick: ['Knee recovery','Hip recovery','Physiotherapy tips','Contact Dr. Singh']
+      },
+      {
+        id: 'books',
+        keys: ['book','books','textbook','pdf','download','apley','netter','mohindra','read','resource','study','material'],
+        reply: "📚 <strong>Free Book Library</strong><br><br>OrthoChronicles offers free PDF downloads of key orthopedic textbooks:<ul><li><strong>Fundamentals of Orthopedics</strong> — Mohindra</li><li><strong>Apley's System of Orthopaedics & Fractures</strong></li><li><strong>Netter's Concise Orthopaedic Anatomy</strong></li><li><strong>Traction & Orthopaedic Appliances</strong></li><li><strong>Examination of Peripheral Nerves</strong></li><li><strong>AYUSH Codes Reference</strong></li></ul><br>Scroll to the <strong>Books section</strong> to read online or download free.",
+        quick: ['Go to Books section','Slides & Presentations','Contact Dr. Singh']
+      },
+      {
+        id: 'slides',
+        keys: ['slides','presentation','ppt','pptx','lecture','powerpoint','radiology','anatomy slides'],
+        reply: "📊 <strong>Slide Presentations</strong><br><br>Our Slides Library contains peer-reviewed PowerPoint presentations on:<ul><li>Trauma & Fractures</li><li>Joint Replacement</li><li>Anatomy</li><li>Radiology (CR & DR)</li><li>Spine & Paediatric Orthopaedics</li></ul><br>All PPTX files are free to download for educational use. Scroll to the <strong>Slides section</strong> to explore.",
+        quick: ['Go to Slides','Upload a presentation','Book Library','Contact Dr. Singh']
+      },
+      {
+        id: 'pain',
+        keys: ['pain','ache','hurts','hurting','sore','inflammation','swelling','stiff','stiffness'],
+        reply: "⚠️ <strong>Joint Pain — When to See a Doctor</strong><br><br>Seek medical attention if:<ul><li>Pain lasts more than 2 weeks</li><li>Swelling or redness is present</li><li>You cannot bear weight on the joint</li><li>Pain is worse at night or at rest</li><li>You have a history of injury</li></ul><br>For an expert consultation, contact <strong>Dr. Maninder Singh</strong> at GMCH Amritsar.",
+        quick: ['Book appointment','Knee pain','Hip pain','Contact Dr. Singh']
+      },
+      {
+        id: 'appointment',
+        keys: ['appointment','consult','consultation','book','meet','visit','opd','clinic','schedule'],
+        reply: "📅 <strong>Book a Consultation</strong><br><br>To schedule an appointment with <strong>Dr. Maninder Singh</strong>, MS Orthopedics, Associate Professor at GMCH Amritsar:<ul><li>📞 WhatsApp: <a href='https://wa.me/919779212479' target='_blank' style='color:var(--teal);font-weight:700;'>+91 97792 12479</a></li><li>📍 Department of Orthopaedics, GMCH, Amritsar</li><li>🕒 OPD timings vary — please call to confirm</li></ul>",
+        quick: ['WhatsApp Dr. Singh','Get directions','Contact section']
+      },
+      {
+        id: 'contact',
+        keys: ['contact','doctor','dr singh','maninder','gmch','amritsar','phone','number','email','address'],
+        reply: "📞 <strong>Contact Dr. Maninder Singh</strong><br><br><ul><li>🔗 <a href='dr-maninder-singh.html' style='color:var(--teal);font-weight:700;'>View full profile</a></li><li>📞 WhatsApp: <a href='https://wa.me/919779212479' target='_blank' style='color:var(--teal);font-weight:700;'>+91 97792 12479</a></li><li>📍 Dept. of Orthopaedics, GMCH, Amritsar, Punjab</li><li>🎓 MS Orthopedics, Associate Professor</li></ul><br>You can also scroll to the <strong>Contact section</strong> at the bottom of this page.",
+        quick: ['WhatsApp now','Book appointment','About Dr. Singh']
+      },
+      {
+        id: 'spine',
+        keys: ['spine','back','backache','back pain','disc','disc herniation','slipped disc','lumbar','cervical','sciatica'],
+        reply: "🦴 <strong>Spine & Back Pain</strong><br><br>Common spine conditions treated in orthopaedics:<ul><li><strong>Disc herniation (slipped disc)</strong> — nerve pressure causing radiating pain</li><li><strong>Lumbar spondylosis</strong> — degenerative age-related changes</li><li><strong>Sciatica</strong> — sciatic nerve irritation causing leg pain</li><li><strong>Cervical spondylosis</strong> — neck degeneration</li></ul><br>Most cases respond to physiotherapy and medication. Surgery is a last resort.",
+        quick: ['Contact Dr. Singh','Book resources','Recovery tips']
+      },
+      {
+        id: 'sports',
+        keys: ['sports','acl','ligament','meniscus','athlete','running','football','cricket','sports injury'],
+        reply: "🏃 <strong>Sports Injuries</strong><br><br>Common sports-related orthopaedic injuries:<ul><li><strong>ACL tear</strong> — anterior cruciate ligament, needs surgical reconstruction in athletes</li><li><strong>Meniscus tear</strong> — cartilage damage, managed with physio or arthroscopy</li><li><strong>Stress fractures</strong> — overuse injuries in runners</li><li><strong>Rotator cuff tears</strong> — overhead sport injuries</li></ul><br>Early diagnosis with MRI is key to planning the right treatment.",
+        quick: ['Knee injuries','Shoulder injuries','Recovery','Contact Dr. Singh']
+      },
+      {
+        id: 'children',
+        keys: ['child','children','paediatric','pediatric','kids','infant','club foot','congenital','scoliosis','growth'],
+        reply: "👶 <strong>Paediatric Orthopaedics</strong><br><br>Common conditions in children:<ul><li><strong>Club foot (CTEV)</strong> — treated with Ponseti casting from birth</li><li><strong>DDH</strong> — developmental dysplasia of the hip</li><li><strong>Scoliosis</strong> — abnormal spinal curvature</li><li><strong>Osteogenesis imperfecta</strong> — brittle bone disease</li></ul><br>Early treatment gives the best long-term results in growing children.",
+        quick: ['Contact Dr. Singh','Book resources']
+      },
+      {
+        id: 'submit',
+        keys: ['submit','publish','write','article','blog','contribute','share','upload'],
+        reply: "✍️ <strong>Contribute to OrthoChronicles</strong><br><br>We welcome contributions from:<ul><li>Orthopedic surgeons & residents</li><li>Physiotherapists</li><li>Medical students & researchers</li><li>Patients with their stories</li></ul><br>Submit your article, case study, blog post, or journal summary. Every submission is reviewed by Dr. Maninder Singh's team before publication.<br><br>Scroll to the <strong>Blog section</strong> and click <em>Submit Your Contribution</em>.",
+        quick: ['Go to submit form','Upload a slide','Contact Dr. Singh']
+      }
+    ];
+
+    /* ── Fallback ── */
+    const FALLBACK = {
+      reply: "I'm not sure about that specific query. Here's how I can help:",
+      quick: ['Knee Replacement','Hip Replacement','Fractures','Find a Book','Contact Dr. Singh']
+    };
+
+    /* ── Quick-reply shortcuts ── */
+    const QR_MAP = {
+      'Knee Replacement':      'knee replacement',
+      'Hip Replacement':       'hip replacement',
+      'Shoulder Surgery':      'shoulder replacement',
+      'Fractures & Trauma':    'fracture',
+      'Recovery Tips':         'recovery',
+      'Find a Book':           'books',
+      'Contact Dr. Singh':     'contact',
+      'Book appointment':      'appointment',
+      'Slides & Presentations':'slides',
+      'Go to Books section':   null,  // handled as action
+      'Go to Slides':          null,
+      'WhatsApp Dr. Singh':    null,
+      'WhatsApp now':          null,
+      'Upload a presentation': null,
+      'Go to submit form':     null,
+      'Upload a slide':        null,
+      'Read shoulder article': null,
+      'Contact section':       null,
+      'Get directions':        null,
+      'About Dr. Singh':       'contact',
+      'Knee pain':             'knee',
+      'Hip pain':              'hip',
+      'Book resources':        'books',
+      'Physiotherapy tips':    'recovery',
+      'Knee exercises':        'recovery',
+      'Post-op care':          'recovery',
+      'Knee recovery':         'recovery',
+      'Hip recovery':          'recovery',
+      'Road accident care':    'fracture',
+      'Golden hour info':      'fracture',
+      'Knee injuries':         'knee',
+      'Shoulder injuries':     'shoulder',
+      'Recovery':              'recovery',
+      'Recovery timeline':     'recovery',
+      'Recovery tips':         'recovery',
+      'Spine':                 'spine',
+      'Spine pain':            'spine',
+    };
+
+    /* ── Action shortcuts (scroll or navigate) ── */
+    const QR_ACTIONS = {
+      'Go to Books section':    () => { close(); document.getElementById('books')?.scrollIntoView({behavior:'smooth'}); },
+      'Go to Slides':           () => { close(); document.getElementById('slides')?.scrollIntoView({behavior:'smooth'}); },
+      'WhatsApp Dr. Singh':     () => window.open('https://wa.me/919779212479','_blank'),
+      'WhatsApp now':           () => window.open('https://wa.me/919779212479','_blank'),
+      'Upload a presentation':  () => { close(); document.getElementById('slides')?.scrollIntoView({behavior:'smooth'}); },
+      'Upload a slide':         () => { close(); document.getElementById('slides')?.scrollIntoView({behavior:'smooth'}); },
+      'Go to submit form':      () => { close(); document.getElementById('submit')?.scrollIntoView({behavior:'smooth'}); },
+      'Read shoulder article':  () => window.open('shoulder-replacement.html','_blank'),
+      'Contact section':        () => { close(); document.getElementById('contact')?.scrollIntoView({behavior:'smooth'}); },
+      'Get directions':         () => { close(); document.getElementById('contact')?.scrollIntoView({behavior:'smooth'}); },
+    };
+
+    /* ── DOM refs ── */
+    const btn    = document.getElementById('hmrBtn');
+    const panel  = document.getElementById('hmrPanel');
+    const msgs   = document.getElementById('hmrMessages');
+    const quick  = document.getElementById('hmrQuick');
+    const input  = document.getElementById('hmrInput');
+    const send   = document.getElementById('hmrSend');
+    const badge  = document.getElementById('hmrBadge');
+    const closeB = document.getElementById('hmrClose');
+
+    let isOpen = false;
+    let greeted = false;
+
+    /* ── Open / close ── */
+    function open() {
+      isOpen = true;
+      panel.classList.add('open');
+      btn.classList.add('active');
+      badge.style.display = 'none';
+      input.focus();
+      if (!greeted) { greet(); greeted = true; }
+    }
+    function close() {
+      isOpen = false;
+      panel.classList.remove('open');
+      btn.classList.remove('active');
+    }
+    btn.addEventListener('click', () => isOpen ? close() : open());
+    closeB.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && isOpen) close(); });
+
+    /* ── Greeting ── */
+    function greet() {
+      const entry = KB.find(k => k.id === 'greeting');
+      addBot(entry.reply, entry.quick, 500);
+    }
+
+    /* ── Add bot message (with optional typing delay) ── */
+    function addBot(html, quickReplies, delay) {
+      const typing = addTyping();
+      setTimeout(() => {
+        typing.remove();
+        const wrap = document.createElement('div');
+        wrap.className = 'hmr-msg hmr-msg-bot';
+        wrap.innerHTML = '<div class="hmr-avatar-sm"><i class="fas fa-hammer"></i></div><div class="hmr-bubble">' + html + '</div>';
+        msgs.appendChild(wrap);
+        setQuick(quickReplies || []);
+        scrollBottom();
+      }, delay || 900);
+    }
+
+    /* ── Typing indicator ── */
+    function addTyping() {
+      const el = document.createElement('div');
+      el.className = 'hmr-msg hmr-msg-bot hmr-typing-wrap';
+      el.innerHTML = '<div class="hmr-avatar-sm"><i class="fas fa-hammer"></i></div><div class="hmr-bubble hmr-typing"><span></span><span></span><span></span></div>';
+      msgs.appendChild(el);
+      scrollBottom();
+      return el;
+    }
+
+    /* ── Add user message ── */
+    function addUser(text) {
+      const wrap = document.createElement('div');
+      wrap.className = 'hmr-msg hmr-msg-user';
+      wrap.innerHTML = '<div class="hmr-bubble">' + escHtml(text) + '</div>';
+      msgs.appendChild(wrap);
+      setQuick([]);
+      scrollBottom();
+    }
+
+    /* ── Quick replies ── */
+    function setQuick(arr) {
+      quick.innerHTML = arr.map(q =>
+        '<button class="hmr-qr" data-q="' + escHtml(q) + '">' + escHtml(q) + '</button>'
+      ).join('');
+      quick.querySelectorAll('.hmr-qr').forEach(b => {
+        b.addEventListener('click', () => handleQuick(b.dataset.q));
+      });
+    }
+
+    function handleQuick(label) {
+      if (QR_ACTIONS[label]) { QR_ACTIONS[label](); return; }
+      const query = QR_MAP[label] !== undefined ? QR_MAP[label] : label;
+      if (!query) return;
+      addUser(label);
+      respond(query);
+    }
+
+    /* ── Respond ── */
+    function respond(text) {
+      const t = text.toLowerCase();
+      const matched = KB.find(k => k.keys.some(kw => t.includes(kw)));
+      if (matched) {
+        addBot(matched.reply, matched.quick);
+      } else {
+        addBot(FALLBACK.reply, FALLBACK.quick);
+      }
+    }
+
+    /* ── Send ── */
+    function handleSend() {
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = '';
+      addUser(val);
+      respond(val);
+    }
+    send.addEventListener('click', handleSend);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
+
+    /* ── Helpers ── */
+    function scrollBottom() { msgs.scrollTop = msgs.scrollHeight; }
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
   })();
   </script>
 </body>

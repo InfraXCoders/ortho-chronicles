@@ -2757,3 +2757,208 @@ html {
     outline-offset: 3px;
   }
 }
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║           HAMMER  —  OrthoChronicles Chatbot                  ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── Trigger button ── */
+.hmr-btn {
+  position: fixed; bottom: 30px; left: 30px;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  color: #fff; font-size: 1.35rem;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(107,124,46,.5);
+  transition: transform .3s ease, box-shadow .3s ease;
+  z-index: 1100;
+}
+.hmr-btn:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 32px rgba(107,124,46,.6); }
+.hmr-btn.active { background: linear-gradient(135deg, var(--teal), var(--blue-dark)); }
+
+/* Notification badge */
+.hmr-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #e53e3e; color: #fff;
+  font-size: .65rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff;
+  animation: hmrPulse 1.8s infinite;
+}
+@keyframes hmrPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(229,62,62,.5); }
+  50%      { box-shadow: 0 0 0 7px rgba(229,62,62,0); }
+}
+
+/* ── Chat panel ── */
+.hmr-panel {
+  position: fixed; bottom: 102px; left: 30px;
+  width: 360px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.22);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  z-index: 1099;
+  opacity: 0; transform: translateY(20px) scale(.97);
+  pointer-events: none;
+  transition: opacity .28s ease, transform .28s cubic-bezier(.34,1.56,.64,1);
+}
+.hmr-panel.open {
+  opacity: 1; transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ── Header ── */
+.hmr-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--teal-dark) 100%);
+  flex-shrink: 0;
+}
+.hmr-hdr-left {
+  display: flex; align-items: center; gap: 12px;
+}
+.hmr-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: #fff; flex-shrink: 0;
+}
+.hmr-hdr-info { display: flex; flex-direction: column; gap: 2px; }
+.hmr-name { font-size: .95rem; font-weight: 800; color: #fff; letter-spacing: .02em; }
+.hmr-status {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .7rem; color: rgba(255,255,255,.75);
+}
+.hmr-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74,222,128,.3);
+}
+.hmr-close {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.15); border: none;
+  color: rgba(255,255,255,.9); cursor: pointer; font-size: .82rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s ease;
+}
+.hmr-close:hover { background: rgba(255,255,255,.3); }
+
+/* ── Messages area ── */
+.hmr-messages {
+  flex: 1; overflow-y: auto; padding: 16px 14px;
+  display: flex; flex-direction: column; gap: 14px;
+  max-height: 340px; min-height: 200px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.hmr-messages::-webkit-scrollbar { width: 4px; }
+.hmr-messages::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+
+.hmr-msg {
+  display: flex; align-items: flex-end; gap: 8px;
+}
+.hmr-msg-bot { justify-content: flex-start; }
+.hmr-msg-user { justify-content: flex-end; }
+
+.hmr-avatar-sm {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; color: #fff;
+}
+
+.hmr-bubble {
+  max-width: 82%; padding: 10px 14px;
+  border-radius: 16px; font-size: .82rem; line-height: 1.65;
+}
+.hmr-msg-bot .hmr-bubble {
+  background: var(--off-white);
+  border: 1px solid var(--gray-200);
+  border-bottom-left-radius: 4px;
+  color: var(--text);
+}
+.hmr-msg-bot .hmr-bubble ul {
+  padding-left: 1.1rem; margin: 6px 0 0; display: flex; flex-direction: column; gap: 4px;
+}
+.hmr-msg-bot .hmr-bubble li { font-size: .8rem; color: var(--gray-600); line-height: 1.55; }
+.hmr-msg-user .hmr-bubble {
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* ── Typing animation ── */
+.hmr-typing { display: flex !important; align-items: center; gap: 5px; padding: 12px 16px !important; }
+.hmr-typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal-dark);
+  animation: hmrBounce .9s infinite;
+  display: inline-block;
+}
+.hmr-typing span:nth-child(2) { animation-delay: .15s; }
+.hmr-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes hmrBounce {
+  0%,80%,100% { transform: translateY(0); opacity: .4; }
+  40%          { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ── Quick replies ── */
+.hmr-quick {
+  padding: 4px 14px 10px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  flex-shrink: 0;
+}
+.hmr-qr {
+  padding: 5px 13px; border-radius: 100px;
+  background: rgba(107,124,46,.09);
+  border: 1.5px solid rgba(107,124,46,.25);
+  color: var(--teal-dark); font-size: .73rem; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: all .2s ease; white-space: nowrap;
+}
+.hmr-qr:hover {
+  background: var(--teal); color: #fff;
+  border-color: transparent; transform: translateY(-1px);
+}
+
+/* ── Input row ── */
+.hmr-input-row {
+  display: flex; gap: 0; border-top: 1px solid var(--gray-200);
+  flex-shrink: 0;
+}
+#hmrInput {
+  flex: 1; border: none; outline: none;
+  padding: 13px 16px;
+  font-family: 'Inter', sans-serif; font-size: .84rem; color: var(--text);
+  background: #fff; border-radius: 0;
+}
+#hmrInput::placeholder { color: var(--gray-400); }
+#hmrSend {
+  width: 48px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  border: none; color: #fff; cursor: pointer; font-size: .88rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .2s ease;
+}
+#hmrSend:hover { opacity: .88; }
+
+/* ── Safe-area on iOS ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .hmr-btn { bottom: calc(30px + env(safe-area-inset-bottom)); }
+  .hmr-panel { bottom: calc(102px + env(safe-area-inset-bottom)); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .hmr-btn { bottom: 80px; left: 16px; width: 52px; height: 52px; font-size: 1.2rem; }
+  .hmr-panel {
+    left: 10px; right: 10px; width: auto;
+    bottom: 148px;
+    border-radius: 16px;
+  }
+  .hmr-messages { max-height: 280px; }
+}
