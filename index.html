@@ -1348,17 +1348,72 @@
       <button class="hmr-close" id="hmrClose" aria-label="Close chat"><i class="fas fa-times"></i></button>
     </div>
 
-    <!-- Messages -->
-    <div class="hmr-messages" id="hmrMessages"></div>
+    <!-- Tab panes -->
+    <div class="hmr-panes">
 
-    <!-- Quick replies -->
-    <div class="hmr-quick" id="hmrQuick"></div>
+      <!-- Chat -->
+      <div class="hmr-pane active" id="paneChat">
+        <div class="hmr-messages" id="hmrMessages"></div>
+        <div class="hmr-quick" id="hmrQuick"></div>
+        <div class="hmr-input-row">
+          <input type="text" id="hmrInput" placeholder="Ask me about orthopedics…" autocomplete="off" maxlength="300" />
+          <button id="hmrSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
 
-    <!-- Input -->
-    <div class="hmr-input-row">
-      <input type="text" id="hmrInput" placeholder="Ask me about orthopedics…" autocomplete="off" maxlength="300" />
-      <button id="hmrSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
-    </div>
+      <!-- Books -->
+      <div class="hmr-pane" id="paneBooks">
+        <div class="hmr-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="hmrBookQ" placeholder="Search books by title or author…" autocomplete="off" />
+        </div>
+        <div class="hmr-results" id="hmrBookList"></div>
+      </div>
+
+      <!-- Slides -->
+      <div class="hmr-pane" id="paneSlides">
+        <div class="hmr-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="hmrSlideQ" placeholder="Search presentations…" autocomplete="off" />
+        </div>
+        <div class="hmr-results" id="hmrSlideList"></div>
+      </div>
+
+      <!-- Blog -->
+      <div class="hmr-pane" id="paneBlog">
+        <div class="hmr-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="hmrBlogQ" placeholder="Search blog articles…" autocomplete="off" />
+        </div>
+        <div class="hmr-results" id="hmrBlogList"></div>
+      </div>
+
+      <!-- YouTube -->
+      <div class="hmr-pane" id="paneYT">
+        <div class="hmr-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="hmrYTQ" placeholder="Search videos…" autocomplete="off" />
+        </div>
+        <div class="hmr-results" id="hmrYTList"></div>
+      </div>
+
+      <!-- Links -->
+      <div class="hmr-pane" id="paneLinks">
+        <div class="hmr-links-header">Curated Orthopedic Resources</div>
+        <div class="hmr-results" id="hmrLinksList"></div>
+      </div>
+
+    </div><!-- /hmr-panes -->
+
+    <!-- Tab bar -->
+    <nav class="hmr-tabbar">
+      <button class="hmr-tb active" data-pane="paneChat"><i class="fas fa-comment-dots"></i><span>Chat</span></button>
+      <button class="hmr-tb" data-pane="paneBooks"><i class="fas fa-book-open"></i><span>Books</span></button>
+      <button class="hmr-tb" data-pane="paneSlides"><i class="fas fa-file-powerpoint"></i><span>Slides</span></button>
+      <button class="hmr-tb" data-pane="paneBlog"><i class="fas fa-newspaper"></i><span>Blog</span></button>
+      <button class="hmr-tb" data-pane="paneYT"><i class="fab fa-youtube"></i><span>Videos</span></button>
+      <button class="hmr-tb" data-pane="paneLinks"><i class="fas fa-link"></i><span>Links</span></button>
+    </nav>
 
   </div><!-- /hmr-panel -->
 
@@ -2590,7 +2645,244 @@
   (function () {
     'use strict';
 
-    /* ── Knowledge base ── */
+    /* ════════════════════════════════
+       TAB SWITCHER
+    ════════════════════════════════ */
+    const tabBtns = document.querySelectorAll('.hmr-tb');
+    const panes   = document.querySelectorAll('.hmr-pane');
+
+    function switchTab(targetId) {
+      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.pane === targetId));
+      panes.forEach(p => p.classList.toggle('active', p.id === targetId));
+      if (targetId === 'paneBooks')  renderBooks('');
+      if (targetId === 'paneSlides') renderSlides('');
+      if (targetId === 'paneBlog')   renderBlog('');
+      if (targetId === 'paneYT')     renderYT('');
+      if (targetId === 'paneLinks')  renderLinks();
+    }
+
+    tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.pane)));
+
+    /* ════════════════════════════════
+       BOOKS DATA + RENDER
+    ════════════════════════════════ */
+    const BOOKS = [
+      { title: 'Fundamentals of Orthopedics', author: 'Mohindra', category: 'Fundamentals', size: '63 MB',
+        file: 'books/fundamentals-of-orthopedics-mohindra.pdf' },
+      { title: "Apley's System of Orthopaedics", author: 'Apley & Solomon', category: 'General Ortho', size: '58 MB',
+        file: 'books/apleys-system-of-orthopaedics.pdf' },
+      { title: "Netter's Concise Orthopaedic Anatomy", author: 'Netter', category: 'Anatomy', size: '67 MB',
+        file: 'books/netters-concise-orthopaedic-anatomy.pdf' },
+      { title: 'Traction & Orthopaedic Appliances', author: 'John Crawford Adams', category: 'Techniques', size: '28 MB',
+        file: 'books/traction-and-orthopaedic-appliances.pdf' },
+      { title: 'Examination of Peripheral Nerves', author: 'Aids to', category: 'Neurology', size: '7.7 MB',
+        file: 'books/aids-to-examination-of-the-peripheral-nervous-system.pdf' },
+      { title: 'AYUSH Ortho Codes', author: 'AYUSH', category: 'Reference', size: '404 KB',
+        file: 'books/ayush-ortho-codes.pdf' }
+    ];
+
+    function renderBooks(q) {
+      const list = document.getElementById('hmrBookList');
+      const term = q.toLowerCase().trim();
+      const filtered = term ? BOOKS.filter(b =>
+        b.title.toLowerCase().includes(term) ||
+        b.author.toLowerCase().includes(term) ||
+        b.category.toLowerCase().includes(term)
+      ) : BOOKS;
+      if (!filtered.length) { list.innerHTML = '<p class="hmr-empty">No books found.</p>'; return; }
+      list.innerHTML = filtered.map((b, i) => `
+        <div class="hmr-res-row">
+          <div class="hmr-res-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="hmr-res-body">
+            <div class="hmr-res-tag">${b.category} &middot; ${b.size}</div>
+            <div class="hmr-res-title">${b.title}</div>
+            <div class="hmr-res-sub">${b.author}</div>
+          </div>
+          <div class="hmr-res-acts">
+            <a href="${b.file}" target="_blank" class="hmr-ra-read" title="Read Online"><i class="fas fa-book-open"></i></a>
+            <a href="${b.file}" download class="hmr-ra-dl" title="Download"><i class="fas fa-download"></i></a>
+          </div>
+        </div>`).join('');
+    }
+
+    document.getElementById('hmrBookQ').addEventListener('input', e => renderBooks(e.target.value));
+
+    /* ════════════════════════════════
+       SLIDES DATA + RENDER
+    ════════════════════════════════ */
+    let SLIDES_DATA = null;
+
+    function renderSlides(q) {
+      const list = document.getElementById('hmrSlideList');
+      if (!SLIDES_DATA) {
+        list.innerHTML = '<p class="hmr-empty hmr-loading"><i class="fas fa-spinner fa-spin"></i> Loading slides…</p>';
+        fetch('slides/slides-data.json')
+          .then(r => r.json())
+          .then(data => { SLIDES_DATA = data; renderSlides(q); })
+          .catch(() => { list.innerHTML = '<p class="hmr-empty">Could not load slides data.</p>'; });
+        return;
+      }
+      const term = q.toLowerCase().trim();
+      const filtered = term
+        ? SLIDES_DATA.filter(s =>
+            (s.title||'').toLowerCase().includes(term) ||
+            (s.category||'').toLowerCase().includes(term) ||
+            (s.description||'').toLowerCase().includes(term))
+        : SLIDES_DATA;
+      if (!filtered.length) { list.innerHTML = '<p class="hmr-empty">No slides found.</p>'; return; }
+      list.innerHTML = filtered.map((s, i) => {
+        const avail = s.available !== false && s.file;
+        return `<div class="hmr-res-row">
+          <div class="hmr-res-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="hmr-res-body">
+            <div class="hmr-res-tag">${s.category || 'Slides'}${!avail ? ' &middot; <em>Coming Soon</em>' : ''}</div>
+            <div class="hmr-res-title">${s.title}</div>
+            ${s.description ? `<div class="hmr-res-sub">${s.description.substring(0,80)}…</div>` : ''}
+          </div>
+          <div class="hmr-res-acts">
+            ${avail ? `<a href="slides/${s.file}" target="_blank" class="hmr-ra-read" title="View"><i class="fas fa-eye"></i></a>
+            <a href="slides/${s.file}" download class="hmr-ra-dl" title="Download"><i class="fas fa-download"></i></a>` :
+            '<span class="hmr-ra-soon"><i class="fas fa-clock"></i></span>'}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    document.getElementById('hmrSlideQ').addEventListener('input', e => renderSlides(e.target.value));
+
+    /* ════════════════════════════════
+       BLOG DATA + RENDER
+    ════════════════════════════════ */
+    const BLOGS = [
+      { title: 'When Is the Right Time for Knee Replacement?',
+        tag: 'Joint Replacement', date: 'May 2025',
+        excerpt: 'Understanding the right time to consider knee replacement surgery — signs, symptoms, and when conservative treatment is no longer enough.',
+        href: '#' },
+      { title: 'Hip Replacement Recovery: A Week-by-Week Guide',
+        tag: 'Recovery', date: 'April 2025',
+        excerpt: 'A comprehensive week-by-week breakdown of the hip replacement recovery journey, from day one post-surgery to returning to full activity.',
+        href: '#' },
+      { title: 'Road Accident Fractures: Emergency Response Guide',
+        tag: 'Trauma', date: 'March 2025',
+        excerpt: 'What to do in the golden hour after a fracture injury — first aid, immobilisation, and why rapid hospital care dramatically improves outcomes.',
+        href: '#' },
+      { title: 'Understanding Shoulder Joint Replacement Surgery',
+        tag: 'Shoulder', date: 'June 2025',
+        excerpt: 'A detailed look at shoulder arthroplasty — indications, surgical approach, implant types, and what to expect during rehabilitation.',
+        href: 'shoulder-replacement.html' }
+    ];
+
+    function renderBlog(q) {
+      const list = document.getElementById('hmrBlogList');
+      const term = q.toLowerCase().trim();
+      const filtered = term ? BLOGS.filter(b =>
+        b.title.toLowerCase().includes(term) ||
+        b.tag.toLowerCase().includes(term) ||
+        b.excerpt.toLowerCase().includes(term)
+      ) : BLOGS;
+      if (!filtered.length) { list.innerHTML = '<p class="hmr-empty">No articles found.</p>'; return; }
+      list.innerHTML = filtered.map((b, i) => `
+        <div class="hmr-res-row">
+          <div class="hmr-res-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="hmr-res-body">
+            <div class="hmr-res-tag">${b.tag} &middot; ${b.date}</div>
+            <div class="hmr-res-title">${b.title}</div>
+            <div class="hmr-res-sub">${b.excerpt.substring(0,90)}…</div>
+          </div>
+          <div class="hmr-res-acts">
+            <a href="${b.href}" target="_blank" class="hmr-ra-read" title="Read Article"><i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>`).join('');
+    }
+
+    document.getElementById('hmrBlogQ').addEventListener('input', e => renderBlog(e.target.value));
+
+    /* ════════════════════════════════
+       YOUTUBE DATA + RENDER
+    ════════════════════════════════ */
+    const VIDEOS = [
+      { id: 'ddhtN4S-ohE', title: 'DTLP with K-Wire Fixation', desc: 'Dynamic Titanium Locking Plate fixation technique — step-by-step surgical procedure walkthrough.', tag: 'Surgical Technique' },
+      { id: null, title: 'Knee Replacement Surgery — Full Procedure', desc: 'Total Knee Arthroplasty demonstrated from incision to closure.', tag: 'Joint Replacement', search: 'knee replacement' },
+      { id: null, title: 'Hip Fracture Nail Fixation', desc: 'Intramedullary nail fixation for proximal femur fractures.', tag: 'Trauma', search: 'hip fracture nail' },
+      { id: null, title: 'Shoulder Arthroscopy Basics', desc: 'Introduction to shoulder arthroscopy and rotator cuff repair.', tag: 'Shoulder', search: 'shoulder arthroscopy' }
+    ];
+
+    function renderYT(q) {
+      const list = document.getElementById('hmrYTList');
+      const term = q.toLowerCase().trim();
+      const filtered = term ? VIDEOS.filter(v =>
+        v.title.toLowerCase().includes(term) ||
+        v.tag.toLowerCase().includes(term) ||
+        v.desc.toLowerCase().includes(term)
+      ) : VIDEOS;
+      const channelUrl = 'https://www.youtube.com/@Orthochronicles';
+      let html = `<a href="${channelUrl}" target="_blank" class="hmr-yt-channel"><i class="fab fa-youtube"></i> Visit @Orthochronicles Channel</a>`;
+      if (!filtered.length) { html += '<p class="hmr-empty">No videos found locally — try the channel link above.</p>'; list.innerHTML = html; return; }
+      html += filtered.map((v, i) => {
+        const ytLink = v.id
+          ? `https://www.youtube.com/watch?v=${v.id}`
+          : `${channelUrl}/search?query=${encodeURIComponent(v.search || v.title)}`;
+        const thumb = v.id
+          ? `<img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy" />`
+          : `<div class="hmr-yt-nothumb"><i class="fab fa-youtube"></i></div>`;
+        return `<a href="${ytLink}" target="_blank" class="hmr-yt-row">
+          <div class="hmr-yt-thumb">${thumb}</div>
+          <div class="hmr-res-body">
+            <div class="hmr-res-tag">${v.tag}</div>
+            <div class="hmr-res-title">${v.title}</div>
+            <div class="hmr-res-sub">${v.desc.substring(0,70)}…</div>
+          </div>
+          <div class="hmr-res-acts"><span class="hmr-ra-yt"><i class="fab fa-youtube"></i></span></div>
+        </a>`;
+      }).join('');
+      list.innerHTML = html;
+    }
+
+    document.getElementById('hmrYTQ').addEventListener('input', e => renderYT(e.target.value));
+
+    /* ════════════════════════════════
+       LINKS RENDER
+    ════════════════════════════════ */
+    const LINKS = [
+      { cat: 'Clinical Guidelines', items: [
+        { name: 'AAOS OrthoInfo', url: 'https://orthoinfo.aaos.org', desc: 'Patient guides from American Academy of Orthopaedic Surgeons' },
+        { name: 'NICE Orthopaedics Guidelines', url: 'https://www.nice.org.uk/guidance/conditions-and-diseases/musculoskeletal-conditions', desc: 'Evidence-based UK clinical guidelines' }
+      ]},
+      { cat: 'Research & Journals', items: [
+        { name: 'PubMed — Orthopedics', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=orthopedics', desc: 'Free access to orthopaedic research papers' },
+        { name: 'Bone & Joint Journal', url: 'https://online.boneandjoint.org.uk', desc: 'Leading peer-reviewed orthopaedic journal' },
+        { name: 'Journal of Orthopaedic Research', url: 'https://onlinelibrary.wiley.com/journal/1554527x', desc: 'Wiley — basic and applied orthopaedic research' }
+      ]},
+      { cat: 'Education & Training', items: [
+        { name: 'AO Surgery Reference', url: 'https://surgeryreference.aofoundation.org', desc: 'Free online surgical reference for fracture care' },
+        { name: 'Radiopaedia — Ortho', url: 'https://radiopaedia.org/search?lang=us&q=orthopedics&scope=all', desc: 'Radiology cases and learning resources' },
+        { name: 'Wheeless Textbook of Orthopaedics', url: 'http://www.wheelessonline.com', desc: 'Comprehensive free online orthopaedic textbook' }
+      ]},
+      { cat: 'Patient Resources', items: [
+        { name: 'Arthritis Foundation', url: 'https://www.arthritis.org', desc: 'Patient education on arthritis and joint disease' },
+        { name: 'NHS — Bones & Joints', url: 'https://www.nhs.uk/conditions/broken-bone/', desc: 'NHS patient information on fractures and recovery' }
+      ]}
+    ];
+
+    function renderLinks() {
+      const list = document.getElementById('hmrLinksList');
+      list.innerHTML = LINKS.map(section => `
+        <div class="hmr-link-section">
+          <div class="hmr-link-cat">${section.cat}</div>
+          ${section.items.map(l => `
+            <a href="${l.url}" target="_blank" rel="noopener" class="hmr-link-row">
+              <div class="hmr-res-body">
+                <div class="hmr-res-title">${l.name}</div>
+                <div class="hmr-res-sub">${l.desc}</div>
+              </div>
+              <div class="hmr-res-acts"><span class="hmr-ra-link"><i class="fas fa-external-link-alt"></i></span></div>
+            </a>`).join('')}
+        </div>`).join('');
+    }
+
+    /* ════════════════════════════════
+       CHAT — Knowledge base
+    ════════════════════════════════ */
     const KB = [
       {
         id: 'greeting',
@@ -2764,7 +3056,9 @@
       panel.classList.add('open');
       btn.classList.add('active');
       badge.style.display = 'none';
-      input.focus();
+      // Focus input only when chat tab is active
+      const activePane = document.querySelector('.hmr-pane.active');
+      if (activePane && activePane.id === 'paneChat') input.focus();
       if (!greeted) { greet(); greeted = true; }
     }
     function close() {
