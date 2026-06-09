@@ -1311,18 +1311,33 @@ img { max-width: 100%; display: block; }
   .section-header { margin-bottom: 40px; }
   .section-sub { font-size: .95rem; }
 
+  /* ── Remove backdrop-filter on mobile navbar ──
+     backdrop-filter creates a new stacking context which breaks
+     position:fixed children (nav overlay only fills navbar height
+     instead of full screen) on Android Chrome / Samsung Browser.
+     The solid white background is sufficient on mobile. */
+  #header.scrolled .navbar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   /* Navbar */
   .hamburger { display: flex; }
   .nav-links {
-    position: fixed; inset: 0;
-    width: 100%; height: 100vh;
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    height: 100dvh;
     background: var(--blue-dark);
     flex-direction: column; justify-content: center;
     align-items: center; gap: 28px;
     transform: translateX(100%);
-    transition: transform .35s ease; z-index: 1001;
+    transition: transform .35s ease;
+    z-index: 1001;
+    /* Isolate from any ancestor stacking contexts */
+    isolation: isolate;
   }
-  .nav-links.open { transform: translateX(0); }
+  .nav-links:not(.open) { pointer-events: none; }
+  .nav-links.open { transform: translateX(0); pointer-events: auto; }
   .nav-links a { font-size: 1.2rem; font-weight: 600; color: #fff; }
   .nav-links .btn-nav { font-size: 1rem; padding: 14px 36px; }
   .navbar { padding: 12px 16px; }
@@ -2630,8 +2645,15 @@ select {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  /* Ensure hamburger stays above backdrop */
-  .hamburger { z-index: 1002; position: relative; }
+  /* Hamburger must paint above the nav overlay (z-index 1001)
+     AND above the backdrop (z-index 1000). position:relative
+     is required for z-index to apply on a non-positioned element. */
+  .hamburger {
+    position: relative;
+    z-index: 1002;
+    /* Ensure it gets its own compositing layer on Android Chrome */
+    will-change: transform;
+  }
 }
 
 /* ── 5. Safe-area insets for fixed/sticky UI ── */
