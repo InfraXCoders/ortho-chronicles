@@ -1,27 +1,5 @@
-// Sticky navbar
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// Mobile hamburger
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-
-function openNav() {
-  navLinks.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeNav() {
-  navLinks.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-hamburger.addEventListener('click', () => navLinks.classList.contains('open') ? closeNav() : openNav());
-navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeNav));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
-
 // Counter animation
+// Note: sticky navbar + hamburger menu are handled in index.html inline script
 const counters = document.querySelectorAll('.counter');
 
 const animateCounter = (el) => {
