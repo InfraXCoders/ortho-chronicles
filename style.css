@@ -148,6 +148,20 @@ img { max-width: 100%; display: block; }
 .nav-logo img { height: 52px; }
 #header.scrolled .nav-logo img { height: 44px; }
 
+/* ── Back button ── */
+.nav-back {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.3);
+  color: #fff; font-size: 1rem; cursor: pointer;
+  transition: background .2s, transform .15s;
+  flex-shrink: 0;
+}
+.nav-back:hover { background: rgba(255,255,255,.28); transform: translateX(-2px); }
+#header.scrolled .nav-back { background: rgba(77,89,32,.12); border-color: rgba(77,89,32,.3); color: var(--gray-800); }
+#header.scrolled .nav-back:hover { background: rgba(77,89,32,.2); }
+
 /* Desktop: nav-links floats inside header row via fixed positioning */
 .nav-links {
   display: flex; align-items: center; gap: 28px;
