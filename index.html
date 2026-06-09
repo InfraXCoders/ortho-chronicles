@@ -85,9 +85,6 @@
   <!-- ======= NAV ======= -->
   <header id="header">
     <nav class="navbar">
-      <button class="nav-back" id="navBack" aria-label="Go back" onclick="history.back()">
-        <i class="fas fa-arrow-left"></i>
-      </button>
       <a href="#home" class="nav-logo">
         <img src="assets/logo.png" alt="OrthoChronicles" />
       </a>
@@ -100,6 +97,11 @@
   <!-- Mobile nav overlay — lives outside <header> so iOS Safari position:fixed works correctly -->
   <div class="nav-backdrop" id="navBackdrop"></div>
   <ul class="nav-links" id="navLinks">
+    <li class="nav-close-row">
+      <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+    </li>
     <li><a href="#community">Community</a></li>
     <li><a href="#publish">What We Publish</a></li>
     <li><a href="#blog">Blog</a></li>
@@ -2607,6 +2609,10 @@
 
     /* Close on backdrop click */
     backdrop.addEventListener('click', navClose);
+
+    /* Close button inside nav overlay */
+    const navCloseBtn = document.getElementById('navCloseBtn');
+    if (navCloseBtn) navCloseBtn.addEventListener('click', navClose);
 
     /* Close on Escape */
     document.addEventListener('keydown', e => { if (e.key === 'Escape') navClose(); });
