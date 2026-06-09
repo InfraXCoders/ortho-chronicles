@@ -3056,10 +3056,14 @@
       panel.classList.add('open');
       btn.classList.add('active');
       badge.style.display = 'none';
+      // Pre-render all tabs on first open
+      if (!greeted) {
+        greet(); greeted = true;
+        renderBooks(''); renderSlides(''); renderBlog(''); renderYT(''); renderLinks();
+      }
       // Focus input only when chat tab is active
       const activePane = document.querySelector('.hmr-pane.active');
       if (activePane && activePane.id === 'paneChat') input.focus();
-      if (!greeted) { greet(); greeted = true; }
     }
     function close() {
       isOpen = false;
