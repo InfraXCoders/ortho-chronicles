@@ -775,7 +775,17 @@
         </div>
       </div><!-- /slides-grid -->
 
-      <!-- Direct slide upload panel -->
+      <!-- Slide panel tab switcher -->
+      <div class="sup-tabs">
+        <button class="sup-tab active" id="supTabUpload" onclick="supSwitchTab('upload')">
+          <i class="fas fa-upload"></i> Upload (Admin)
+        </button>
+        <button class="sup-tab" id="supTabSubmit" onclick="supSwitchTab('submit')">
+          <i class="fas fa-paper-plane"></i> Submit for Review
+        </button>
+      </div>
+
+      <!-- Direct slide upload panel (admin) -->
       <div class="sup-panel" id="supPanel">
 
         <div class="sup-panel-header">
@@ -857,6 +867,109 @@
         </div>
 
       </div><!-- /sup-panel -->
+
+      <!-- Submission panel (for contributors) -->
+      <div class="sup-panel sub-panel" id="subPanel" style="display:none;">
+
+        <div class="sup-panel-header">
+          <div class="sup-panel-title">
+            <i class="fas fa-paper-plane"></i>
+            <span>Submit Your Presentation for Review</span>
+          </div>
+        </div>
+
+        <p class="sub-panel-note">
+          <i class="fas fa-info-circle"></i>
+          Share your orthopedic presentation with our editorial team. After review by Dr. Maninder Singh, it will be published in the Slide Library. You will be notified by email.
+        </p>
+
+        <!-- Submission form -->
+        <form id="subForm" novalidate>
+          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+          <input type="hidden" name="subject" value="New Slide Submission — OrthoChronicles" />
+          <input type="hidden" name="from_name" value="OrthoChronicles Slide Submission" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="subName">Your Full Name <span class="req">*</span></label>
+              <input type="text" id="subName" name="name" placeholder="Dr. / Prof. / Your name" required />
+            </div>
+            <div class="form-group">
+              <label for="subEmail">Your Email <span class="req">*</span></label>
+              <input type="email" id="subEmail" name="email" placeholder="you@example.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="subTitle">Presentation Title <span class="req">*</span></label>
+              <input type="text" id="subTitle" name="presentation_title" placeholder="e.g. Fracture Management in Polytrauma" required />
+            </div>
+            <div class="form-group">
+              <label for="subCat">Category <span class="req">*</span></label>
+              <select id="subCat" name="category" required>
+                <option value="">Select category…</option>
+                <option value="Trauma &amp; Fractures">Trauma &amp; Fractures</option>
+                <option value="Joint Replacement">Joint Replacement</option>
+                <option value="Anatomy">Anatomy</option>
+                <option value="Rehabilitation">Rehabilitation</option>
+                <option value="Radiology">Radiology</option>
+                <option value="Sports Injuries">Sports Injuries</option>
+                <option value="Spine">Spine</option>
+                <option value="Paediatric Orthopaedics">Paediatric Orthopaedics</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subAffil">Institution / Affiliation</label>
+            <input type="text" id="subAffil" name="affiliation" placeholder="e.g. GMCH Amritsar, AIIMS Delhi" />
+          </div>
+
+          <div class="form-group">
+            <label for="subDesc">Brief Description</label>
+            <textarea id="subDesc" name="description" rows="3" placeholder="What does this presentation cover? Any key learning points?"></textarea>
+          </div>
+
+          <!-- File attach -->
+          <div class="form-group">
+            <label>Attach PPTX File <span class="req">*</span></label>
+            <div class="sub-file-zone" id="subFileDrop">
+              <div class="sub-file-inner" id="subFileInner">
+                <i class="fas fa-file-powerpoint"></i>
+                <span>Drag &amp; drop your .pptx here</span>
+                <label for="subFileInput" class="sub-browse-btn">Browse</label>
+                <span class="sub-size-note">Max 25 MB</span>
+              </div>
+              <div class="sub-file-chosen" id="subFileChosen" style="display:none;">
+                <i class="fas fa-file-powerpoint"></i>
+                <span id="subChosenName">–</span>
+                <button type="button" id="subFileRemove" title="Remove"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <input type="file" id="subFileInput" name="attachment" accept=".pptx,.ppt" style="display:none;" />
+            <p class="sub-file-alt">
+              <i class="fas fa-link"></i> Or share a Google Drive / OneDrive link instead:
+              <input type="url" id="subDriveLink" name="drive_link" placeholder="https://drive.google.com/…" style="margin-top:6px;" />
+            </p>
+          </div>
+
+          <button type="submit" class="btn-submit-slide" id="subSubmitBtn">
+            <i class="fas fa-paper-plane"></i> Submit for Review
+          </button>
+        </form>
+
+        <!-- Submission success -->
+        <div class="sup-success" id="subSuccess" style="display:none;">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong>Submission received!</strong><br />
+            <span>Thank you! Our editorial team will review your presentation and get back to you within 5–7 working days.</span>
+          </div>
+        </div>
+
+      </div><!-- /sub-panel -->
 
     </div>
   </section>
@@ -1923,6 +2036,89 @@
     function supSetProg(pct) {
       document.getElementById('supProgFill').style.width = pct+'%';
     }
+
+    /* ══════════════════════════════════════════════
+       TAB SWITCHER — Upload / Submit
+    ══════════════════════════════════════════════ */
+    function supSwitchTab(tab) {
+      var isUpload = tab === 'upload';
+      document.getElementById('supPanel').style.display  = isUpload ? 'block' : 'none';
+      document.getElementById('subPanel').style.display  = isUpload ? 'none'  : 'block';
+      document.getElementById('supTabUpload').classList.toggle('active', isUpload);
+      document.getElementById('supTabSubmit').classList.toggle('active', !isUpload);
+    }
+
+    /* ══════════════════════════════════════════════
+       SUBMISSION FORM — Web3Forms → Gmail
+    ══════════════════════════════════════════════ */
+    var subFile = null;
+
+    /* File drop zone */
+    var subDrop       = document.getElementById('subFileDrop');
+    var subFileInput  = document.getElementById('subFileInput');
+    var subFileInner  = document.getElementById('subFileInner');
+    var subFileChosen = document.getElementById('subFileChosen');
+    var subFileRemove = document.getElementById('subFileRemove');
+
+    subDrop.addEventListener('click', function(e){
+      if (!e.target.closest('.sub-browse-btn') && !e.target.closest('#subFileRemove')) subFileInput.click();
+    });
+    document.querySelector('label[for="subFileInput"]').addEventListener('click', function(e){ e.stopPropagation(); subFileInput.click(); });
+    subFileInput.addEventListener('change', function(){ if(subFileInput.files[0]) subPickFile(subFileInput.files[0]); });
+    subDrop.addEventListener('dragover',  function(e){ e.preventDefault(); subDrop.classList.add('drag-over'); });
+    subDrop.addEventListener('dragleave', function(){ subDrop.classList.remove('drag-over'); });
+    subDrop.addEventListener('drop', function(e){
+      e.preventDefault(); subDrop.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) subPickFile(e.dataTransfer.files[0]);
+    });
+    subFileRemove.addEventListener('click', function(e){
+      e.stopPropagation();
+      subFile = null; subFileInput.value = '';
+      subFileChosen.style.display = 'none'; subFileInner.style.display = 'flex';
+    });
+
+    function subPickFile(f) {
+      if (!f.name.match(/\.(pptx?|ppt)$/i)) { alert('Please upload a .pptx or .ppt file.'); return; }
+      if (f.size > 25 * 1024 * 1024) { alert('File too large (max 25 MB). Please share via Google Drive instead.'); return; }
+      subFile = f;
+      document.getElementById('subChosenName').textContent = f.name + ' (' + (f.size/1024/1024).toFixed(1) + ' MB)';
+      subFileChosen.style.display = 'flex'; subFileInner.style.display = 'none';
+    }
+
+    /* Form submit */
+    document.getElementById('subForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var name  = document.getElementById('subName').value.trim();
+      var email = document.getElementById('subEmail').value.trim();
+      var title = document.getElementById('subTitle').value.trim();
+      var cat   = document.getElementById('subCat').value;
+      var drive = document.getElementById('subDriveLink').value.trim();
+
+      if (!name || !email || !title || !cat) { alert('Please fill in all required fields.'); return; }
+      if (!subFile && !drive) { alert('Please attach a PPTX file or provide a Google Drive link.'); return; }
+
+      var btn = document.getElementById('subSubmitBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+
+      try {
+        var fd = new FormData(this);
+        if (subFile) fd.set('attachment', subFile, subFile.name);
+        else fd.delete('attachment');
+
+        var resp = await fetch('https://api.web3forms.com/submit', { method:'POST', body: fd });
+        var result = await resp.json();
+
+        if (result.success) {
+          document.getElementById('subForm').style.display = 'none';
+          document.getElementById('subSuccess').style.display = 'flex';
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch(err) {
+        alert('Error: ' + err.message + '\n\nPlease try emailing us directly at orthochronicles@gmail.com');
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+      }
+    });
 
   })();
   </script>
