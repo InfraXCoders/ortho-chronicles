@@ -2758,6 +2758,146 @@ html {
   }
 }
 
+/* ── 17. iOS input auto-zoom prevention (triggers when font-size < 16px) ── */
+@media (max-width: 768px) {
+  input:not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ── 18. Fluid section padding — scales with screen size ── */
+@media (max-width: 480px) {
+  .section { padding: 48px 0; }
+  .section-header { margin-bottom: 32px; }
+}
+@media (max-width: 380px) {
+  .section { padding: 38px 0; }
+  .container { padding: 0 12px; }
+}
+
+/* ── 19. Fluid typography — 360–380px phones ── */
+@media (max-width: 380px) {
+  .hero-content h1 { font-size: 1.55rem; line-height: 1.2; }
+  .hero-badge { font-size: .66rem; padding: 5px 12px; }
+  .hero-tagline { font-size: .82rem; }
+  .section-title { font-size: 1.4rem; }
+  .section-sub { font-size: .88rem; }
+  .btn-primary, .btn-outline { padding: 12px 18px; font-size: .85rem; }
+}
+
+/* ── 20. Hero CTA — full-width buttons on tiny screens ── */
+@media (max-width: 380px) {
+  .hero-cta-center .btn-primary,
+  .hero-cta-center .btn-outline {
+    width: 100%; max-width: 100%; justify-content: center;
+  }
+}
+
+/* ── 21. Hero community stats — wrap on very small screens ── */
+@media (max-width: 380px) {
+  .hero-community-stats { flex-wrap: wrap; gap: 6px; padding: 12px; }
+  .hcs-item { border-right: none; padding: 4px 8px; font-size: .72rem; }
+  .hcs-divider { display: none; }
+}
+
+/* ── 22. Community bar — icon-only on 380px ── */
+@media (max-width: 380px) {
+  .cb-item .cb-text { display: none; }
+  .cb-item { padding: 5px 10px; }
+  .cb-items { justify-content: space-evenly; width: 100%; }
+}
+
+/* ── 23. Why / Publish grids — single column on 380px ── */
+@media (max-width: 380px) {
+  .why-grid { grid-template-columns: 1fr; gap: 12px; }
+  .publish-grid { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ── 24. Mentor card — stack vertically + center on small phones ── */
+@media (max-width: 600px) {
+  .mentor-card {
+    flex-direction: column; align-items: center;
+    text-align: center; gap: 28px;
+  }
+  .mentor-info { align-items: center; }
+  .mentor-tags { justify-content: center; }
+  .mentor-info h3 { font-size: 1.6rem; }
+}
+@media (max-width: 480px) {
+  .mentor-photo-ring { width: 150px; height: 150px; }
+  .mentor-info h3 { font-size: 1.4rem; }
+  .mentor-cta { flex-direction: column; width: 100%; }
+  .mentor-cta a, .mentor-cta button { width: 100%; justify-content: center; }
+}
+
+/* ── 25. YouTube featured card — tighten embed on phone ── */
+@media (max-width: 480px) {
+  .yt-featured-card { border-radius: var(--radius); }
+  .yt-featured-info { padding: 18px 16px; }
+  .yt-featured-info h3 { font-size: 1.05rem; }
+}
+
+/* ── 26. YT grid — single column tighter on 380px ── */
+@media (max-width: 380px) {
+  .yt-grid { gap: 10px; }
+  .yt-card-thumb { aspect-ratio: 16/9; }
+}
+
+/* ── 27. Footer — single column on small phones ── */
+@media (max-width: 480px) {
+  .footer { padding: 40px 0 0; }
+  .footer-grid { gap: 28px; }
+  .footer-bottom {
+    flex-direction: column; gap: 6px;
+    text-align: center; font-size: .76rem;
+    padding: 16px;
+  }
+  .footer-bottom p { line-height: 1.7; }
+}
+
+/* ── 28. Contact section — cards single col, tighter padding ── */
+@media (max-width: 380px) {
+  .contact-grid { gap: 20px; }
+  .contact-info-card,
+  .contact-form-card { padding: 20px 14px; }
+}
+
+/* ── 29. Floating buttons — tighter on 380px ── */
+@media (max-width: 380px) {
+  .float-wa { right: 10px; bottom: 16px; width: 48px; height: 48px; font-size: 1.2rem; }
+  .hmr-btn { right: 10px; bottom: 74px; width: 48px; height: 48px; font-size: 1.15rem; }
+}
+
+/* ── 30. Hammer panel — fluid max-height so it never overflows short phones ── */
+.hmr-panel {
+  max-height: calc(100dvh - 200px);
+  max-height: calc(100vh - 200px); /* fallback */
+}
+@media (max-width: 480px) {
+  .hmr-panel {
+    max-height: calc(100dvh - 165px);
+    max-height: calc(100vh - 165px);
+  }
+}
+
+/* ── 31. Landscape phone — hero + Hammer panel ── */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .hero { min-height: auto; padding: 72px 0 50px; }
+  .hmr-panel {
+    max-height: calc(100dvh - 80px);
+    bottom: 70px !important;
+  }
+  .hmr-btn { bottom: 16px !important; }
+}
+
+/* ── 32. Horizontal overflow guard — catch stray overflows ── */
+@media (max-width: 480px) {
+  section, .section, .container { max-width: 100%; }
+  img, video, iframe, embed, object { max-width: 100%; }
+}
+
 /* ╔══════════════════════════════════════════════════════════════╗
    ║           HAMMER  —  OrthoChronicles Chatbot                  ║
    ╚══════════════════════════════════════════════════════════════╝ */
