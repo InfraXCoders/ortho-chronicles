@@ -2764,7 +2764,7 @@ html {
 
 /* ── Trigger button ── */
 .hmr-btn {
-  position: fixed; bottom: 30px; left: 30px;
+  position: fixed; bottom: 100px; right: 30px;
   width: 58px; height: 58px; border-radius: 50%;
   background: linear-gradient(135deg, var(--teal-dark), var(--teal));
   color: #fff; font-size: 1.35rem;
@@ -2794,7 +2794,7 @@ html {
 
 /* ── Chat panel ── */
 .hmr-panel {
-  position: fixed; bottom: 102px; left: 30px;
+  position: fixed; bottom: 172px; right: 30px;
   width: 360px;
   background: #fff;
   border-radius: 20px;
@@ -2948,16 +2948,16 @@ html {
 
 /* ── Safe-area on iOS ── */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .hmr-btn { bottom: calc(30px + env(safe-area-inset-bottom)); }
-  .hmr-panel { bottom: calc(102px + env(safe-area-inset-bottom)); }
+  .hmr-btn { bottom: calc(100px + env(safe-area-inset-bottom)); }
+  .hmr-panel { bottom: calc(172px + env(safe-area-inset-bottom)); }
 }
 
 /* ── Responsive ── */
 @media (max-width: 480px) {
-  .hmr-btn { bottom: 80px; left: 16px; width: 52px; height: 52px; font-size: 1.2rem; }
+  .hmr-btn { bottom: 90px; right: 12px; width: 50px; height: 50px; font-size: 1.15rem; }
   .hmr-panel {
-    left: 10px; right: 10px; width: auto;
-    bottom: 148px;
+    right: 10px; left: 10px; width: auto;
+    bottom: 154px;
     border-radius: 16px;
   }
   .hmr-messages { max-height: 280px; }
