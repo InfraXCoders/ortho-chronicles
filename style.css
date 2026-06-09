@@ -148,7 +148,15 @@ img { max-width: 100%; display: block; }
 .nav-logo img { height: 52px; }
 #header.scrolled .nav-logo img { height: 44px; }
 
-.nav-links { display: flex; align-items: center; gap: 28px; }
+/* Desktop: nav-links floats inside header row via fixed positioning */
+.nav-links {
+  display: flex; align-items: center; gap: 28px;
+  /* On desktop sit inside the header bar */
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  height: 84px; /* match navbar height */
+  z-index: 999; list-style: none; margin: 0; padding: 0;
+  background: transparent;
+}
 
 .nav-links a {
   color: rgba(255,255,255,.9); font-weight: 500; font-size: .9rem;
@@ -160,8 +168,10 @@ img { max-width: 100%; display: block; }
 }
 .nav-links a:hover::after { width: 100%; }
 
-#header.scrolled .nav-links a { color: var(--gray-800); }
-#header.scrolled .nav-links a:hover { color: var(--teal-dark); }
+/* When header scrolled, match the white navbar style */
+#header.scrolled ~ .nav-links a { color: var(--gray-800); }
+#header.scrolled ~ .nav-links a:hover { color: var(--teal-dark); }
+#header.scrolled ~ .nav-links { height: 64px; }
 
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
@@ -1324,21 +1334,24 @@ img { max-width: 100%; display: block; }
   /* Navbar */
   .hamburger { display: flex; }
   .nav-links {
+    /* Override desktop centering — full-screen slide-in overlay */
     position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    height: 100dvh;
+    transform: translateX(100%); /* hide off-screen right */
+    width: 100%; height: 100vh; height: 100dvh;
     background: var(--blue-dark);
     flex-direction: column; justify-content: center;
     align-items: center; gap: 28px;
-    transform: translateX(100%);
     transition: transform .35s ease;
     z-index: 1001;
-    /* Isolate from any ancestor stacking contexts */
-    isolation: isolate;
+    pointer-events: none;
   }
-  .nav-links:not(.open) { pointer-events: none; }
-  .nav-links.open { transform: translateX(0); pointer-events: auto; }
+  .nav-links.open {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
   .nav-links a { font-size: 1.2rem; font-weight: 600; color: #fff; }
+  /* Override scrolled sibling rule — always white text in mobile overlay */
+  #header.scrolled ~ .nav-links a { color: #fff; }
   .nav-links .btn-nav { font-size: 1rem; padding: 14px 36px; }
   .navbar { padding: 12px 16px; }
   #header.scrolled .navbar { padding: 10px 16px; }
