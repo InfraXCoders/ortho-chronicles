@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>OrthoChronicles — The Orthopedic Community Platform | Dr. Maninder Singh</title>
   <meta name="description" content="OrthoChronicles is an open platform for orthopedic surgeons, researchers, physiotherapists and medical students to share blogs, articles, journals and medical cases. Supervised by Dr. Maninder Singh, MS Orthopedics, GMCH Amritsar." />
   <meta name="keywords" content="orthopedics, orthochronicles, orthopedic community, Dr Maninder Singh, bone and beyond, orthopedic journal, medical cases, joint replacement, trauma surgery, GMCH Amritsar" />
@@ -99,6 +99,8 @@
       </button>
     </nav>
   </header>
+  <!-- Mobile nav backdrop -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- ======= HERO ======= -->
   <section id="home" class="hero">
@@ -2447,38 +2449,39 @@
     /* Apply immediately if page loads mid-scroll */
     if (window.scrollY > 40) header.classList.add('scrolled');
 
+    const backdrop = document.getElementById('navBackdrop');
+
+    function navOpen() {
+      navLinks.classList.add('open');
+      backdrop.classList.add('visible');
+      document.body.classList.add('nav-open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      const bars = hamburger.querySelectorAll('span');
+      bars[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
+      bars[1].style.cssText = 'opacity:0;transform:scaleX(0)';
+      bars[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
+    }
+    function navClose() {
+      navLinks.classList.remove('open');
+      backdrop.classList.remove('visible');
+      document.body.classList.remove('nav-open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.querySelectorAll('span').forEach(b => b.style.cssText = '');
+    }
+
     /* Hamburger toggle */
     hamburger.addEventListener('click', () => {
-      const open = navLinks.classList.toggle('open');
-      hamburger.setAttribute('aria-expanded', open);
-      /* Animate the 3 bars into X when open */
-      const bars = hamburger.querySelectorAll('span');
-      if (open) {
-        bars[0].style.cssText = 'transform:translateY(7px) rotate(45deg)';
-        bars[1].style.cssText = 'opacity:0;transform:scaleX(0)';
-        bars[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg)';
-      } else {
-        bars.forEach(b => b.style.cssText = '');
-      }
+      navLinks.classList.contains('open') ? navClose() : navOpen();
     });
 
     /* Close menu when any nav link is clicked */
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        hamburger.querySelectorAll('span').forEach(b => b.style.cssText = '');
-      });
-    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', navClose));
 
-    /* Close on overlay click (tap outside) */
-    navLinks.addEventListener('click', e => {
-      if (e.target === navLinks) navLinks.classList.remove('open');
-    });
+    /* Close on backdrop click */
+    backdrop.addEventListener('click', navClose);
 
     /* Close on Escape */
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') navLinks.classList.remove('open');
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') navClose(); });
   })();
   </script>
 
