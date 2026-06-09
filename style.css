@@ -175,17 +175,19 @@ img { max-width: 100%; display: block; }
 
 /* Desktop: nav-links floats inside header row via fixed positioning */
 .nav-links {
-  display: flex; align-items: center; gap: 28px;
+  display: flex; align-items: center; gap: clamp(12px, 1.6vw, 28px);
   /* On desktop sit inside the header bar */
   position: fixed; top: 0; left: 50%; transform: translateX(-50%);
   height: 84px; /* match navbar height */
-  z-index: 999; list-style: none; margin: 0; padding: 0;
+  z-index: 999; list-style: none; margin: 0; padding: 0 8px;
   background: transparent;
+  white-space: nowrap;
 }
 
 .nav-links a {
   color: rgba(255,255,255,.9); font-weight: 500; font-size: .9rem;
   transition: var(--trans); position: relative;
+  white-space: nowrap;
 }
 .nav-links a::after {
   content: ''; position: absolute; bottom: -3px; left: 0;
