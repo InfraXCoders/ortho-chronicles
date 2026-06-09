@@ -3239,11 +3239,14 @@ html {
 }
 .hmr-link-section { flex-shrink: 0; }
 .hmr-link-cat {
-  padding: 9px 14px 4px;
-  font-size: .65rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--gray-400);
-  background: var(--gray-100);
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px;
+  font-size: .63rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--teal-dark);
+  background: rgba(107,124,46,.08);
+  border-bottom: 1px solid var(--gray-200);
 }
+.hmr-link-cat i { font-size: .72rem; }
 .hmr-link-row {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 14px; border-bottom: 1px solid var(--gray-100);
@@ -3251,6 +3254,12 @@ html {
   transition: background .15s ease;
 }
 .hmr-link-row:hover { background: var(--gray-100); }
+.hmr-link-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  background: rgba(107,124,46,.1);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal-dark); font-size: .78rem;
+}
 
 /* ── Safe-area on iOS ── */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {

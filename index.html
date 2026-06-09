@@ -2849,33 +2849,35 @@
        LINKS RENDER
     ════════════════════════════════ */
     const LINKS = [
-      { cat: 'Clinical Guidelines', items: [
-        { name: 'AAOS OrthoInfo', url: 'https://orthoinfo.aaos.org', desc: 'Patient guides from American Academy of Orthopaedic Surgeons' },
-        { name: 'NICE Orthopaedics Guidelines', url: 'https://www.nice.org.uk/guidance/conditions-and-diseases/musculoskeletal-conditions', desc: 'Evidence-based UK clinical guidelines' }
+      { cat: 'BFUHS — Exam & Academics', icon: 'fa-graduation-cap', items: [
+        { name: 'Thesis Downloads', url: 'https://bfuhs.ggsmch.org/download-exam-branch/', icon: 'fa-file-alt', desc: 'Download MS / MD thesis from BFUHS (Baba Farid University)' },
+        { name: 'Old Question Papers', url: 'https://bfuhs.ggsmch.org/old-question-papers/', icon: 'fa-file-alt', desc: 'Previous year exam papers from BFUHS' },
+        { name: 'BFUHS Portal', url: 'https://bfuhs.ggsmch.org/', icon: 'fa-university', desc: 'Official Baba Farid University of Health Sciences website' }
       ]},
-      { cat: 'Research & Journals', items: [
-        { name: 'PubMed — Orthopedics', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=orthopedics', desc: 'Free access to orthopaedic research papers' },
-        { name: 'Bone & Joint Journal', url: 'https://online.boneandjoint.org.uk', desc: 'Leading peer-reviewed orthopaedic journal' },
-        { name: 'Journal of Orthopaedic Research', url: 'https://onlinelibrary.wiley.com/journal/1554527x', desc: 'Wiley — basic and applied orthopaedic research' }
+      { cat: 'Punjab Government Health', icon: 'fa-heartbeat', items: [
+        { name: 'DHS Punjab', url: 'https://health.punjab.gov.in/', icon: 'fa-heartbeat', desc: 'Directorate of Health Services, Government of Punjab' },
+        { name: 'NHM Punjab', url: 'https://nhm.punjab.gov.in/nhmwebsite/nhmhome.php', icon: 'fa-notes-medical', desc: 'National Health Mission Punjab' },
+        { name: 'MoHFW India', url: 'https://www.mohfw.gov.in/', icon: 'fa-landmark', desc: 'Ministry of Health & Family Welfare, Government of India' }
       ]},
-      { cat: 'Education & Training', items: [
-        { name: 'AO Surgery Reference', url: 'https://surgeryreference.aofoundation.org', desc: 'Free online surgical reference for fracture care' },
-        { name: 'Radiopaedia — Ortho', url: 'https://radiopaedia.org/search?lang=us&q=orthopedics&scope=all', desc: 'Radiology cases and learning resources' },
-        { name: 'Wheeless Textbook of Orthopaedics', url: 'http://www.wheelessonline.com', desc: 'Comprehensive free online orthopaedic textbook' }
+      { cat: 'Institutions', icon: 'fa-hospital', items: [
+        { name: 'GMC Amritsar', url: 'https://www.gmc.edu.in/', icon: 'fa-hospital', desc: 'Government Medical College, Amritsar — official website' }
       ]},
-      { cat: 'Patient Resources', items: [
-        { name: 'Arthritis Foundation', url: 'https://www.arthritis.org', desc: 'Patient education on arthritis and joint disease' },
-        { name: 'NHS — Bones & Joints', url: 'https://www.nhs.uk/conditions/broken-bone/', desc: 'NHS patient information on fractures and recovery' }
+      { cat: 'Research & Reference', icon: 'fa-search', items: [
+        { name: 'PubMed — Orthopedics', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=orthopedics', icon: 'fa-flask', desc: 'Free access to orthopaedic research on PubMed' },
+        { name: 'AO Surgery Reference', url: 'https://surgeryreference.aofoundation.org', icon: 'fa-bone', desc: 'Free AO Foundation surgical reference for fracture care' },
+        { name: 'Radiopaedia — Ortho', url: 'https://radiopaedia.org/search?lang=us&q=orthopedics&scope=all', icon: 'fa-x-ray', desc: 'Orthopaedic radiology cases and learning resources' }
       ]}
     ];
 
     function renderLinks() {
       const list = document.getElementById('hmrLinksList');
+      if (!list) return;
       list.innerHTML = LINKS.map(section => `
         <div class="hmr-link-section">
-          <div class="hmr-link-cat">${section.cat}</div>
+          <div class="hmr-link-cat"><i class="fas ${section.icon}"></i> ${section.cat}</div>
           ${section.items.map(l => `
             <a href="${l.url}" target="_blank" rel="noopener" class="hmr-link-row">
+              <div class="hmr-link-icon"><i class="fas ${l.icon}"></i></div>
               <div class="hmr-res-body">
                 <div class="hmr-res-title">${l.name}</div>
                 <div class="hmr-res-sub">${l.desc}</div>
@@ -3063,12 +3065,21 @@
       badge.style.display = 'none';
       // Pre-render all tabs on first open
       if (!greeted) {
-        greet(); greeted = true;
-        renderBooks(''); renderSlides(''); renderBlog(''); renderYT(''); renderLinks();
+        greeted = true;
+        // Render static tabs immediately
+        try { renderBooks(''); } catch(e) {}
+        try { renderBlog(''); }  catch(e) {}
+        try { renderYT(''); }    catch(e) {}
+        try { renderLinks(); }   catch(e) {}
+        try { renderSlides(''); } catch(e) {} // async fetch — last
+        // Show greeting in chat tab (slight delay for panel animation)
+        setTimeout(greet, 200);
       }
-      // Focus input only when chat tab is active
-      const activePane = document.querySelector('.hmr-pane.active');
-      if (activePane && activePane.id === 'paneChat') input.focus();
+      // Focus input on desktop only (mobile keyboard pop is disruptive)
+      if (window.innerWidth > 768) {
+        const activePane = document.querySelector('.hmr-pane.active');
+        if (activePane && activePane.id === 'paneChat') input.focus();
+      }
     }
     function close() {
       isOpen = false;
