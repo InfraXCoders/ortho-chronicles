@@ -148,14 +148,17 @@ img { max-width: 100%; display: block; }
 .nav-logo img { height: 52px; }
 #header.scrolled .nav-logo img { height: 44px; }
 
-/* ── Nav overlay close button ── */
+/* ── Nav overlay close button (mobile only) ── */
 .nav-close-row {
   list-style: none;
   width: 100%;
-  display: flex;
+  display: none; /* hidden on desktop */
   justify-content: flex-start;
   padding: 0 28px;
   margin-bottom: 12px;
+}
+@media (max-width: 768px) {
+  .nav-close-row { display: flex; }
 }
 .nav-close-btn {
   display: flex; align-items: center; gap: 8px;
@@ -2953,6 +2956,113 @@ html {
 @media (max-width: 480px) {
   section, .section, .container { max-width: 100%; }
   img, video, iframe, embed, object { max-width: 100%; }
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║         PHASE 4 — MOBILE OPTIMISATIONS                        ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── Hero: stop 100vh stretching on mobile portrait ── */
+@media (max-width: 768px) and (orientation: portrait) {
+  .hero { min-height: auto; padding-top: 72px; }
+  .hero-content { padding: 40px 16px 56px; }
+}
+
+/* ── Section padding — tighter across all mobiles ── */
+@media (max-width: 768px) {
+  .section { padding: 52px 0; }
+  .section-header { margin-bottom: 32px; }
+  .container { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+  .section { padding: 40px 0; }
+  .section-header { margin-bottom: 24px; }
+  .section-title { font-size: 1.5rem; }
+  .section-sub { font-size: .88rem; }
+}
+
+/* ── Blog cards — full width, readable on mobile ── */
+@media (max-width: 768px) {
+  .blog-list { grid-template-columns: 1fr; gap: 18px; }
+  .blog-card { margin: 0; }
+  .blog-card-body { padding: 18px 16px; }
+  .blog-card-title { font-size: 1rem; }
+  .blog-card-excerpt { font-size: .85rem; -webkit-line-clamp: 3; }
+}
+
+/* ── Book cards — single col with proper image ratio ── */
+@media (max-width: 768px) {
+  .books-grid { grid-template-columns: 1fr; gap: 20px; }
+  .book-card { display: flex; gap: 14px; align-items: flex-start; }
+  .book-cover { width: 90px; flex-shrink: 0; }
+  .book-cover img { width: 90px; height: 120px; object-fit: cover; border-radius: 6px; }
+  .book-info { flex: 1; padding: 10px 12px 10px 0; }
+}
+
+/* ── Slides grid — single column ── */
+@media (max-width: 768px) {
+  .slides-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* ── Why-contribute grid — 2 cols on mid-mobile ── */
+@media (max-width: 768px) {
+  .why-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (max-width: 420px) {
+  .why-grid { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ── Publish grid — 2 cols on mid-mobile, 1 on small ── */
+@media (max-width: 768px) {
+  .publish-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (max-width: 420px) {
+  .publish-grid { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ── Contact grid — stack on mobile ── */
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ── Mentor section — tighter layout ── */
+@media (max-width: 768px) {
+  .mentor-section .container { padding: 0 16px; }
+  .mentor-bio { font-size: .9rem; }
+}
+
+/* ── Hero stats bar — wrap neatly ── */
+@media (max-width: 480px) {
+  .hero-community-stats { flex-wrap: wrap; gap: 0; padding: 12px 14px; }
+  .hcs-divider { display: none; }
+  .hcs-item { flex: 1 1 45%; padding: 6px 8px; }
+  .hcs-number { font-size: 1.1rem; }
+  .hcs-label { font-size: .68rem; }
+}
+
+/* ── Form — full width fields and comfortable spacing ── */
+@media (max-width: 768px) {
+  .form-row { flex-direction: column; gap: 14px; }
+  .form-group { width: 100%; }
+  .submission-form-wrap { padding: 20px 16px 28px; }
+  .form-group label { font-size: .85rem; }
+}
+
+/* ── Hammer chatbot panel — full width on small phones ── */
+@media (max-width: 420px) {
+  .hmr-panel {
+    width: calc(100vw - 20px);
+    right: 10px;
+    left: 10px;
+  }
+}
+
+/* ── General image safety ── */
+@media (max-width: 768px) {
+  img { max-width: 100%; height: auto; }
+  * { -webkit-overflow-scrolling: touch; }
+  /* Prevent any horizontal scroll */
+  body { overflow-x: hidden; }
 }
 
 /* ╔══════════════════════════════════════════════════════════════╗
