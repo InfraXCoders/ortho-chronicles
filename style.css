@@ -230,9 +230,10 @@ img { max-width: 100%; display: block; }
 
 .hero-content {
   position: relative; z-index: 1;
-  max-width: 1200px; margin: 0 auto;
-  padding: 80px 24px 100px;
+  max-width: 900px; margin: 0 auto;
+  padding: 32px 24px 48px;
   width: 100%;
+  display: flex; flex-direction: column; align-items: center;
 }
 
 .hero-centered { text-align: center; }
@@ -244,29 +245,29 @@ img { max-width: 100%; display: block; }
   border: 1px solid rgba(255,255,255,.25);
   color: #fff; font-size: .8rem; font-weight: 600;
   letter-spacing: .06em; text-transform: uppercase;
-  padding: 8px 20px; border-radius: 100px; margin-bottom: 28px;
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 14px;
 }
 .hero-badge i { color: var(--teal-light); }
 
 .hero-content h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 3.8vw, 2.8rem);
-  color: #fff; line-height: 1.2; margin-bottom: 16px;
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  color: #fff; line-height: 1.2; margin-bottom: 10px;
 }
 
 .hero-tagline {
-  color: rgba(255,255,255,.82); font-size: clamp(.82rem, 1.2vw, .96rem);
-  line-height: 1.7; max-width: 620px; margin: 0 auto 24px;
+  color: rgba(255,255,255,.82); font-size: clamp(.8rem, 1.1vw, .9rem);
+  line-height: 1.6; max-width: 580px; margin: 0 auto 16px;
 }
 .hero-tagline strong { color: var(--teal-light); font-weight: 600; }
 
-.hero-cta-center { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.hero-cta-center { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
 
 .hero-community-stats {
   display: inline-flex; align-items: center; gap: 0;
   background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,.18); border-radius: var(--radius-lg);
-  padding: 12px 24px; flex-wrap: wrap; justify-content: center;
+  padding: 10px 20px; flex-wrap: wrap; justify-content: center;
 }
 
 .hcs-item {
@@ -283,7 +284,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid rgba(184,150,62,.45);
   border-left: 5px solid var(--orange);
   border-radius: var(--radius-lg);
-  padding: 22px 28px; margin-top: 28px;
+  padding: 20px 26px; margin-top: 18px;
   max-width: 760px; text-align: left;
 }
 .hq-avatar {
