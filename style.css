@@ -210,23 +210,29 @@ img { max-width: 100%; display: block; }
 
 /* ===== HERO â€” CENTERED ===== */
 .hero {
-  position: relative; min-height: 100vh; min-height: 100dvh;
+  position: relative;
+  height: 100vh; height: 100dvh;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 54% 46%;
   align-items: center;
-  overflow: hidden; padding-top: 80px;
+  overflow: hidden;
+  padding-top: 80px;
+  box-sizing: border-box;
 }
 
 .hero-ot-illustration {
   position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px 24px 20px 0;
-  opacity: 0.92;
+  height: 100%;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 8px 20px 8px 0;
+  overflow: hidden;
 }
-.hero-ot-illustration img {
-  width: 100%; max-width: 560px;
-  height: auto;
-  filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+.hero-ot-illustration svg {
+  width: auto;
+  height: 100%;
+  max-height: calc(100vh - 90px);
+  max-height: calc(100dvh - 90px);
+  opacity: 0.93;
 }
 
 @media (max-width: 900px) {
@@ -251,24 +257,21 @@ img { max-width: 100%; display: block; }
 
 .hero-content {
   position: relative; z-index: 1;
-  max-width: 900px; margin: 0 auto;
-  padding: 32px 24px 48px;
+  padding: 0 0 0 5vw;
   width: 100%;
-  display: flex; flex-direction: column; align-items: center;
+  display: flex; flex-direction: column; align-items: flex-start;
 }
 
-.hero-centered { text-align: center; }
+.hero-centered { text-align: center; align-items: center; }
 
 .hero-left {
   text-align: left;
-  max-width: 620px;
-  margin: 0 0 0 6vw;
   align-items: flex-start;
 }
-.hero-left .hero-tagline { margin: 0 0 16px; }
+.hero-left .hero-tagline { margin: 0 0 12px; }
 .hero-left .hero-community-stats { justify-content: flex-start; }
 .hero-left .hero-quote { margin-left: 0; }
-.hero-cta-left { display: flex; justify-content: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.hero-cta-left { display: flex; justify-content: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 
 /* Publish list */
 .publish-list {
@@ -316,14 +319,14 @@ img { max-width: 100%; display: block; }
   border: 1px solid rgba(255,255,255,.25);
   color: #fff; font-size: .8rem; font-weight: 600;
   letter-spacing: .06em; text-transform: uppercase;
-  padding: 6px 16px; border-radius: 100px; margin-bottom: 14px;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 10px;
 }
 .hero-badge i { color: var(--teal-light); }
 
 .hero-content h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
-  color: #fff; line-height: 1.2; margin-bottom: 10px;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  color: #fff; line-height: 1.18; margin-bottom: 8px;
 }
 
 .hero-tagline {
@@ -338,7 +341,7 @@ img { max-width: 100%; display: block; }
   display: inline-flex; align-items: center; gap: 0;
   background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,.18); border-radius: var(--radius-lg);
-  padding: 10px 20px; flex-wrap: wrap; justify-content: center;
+  padding: 8px 16px; flex-wrap: wrap; justify-content: flex-start;
 }
 
 .hcs-item {
@@ -355,19 +358,19 @@ img { max-width: 100%; display: block; }
   border: 1px solid rgba(184,150,62,.45);
   border-left: 5px solid var(--orange);
   border-radius: var(--radius-lg);
-  padding: 20px 26px; margin-top: 18px;
+  padding: 14px 20px; margin-top: 12px;
   max-width: 760px; text-align: left;
 }
 .hq-avatar {
-  width: 68px; height: 68px; border-radius: 50%;
+  width: 52px; height: 52px; border-radius: 50%;
   object-fit: cover; flex-shrink: 0;
-  border: 2.5px solid var(--orange);
-  box-shadow: 0 0 0 4px rgba(184,150,62,.2);
+  border: 2px solid var(--orange);
+  box-shadow: 0 0 0 3px rgba(184,150,62,.2);
 }
 .hq-body { display: flex; flex-direction: column; gap: 8px; }
 .hq-text {
-  font-size: 1.05rem; font-style: italic; color: rgba(255,255,255,.95);
-  line-height: 1.65; margin: 0;
+  font-size: .95rem; font-style: italic; color: rgba(255,255,255,.95);
+  line-height: 1.55; margin: 0;
 }
 .hq-author {
   font-size: .84rem; font-weight: 600; color: var(--orange-light);
