@@ -211,7 +211,28 @@ img { max-width: 100%; display: block; }
 /* ===== HERO â€” CENTERED ===== */
 .hero {
   position: relative; min-height: 100vh; min-height: 100dvh;
-  display: flex; align-items: center; overflow: hidden; padding-top: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden; padding-top: 80px;
+}
+
+.hero-ot-illustration {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 24px 20px 0;
+  opacity: 0.92;
+}
+.hero-ot-illustration img {
+  width: 100%; max-width: 560px;
+  height: auto;
+  filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-ot-illustration { display: none; }
+  .hero-left { margin: 0 auto; max-width: 100%; }
 }
 
 .hero-bg {
