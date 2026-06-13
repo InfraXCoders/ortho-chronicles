@@ -3555,3 +3555,54 @@ html {
   }
   .hmr-tb span { font-size: .52rem; }
 }
+
+/* ╔═══════════════════════════════════════════════════════════════╗
+   ║         PHASE 5 – 390px PHONE OPTIMISATIONS                  ║
+   ╚═══════════════════════════════════════════════════════════════╝ */
+
+/* ── Publish list: tighter padding on mobile ── */
+@media (max-width: 600px) {
+  .publish-list li { padding: 12px 14px; gap: 12px; }
+  .publish-list li > i { font-size: 1.1rem; width: 26px; }
+  .publish-list li strong { font-size: .88rem; }
+  .publish-list li span { font-size: .78rem; }
+}
+
+/* ── Hero quote: compact on small phones ── */
+@media (max-width: 420px) {
+  .hero-quote { padding: 10px 12px; gap: 10px; margin-top: 8px; }
+  .hq-avatar { width: 40px; height: 40px; }
+  .hq-text { font-size: .82rem; line-height: 1.5; }
+  .hq-author { font-size: .74rem; }
+}
+
+/* ── Hero h1: cap size on 390-600px portrait ── */
+@media (max-width: 600px) {
+  .hero-content h1 { font-size: clamp(1.6rem, 7.5vw, 2rem); }
+  .hero-content { padding: 36px 14px 48px; }
+  .hero-tagline { font-size: .85rem; margin-bottom: 18px; }
+}
+
+/* ── Hero CTA buttons: full-width on mobile ── */
+@media (max-width: 600px) {
+  .hero-cta-left { flex-direction: column; gap: 10px; }
+  .hero-cta-left .btn-primary,
+  .hero-cta-left .btn-outline { width: 100%; max-width: 100%; justify-content: center; }
+}
+
+/* ── Nav overlay: reduce link font size slightly ── */
+@media (max-width: 480px) {
+  .nav-links a { font-size: 1.05rem; gap: 22px; }
+  .nav-links .btn-nav { padding: 12px 28px; font-size: .9rem; }
+}
+
+/* ── News + Links widgets: clamp to viewport width ── */
+@media (max-width: 420px) {
+  .mnw-widget { width: calc(50vw); right: 0; }
+  .elw-widget { width: calc(50vw); left: 0; }
+}
+
+/* ── Mentor h3: reduce on very small screens ── */
+@media (max-width: 380px) {
+  .mentor-info h3 { font-size: 1.25rem; }
+}
