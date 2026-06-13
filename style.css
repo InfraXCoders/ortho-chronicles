@@ -277,6 +277,34 @@ img { max-width: 100%; display: block; }
 .hcs-item span { font-size: .82rem; font-weight: 500; color: rgba(255,255,255,.8); }
 .hcs-divider { width: 1px; height: 36px; background: rgba(255,255,255,.2); }
 
+.hero-quote {
+  display: flex; align-items: center; gap: 16px;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(12px);
+  border: 1px solid rgba(184,150,62,.35);
+  border-left: 4px solid var(--orange);
+  border-radius: var(--radius-lg);
+  padding: 16px 24px; margin-top: 28px;
+  max-width: 680px; text-align: left;
+}
+.hq-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 2px solid var(--orange);
+}
+.hq-body { display: flex; flex-direction: column; gap: 6px; }
+.hq-text {
+  font-size: .92rem; font-style: italic; color: rgba(255,255,255,.92);
+  line-height: 1.55; margin: 0;
+}
+.hq-author {
+  font-size: .78rem; font-weight: 600; color: var(--orange-light);
+  letter-spacing: .02em;
+}
+
+@media (max-width: 480px) {
+  .hero-quote { flex-direction: column; text-align: center; padding: 14px 16px; }
+}
+
 .scroll-indicator {
   position: absolute; bottom: 30px; left: 50%;
   transform: translateX(-50%); color: rgba(255,255,255,.5);
