@@ -3225,7 +3225,7 @@ html {
 .hmr-panel {
   position: fixed; bottom: 172px; right: 30px;
   width: 380px; height: 530px;
-  background: rgba(255,255,255,.08);
+  background: #0F1D3A;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,.22);
   display: flex; flex-direction: column;
