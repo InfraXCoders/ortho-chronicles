@@ -65,6 +65,45 @@
     "date": "2026-06-15"
   },
   {
+    "id": "ante-postnatal-hdn",
+    "title": "ANTE & POSTNATAL HDN",
+    "category": "radiology",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "ANTE & POSTNATAL HDN",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "ante-postnatal-hdn.pptx",
+    "date": "2026-06-15"
+  },
+  {
+    "id": "mri-sequences-presentation",
+    "title": "MRI SEQUENCES PRESENTATION",
+    "category": "radiology",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "MRI SEQUENCES PRESENTATION",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "mri-sequences-presentation.pptx",
+    "date": "2026-06-15"
+  },
+  {
+    "id": "imaging-of-solitary-pulmonary-nodule",
+    "title": "IMAGING OF SOLITARY PULMONARY NODULE",
+    "category": "radiology",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "IMAGING OF SOLITARY PULMONARY NODULE",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "imaging-of-solitary-pulmonary-nodule.pptx",
+    "date": "2026-06-15"
+  },
+  {
     "id": "computer-radiography-vs-digital-radiography-better-slide",
     "title": "Computer Radiography vs Digital Radiography",
     "category": "radiology",
