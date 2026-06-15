@@ -1,5 +1,18 @@
 [
   {
+    "id": "mri-sequences-presentation",
+    "title": "MRI SEQUENCES PRESENTATION",
+    "category": "radiology",
+    "author": "Dr. Maninder Singh",
+    "institution": "GMCH Amritsar",
+    "description": "MRI SEQUENCES PRESENTATION",
+    "slideCount": 20,
+    "cover": "orange",
+    "status": "available",
+    "file": "mri-sequences-presentation.pptx",
+    "date": "2026-06-15"
+  },
+  {
     "id": "imaging-of-solitary-pulmonary-nodule",
     "title": "IMAGING OF SOLITARY PULMONARY NODULE",
     "category": "radiology",
@@ -44,7 +57,7 @@
     "category": "trauma",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
-    "description": "Comprehensive guide to soft tissue injuries ÃÂ¢ÃÂÃÂ classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
+    "description": "Comprehensive guide to soft tissue injuries ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
     "slideCount": 20,
     "cover": "orange",
     "status": "available",
@@ -53,7 +66,7 @@
   },
   {
     "id": "tkr",
-    "title": "Total Knee Replacement ÃÂ¢ÃÂÃÂ Surgical Technique & Implant Selection",
+    "title": "Total Knee Replacement ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Surgical Technique & Implant Selection",
     "category": "joint-replacement",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -66,7 +79,7 @@
   },
   {
     "id": "femur",
-    "title": "Proximal Femur Fractures ÃÂ¢ÃÂÃÂ Classification & Management",
+    "title": "Proximal Femur Fractures ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Classification & Management",
     "category": "trauma",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -96,7 +109,7 @@
     "category": "rehabilitation",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
-    "description": "Phase-wise rehabilitation protocol for TKR and THR ÃÂ¢ÃÂÃÂ exercise progressions, physiotherapy milestones, and return-to-function criteria.",
+    "description": "Phase-wise rehabilitation protocol for TKR and THR ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ exercise progressions, physiotherapy milestones, and return-to-function criteria.",
     "slideCount": 20,
     "cover": "orange",
     "status": "available",
@@ -105,7 +118,7 @@
   },
   {
     "id": "radiology",
-    "title": "Reading Orthopedic X-rays ÃÂ¢ÃÂÃÂ A Systematic Approach",
+    "title": "Reading Orthopedic X-rays ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ A Systematic Approach",
     "category": "radiology",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
@@ -118,7 +131,7 @@
   },
   {
     "id": "thr",
-    "title": "Total Hip Arthroplasty ÃÂ¢ÃÂÃÂ Approaches & Outcomes",
+    "title": "Total Hip Arthroplasty ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Approaches & Outcomes",
     "category": "joint-replacement",
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
