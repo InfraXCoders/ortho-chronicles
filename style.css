@@ -1418,6 +1418,9 @@ img { max-width: 100%; display: block; }
 .footer-bottom { text-align: center; padding: 24px; }
 .footer-bottom p { font-size: .82rem; color: rgba(255,255,255,.45); }
 .disclaimer { margin-top: 6px; font-size: .76rem; color: rgba(255,255,255,.3); }
+.designed-by { margin-top: 8px; font-size: .76rem; color: rgba(255,255,255,.3); }
+.designed-by a { color: rgba(255,255,255,.5); text-decoration: underline; transition: color .2s; }
+.designed-by a:hover { color: var(--teal-light); }
 
 /* ===== FLOATING BUTTON ===== */
 .float-wa {

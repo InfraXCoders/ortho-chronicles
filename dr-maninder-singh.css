@@ -383,6 +383,9 @@ img { max-width: 100%; display: block; }
 .footer-contact a:hover { color: var(--teal-light); }
 .footer-copy { text-align: center; color: rgba(255,255,255,.4); font-size: .82rem; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1); }
 .disclaimer { text-align: center; color: rgba(255,255,255,.3); font-size: .75rem; margin-top: 8px; }
+.designed-by { text-align: center; margin-top: 8px; font-size: .75rem; color: rgba(255,255,255,.3); }
+.designed-by a { color: rgba(255,255,255,.5); text-decoration: underline; transition: color .2s; }
+.designed-by a:hover { color: var(--teal-light); }
 
 /* ===== RESPONSIVE ===== */
 
