@@ -145,6 +145,8 @@
   @keyframes face-x{0%,100%{transform:translateX(0)}50%{transform:translateX(-22px)}}
   @keyframes dl-r{0%,100%{transform:rotate(0deg)}50%{transform:rotate(48deg)}}
   @keyframes lgext-r{0%,100%{transform:rotate(80deg)}50%{transform:rotate(0deg)}}
+  @keyframes muscle-pulse{0%,100%{opacity:.38;filter:brightness(1)}50%{opacity:.78;filter:brightness(1.35)}}
+  @keyframes kb-ext-anim{0%,100%{transform:rotate(-80deg)}50%{transform:rotate(0deg)}}
 
   @media(max-width:600px){.ex-grid{grid-template-columns:1fr;}.gym-hero{padding:80px 16px 40px;}.gym-hero-stats{gap:20px;}.plan-day table{font-size:.78rem;}}
   @media(max-width:900px){.ex-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}}
@@ -320,34 +322,64 @@ function dbell(x,y,dir=1){
 const SK='#C68642',HR='#1A0F0A',SHT='#1B4A6B',ST='#152234',SHO='#0F1520',SD='#9E6030';
 const BR='#A5A5A5',BS='#D0D0D0',PL='#111111',PR='#2A2A2A',BP='#3D2210',BL='#52301A';
 const GFL=`<rect x="0" y="152" width="240" height="28" fill="#0E0E22"/><line x1="0" y1="152" x2="240" y2="152" stroke="#22225A" stroke-width="1.5"/>`;
-/* standing figure (cx=120, feet at y=160) */
-function fig(extra='',arms='',cx=120){
-  const x=cx;
-  return `
-<ellipse cx="${x}" cy="26" rx="13" ry="14" fill="${SK}"/>
-<path d="M${x-13},22 Q${x},8 ${x+13},22 L${x+11},16 Q${x},4 ${x-11},16 Z" fill="${HR}"/>
-<ellipse cx="${x-14}" cy="25" rx="3" ry="4" fill="${SD}"/>
-<ellipse cx="${x+14}" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="${x-7}" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="${x-17},49 ${x+17},49 ${x+13},87 ${x-13},87" fill="${SHT}"/>
-<polygon points="${x-13},87 ${x+13},87 ${x+15},107 ${x-15},107" fill="${ST}"/>
-<rect x="${x-14}" y="85" width="28" height="5" rx="2" fill="#0C1420"/>
-<polygon points="${x-15},107 ${x-2},107 ${x-4},137 ${x-18},137" fill="${ST}"/>
-<polygon points="${x+2},107 ${x+15},107 ${x+18},137 ${x+4},137" fill="${ST}"/>
-<ellipse cx="${x-10}" cy="137" rx="8" ry="5" fill="#1C2E42"/>
-<ellipse cx="${x+10}" cy="137" rx="8" ry="5" fill="#1C2E42"/>
-<polygon points="${x-18},141 ${x-5},141 ${x-7},152 ${x-21},152" fill="${SK}"/>
-<polygon points="${x+5},141 ${x+18},141 ${x+21},152 ${x+7},152" fill="${SK}"/>
-<rect x="${x-23}" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<rect x="${x+2}" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-${arms}${extra}`;
-}
-/* standing arms at rest */
-function arms0(cx=120){const x=cx;return `
-<polygon points="${x-17},52 ${x-7},55 ${x-18},83 ${x-29},81" fill="${SK}"/>
-<polygon points="${x-29},81 ${x-19},83 ${x-21},108 ${x-31},107" fill="${SK}"/>
-<polygon points="${x+7},55 ${x+17},52 ${x+29},81 ${x+18},83" fill="${SK}"/>
-<polygon points="${x+19},83 ${x+29},81 ${x+31},107 ${x+21},108" fill="${SK}"/>`;}
+
+/* SVG gradient + glow defs */
+const DEFS=`<defs><radialGradient id="sk" cx="42%" cy="38%" r="68%"><stop offset="0%" stop-color="#D9A070"/><stop offset="55%" stop-color="#C68642"/><stop offset="100%" stop-color="#884E1E"/></radialGradient><filter id="mg" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+
+/* Realistic head: gradient skin, hair, ears, eyes */
+function HD(cx,cy,rx=13,ry=14){return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#sk)"/>
+<path d="M${cx-rx},${cy-ry*.3} Q${cx},${cy-ry*1.55} ${cx+rx},${cy-ry*.3} L${cx+rx*.85},${cy-ry*.84} Q${cx},${cy-ry*1.78} ${cx-rx*.85},${cy-ry*.84} Z" fill="#1A0F0A"/>
+<ellipse cx="${cx-rx-1.5}" cy="${cy+.5}" rx="3" ry="4.5" fill="${SD}"/>
+<ellipse cx="${cx+rx+1.5}" cy="${cy+.5}" rx="3" ry="4.5" fill="${SD}"/>
+<ellipse cx="${cx-rx*.28}" cy="${cy+1}" rx="2.2" ry="1.5" fill="#160900"/>
+<path d="M${cx-2.5},${cy+5} Q${cx},${cy+7} ${cx+2.5},${cy+5}" stroke="${SD}" stroke-width="1.1" fill="none"/>`;}
+
+/* Standing body front-view, no arms, cx=120 */
+function SB(cx=120){const x=cx;return `<path d="M${x-7},38 Q${x},36 ${x+7},38 L${x+8},49 Q${x},51 ${x-8},49 Z" fill="url(#sk)"/>
+<path d="M${x-18},49 Q${x-21},57 ${x-20},70 Q${x-18},80 ${x-13},87 L${x+13},87 Q${x+18},80 ${x+20},70 Q${x+21},57 ${x+18},49 Z" fill="${SHT}"/>
+<line x1="${x}" y1="52" x2="${x}" y2="84" stroke="#14385A" stroke-width=".9" opacity=".55"/>
+<path d="M${x-13},87 Q${x},89 ${x+13},87 L${x+15},107 Q${x},109 ${x-15},107 Z" fill="${ST}"/>
+<rect x="${x-14}" y="85" width="28" height="5" rx="2" fill="#0B1220"/>
+<path d="M${x-15},107 Q${x-17},120 ${x-15},137 L${x-4},137 Q${x-3},120 ${x-3},107 Z" fill="${ST}"/>
+<path d="M${x+3},107 Q${x+3},120 ${x+5},137 L${x+16},137 Q${x+17},120 ${x+15},107 Z" fill="${ST}"/>
+<ellipse cx="${x-10}" cy="137" rx="8" ry="5" fill="#1A2C3E"/>
+<ellipse cx="${x+10}" cy="137" rx="8" ry="5" fill="#1A2C3E"/>
+<path d="M${x-18},141 Q${x-20},147 ${x-18},152 L${x-5},152 Q${x-5},147 ${x-5},141 Z" fill="url(#sk)"/>
+<path d="M${x+5},141 Q${x+5},147 ${x+6},152 L${x+18},152 Q${x+20},147 ${x+18},141 Z" fill="url(#sk)"/>
+<path d="M${x-23},151 Q${x-21},149 ${x-5},149 Q${x-2},150 ${x-3},154 Q${x-4},157 ${x-22},157 Q${x-25},155 ${x-23},151 Z" fill="${SHO}"/>
+<path d="M${x+3},149 Q${x+19},149 ${x+21},151 Q${x+23},155 ${x+20},157 Q${x+2},157 ${x+1},154 Q${x},150 ${x+3},149 Z" fill="${SHO}"/>`;}
+
+/* Arms hanging at sides */
+function AR(cx=120){const x=cx;return `<path d="M${x-18},50 Q${x-23},58 ${x-23},70 Q${x-22},80 ${x-18},85 Q${x-14},83 ${x-11},85 Q${x-10},78 ${x-11},68 Q${x-13},57 ${x-17},50 Z" fill="url(#sk)"/>
+<path d="M${x-18},85 Q${x-21},93 ${x-20},107 Q${x-19},112 ${x-15},113 L${x-10},112 Q${x-8},108 ${x-10},99 Q${x-12},90 ${x-11},85 Z" fill="${SK}"/>
+<path d="M${x+17},50 Q${x+21},57 ${x+23},68 Q${x+24},78 ${x+22},80 Q${x+20},85 ${x+16},87 Q${x+12},87 ${x+11},85 Q${x+10},78 ${x+11},68 Q${x+13},58 ${x+18},50 Z" fill="url(#sk)"/>
+<path d="M${x+11},85 Q${x+10},90 ${x+10},99 Q${x+8},108 ${x+10},112 L${x+15},113 Q${x+19},112 ${x+20},107 Q${x+21},93 ${x+18},85 Z" fill="${SK}"/>`;}
+
+/* Muscle highlight overlay — grp:name, pri:primary(orange)/secondary(amber), cx:figure center */
+function HL(grp,pri=true,cx=120){
+  const x=cx,c=pri?'#FF5722':'#FFA726',op=pri?.62:.48;
+  const a=`fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"`;
+  const G={
+    chest:`<path d="M${x-13},52 Q${x-8},50 ${x-1},51 L${x-1},84 Q${x-8},85 ${x-13},82 Q${x-18},74 ${x-17},63 Z" ${a}/><path d="M${x+1},51 Q${x+8},50 ${x+13},52 Q${x+17},63 ${x+17},74 Q${x+15},82 ${x+11},84 L${x+1},84 Z" ${a}/>`,
+    triceps:`<path d="M${x-18},51 Q${x-24},59 ${x-24},73 Q${x-22},82 ${x-17},85 Q${x-14},79 ${x-14},70 Q${x-15},58 ${x-19},51 Z" ${a}/><path d="M${x+19},51 Q${x+23},58 ${x+24},70 Q${x+24},79 ${x+21},85 Q${x+16},82 ${x+17},73 Q${x+19},59 ${x+22},51 Z" ${a}/>`,
+    biceps:`<path d="M${x-22},56 Q${x-26},64 ${x-25},74 Q${x-22},81 ${x-18},84 Q${x-14},79 ${x-15},70 Q${x-16},60 ${x-20},54 Z" ${a}/><path d="M${x+18},54 Q${x+20},60 ${x+21},70 Q${x+20},79 ${x+16},84 Q${x+12},81 ${x+15},74 Q${x+16},64 ${x+20},56 Z" ${a}/>`,
+    shoulders:`<path d="M${x-18},49 Q${x-25},48 ${x-28},58 Q${x-28},68 ${x-22},73 Q${x-17},75 ${x-12},70 Q${x-11},61 ${x-14},51 Z" ${a}/><path d="M${x+18},49 Q${x+25},48 ${x+28},58 Q${x+28},68 ${x+22},73 Q${x+17},75 ${x+12},70 Q${x+11},61 ${x+14},51 Z" ${a}/>`,
+    lats:`<path d="M${x-18},50 Q${x-23},57 ${x-23},70 Q${x-22},80 ${x-18},85 Q${x-14},75 ${x-13},61 Z" ${a}/><path d="M${x+18},50 Q${x+23},57 ${x+23},70 Q${x+22},80 ${x+18},85 Q${x+14},75 ${x+13},61 Z" ${a}/>`,
+    traps:`<path d="M${x-13},37 Q${x-22},41 ${x-24},52 Q${x-17},55 ${x-10},52 Q${x-8},44 ${x-9},39 Z" ${a}/><path d="M${x+13},37 Q${x+22},41 ${x+24},52 Q${x+17},55 ${x+10},52 Q${x+8},44 ${x+9},39 Z" ${a}/>`,
+    abs:`<path d="M${x-6},56 L${x},56 L${x},86 L${x-6},86 Z" ${a}/><path d="M${x},56 L${x+6},56 L${x+6},86 L${x},86 Z" ${a}/><line x1="${x-6}" y1="64" x2="${x+6}" y2="64" stroke="${c}" stroke-width="1.8" opacity="${op}" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><line x1="${x-6}" y1="72" x2="${x+6}" y2="72" stroke="${c}" stroke-width="1.8" opacity="${op}" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><line x1="${x-6}" y1="80" x2="${x+6}" y2="80" stroke="${c}" stroke-width="1.8" opacity="${op}" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
+    core:`<rect x="${x-12}" y="56" width="24" height="32" rx="5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
+    obliques:`<path d="M${x-13},66 Q${x-17},74 ${x-15},87 L${x-9},87 Q${x-10},76 ${x-8},67 Z" ${a}/><path d="M${x+13},66 Q${x+17},74 ${x+15},87 L${x+9},87 Q${x+10},76 ${x+8},67 Z" ${a}/>`,
+    glutes:`<path d="M${x-15},88 Q${x-17},98 ${x-15},107 L${x-3},107 Q${x-2},98 ${x-1},88 Z" ${a}/><path d="M${x+1},88 Q${x+2},98 ${x+3},107 L${x+15},107 Q${x+17},98 ${x+15},88 Z" ${a}/>`,
+    quads:`<path d="M${x-15},107 Q${x-17},120 ${x-15},136 L${x-4},136 Q${x-3},120 ${x-3},107 Z" ${a}/><path d="M${x+3},107 Q${x+3},120 ${x+5},136 L${x+16},136 Q${x+17},120 ${x+15},107 Z" ${a}/>`,
+    hamstrings:`<path d="M${x-4},107 Q${x-7},122 ${x-5},136 L${x-3},136 Q${x-2},122 ${x-3},107 Z" ${a}/><path d="M${x+3},107 Q${x+4},122 ${x+7},136 L${x+5},136 Q${x+5},122 ${x+3},107 Z" ${a}/>`,
+    calves:`<path d="M${x-18},141 Q${x-20},148 ${x-17},152 L${x-5},152 Q${x-5},148 ${x-5},141 Z" ${a}/><path d="M${x+5},141 Q${x+5},148 ${x+7},152 L${x+18},152 Q${x+20},148 ${x+18},141 Z" ${a}/>`,
+    forearms:`<path d="M${x-21},85 Q${x-23},95 ${x-20},111 L${x-11},110 Q${x-10},95 ${x-11},85 Z" ${a}/><path d="M${x+11},85 Q${x+10},95 ${x+11},110 L${x+20},111 Q${x+23},95 ${x+21},85 Z" ${a}/>`,
+  };
+  return G[grp]||'';}
+
+/* Muscle label */
+function ML(t,x,y){return `<text x="${x}" y="${y}" text-anchor="middle" fill="white" font-size="7.5" font-weight="700" font-family="Inter,sans-serif" paint-order="stroke" stroke="#0F1520" stroke-width="3" stroke-linejoin="round">${t}</text>`;}
+
 /* barbell helper */
 function rbar(x,y,w,h=10){return `
 <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${BR}"/>
@@ -377,540 +409,599 @@ function bench(py=110,px=14,pw=166){return `
 const SVGS={
 
 'bench-press':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-${bench(110)}
-<!-- uprights --><rect x="174" y="86" width="11" height="48" rx="3" fill="#2A2A2A"/><rect x="172" y="83" width="15" height="8" rx="3" fill="#383838"/>
-<!-- lying legs --><polygon points="152,122 174,122 188,150 166,153" fill="${ST}"/><polygon points="168,122 193,122 209,150 187,152" fill="${ST}"/>
-<rect x="185" y="148" width="24" height="10" rx="4" fill="${SHO}"/><rect x="205" y="148" width="22" height="10" rx="4" fill="${SHO}"/>
-<!-- torso/shirt --><polygon points="28,120 155,120 152,111 31,111" fill="${SHT}"/>
-<!-- neck --><rect x="16" y="109" width="14" height="13" rx="3" fill="${SK}"/>
-<!-- head --><ellipse cx="12" cy="102" rx="13" ry="14" fill="${SK}"/><path d="M0,97 Q12,86 24,97 L23,91 Q12,80 1,91 Z" fill="${HR}"/><ellipse cx="24" cy="101" rx="3" ry="4.5" fill="${SD}"/>
-<g style="animation:press-ud 2s ease-in-out infinite;transform-origin:100px 112px">
-<polygon points="55,115 67,115 69,80 57,80" fill="${SK}"/><polygon points="58,82 69,82 71,54 60,54" fill="${SK}"/>
-<polygon points="135,115 147,115 145,80 133,80" fill="${SK}"/><polygon points="132,82 143,82 141,54 130,54" fill="${SK}"/>
-<ellipse cx="64" cy="53" rx="7" ry="5" fill="${SD}"/><ellipse cx="136" cy="53" rx="7" ry="5" fill="${SD}"/>
-${rbar(22,44,196,10)}
-</g></svg>`,
+${DEFS}${GFL}${bench(111)}
+<ellipse cx="16" cy="103" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M10,91 Q22,87 27,97" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="101" rx="3" ry="3.5" fill="${SD}"/>
+<path d="M27,107 Q33,107 36,112 L33,116 Q29,114 27,111 Z" fill="url(#sk)"/>
+<path d="M36,110 Q80,107 160,109 L160,122 Q80,124 36,122 Z" fill="${SHT}"/>
+<path d="M45,110 Q100,107 145,109 L145,122 Q100,124 45,122 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M160,109 Q172,107 182,112 L182,128 Q172,128 160,122 Z" fill="${ST}"/>
+<path d="M182,112 Q196,112 198,118 L196,145 Q182,145 180,128 Z" fill="${ST}"/>
+<path d="M196,145 Q208,143 212,149 L210,158 Q198,160 196,155 Z" fill="url(#sk)"/>
+<path d="M207,147 Q218,145 222,151 Q222,157 207,158 Q204,155 207,147 Z" fill="${SHO}"/>
+<path d="M60,110 Q55,90 58,72 Q63,69 68,71 Q70,89 68,110 Z" fill="url(#sk)"/>
+<path d="M132,110 Q128,89 130,71 Q136,69 141,72 Q144,90 140,110 Z" fill="url(#sk)"/>
+<path d="M60,110 Q54,90 57,72 Q62,69 67,71 Q65,90 64,110 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M132,110 Q128,89 130,71 Q135,69 140,72 Q138,90 135,110 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M58,72 Q60,60 64,54 Q68,55 70,60 L68,72 Z" fill="url(#sk)"/>
+<path d="M130,72 Q132,60 137,55 Q141,57 141,63 L141,72 Z" fill="url(#sk)"/>
+<g style="animation:press-ud 2.2s ease-in-out infinite;transform-origin:120px 70px">
+${rbar(30,54,180,9)}</g>
+${ML('CHEST',100,118)}${ML('TRICEPS',65,82)}</svg>`,
 
 'incline-press':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- incline bench frame --><rect x="196" y="88" width="14" height="66" rx="4" fill="#1C1C1C"/><rect x="14" y="148" width="12" height="10" rx="3" fill="#1C1C1C"/>
-<!-- incline pad --><polygon points="12,155 36,155 222,93 202,87" fill="${BP}"/><polygon points="14,153 35,153 220,92 204,89" fill="${BL}"/>
-<!-- legs lower left --><polygon points="14,152 32,152 44,140 26,140" fill="${ST}"/><polygon points="28,140 46,140 54,152 36,152" fill="${ST}"/>
-<rect x="26" y="150" width="22" height="9" rx="4" fill="${SHO}"/><rect x="44" y="150" width="20" height="9" rx="4" fill="${SHO}"/>
-<!-- torso on incline --><polygon points="42,148 60,148 208,98 192,92" fill="${SHT}"/>
-<!-- neck --> <polygon points="192,90 206,95 212,82 198,78" fill="${SK}"/>
-<!-- head --><ellipse cx="210" cy="76" rx="13" ry="14" fill="${SK}"/><path d="M198,70 Q210,59 222,70 L221,64 Q210,53 199,64 Z" fill="${HR}"/><ellipse cx="198" cy="76" rx="3" ry="4" fill="${SD}"/>
-<g style="animation:press-inc 2s ease-in-out infinite;transform-origin:140px 110px">
-<!-- L arm --><polygon points="162,108 172,104 156,72 146,76" fill="${SK}"/><polygon points="146,76 156,72 145,44 135,48" fill="${SK}"/>
-<!-- R arm --><polygon points="118,126 128,122 112,90 102,94" fill="${SK}"/><polygon points="102,94 112,90 101,60 91,64" fill="${SK}"/>
-<ellipse cx="140" cy="44" rx="7" ry="5" fill="${SD}"/><ellipse cx="96" cy="60" rx="7" ry="5" fill="${SD}"/>
-${rbar(76,36,112,9)}
-</g></svg>`,
+${DEFS}${GFL}
+<path d="M18,154 Q22,152 180,95 L182,107 Q26,164 22,166 Z" fill="${BP}"/>
+<path d="M18,154 Q22,152 180,95 L180,102 Q24,158 22,160 Z" fill="${BL}"/>
+<rect x="12" y="150" width="14" height="26" rx="3" fill="#1E1E1E"/>
+<rect x="174" y="96" width="14" height="26" rx="3" fill="#1E1E1E"/>
+<ellipse cx="168" cy="72" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M158,61 Q168,55 178,61 Q180,64 176,66" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="178" cy="65" rx="3" ry="3.5" fill="${SD}"/>
+<path d="M162,80 Q167,80 170,85 L165,89 Q160,87 159,83 Z" fill="url(#sk)"/>
+<path d="M40,147 Q70,135 165,87 L165,100 Q70,147 40,158 Z" fill="${SHT}"/>
+<path d="M95,117 Q130,103 165,88 L165,99 Q130,114 95,128 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M145,92 Q158,87 165,87 L165,99 Q158,100 145,104 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M38,147 Q60,138 72,142 L60,158 Q40,162 38,158 Z" fill="${ST}"/>
+<path d="M56,158 Q74,154 80,158 L74,173 Q56,175 56,168 Z" fill="${ST}"/>
+<path d="M130,94 Q126,75 128,58 Q133,56 138,58 Q140,76 137,95 Z" fill="url(#sk)"/>
+<path d="M131,56 Q133,46 136,42 Q139,43 140,48 L139,58 Z" fill="url(#sk)"/>
+<path d="M155,90 Q152,72 154,55 Q159,53 163,56 Q164,73 162,91 Z" fill="url(#sk)"/>
+<path d="M155,53 Q157,44 160,40 Q163,41 163,47 L163,56 Z" fill="url(#sk)"/>
+<g style="animation:press-inc 2.2s ease-in-out infinite;transform-origin:135px 56px">
+${rbar(36,42,168,9)}</g>
+${ML('UPPER CHEST',120,112)}${ML('FRONT DELT',155,100)}</svg>`,
 
 'fly':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}${bench(110)}
-<rect x="174" y="86" width="11" height="48" rx="3" fill="#2A2A2A"/><rect x="172" y="83" width="15" height="8" rx="3" fill="#383838"/>
-<polygon points="152,122 174,122 188,150 166,153" fill="${ST}"/><polygon points="168,122 193,122 209,150 187,152" fill="${ST}"/>
-<rect x="185" y="148" width="24" height="10" rx="4" fill="${SHO}"/><rect x="205" y="148" width="22" height="10" rx="4" fill="${SHO}"/>
-<polygon points="28,120 155,120 152,111 31,111" fill="${SHT}"/>
-<rect x="16" y="109" width="14" height="13" rx="3" fill="${SK}"/>
-<ellipse cx="12" cy="102" rx="13" ry="14" fill="${SK}"/><path d="M0,97 Q12,86 24,97 L23,91 Q12,80 1,91 Z" fill="${HR}"/><ellipse cx="24" cy="101" rx="3" ry="4.5" fill="${SD}"/>
-<!-- static right arm -->
-<polygon points="140,115 152,115 178,86 166,82" fill="${SK}"/>
-<g style="animation:fly-r 2s ease-in-out infinite;transform-origin:68px 115px">
-<polygon points="56,115 68,115 36,84 24,88" fill="${SK}"/>
-${rdb(4,86)}
-</g>
-<g style="animation:fly-rl 2s ease-in-out infinite;transform-origin:152px 115px">
-<polygon points="140,115 152,115 178,82 166,78" fill="${SK}"/>
-${rdb(174,78)}
-</g></svg>`,
+${DEFS}${GFL}${bench(111)}
+<ellipse cx="16" cy="103" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M10,91 Q22,87 27,97" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="101" rx="3" ry="3.5" fill="${SD}"/>
+<path d="M27,107 Q33,107 36,112 L33,116 Q29,114 27,111 Z" fill="url(#sk)"/>
+<path d="M36,110 Q80,107 165,109 L165,122 Q80,124 36,122 Z" fill="${SHT}"/>
+<path d="M45,110 Q100,107 148,109 L148,122 Q100,124 45,122 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M165,109 Q178,107 188,112 L188,128 Q178,128 165,122 Z" fill="${ST}"/>
+<path d="M188,112 Q202,112 204,118 L202,145 Q188,145 186,128 Z" fill="${ST}"/>
+<path d="M202,145 Q212,143 215,149 L213,157 Q202,159 202,154 Z" fill="url(#sk)"/>
+<g style="animation:fly-r 2.2s ease-in-out infinite;transform-origin:36px 116px">
+<path d="M36,116 Q28,112 8,108 L10,114 Q28,118 36,122 Z" fill="url(#sk)"/>
+<path d="M36,110 Q28,108 8,104 L8,108 Q28,112 36,116 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+${rdb(0,110)}</g>
+<g style="animation:fly-rl 2.2s ease-in-out infinite;transform-origin:155px 116px">
+<path d="M155,116 Q170,112 200,108 L198,114 Q170,118 155,122 Z" fill="url(#sk)"/>
+${rdb(196,110)}</g>
+${ML('CHEST',90,118)}${ML('BICEPS',20,112)}</svg>`,
 
 'push-up':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- yoga/gym mat --><rect x="20" y="148" width="205" height="6" rx="3" fill="#2A4A3A"/>
-<g style="animation:pup-ud 2s ease-in-out infinite;transform-origin:120px 138px">
-<!-- head --><ellipse cx="28" cy="128" rx="12" ry="13" fill="${SK}"/><path d="M16,123 Q28,113 40,123 L39,118 Q28,107 17,118 Z" fill="${HR}"/>
-<!-- neck --><rect x="38" y="124" width="12" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="48,128 192,128 192,138 48,138" fill="${SHT}"/>
-<!-- hips/shorts --><polygon points="172,128 196,128 196,140 172,140" fill="${ST}"/>
-<!-- L forearm (pushup) --><polygon points="52,138 64,138 58,156 46,156" fill="${SK}"/>
-<!-- R forearm --><polygon points="152,138 164,138 158,156 146,156" fill="${SK}"/>
-<!-- hands --><ellipse cx="52" cy="156" rx="8" ry="5" fill="${SD}"/><ellipse cx="152" cy="156" rx="8" ry="5" fill="${SD}"/>
-<!-- feet --><rect x="186" y="136" width="22" height="10" rx="4" fill="${SHO}"/><rect x="202" y="135" width="20" height="9" rx="3" fill="${SHO}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<ellipse cx="42" cy="104" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M36,93 Q46,87 54,93" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M52,108 Q110,112 185,118 L185,130 Q110,128 52,122 Z" fill="${SHT}"/>
+<path d="M60,109 Q115,113 160,117 L160,129 Q115,127 60,122 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M52,109 Q64,111 72,112 L72,124 Q64,124 52,122 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M185,118 Q200,116 208,120 L208,134 Q200,134 185,130 Z" fill="${ST}"/>
+<path d="M208,120 Q222,119 226,124 L224,149 Q210,149 208,134 Z" fill="${ST}"/>
+<ellipse cx="222" cy="149" rx="10" ry="5" fill="${SHO}"/>
+<g style="animation:pup-ud 2.2s ease-in-out infinite;transform-origin:120px 120px">
+<path d="M52,110 Q50,124 52,140 L62,140 Q62,126 58,110 Z" fill="url(#sk)"/>
+<path d="M52,140 Q54,150 52,156 L64,156 Q64,150 62,140 Z" fill="url(#sk)"/>
+<path d="M178,116 Q178,130 180,144 L188,144 Q187,130 186,116 Z" fill="url(#sk)"/>
+<path d="M180,144 Q182,152 180,156 L192,156 Q192,152 188,144 Z" fill="url(#sk)"/>
+<rect x="45" y="154" width="26" height="5" rx="2.5" fill="${SHO}"/>
+<rect x="174" y="154" width="26" height="5" rx="2.5" fill="${SHO}"/>
+</g>
+${ML('CHEST',115,124)}${ML('TRICEPS',62,130)}</svg>`,
 
 'dip':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- dip stand frame --><rect x="50" y="60" width="8" height="95" rx="4" fill="#2A3A4A"/><rect x="182" y="60" width="8" height="95" rx="4" fill="#2A3A4A"/>
-<!-- horizontal bars --><rect x="38" y="56" width="32" height="12" rx="6" fill="#3A4A5A"/><rect x="170" y="56" width="32" height="12" rx="6" fill="#3A4A5A"/>
-<!-- cross brace --><rect x="54" y="120" width="132" height="6" rx="3" fill="#222"/>
-<g style="animation:dip-ud 2s ease-in-out infinite;transform-origin:120px 95px">
-<!-- head --><ellipse cx="120" cy="30" rx="13" ry="14" fill="${SK}"/><path d="M107,26 Q120,12 133,26 L131,20 Q120,6 109,20 Z" fill="${HR}"/><ellipse cx="107" cy="30" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="30" rx="3" ry="4" fill="${SD}"/>
-<!-- neck --><rect x="113" y="42" width="14" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="106,52 134,52 130,92 110,92" fill="${SHT}"/>
-<!-- shorts --><polygon points="110,92 130,92 133,108 107,108" fill="${ST}"/>
-<!-- L upper arm --><polygon points="106,58 116,60 60,70 50,67" fill="${SK}"/>
-<!-- L forearm --><polygon points="50,67 60,70 58,100 48,98" fill="${SK}"/>
-<!-- R upper arm --><polygon points="124,60 134,58 190,67 180,70" fill="${SK}"/>
-<!-- R forearm --><polygon points="180,70 190,67 192,98 182,100" fill="${SK}"/>
-<!-- L leg --><polygon points="110,108 118,108 112,145 104,145" fill="${ST}"/><polygon points="104,145 112,145 110,162 102,162" fill="${SK}"/>
-<!-- R leg --><polygon points="122,108 130,108 136,145 128,145" fill="${ST}"/><polygon points="128,145 136,145 138,162 130,162" fill="${SK}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="28" y="64" width="12" height="92" rx="5" fill="#1E2E3E"/>
+<rect x="200" y="64" width="12" height="92" rx="5" fill="#1E2E3E"/>
+<rect x="18" y="60" width="32" height="10" rx="5" fill="#2A3A5A"/>
+<rect x="190" y="60" width="32" height="10" rx="5" fill="#2A3A5A"/>
+<g style="animation:dip-ud 2.2s ease-in-out infinite;transform-origin:120px 100px">
+${HD(120,30)}${SB(120)}
+<path d="M102,50 Q90,58 85,72 L96,74 Q100,62 109,55 Z" fill="url(#sk)"/>
+<path d="M85,72 Q82,82 88,90 L98,86 Q94,80 96,72 Z" fill="url(#sk)"/>
+<path d="M138,50 Q150,58 155,72 L144,74 Q140,62 131,55 Z" fill="url(#sk)"/>
+<path d="M155,72 Q158,82 152,90 L142,86 Q146,80 144,72 Z" fill="url(#sk)"/>
+<path d="M88,72 Q82,80 85,92 L95,89 Q92,81 96,74 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M152,72 Q158,80 155,92 L145,89 Q148,81 144,74 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+${HL('chest',false)}
+</g>
+${ML('TRICEPS',95,87)}${ML('LOWER CHEST',120,78)}</svg>`,
 
 'pull-up':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- pull-up bar --><rect x="14" y="8" width="16" height="28" rx="5" fill="#1A1A2A"/><rect x="210" y="8" width="16" height="28" rx="5" fill="#1A1A2A"/>
-<rect x="18" y="14" width="204" height="14" rx="6" fill="#2A2A3A"/><rect x="18" y="14" width="204" height="5" rx="4" fill="#3A3A4A"/>
-<g style="animation:pull-ud 2s ease-in-out infinite;transform-origin:120px 85px">
-<!-- hands on bar --><ellipse cx="88" cy="27" rx="8" ry="5" fill="${SD}"/><ellipse cx="152" cy="27" rx="8" ry="5" fill="${SD}"/>
-<!-- L arm up --><polygon points="82,32 92,28 110,66 100,70" fill="${SK}"/>
-<!-- R arm up --><polygon points="148,28 158,32 140,70 130,66" fill="${SK}"/>
-<!-- head --><ellipse cx="120" cy="60" rx="13" ry="14" fill="${SK}"/><path d="M107,56 Q120,42 133,56 L131,50 Q120,38 109,50 Z" fill="${HR}"/><ellipse cx="107" cy="60" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="60" rx="3" ry="4" fill="${SD}"/>
-<!-- neck --><rect x="113" y="72" width="14" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="106,82 134,82 130,118 110,118" fill="${SHT}"/>
-<!-- shorts --><polygon points="110,118 130,118 132,134 108,134" fill="${ST}"/>
-<!-- L thigh --><polygon points="108,134 119,134 115,158 104,158" fill="${ST}"/>
-<!-- R thigh --><polygon points="121,134 132,134 136,158 125,158" fill="${ST}"/>
-<!-- calves --><polygon points="104,158 115,158 112,172 101,172" fill="${SK}"/><polygon points="125,158 136,158 139,172 128,172" fill="${SK}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="0" y="0" width="240" height="6" fill="#1E2E3E"/>
+<rect x="40" y="6" width="16" height="28" rx="4" fill="#2A3A5A"/>
+<rect x="184" y="6" width="16" height="28" rx="4" fill="#2A3A5A"/>
+<rect x="36" y="28" width="168" height="12" rx="6" fill="#3A4A6A"/>
+<g style="animation:pull-ud 2.2s ease-in-out infinite;transform-origin:120px 90px">
+${HD(120,70)}${SB(120)}
+${HL('lats',true)}${HL('biceps',false)}
+<path d="M102,50 Q96,40 90,32 L98,30 Q104,38 109,50 Z" fill="url(#sk)"/>
+<path d="M90,32 Q88,22 91,12 L99,14 Q98,24 98,32 Z" fill="url(#sk)"/>
+<path d="M138,50 Q144,40 150,32 L142,30 Q136,38 131,50 Z" fill="url(#sk)"/>
+<path d="M150,32 Q152,22 149,12 L141,14 Q142,24 142,32 Z" fill="url(#sk)"/>
+</g>
+${ML('LATS',120,74)}${ML('BICEPS',100,52)}</svg>`,
 
 'lat-pulldown':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- cable machine frame --><rect x="100" y="0" width="40" height="12" rx="4" fill="#1A2A3A"/><rect x="108" y="12" width="24" height="8" rx="3" fill="#2A3A4A"/>
-<!-- cable --><line x1="120" y1="20" x2="120" y2="40" stroke="#5A6A7A" stroke-width="2.5" stroke-dasharray="4,3"/>
-<!-- lat bar --><rect x="64" y="38" width="112" height="10" rx="5" fill="#3A4A5A"/><rect x="64" y="38" width="112" height="4" rx="3" fill="#4A5A6A"/>
-<!-- knee pad --><rect x="86" y="122" width="68" height="12" rx="5" fill="#2A2A2A"/>
-<!-- seat --><rect x="90" y="134" width="60" height="14" rx="5" fill="#1E2E3E"/>
-<!-- seated figure -->
-<!-- L thigh horizontal --><polygon points="68,135 92,135 90,148 64,148" fill="${ST}"/>
-<!-- R thigh horizontal --><polygon points="148,135 172,135 176,148 150,148" fill="${ST}"/>
-<!-- L calf --><polygon points="64,148 78,148 74,162 60,162" fill="${SK}"/><rect x="57" y="160" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- R calf --><polygon points="162,148 176,148 180,162 166,162" fill="${SK}"/><rect x="163" y="160" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- torso --><polygon points="106,60 134,60 131,132 109,132" fill="${SHT}"/>
-<!-- neck --><rect x="113" y="50" width="14" height="12" rx="3" fill="${SK}"/>
-<!-- head --><ellipse cx="120" cy="38" rx="13" ry="14" fill="${SK}"/><path d="M107,34 Q120,20 133,34 L131,28 Q120,16 109,28 Z" fill="${HR}"/><ellipse cx="107" cy="37" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="37" rx="3" ry="4" fill="${SD}"/>
-<!-- arms animated pulling down -->
-<g style="animation:ld-ud 2s ease-in-out infinite;transform-origin:120px 65px">
-<polygon points="103,65 113,68 80,40 70,38" fill="${SK}"/>
-<polygon points="127,68 137,65 170,38 160,40" fill="${SK}"/>
-<ellipse cx="74" cy="40" rx="7" ry="5" fill="${SD}"/><ellipse cx="166" cy="40" rx="7" ry="5" fill="${SD}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="0" y="0" width="240" height="6" fill="#1E2E3E"/>
+<rect x="105" y="6" width="30" height="38" rx="4" fill="#2A3A5A"/>
+<rect x="90" y="38" width="60" height="10" rx="5" fill="#3A4A6A"/>
+<rect x="88" y="118" width="64" height="14" rx="6" fill="#1A2A3A"/>
+<g style="animation:ld-ud 2.2s ease-in-out infinite;transform-origin:120px 80px">
+${HD(120,62)}
+<path d="M102,72 Q120,70 138,72 L134,118 Q120,120 106,118 Z" fill="${SHT}"/>
+<path d="M102,72 Q96,80 96,95 Q98,110 106,118 L110,108 Q104,98 105,84 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M138,72 Q144,80 144,95 Q142,110 134,118 L130,108 Q136,98 135,84 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M106,118 Q120,120 134,118 L136,132 Q120,134 104,132 Z" fill="${ST}"/>
+<path d="M88,130 Q104,132 104,144 L80,144 Q80,132 88,130 Z" fill="${ST}"/>
+<path d="M136,130 Q152,132 160,132 L160,144 Q152,144 136,144 Z" fill="${ST}"/>
+<path d="M80,142 Q90,145 104,143 L100,155 Q84,157 78,154 Z" fill="url(#sk)"/>
+<path d="M136,143 Q150,145 160,142 L162,154 Q154,157 138,155 Z" fill="url(#sk)"/>
+<rect x="72" y="153" width="32" height="8" rx="4" fill="${SHO}"/>
+<rect x="130" y="153" width="32" height="8" rx="4" fill="${SHO}"/>
+<path d="M102,74 Q98,62 93,50 L102,50 Q106,62 109,74 Z" fill="url(#sk)"/>
+<path d="M93,50 Q91,42 93,34 L101,36 Q100,44 101,50 Z" fill="url(#sk)"/>
+<path d="M138,74 Q142,62 147,50 L138,50 Q134,62 131,74 Z" fill="url(#sk)"/>
+<path d="M147,50 Q149,42 147,34 L139,36 Q140,44 139,50 Z" fill="url(#sk)"/>
+${HL('biceps',false)}
+<rect x="78" y="42" width="84" height="8" rx="4" fill="#3A4A6A"/>
+<path d="M78,46 Q58,44 48,36 L44,32 L52,28 Q62,34 78,42 Z" fill="#3A4A6A"/>
+<path d="M162,46 Q182,44 192,36 L196,32 L188,28 Q178,34 162,42 Z" fill="#3A4A6A"/>
+</g>
+${ML('LATS',120,92)}${ML('BICEPS',106,60)}</svg>`,
 
 'row':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- bent-over row: figure leaning ~45deg -->
-<!-- L leg --><polygon points="126,110 140,110 136,152 122,152" fill="${ST}"/>
-<!-- R leg --><polygon points="142,110 156,110 160,152 148,152" fill="${ST}"/>
-<!-- L shoe --><rect x="120" y="150" width="22" height="9" rx="4" fill="${SHO}"/><rect x="146" y="150" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- bent torso --><polygon points="58,80 76,74 146,112 130,118" fill="${SHT}"/>
-<!-- neck --><polygon points="70,72 80,68 84,80 74,84" fill="${SK}"/>
-<!-- head --><ellipse cx="60" cy="65" rx="13" ry="14" fill="${SK}"/><path d="M47,62 Q60,50 73,62 L71,56 Q60,44 49,56 Z" fill="${HR}"/><ellipse cx="73" cy="64" rx="3" ry="4" fill="${SD}"/>
-<!-- L static arm on knee --><polygon points="76,78 86,75 92,106 82,108" fill="${SK}"/>
-<!-- animated arms pulling bar up -->
-<g style="animation:row-x 2s ease-in-out infinite;transform-origin:90px 95px">
-<polygon points="80,90 90,88 86,120 76,122" fill="${SK}"/>
-<polygon points="104,100 114,98 110,130 100,132" fill="${SK}"/>
-<ellipse cx="82" cy="122" rx="7" ry="5" fill="${SD}"/><ellipse cx="106" cy="132" rx="7" ry="5" fill="${SD}"/>
-${rbar(58,128,70,8)}
-</g></svg>`,
+${DEFS}${GFL}
+<path d="M92,114 Q100,118 108,114 L106,152 Q96,152 92,148 Z" fill="${ST}"/>
+<path d="M132,114 Q140,118 148,114 L146,152 Q136,152 132,148 Z" fill="${ST}"/>
+<path d="M92,148 Q100,150 106,152 L102,160 Q92,162 88,158 Z" fill="url(#sk)"/>
+<path d="M132,148 Q140,150 146,152 L142,160 Q132,162 128,158 Z" fill="url(#sk)"/>
+<path d="M84,158 Q96,156 102,160 L100,168 Q86,168 82,165 Z" fill="${SHO}"/>
+<path d="M126,158 Q138,156 142,160 L140,168 Q126,168 122,165 Z" fill="${SHO}"/>
+<g style="animation:row-x 2.2s ease-in-out infinite;transform-origin:120px 114px">
+<ellipse cx="175" cy="96" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M168,85 Q178,79 186,85" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="186" cy="88" rx="3" ry="3.5" fill="${SD}"/>
+<path d="M90,114 Q100,108 185,98 L185,112 Q100,120 90,126 Z" fill="${SHT}"/>
+<path d="M110,110 Q140,105 175,99 L175,113 Q140,118 110,123 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M90,114 Q100,108 115,107 L115,121 Q100,120 90,126 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M102,112 Q88,114 62,122 L65,134 Q90,126 105,124 Z" fill="url(#sk)"/>
+<path d="M62,122 Q48,126 36,130 L40,140 Q52,136 65,134 Z" fill="url(#sk)"/>
+<path d="M88,114 Q75,116 65,122 L68,132 Q78,126 90,124 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+${rbar(18,128,30,8)}
+</g>
+${ML('MID-BACK',148,110)}${ML('BICEPS',66,126)}</svg>`,
 
 'deadlift':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- barbell on floor -->${rbar(38,138,164,10)}
-<!-- legs (static) -->
-<polygon points="106,100 118,100 114,140 100,140" fill="${ST}"/>
-<polygon points="122,100 134,100 140,140 128,140" fill="${ST}"/>
-<rect x="98" y="139" width="22" height="9" rx="4" fill="${SHO}"/><rect x="126" y="139" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- animated torso hinge -->
-<g style="animation:dl-r 2.5s ease-in-out infinite;transform-origin:120px 100px">
-<!-- hips/shorts --><polygon points="106,98 134,98 136,112 104,112" fill="${ST}"/>
-<!-- torso --><polygon points="104,55 136,55 134,100 106,100" fill="${SHT}"/>
-<!-- neck --><rect x="113" y="44" width="14" height="13" rx="3" fill="${SK}"/>
-<!-- head --><ellipse cx="120" cy="32" rx="13" ry="14" fill="${SK}"/><path d="M107,28 Q120,14 133,28 L131,22 Q120,8 109,22 Z" fill="${HR}"/><ellipse cx="107" cy="32" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="32" rx="3" ry="4" fill="${SD}"/>
-<!-- L arm gripping --><polygon points="104,62 114,64 108,100 98,98" fill="${SK}"/>
-<!-- R arm gripping --><polygon points="126,64 136,62 142,98 132,100" fill="${SK}"/>
-<ellipse cx="104" cy="140" rx="7" ry="5" fill="${SD}"/><ellipse cx="136" cy="140" rx="7" ry="5" fill="${SD}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<g style="animation:dl-r 2.5s ease-in-out infinite;transform-origin:120px 120px">
+${rbar(30,130,180,10)}
+${HD(120,28)}
+<path d="M113,39 Q120,37 127,39 L130,50 Q120,52 110,50 Z" fill="url(#sk)"/>
+<path d="M102,50 Q110,46 130,50 L138,84 Q120,88 102,84 Z" fill="${SHT}"/>
+<path d="M112,50 Q122,47 130,50 L136,84 Q120,88 106,84 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M104,84 Q120,88 136,84 L138,104 Q120,106 102,104 Z" fill="${ST}"/>
+${HL('glutes',false)}${HL('hamstrings',false)}
+<path d="M104,104 Q96,116 94,138 L104,138 Q106,118 112,106 Z" fill="${ST}"/>
+<path d="M116,106 Q118,118 116,138 L128,138 Q128,116 126,106 Z" fill="${ST}"/>
+<path d="M94,138 Q90,148 92,152 L104,152 Q104,146 104,138 Z" fill="url(#sk)"/>
+<path d="M116,138 Q114,146 116,152 L128,152 Q128,146 128,138 Z" fill="url(#sk)"/>
+<path d="M86,150 Q90,148 104,148 Q108,152 106,157 Q84,157 82,154 Z" fill="${SHO}"/>
+<path d="M114,148 Q127,148 130,150 Q132,155 130,157 Q110,157 108,154 Q107,150 114,148 Z" fill="${SHO}"/>
+<path d="M102,52 Q90,70 75,122 L85,125 Q98,74 112,54 Z" fill="url(#sk)"/>
+<path d="M130,52 Q142,70 165,122 L155,125 Q142,74 128,54 Z" fill="url(#sk)"/>
+${HL('traps',false)}
+</g>
+${ML('LOWER BACK',120,68)}${ML('GLUTES',120,96)}</svg>`,
 
 'ohp':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-${fig('','',120)}
-<!-- legs -->
-<polygon points="105,107 118,107 116,137 102,137" fill="${ST}"/><polygon points="122,107 135,107 138,137 124,137" fill="${ST}"/>
-<ellipse cx="109" cy="137" rx="8" ry="5" fill="#1C2E42"/><ellipse cx="131" cy="137" rx="8" ry="5" fill="#1C2E42"/>
-<polygon points="102,141 115,141 113,152 99,152" fill="${SK}"/><polygon points="125,141 138,141 141,152 128,152" fill="${SK}"/>
-<rect x="97" y="151" width="23" height="9" rx="4" fill="${SHO}"/><rect x="124" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<!-- animated OHP -->
-<g style="animation:ohp-ud 2s ease-in-out infinite;transform-origin:120px 55px">
-<!-- L upper arm going up --><polygon points="103,55 113,58 94,30 84,27" fill="${SK}"/>
-<!-- L forearm --><polygon points="84,27 94,30 90,10 80,8" fill="${SK}"/>
-<!-- R upper arm --><polygon points="127,58 137,55 156,27 146,30" fill="${SK}"/>
-<!-- R forearm --><polygon points="146,30 156,27 160,8 150,10" fill="${SK}"/>
-<ellipse cx="86" cy="9" rx="7" ry="5" fill="${SD}"/><ellipse cx="154" cy="9" rx="7" ry="5" fill="${SD}"/>
-${rbar(64,2,112,9)}
-</g></svg>`,
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}${AR(120)}
+${HL('shoulders',true)}${HL('triceps',false)}${HL('traps',false)}
+<g style="animation:ohp-ud 2.2s ease-in-out infinite;transform-origin:120px 50px">
+<path d="M102,50 Q96,36 92,18 L102,16 Q105,34 109,50 Z" fill="url(#sk)"/>
+<path d="M92,18 Q91,10 93,4 L101,6 Q100,12 102,18 Z" fill="url(#sk)"/>
+<path d="M138,50 Q144,36 148,18 L138,16 Q135,34 131,50 Z" fill="url(#sk)"/>
+<path d="M148,18 Q149,10 147,4 L139,6 Q140,12 138,18 Z" fill="url(#sk)"/>
+${rbar(28,2,184,9)}
+</g>
+${ML('SHOULDERS',120,60)}${ML('TRICEPS',105,46)}</svg>`,
 
 'lateral-raise':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- standing figure -->
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,107 105,107" fill="${ST}"/>
-<rect x="106" y="86" width="28" height="5" rx="2" fill="#0C1420"/>
-<polygon points="105,107 118,107 116,137 102,137" fill="${ST}"/><polygon points="122,107 135,107 138,137 124,137" fill="${ST}"/>
-<ellipse cx="109" cy="137" rx="8" ry="5" fill="#1C2E42"/><ellipse cx="131" cy="137" rx="8" ry="5" fill="#1C2E42"/>
-<polygon points="102,141 115,141 113,152 99,152" fill="${SK}"/><polygon points="125,141 138,141 141,152 128,152" fill="${SK}"/>
-<rect x="97" y="151" width="23" height="9" rx="4" fill="${SHO}"/><rect x="124" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<!-- L arm lateral raise animated -->
-<g style="animation:lat-r 2s ease-in-out infinite;transform-origin:103px 62px">
-<polygon points="96,62 106,65 58,75 48,72" fill="${SK}"/>
-${rdb(12,70)}
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}
+${HL('shoulders',true)}${HL('traps',false)}
+<g style="animation:lat-r 2.2s ease-in-out infinite;transform-origin:120px 60px">
+<path d="M102,52 Q82,52 58,56 L60,68 Q84,62 109,56 Z" fill="url(#sk)"/>
+<path d="M58,56 Q42,58 28,62 L30,74 Q44,70 60,68 Z" fill="url(#sk)"/>
+${rdb(0,64)}
+<path d="M138,52 Q158,52 182,56 L180,68 Q156,62 131,56 Z" fill="url(#sk)"/>
+<path d="M182,56 Q198,58 212,62 L210,74 Q196,70 180,68 Z" fill="url(#sk)"/>
+${rdb(196,64)}
 </g>
-<!-- R arm lateral raise animated -->
-<g style="animation:fly-rl 2s ease-in-out infinite;transform-origin:137px 62px">
-<polygon points="134,65 144,62 192,72 182,75" fill="${SK}"/>
-${rdb(186,70)}
-</g></svg>`,
+${ML('SIDE DELTS',120,58)}</svg>`,
 
 'front-raise':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,107 105,107" fill="${ST}"/>
-<rect x="106" y="86" width="28" height="5" rx="2" fill="#0C1420"/>
-<polygon points="105,107 118,107 116,137 102,137" fill="${ST}"/><polygon points="122,107 135,107 138,137 124,137" fill="${ST}"/>
-<polygon points="102,141 115,141 113,152 99,152" fill="${SK}"/><polygon points="125,141 138,141 141,152 128,152" fill="${SK}"/>
-<rect x="97" y="151" width="23" height="9" rx="4" fill="${SHO}"/><rect x="124" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<!-- R arm static at side --><polygon points="127,55 137,52 148,82 138,84" fill="${SK}"/><polygon points="138,84 148,82 150,108 140,109" fill="${SK}"/>
-<!-- L arm animated front raise -->
-<g style="animation:fly-r 2s ease-in-out infinite;transform-origin:103px 62px">
-<polygon points="96,62 106,65 88,36 78,38" fill="${SK}"/>
-<polygon points="78,38 88,36 82,10 72,12" fill="${SK}"/>
-${rdb(50,10)}
-</g></svg>`,
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}
+${HL('shoulders',true)}
+<path d="M138,50 Q148,62 152,84 L140,86 Q138,66 131,52 Z" fill="url(#sk)"/>
+<path d="M140,86 Q142,98 142,112 L130,112 Q130,98 128,86 Z" fill="url(#sk)"/>
+<g style="animation:ohp-ud 2.2s ease-in-out infinite;transform-origin:102px 60px">
+<path d="M102,52 Q96,38 96,22 L106,22 Q108,38 109,52 Z" fill="url(#sk)"/>
+<path d="M96,22 Q96,12 99,6 L108,8 Q107,14 106,22 Z" fill="url(#sk)"/>
+${rdb(68,20)}
+</g>
+${ML('FRONT DELTS',120,50)}</svg>`,
 
 'face-pull':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- cable machine on right --><rect x="210" y="20" width="30" height="140" rx="5" fill="#1E2E3E"/><rect x="210" y="20" width="30" height="140" rx="5" fill="#253545" opacity="0.5"/>
-<rect x="208" y="60" width="20" height="20" rx="4" fill="#3A4A5A"/>
-<!-- cable --><line x1="208" y1="70" x2="158" y2="78" stroke="#5A6A7A" stroke-width="2.5" stroke-dasharray="4,3"/>
-<!-- rope ends --><circle cx="158" cy="76" r="5" fill="#4A5A6A"/><circle cx="158" cy="80" r="5" fill="#4A5A6A"/>
-<!-- standing figure (facing machine, slightly offset cx=95) -->
-<ellipse cx="95" cy="30" rx="13" ry="14" fill="${SK}"/><path d="M82,26 Q95,12 108,26 L106,20 Q95,8 84,20 Z" fill="${HR}"/><ellipse cx="82" cy="30" rx="3" ry="4" fill="${SD}"/><ellipse cx="108" cy="30" rx="3" ry="4" fill="${SD}"/>
-<rect x="88" y="42" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="78,53 112,53 108,91 82,91" fill="${SHT}"/>
-<polygon points="82,91 108,91 110,111 80,111" fill="${ST}"/>
-<polygon points="80,111 93,111 91,141 77,141" fill="${ST}"/><polygon points="97,111 110,111 113,141 99,141" fill="${ST}"/>
-<polygon points="77,145 90,145 88,152 74,152" fill="${SK}"/><polygon points="99,145 112,145 115,152 102,152" fill="${SK}"/>
-<rect x="72" y="151" width="22" height="9" rx="4" fill="${SHO}"/><rect x="100" y="151" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- arms animated pulling to face -->
-<g style="animation:face-x 2s ease-in-out infinite;transform-origin:95px 70px">
-<polygon points="90,68 100,70 148,72 140,76" fill="${SK}"/>
-<polygon points="90,74 100,76 148,80 140,84" fill="${SK}"/>
-<ellipse cx="144" cy="78" rx="8" ry="5" fill="${SD}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="226" y="0" width="14" height="180" fill="#1A2A3A"/>
+<rect x="218" y="60" width="8" height="8" rx="4" fill="#3A5A7A"/>
+<line x1="218" y1="64" x2="158" y2="80" stroke="#6A8AAA" stroke-width="2.5" stroke-dasharray="4,3"/>
+${HD(95,30)}${SB(95)}
+${HL('shoulders',true,95)}${HL('traps',false,95)}
+<path d="M114,138 Q108,148 110,152 L122,152 Q122,148 118,140 Z" fill="url(#sk)"/>
+<path d="M76,138 Q82,148 80,152 L68,152 Q68,148 72,140 Z" fill="url(#sk)"/>
+<path d="M62,150 Q72,148 80,150 Q82,155 80,158 Q60,158 58,155 Z" fill="${SHO}"/>
+<path d="M110,150 Q118,148 126,150 Q128,155 126,158 Q106,158 104,155 Z" fill="${SHO}"/>
+<path d="M77,111 Q70,126 68,138 L80,140 Q82,128 87,114 Z" fill="${ST}"/>
+<path d="M113,111 Q120,126 122,138 L110,140 Q108,128 103,114 Z" fill="${ST}"/>
+<g style="animation:face-x 2.2s ease-in-out infinite;transform-origin:95px 70px">
+<path d="M77,53 Q66,60 56,68 L60,78 Q70,70 80,64 Z" fill="url(#sk)"/>
+<path d="M56,68 Q46,74 38,78 L42,88 Q50,84 60,78 Z" fill="url(#sk)"/>
+<path d="M113,53 Q124,60 144,70 L140,80 Q120,70 110,64 Z" fill="url(#sk)"/>
+<path d="M144,70 Q158,76 168,80 L164,90 Q154,86 140,80 Z" fill="url(#sk)"/>
+</g>
+${ML('REAR DELTS',95,56)}${ML('TRAPS',95,44)}</svg>`,
 
 'curl':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,107 105,107" fill="${ST}"/>
-<rect x="106" y="86" width="28" height="5" rx="2" fill="#0C1420"/>
-<polygon points="105,107 118,107 116,137 102,137" fill="${ST}"/><polygon points="122,107 135,107 138,137 124,137" fill="${ST}"/>
-<polygon points="102,141 115,141 113,152 99,152" fill="${SK}"/><polygon points="125,141 138,141 141,152 128,152" fill="${SK}"/>
-<rect x="97" y="151" width="23" height="9" rx="4" fill="${SHO}"/><rect x="124" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<!-- upper arms static --><polygon points="103,54 113,56 100,86 90,84" fill="${SK}"/><polygon points="127,56 137,54 150,84 140,86" fill="${SK}"/>
-<!-- forearms animated curl -->
-<g style="animation:curl-r 2s ease-in-out infinite;transform-origin:95px 86px">
-<polygon points="90,86 100,88 88,118 78,116" fill="${SK}"/>
-<polygon points="140,86 150,88 162,116 152,118" fill="${SK}"/>
-<ellipse cx="84" cy="117" rx="8" ry="5" fill="${SD}"/><ellipse cx="156" cy="117" rx="8" ry="5" fill="${SD}"/>
-${rbar(60,116,120,9)}
-</g></svg>`,
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}
+${HL('biceps',true)}${HL('forearms',false)}
+<path d="M102,52 Q94,56 88,64 Q84,74 84,86 L96,86 Q96,76 100,68 Q106,60 109,54 Z" fill="url(#sk)"/>
+<path d="M138,52 Q146,56 152,64 Q156,74 156,86 L144,86 Q144,76 140,68 Q134,60 131,54 Z" fill="url(#sk)"/>
+<g style="animation:curl-r 2s ease-in-out infinite;transform-origin:120px 90px">
+<path d="M84,86 Q84,100 87,110 L98,108 Q96,98 96,88 Z" fill="url(#sk)"/>
+<path d="M156,86 Q156,100 153,110 L142,108 Q144,98 144,88 Z" fill="url(#sk)"/>
+${rbar(58,108,124,9)}
+</g>
+${ML('BICEPS',120,65)}${ML('FOREARMS',98,100)}</svg>`,
 
-'pushdown':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- cable machine --><rect x="100" y="0" width="40" height="55" rx="5" fill="#1E2E3E"/><rect x="108" y="55" width="24" height="8" rx="4" fill="#2A3A4A"/>
-<!-- cable --><line x1="120" y1="63" x2="120" y2="80" stroke="#5A6A7A" stroke-width="2.5"/>
-<!-- V-bar handle --><polygon points="88,80 132,80 138,88 82,88" fill="#3A4A5A"/>
-<!-- standing figure -->
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,107 105,107" fill="${ST}"/>
-<polygon points="105,107 118,107 116,137 102,137" fill="${ST}"/><polygon points="122,107 135,107 138,137 124,137" fill="${ST}"/>
-<polygon points="102,141 115,141 113,152 99,152" fill="${SK}"/><polygon points="125,141 138,141 141,152 128,152" fill="${SK}"/>
-<rect x="97" y="151" width="23" height="9" rx="4" fill="${SHO}"/><rect x="124" y="151" width="23" height="9" rx="4" fill="${SHO}"/>
-<!-- upper arms close to body --><polygon points="103,54 111,56 100,84 92,82" fill="${SK}"/><polygon points="129,56 137,54 148,82 140,84" fill="${SK}"/>
-<!-- forearms animated push down -->
-<g style="animation:pushd-r 2s ease-in-out infinite;transform-origin:95px 84px">
-<polygon points="92,84 100,86 96,118 88,116" fill="${SK}"/>
-<polygon points="140,86 148,84 152,116 144,118" fill="${SK}"/>
-<ellipse cx="92" cy="117" rx="8" ry="5" fill="${SD}"/><ellipse cx="148" cy="117" rx="8" ry="5" fill="${SD}"/>
-<rect x="88" y="112" width="64" height="10" rx="5" fill="#3A4A5A"/>
-</g></svg>`,
+'pushdown':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2020/svg">
+${DEFS}${GFL}
+<rect x="226" y="0" width="14" height="180" fill="#1A2A3A"/>
+<rect x="218" y="60" width="8" height="8" rx="4" fill="#3A5A7A"/>
+<line x1="218" y1="64" x2="170" y2="80" stroke="#6A8AAA" stroke-width="2"/>
+${HD(120,26)}${SB(120)}
+${HL('triceps',true)}
+<path d="M102,52 Q96,56 93,64 Q90,74 90,86 L100,86 Q100,76 103,67 Q107,59 109,54 Z" fill="url(#sk)"/>
+<path d="M138,52 Q144,56 147,64 Q150,74 150,86 L140,86 Q140,76 137,67 Q133,59 131,54 Z" fill="url(#sk)"/>
+<g style="animation:pushd-r 2s ease-in-out infinite;transform-origin:120px 80px">
+<path d="M90,86 Q90,98 93,110 L103,108 Q101,98 100,88 Z" fill="url(#sk)"/>
+<path d="M150,86 Q150,98 147,110 L137,108 Q139,98 140,88 Z" fill="url(#sk)"/>
+<rect x="93" y="108" width="54" height="7" rx="3.5" fill="#3A4A5A"/>
+</g>
+${ML('TRICEPS',120,68)}</svg>`,
 
 'skull-crusher':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-${bench(110)}
-<rect x="174" y="86" width="11" height="48" rx="3" fill="#2A2A2A"/><rect x="172" y="83" width="15" height="8" rx="3" fill="#383838"/>
-<!-- lying legs --><polygon points="152,122 174,122 188,150 166,153" fill="${ST}"/><polygon points="168,122 193,122 209,150 187,152" fill="${ST}"/>
-<rect x="185" y="148" width="24" height="10" rx="4" fill="${SHO}"/><rect x="205" y="148" width="22" height="10" rx="4" fill="${SHO}"/>
-<!-- torso --><polygon points="28,120 155,120 152,111 31,111" fill="${SHT}"/>
-<rect x="16" y="109" width="14" height="13" rx="3" fill="${SK}"/>
-<ellipse cx="12" cy="102" rx="13" ry="14" fill="${SK}"/><path d="M0,97 Q12,86 24,97 L23,91 Q12,80 1,91 Z" fill="${HR}"/><ellipse cx="24" cy="101" rx="3" ry="4.5" fill="${SD}"/>
-<!-- upper arms angled --><polygon points="60,114 70,114 68,86 58,86" fill="${SK}"/><polygon points="130,114 140,114 142,86 132,86" fill="${SK}"/>
-<!-- forearms + bar animated -->
-<g style="animation:ext-r 2s ease-in-out infinite;transform-origin:105px 86px">
-<polygon points="58,88 68,88 66,58 56,58" fill="${SK}"/>
-<polygon points="132,88 142,88 144,58 134,58" fill="${SK}"/>
-<ellipse cx="62" cy="57" rx="7" ry="5" fill="${SD}"/><ellipse cx="138" cy="57" rx="7" ry="5" fill="${SD}"/>
-${rbar(38,46,164,9)}
-</g></svg>`,
+${DEFS}${GFL}${bench(111)}
+<ellipse cx="224" cy="103" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M212,91 Q222,87 230,95" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="230" cy="98" rx="3" ry="3.5" fill="${SD}"/>
+<path d="M212,107 Q207,107 204,112 L207,116 Q211,114 213,111 Z" fill="url(#sk)"/>
+<path d="M84,109 Q140,107 205,110 L205,122 Q140,124 84,122 Z" fill="${SHT}"/>
+<path d="M84,109 Q72,107 62,112 L62,128 Q72,128 84,122 Z" fill="${ST}"/>
+<path d="M62,112 Q50,110 38,115 L38,145 Q50,145 62,128 Z" fill="${ST}"/>
+<path d="M38,145 Q28,143 24,148 L26,158 Q36,160 38,155 Z" fill="url(#sk)"/>
+<path d="M144,110 Q148,92 148,72 L158,72 Q158,92 152,110 Z" fill="url(#sk)"/>
+<path d="M164,110 Q168,92 168,72 L178,72 Q178,92 172,110 Z" fill="url(#sk)"/>
+<path d="M148,76 Q144,92 148,110 L152,110 Q158,94 158,76 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M168,76 Q164,92 168,110 L172,110 Q178,94 178,76 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<g style="animation:ext-r 2.2s ease-in-out infinite;transform-origin:150px 72px">
+${rbar(118,42,44,9)}
+</g>
+${ML('TRICEPS',155,92)}</svg>`,
 
 'overhead-ext':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- seated figure on bench -->
-${bench(128,80,80)}
-<ellipse cx="120" cy="34" rx="13" ry="14" fill="${SK}"/><path d="M107,30 Q120,16 133,30 L131,24 Q120,12 109,24 Z" fill="${HR}"/><ellipse cx="107" cy="33" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="33" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="46" width="14" height="10" rx="3" fill="${SK}"/>
-<polygon points="106,56 134,56 130,96 110,96" fill="${SHT}"/>
-<!-- seated legs --><polygon points="82,128 108,128 106,140 78,140" fill="${ST}"/><polygon points="132,128 158,128 162,140 136,140" fill="${ST}"/>
-<polygon points="78,140 91,140 88,152 75,152" fill="${SK}"/><polygon points="162,140 175,140 178,152 165,152" fill="${SK}"/>
-<rect x="72" y="150" width="22" height="9" rx="4" fill="${SHO}"/><rect x="163" y="150" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- upper arms straight up --><polygon points="109,60 117,60 114,30 106,30" fill="${SK}"/><polygon points="123,60 131,60 134,30 126,30" fill="${SK}"/>
-<!-- forearms + dumbbell animated -->
-<g style="animation:kb-ext-anim 2s ease-in-out infinite;transform-origin:120px 30px">
-<polygon points="106,32 114,32 110,58 102,58" fill="${SK}"/>
-<polygon points="126,32 134,32 138,58 130,58" fill="${SK}"/>
-${rdb(90,58)}
-</g></svg>`,
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}
+${HL('triceps',true)}
+<path d="M110,50 Q106,34 105,18 L115,18 Q116,34 119,50 Z" fill="url(#sk)"/>
+<path d="M130,50 Q134,34 135,18 L125,18 Q124,34 121,50 Z" fill="url(#sk)"/>
+<g style="animation:ext-r 2.2s ease-in-out infinite;transform-origin:120px 24px">
+<path d="M105,18 Q104,8 107,2 L117,4 Q115,10 115,18 Z" fill="url(#sk)"/>
+<path d="M135,18 Q136,8 133,2 L123,4 Q125,10 125,18 Z" fill="url(#sk)"/>
+${rdb(96,0)}
+</g>
+${ML('TRICEPS LONG HEAD',120,62)}</svg>`,
 
 'squat':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- squat rack uprights --><rect x="14" y="10" width="12" height="145" rx="4" fill="#1E2E3E"/><rect x="214" y="10" width="12" height="145" rx="4" fill="#1E2E3E"/>
-<!-- J-hooks --><polygon points="26,58 42,58 42,68 26,68" fill="#2A3A4A"/><polygon points="198,58 214,58 214,68 198,68" fill="#2A3A4A"/>
-<!-- safety bars --><rect x="26" y="108" width="20" height="7" rx="3" fill="#253545"/><rect x="194" y="108" width="20" height="7" rx="3" fill="#253545"/>
-<g style="animation:squat-ud 2s ease-in-out infinite;transform-origin:120px 110px">
-<ellipse cx="120" cy="28" rx="13" ry="14" fill="${SK}"/><path d="M107,24 Q120,10 133,24 L131,18 Q120,6 109,18 Z" fill="${HR}"/><ellipse cx="107" cy="27" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="27" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="40" width="14" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="103,50 137,50 133,88 107,88" fill="${SHT}"/>
-<!-- shorts --><polygon points="107,88 133,88 136,108 104,108" fill="${ST}"/>
-<!-- arms on bar --><polygon points="103,56 113,58 72,60 62,58" fill="${SK}"/><polygon points="127,58 137,56 178,58 168,60" fill="${SK}"/>
-<!-- thighs in squat --><polygon points="104,108 118,108 90,140 76,138" fill="${ST}"/><polygon points="122,108 136,108 164,138 150,140" fill="${ST}"/>
-<!-- calves --><polygon points="76,138 90,140 84,155 70,155" fill="${SK}"/><polygon points="150,140 164,138 170,155 156,155" fill="${SK}"/>
-<!-- shoes --><rect x="67" y="152" width="22" height="9" rx="4" fill="${SHO}"/><rect x="152" y="152" width="22" height="9" rx="4" fill="${SHO}"/>
-${rbar(34,50,172,10)}
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="14" y="10" width="12" height="145" rx="4" fill="#1E2E3E"/>
+<rect x="214" y="10" width="12" height="145" rx="4" fill="#1E2E3E"/>
+<rect x="22" y="56" width="20" height="8" rx="3" fill="#2A3A4A"/>
+<rect x="198" y="56" width="20" height="8" rx="3" fill="#2A3A4A"/>
+<g style="animation:squat-ud 2.5s ease-in-out infinite;transform-origin:120px 100px">
+${HD(120,26)}${SB(120)}
+${HL('quads',true)}${HL('glutes',false)}${HL('hamstrings',false)}
+<path d="M100,52 Q76,48 52,50 L52,60 Q76,58 100,62 Z" fill="url(#sk)"/>
+<path d="M140,52 Q164,48 188,50 L188,60 Q164,58 140,62 Z" fill="url(#sk)"/>
+${rbar(48,44,144,9)}
+</g>
+${ML('QUADS',120,118)}${ML('GLUTES',120,96)}</svg>`,
 
 'lunge':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<g style="animation:lunge-ud 2s ease-in-out infinite;transform-origin:120px 95px">
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,105 105,105" fill="${ST}"/>
-<!-- arms holding dumbbells --><polygon points="103,54 113,56 100,86 90,84" fill="${SK}"/><polygon points="90,86 100,88 92,112 82,110" fill="${SK}"/>
-<polygon points="127,56 137,54 150,84 140,86" fill="${SK}"/><polygon points="140,86 150,84 158,110 148,112" fill="${SK}"/>
-${rdb(50,112)}${rdb(152,112)}
-<!-- front (L) leg --><polygon points="104,105 118,105 102,140 88,138" fill="${ST}"/><polygon points="88,138 102,140 96,155 82,155" fill="${SK}"/>
-<rect x="78" y="153" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- back (R) leg --><polygon points="122,105 136,105 154,130 140,134" fill="${ST}"/><polygon points="140,134 154,130 164,155 150,155" fill="${SK}"/>
-<rect x="148" y="153" width="22" height="9" rx="4" fill="${SHO}"/>
-</g></svg>`,
+${DEFS}${GFL}
+${HD(120,26)}${SB(120)}
+${HL('quads',true)}${HL('glutes',false)}
+${AR(120)}
+${rdb(68,112)}${rdb(148,112)}
+<g style="animation:lunge-ud 2.2s ease-in-out infinite;transform-origin:120px 107px">
+<path d="M103,107 Q95,118 90,137 L102,137 Q106,120 112,107 Z" fill="${ST}"/>
+<path d="M90,137 Q86,148 88,152 L100,152 Q100,148 102,137 Z" fill="url(#sk)"/>
+<path d="M82,150 Q88,148 100,148 Q104,152 102,157 Q80,157 78,154 Z" fill="${SHO}"/>
+<path d="M128,107 Q138,118 142,137 L154,137 Q150,120 138,107 Z" fill="${ST}"/>
+<path d="M142,137 Q148,148 146,152 L134,152 Q134,148 132,137 Z" fill="url(#sk)"/>
+<path d="M132,150 Q138,148 148,150 Q152,154 150,157 Q130,157 128,154 Z" fill="${SHO}"/>
+</g>
+${ML('QUADS',120,118)}${ML('GLUTES',120,96)}</svg>`,
 
 'hip-thrust':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-${bench(86,144,78)}
-<g style="animation:hip-ud 2s ease-in-out infinite;transform-origin:120px 125px">
-<!-- upper back on bench --><polygon points="40,118 146,106 148,118 42,130" fill="${SHT}"/>
-<!-- head --><ellipse cx="36" cy="112" rx="13" ry="14" fill="${SK}"/><path d="M24,107 Q36,94 48,107 L47,101 Q36,89 25,101 Z" fill="${HR}"/>
-<!-- hips raised --><polygon points="146,106 182,106 185,128 148,128" fill="${ST}"/>
-<!-- L leg --><polygon points="148,128 162,128 152,154 138,154" fill="${ST}"/><polygon points="138,154 152,154 148,162 134,162" fill="${SK}"/>
-<!-- R leg --><polygon points="164,128 178,128 190,154 176,154" fill="${ST}"/><polygon points="176,154 190,154 194,162 180,162" fill="${SK}"/>
-<rect x="132" y="160" width="22" height="9" rx="4" fill="${SHO}"/><rect x="178" y="160" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- barbell across hips -->${rbar(100,98,80,10)}
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="0" y="90" width="60" height="24" rx="8" fill="${BP}"/>
+<rect x="0" y="90" width="60" height="9" rx="7" fill="${BL}"/>
+<rect x="4" y="112" width="10" height="26" rx="2" fill="#1C1C1C"/>
+<rect x="46" y="112" width="10" height="26" rx="2" fill="#1C1C1C"/>
+<ellipse cx="30" cy="84" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M22,73 Q32,67 42,73" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M42,88 Q55,88 64,95 L60,108 Q50,104 42,100 Z" fill="url(#sk)"/>
+<path d="M62,96 Q90,88 130,88 L132,102 Q92,104 62,110 Z" fill="${SHT}"/>
+<path d="M118,88 Q132,84 145,90 L141,106 Q128,106 118,104 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M130,88 Q148,86 158,96 L154,112 Q144,108 130,104 Z" fill="${ST}"/>
+<path d="M155,96 Q165,94 168,102 L168,124 Q160,128 154,118 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M158,96 Q170,98 176,114 L178,140 Q162,138 158,118 Z" fill="${ST}"/>
+<path d="M178,140 Q186,144 188,152 L174,152 Q170,144 176,140 Z" fill="url(#sk)"/>
+<path d="M168,150 Q178,148 190,150 Q194,155 192,158 Q170,158 166,155 Z" fill="${SHO}"/>
+<path d="M186,100 Q200,106 210,130 L196,132 Q192,110 182,106 Z" fill="${ST}"/>
+<path d="M200,132 Q206,144 208,152 L194,152 Q192,144 196,132 Z" fill="url(#sk)"/>
+<g style="animation:hip-ud 2.2s ease-in-out infinite;transform-origin:120px 94px">
+${rbar(68,86,104,10)}
+</g>
+${ML('GLUTES',128,96)}${ML('HAMSTRINGS',160,112)}</svg>`,
 
 'glute-bridge':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- floor mat --><rect x="14" y="147" width="214" height="7" rx="3" fill="#1A2A1A"/>
-<g style="animation:hip-ud 2s ease-in-out infinite;transform-origin:120px 135px">
-<!-- shoulders/torso on floor --><polygon points="30,132 130,132 132,144 32,144" fill="${SHT}"/>
-<!-- head --><ellipse cx="24" cy="130" rx="12" ry="13" fill="${SK}"/><path d="M12,125 Q24,114 36,125 L35,120 Q24,108 13,120 Z" fill="${HR}"/>
-<!-- arms on floor --><polygon points="32,136 44,136 36,150 24,150" fill="${SK}"/><polygon points="120,136 132,136 140,150 128,150" fill="${SK}"/>
-<!-- hips raised --><polygon points="130,132 178,108 183,120 135,143" fill="${ST}"/>
-<!-- R leg (near camera) --><polygon points="156,108 170,106 166,142 152,144" fill="${ST}"/><polygon points="152,144 166,142 162,156 148,156" fill="${SK}"/>
-<!-- L leg --><polygon points="170,106 182,108 186,142 172,142" fill="${ST}"/><polygon points="172,142 186,142 190,156 176,156" fill="${SK}"/>
-<rect x="145" y="154" width="22" height="9" rx="4" fill="${SHO}"/><rect x="174" y="154" width="22" height="9" rx="4" fill="${SHO}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<ellipse cx="224" cy="135" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M213,124 Q222,119 232,125" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M213,139 Q208,138 205,143 L208,147 Q213,146 215,142 Z" fill="url(#sk)"/>
+<path d="M60,142 Q120,138 206,141 L206,153 Q120,153 60,153 Z" fill="${SHT}"/>
+<path d="M60,142 Q50,130 48,114 L64,114 Q66,130 66,143 Z" fill="${ST}"/>
+<path d="M48,114 Q50,105 58,100 L72,102 Q68,110 64,118 Q58,128 50,127 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M50,114 Q42,120 36,138 L50,140 Q54,122 60,118 Z" fill="${ST}"/>
+<path d="M36,138 Q28,134 20,130 L24,120 Q32,124 40,130 Z" fill="${ST}"/>
+<ellipse cx="24" cy="120" rx="10" ry="5" fill="${SHO}"/>
+<ellipse cx="36" cy="122" rx="10" ry="5" fill="${SHO}"/>
+<path d="M160,151 Q160,162 160,168 L174,168 Q174,162 172,151 Z" fill="url(#sk)"/>
+<path d="M80,151 Q80,162 80,168 L66,168 Q66,162 68,151 Z" fill="url(#sk)"/>
+<path d="M90,140 Q120,137 150,140 L150,153 Q120,153 90,153 Z" fill="#FFA726" opacity=".45" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+${ML('GLUTES',58,106)}${ML('CORE',120,146)}</svg>`,
 
 'kickback':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- cable machine --><rect x="0" y="30" width="26" height="130" rx="5" fill="#1E2E3E"/><rect x="14" y="82" width="18" height="18" rx="4" fill="#2A3A4A"/>
-<line x1="22" y1="91" x2="80" y2="100" stroke="#5A6A7A" stroke-width="2.5" stroke-dasharray="4,3"/>
-<!-- bench support (kneeling) --><rect x="115" y="118" width="70" height="12" rx="5" fill="${BP}"/>
-<!-- figure bent over --><ellipse cx="100" cy="62" rx="13" ry="14" fill="${SK}"/><path d="M87,58 Q100,45 113,58 L111,52 Q100,40 89,52 Z" fill="${HR}"/>
-<!-- torso angled --><polygon points="108,70 122,66 166,105 153,110" fill="${SHT}"/>
-<!-- neck --><polygon points="100,74 110,70 114,82 104,86" fill="${SK}"/>
-<!-- supporting arm on bench --><polygon points="108,74 118,72 122,102 112,104" fill="${SK}"/>
-<!-- supporting leg --><polygon points="153,110 165,108 162,150 150,150" fill="${ST}"/><polygon points="150,150 162,150 158,162 146,162" fill="${SK}"/><rect x="143" y="160" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- kicking leg animated -->
-<g style="animation:kick-r 2s ease-in-out infinite;transform-origin:158px 108px">
-<polygon points="158,108 170,106 182,145 170,147" fill="${ST}"/>
-<polygon points="170,147 182,145 194,138 182,136" fill="${SK}"/>
-<rect x="188" y="133" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- ankle cable --><ellipse cx="178" cy="143" rx="8" ry="5" fill="#2A3A4A"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="80" y="84" width="90" height="16" rx="6" fill="${BP}"/>
+<rect x="80" y="84" width="90" height="6" rx="4" fill="${BL}"/>
+<rect x="84" y="100" width="10" height="26" rx="2" fill="#1C1C1C"/>
+<rect x="156" y="100" width="10" height="26" rx="2" fill="#1C1C1C"/>
+<path d="M58,84 Q52,100 52,152 L64,152 Q66,108 68,88 Z" fill="${ST}"/>
+<path d="M52,152 Q48,160 50,168 L64,168 Q64,160 64,152 Z" fill="url(#sk)"/>
+<path d="M44,166 Q50,162 64,164 Q68,168 66,172 Q44,172 42,169 Z" fill="${SHO}"/>
+<ellipse cx="178" cy="62" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M170,51 Q180,45 188,52" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M168,72 Q148,76 112,84 L116,96 Q150,90 170,84 Z" fill="${SHT}"/>
+<path d="M112,84 Q100,86 86,90 L90,102 Q104,100 116,96 Z" fill="${SHT}"/>
+<ellipse cx="88" cy="83" rx="8" ry="5" fill="${SD}"/>
+<g style="animation:kick-r 2.2s ease-in-out infinite;transform-origin:60px 84px">
+<path d="M62,84 Q54,100 50,120 L62,122 Q66,104 70,88 Z" fill="${ST}"/>
+<path d="M50,120 Q44,134 46,152 L58,152 Q58,140 62,122 Z" fill="url(#sk)"/>
+<path d="M62,84 Q54,90 52,108 Q52,122 60,128 Q70,120 74,106 Q76,94 72,86 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+</g>
+${ML('GLUTES',62,94)}</svg>`,
 
 'plank':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- mat --><rect x="14" y="148" width="214" height="6" rx="3" fill="#1A2A1A"/>
-<g style="animation:plank-p 2s ease-in-out infinite">
-<!-- head --><ellipse cx="28" cy="126" rx="12" ry="13" fill="${SK}"/><path d="M16,121 Q28,110 40,121 L39,116 Q28,104 17,116 Z" fill="${HR}"/>
-<!-- neck --><rect x="38" y="122" width="12" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="48,126 194,126 194,136 48,136" fill="${SHT}"/>
-<!-- hips/shorts --><polygon points="172,126 198,126 198,138 172,138" fill="${ST}"/>
-<!-- L forearm --><polygon points="50,136 62,136 56,154 44,154" fill="${SK}"/><ellipse cx="50" cy="154" rx="9" ry="5" fill="${SD}"/>
-<!-- R forearm --><polygon points="78,136 90,136 84,154 72,154" fill="${SK}"/><ellipse cx="78" cy="154" rx="9" ry="5" fill="${SD}"/>
-<!-- feet on toes --><rect x="188" y="130" width="22" height="9" rx="4" fill="${SHO}"/><rect x="204" y="132" width="20" height="9" rx="4" fill="${SHO}"/>
-<!-- core highlight --><rect x="98" y="124" width="70" height="14" rx="4" fill="#C0392B" opacity="0.25"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="20" y="155" width="200" height="6" rx="3" fill="#1A2A1A"/>
+<ellipse cx="42" cy="110" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M36,99 Q46,93 54,99" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M54,114 Q60,113 63,118 L60,122 Q56,120 54,118 Z" fill="url(#sk)"/>
+<path d="M62,116 Q120,118 196,122 L196,133 Q120,132 62,128 Z" fill="${SHT}"/>
+<path d="M80,117 Q130,119 175,122 L175,132 Q130,132 80,128 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M62,116 Q68,113 76,115 L76,128 Q68,128 62,127 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M196,122 Q208,120 216,124 L216,136 Q208,136 196,133 Z" fill="${ST}"/>
+<path d="M216,124 Q228,123 232,127 L230,148 Q218,148 216,136 Z" fill="${ST}"/>
+<ellipse cx="230" cy="148" rx="8" ry="4" fill="${SHO}"/>
+<path d="M62,122 Q58,128 55,148 L67,148 Q68,130 68,128 Z" fill="url(#sk)"/>
+<path d="M55,148 Q56,155 55,160 L67,160 Q68,158 67,148 Z" fill="url(#sk)"/>
+<rect x="48" y="158" width="24" height="6" rx="3" fill="${SHO}"/>
+${ML('CORE',125,126)}${ML('SHOULDERS',70,122)}</svg>`,
 
 'crunch':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
+${DEFS}${GFL}
 <!-- mat --><rect x="14" y="148" width="214" height="6" rx="3" fill="#1A2A1A"/>
-<!-- lower body static --><polygon points="130,138 162,138 166,152 134,152" fill="${ST}"/><polygon points="158,138 192,138 196,152 164,152" fill="${ST}"/>
-<polygon points="134,152 148,152 144,162 130,162" fill="${SK}"/><polygon points="164,152 178,152 182,162 168,162" fill="${SK}"/>
+<!-- lower body static -->
+<path d="M130,138 Q146,136 162,138 L166,152 Q150,154 134,152 Z" fill="${ST}"/>
+<path d="M158,138 Q175,136 192,138 L196,152 Q179,154 164,152 Z" fill="${ST}"/>
+<path d="M134,152 Q141,150 148,152 L144,162 Q137,164 130,162 Z" fill="url(#sk)"/>
+<path d="M164,152 Q171,150 178,152 L182,162 Q175,164 168,162 Z" fill="url(#sk)"/>
 <rect x="127" y="160" width="22" height="9" rx="4" fill="${SHO}"/><rect x="166" y="160" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- animated upper body crunch -->
-<g style="animation:crunch-r 2s ease-in-out infinite;transform-origin:132px 138px">
-<polygon points="50,134 132,138 131,146 50,142" fill="${SHT}"/>
-<!-- head --><ellipse cx="40" cy="130" rx="12" ry="13" fill="${SK}"/><path d="M28,126 Q40,114 52,126 L51,120 Q40,108 29,120 Z" fill="${HR}"/>
-<!-- hands behind head --><polygon points="50,130 58,132 44,120 36,118" fill="${SK}"/>
-<polygon points="50,136 60,138 54,126 44,124" fill="${SK}"/>
-</g></svg>`,
+<!-- crunch animated -->
+<rect x="20" y="155" width="200" height="6" rx="3" fill="#1A2A1A"/>
+<path d="M78,140 Q90,136 100,140 L98,120 Q86,118 78,122 Z" fill="${ST}"/>
+<path d="M120,140 Q130,136 138,140 L136,120 Q126,118 120,122 Z" fill="${ST}"/>
+<path d="M78,138 Q90,142 100,138 L100,148 Q90,152 78,148 Z" fill="url(#sk)"/>
+<path d="M120,138 Q130,142 138,138 L138,148 Q130,152 120,148 Z" fill="url(#sk)"/>
+<rect x="72" y="146" width="32" height="8" rx="4" fill="${SHO}"/>
+<rect x="116" y="146" width="26" height="8" rx="4" fill="${SHO}"/>
+<g style="animation:crunch-r 2s ease-in-out infinite;transform-origin:105px 128px">
+<path d="M86,128 Q100,122 136,126 L134,144 Q100,148 88,145 Z" fill="${SHT}"/>
+<path d="M96,126 Q114,121 130,125 L128,143 Q112,146 96,143 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M86,128 Q92,123 100,124 L99,143 Q92,145 88,143 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M130,124 Q138,124 136,126 L134,144 Q130,147 128,143 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<ellipse cx="112" cy="112" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M104,101 Q114,95 122,101" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M88,128 Q82,120 82,112 L92,112 Q92,120 94,128 Z" fill="url(#sk)"/>
+<path d="M134,128 Q140,120 140,112 L130,112 Q130,120 128,128 Z" fill="url(#sk)"/>
+</g>
+${ML('ABS',112,134)}${ML('OBLIQUES',92,136)}</svg>`,
 
 'leg-raise':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-<!-- pull-up bar --><rect x="14" y="8" width="16" height="28" rx="5" fill="#1A1A2A"/><rect x="210" y="8" width="16" height="28" rx="5" fill="#1A1A2A"/>
-<rect x="18" y="14" width="204" height="14" rx="6" fill="#2A2A3A"/><rect x="18" y="14" width="204" height="5" rx="4" fill="#3A3A4A"/>
-<!-- hands --><ellipse cx="90" cy="26" rx="8" ry="5" fill="${SD}"/><ellipse cx="150" cy="26" rx="8" ry="5" fill="${SD}"/>
-<!-- arms --><polygon points="84,30 94,26 112,60 102,64" fill="${SK}"/><polygon points="146,26 156,30 138,64 128,60" fill="${SK}"/>
-<!-- head --><ellipse cx="120" cy="58" rx="13" ry="14" fill="${SK}"/><path d="M107,54 Q120,40 133,54 L131,48 Q120,36 109,48 Z" fill="${HR}"/><ellipse cx="107" cy="58" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="58" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="70" width="14" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="106,80 134,80 130,118 110,118" fill="${SHT}"/>
-<!-- legs animated raising -->
-<g style="animation:legr-r 2s ease-in-out infinite;transform-origin:120px 118px">
-<polygon points="107,118 118,118 112,148 101,148" fill="${ST}"/><polygon points="122,118 133,118 139,148 128,148" fill="${ST}"/>
-<polygon points="101,148 112,148 108,168 97,168" fill="${SK}"/><polygon points="128,148 139,148 143,168 132,168" fill="${SK}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="0" y="0" width="240" height="6" fill="#1E2E3E"/>
+<rect x="90" y="6" width="14" height="28" rx="4" fill="#2A3A5A"/>
+<rect x="136" y="6" width="14" height="28" rx="4" fill="#2A3A5A"/>
+<rect x="86" y="28" width="68" height="10" rx="5" fill="#3A4A6A"/>
+${HD(120,56)}
+<path d="M104,66 Q120,63 136,66 L132,100 Q120,102 108,100 Z" fill="${SHT}"/>
+<path d="M108,80 Q120,77 132,80 L132,100 Q120,102 108,100 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M104,66 Q100,52 97,38 L106,36 Q108,50 109,66 Z" fill="url(#sk)"/>
+<path d="M97,38 Q95,28 98,18 L106,20 Q105,30 106,38 Z" fill="url(#sk)"/>
+<path d="M136,66 Q140,52 143,38 L134,36 Q132,50 131,66 Z" fill="url(#sk)"/>
+<path d="M143,38 Q145,28 142,18 L134,20 Q135,30 134,38 Z" fill="url(#sk)"/>
+<ellipse cx="103" cy="33" rx="6" ry="4" fill="${SD}"/>
+<ellipse cx="137" cy="33" rx="6" ry="4" fill="${SD}"/>
+<g style="animation:legr-r 2s ease-in-out infinite;transform-origin:120px 100px">
+<path d="M108,100 Q120,102 132,100 L134,118 Q120,120 106,118 Z" fill="${ST}"/>
+<path d="M106,118 Q96,126 90,140 L102,142 Q108,130 114,120 Z" fill="${ST}"/>
+<path d="M126,120 Q130,130 136,142 L148,140 Q142,126 134,118 Z" fill="${ST}"/>
+<path d="M90,140 Q84,150 84,158 L96,158 Q96,150 102,142 Z" fill="url(#sk)"/>
+<path d="M136,142 Q142,150 142,158 L130,158 Q130,150 124,140 Z" fill="url(#sk)"/>
+</g>
+${ML('LOWER ABS',120,92)}${ML('HIP FLEX',120,106)}</svg>`,
 
 'russian-twist':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- mat --><rect x="14" y="148" width="214" height="6" rx="3" fill="#1A2A1A"/>
-<!-- V-sit legs static --><polygon points="120,148 136,148 165,138 150,134" fill="${ST}"/><polygon points="120,148 104,148 75,138 90,134" fill="${ST}"/>
-<polygon points="150,134 165,138 172,150 158,150" fill="${SK}"/><polygon points="75,138 90,134 84,150 70,150" fill="${SK}"/>
-<rect x="155" y="148" width="22" height="9" rx="4" fill="${SHO}"/><rect x="62" y="148" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- rotating torso + arms -->
-<g style="animation:twist-lr 2s ease-in-out infinite;transform-origin:120px 148px">
-<polygon points="109,88 131,88 127,148 113,148" fill="${SHT}"/>
-<ellipse cx="120" cy="76" rx="13" ry="14" fill="${SK}"/><path d="M107,72 Q120,58 133,72 L131,66 Q120,54 109,66 Z" fill="${HR}"/><ellipse cx="107" cy="76" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="76" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="88" width="14" height="8" rx="3" fill="${SK}"/>
-<!-- arms with plate --><polygon points="113,100 121,102 76,112 68,110" fill="${SK}"/>
-<polygon points="113,106 121,108 76,118 68,116" fill="${SK}"/>
-<!-- plate --><circle cx="62" cy="114" rx="14" ry="14" fill="#1A1A2A" stroke="${PR}" stroke-width="3"/>
-<circle cx="62" cy="114" rx="7" ry="7" fill="#2A2A3A"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="30" y="150" width="180" height="6" rx="3" fill="#1A2A1A"/>
+<path d="M104,138 Q94,132 82,130 L80,144 Q92,146 104,150 Z" fill="${ST}"/>
+<path d="M136,138 Q146,132 158,130 L160,144 Q148,146 136,150 Z" fill="${ST}"/>
+<path d="M80,144 Q72,150 72,158 L84,158 Q84,152 80,144 Z" fill="url(#sk)"/>
+<path d="M160,144 Q168,150 168,158 L156,158 Q156,152 160,144 Z" fill="url(#sk)"/>
+<g style="animation:twist-lr 2.2s ease-in-out infinite;transform-origin:120px 120px">
+${HD(120,96)}
+<path d="M110,106 Q120,103 130,106 L136,138 Q120,142 104,138 Z" fill="${SHT}"/>
+<path d="M110,106 Q116,103 120,104 L120,138 Q114,142 106,139 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M120,104 Q124,103 130,106 L134,138 Q126,142 120,138 Z" fill="#FF5722" opacity=".62" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M110,118 Q96,112 74,110 L76,122 Q96,122 108,130 Z" fill="url(#sk)"/>
+<path d="M130,118 Q144,112 166,110 L164,122 Q144,122 132,130 Z" fill="url(#sk)"/>
+${rdb(150,110)}
+</g>
+${ML('OBLIQUES',120,120)}${ML('ABS',120,133)}</svg>`,
 
 'calf-raise':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- step platform --><rect x="82" y="142" width="76" height="12" rx="4" fill="#2A2A3A"/><rect x="82" y="142" width="76" height="4" rx="3" fill="#3A3A4A"/>
-<g style="animation:calf-ud 2s ease-in-out infinite;transform-origin:120px 142px">
-<ellipse cx="120" cy="26" rx="13" ry="14" fill="${SK}"/><path d="M107,22 Q120,8 133,22 L131,16 Q120,4 109,16 Z" fill="${HR}"/><ellipse cx="107" cy="25" rx="3" ry="4" fill="${SD}"/><ellipse cx="133" cy="25" rx="3" ry="4" fill="${SD}"/>
-<rect x="113" y="38" width="14" height="11" rx="3" fill="${SK}"/>
-<polygon points="103,49 137,49 133,87 107,87" fill="${SHT}"/>
-<polygon points="107,87 133,87 135,107 105,107" fill="${ST}"/>
-<!-- arms with dumbbells --><polygon points="103,54 113,56 100,86 90,84" fill="${SK}"/><polygon points="90,86 100,88 88,112 78,110" fill="${SK}"/>
-<polygon points="127,56 137,54 150,84 140,86" fill="${SK}"/><polygon points="140,86 150,84 158,110 148,112" fill="${SK}"/>
-${rdb(48,112)}${rdb(152,112)}
-<!-- thighs --><polygon points="105,107 118,107 116,132 102,132" fill="${ST}"/><polygon points="122,107 135,107 138,132 124,132" fill="${ST}"/>
-<!-- calves --><polygon points="102,132 115,132 112,142 98,142" fill="${SK}"/><polygon points="125,132 138,132 142,142 129,142" fill="${SK}"/>
-<!-- raised heels --><rect x="96" y="142" width="22" height="8" rx="4" fill="${SHO}"/><rect x="124" y="142" width="22" height="8" rx="4" fill="${SHO}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="60" y="136" width="120" height="22" rx="4" fill="#1E2E3E"/>
+<rect x="60" y="136" width="120" height="8" rx="4" fill="#253545"/>
+<g style="animation:calf-ud 2s ease-in-out infinite;transform-origin:120px 140px">
+${HD(120,26)}${SB(120)}${AR(120)}
+${HL('calves',true)}
+<path d="M102,141 Q96,147 98,152 L108,152 Q108,148 106,142 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M132,141 Q138,147 136,152 L126,152 Q126,148 128,142 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+${rdb(68,112)}
+</g>
+${ML('CALVES',120,148)}</svg>`,
 
 'rdl':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- legs static --><polygon points="108,108 120,108 118,150 106,150" fill="${ST}"/><polygon points="122,108 134,108 136,150 124,150" fill="${ST}"/>
-<polygon points="106,150 118,150 116,160 104,160" fill="${SK}"/><polygon points="124,150 136,150 138,160 126,160" fill="${SK}"/>
-<rect x="102" y="158" width="22" height="9" rx="4" fill="${SHO}"/><rect x="126" y="158" width="22" height="9" rx="4" fill="${SHO}"/>
-<!-- torso hinges animated -->
+${DEFS}${GFL}
+<path d="M108,108 Q108,134 110,152 L122,152 Q120,134 118,108 Z" fill="${ST}"/>
+<path d="M122,108 Q124,134 126,152 L138,152 Q136,134 136,108 Z" fill="${ST}"/>
+<path d="M110,152 Q108,160 110,168 L122,168 Q120,160 122,152 Z" fill="url(#sk)"/>
+<path d="M126,152 Q126,160 128,168 L140,168 Q138,160 138,152 Z" fill="url(#sk)"/>
+<path d="M102,166 Q110,162 122,164 Q126,168 124,172 Q102,172 100,169 Z" fill="${SHO}"/>
+<path d="M126,164 Q138,162 146,166 Q148,169 146,172 Q124,172 122,168 Z" fill="${SHO}"/>
 <g style="animation:rdl-r 2.2s ease-in-out infinite;transform-origin:120px 108px">
-<polygon points="108,106 134,108 130,60 106,58" fill="${SHT}"/>
-<rect x="110" y="46" width="14" height="14" rx="3" fill="${SK}"/>
-<ellipse cx="117" cy="34" rx="13" ry="14" fill="${SK}"/><path d="M104,30 Q117,16 130,30 L128,24 Q117,12 106,24 Z" fill="${HR}"/><ellipse cx="104" cy="34" rx="3" ry="4" fill="${SD}"/><ellipse cx="130" cy="34" rx="3" ry="4" fill="${SD}"/>
-<!-- arms hanging --><polygon points="106,64 116,66 108,106 98,104" fill="${SK}"/><polygon points="124,66 134,64 142,104 132,106" fill="${SK}"/>
-<ellipse cx="104" cy="107" rx="8" ry="5" fill="${SD}"/><ellipse cx="136" cy="107" rx="8" ry="5" fill="${SD}"/>
-${rbar(60,106,120,9)}
-</g></svg>`,
+${HD(117,34)}
+<path d="M116,46 Q120,44 124,46 L126,58 Q120,60 114,58 Z" fill="url(#sk)"/>
+<path d="M104,58 Q112,54 130,58 L138,96 Q120,100 102,96 Z" fill="${SHT}"/>
+<path d="M110,106 Q114,108 118,108 Q122,108 126,108 Q128,96 120,96 Q112,96 110,106 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M108,60 Q116,56 124,60 L132,94 Q120,98 108,94 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M104,62 Q98,78 74,108 L84,112 Q106,82 114,62 Z" fill="url(#sk)"/>
+<path d="M130,62 Q136,78 158,108 L148,112 Q126,82 126,62 Z" fill="url(#sk)"/>
+${rbar(60,108,120,9)}
+</g>
+${ML('HAMSTRINGS',120,106)}${ML('LOWER BACK',120,76)}</svg>`,
 
 'leg-curl':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-<!-- machine --><rect x="0" y="80" width="200" height="18" rx="6" fill="#1E2E3E"/><rect x="0" y="80" width="200" height="6" rx="4" fill="#253545"/>
-<rect x="0" y="80" width="30" height="75" rx="5" fill="#1A2A3A"/><rect x="170" y="80" width="30" height="75" rx="5" fill="#1A2A3A"/>
-<!-- ankle roller --><rect x="148" y="96" width="52" height="10" rx="5" fill="#2A3A4A"/>
-<!-- lying figure -->
-<ellipse cx="45" cy="72" rx="13" ry="14" fill="${SK}"/><path d="M32,68 Q45,55 58,68 L57,62 Q45,50 33,62 Z" fill="${HR}"/>
-<rect x="56" y="70" width="12" height="10" rx="3" fill="${SK}"/>
-<polygon points="66,74 170,80 170,90 66,84" fill="${SHT}"/>
-<!-- L arm --><polygon points="66,76 76,76 68,96 58,96" fill="${SK}"/>
-<!-- animated legs curl -->
-<g style="animation:curl-r 2s ease-in-out infinite;transform-origin:168px 88px">
-<polygon points="166,88 178,88 192,116 180,118" fill="${ST}"/><polygon points="178,88 190,88 202,118 190,120" fill="${ST}"/>
-<polygon points="180,118 192,116 198,128 186,130" fill="${SK}"/><polygon points="190,120 202,118 208,130 196,132" fill="${SK}"/>
-<!-- ankle pad under foot --><rect x="182" y="108" width="30" height="10" rx="5" fill="#2A3A4A"/>
-</g></svg>`,
+${DEFS}
+<rect x="0" y="80" width="200" height="18" rx="6" fill="#1E2E3E"/>
+<rect x="0" y="80" width="200" height="6" rx="4" fill="#253545"/>
+<rect x="0" y="80" width="30" height="75" rx="5" fill="#1A2A3A"/>
+<rect x="170" y="80" width="30" height="75" rx="5" fill="#1A2A3A"/>
+<rect x="148" y="96" width="52" height="10" rx="5" fill="#2A3A4A"/>
+<ellipse cx="45" cy="72" rx="12" ry="13" fill="url(#sk)"/>
+<path d="M37,61 Q47,55 57,61" stroke="#1A0F0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M57,76 Q64,75 66,80 L63,84 Q60,82 58,79 Z" fill="url(#sk)"/>
+<path d="M66,80 Q100,78 170,82 L170,94 Q100,96 66,92 Z" fill="${SHT}"/>
+<path d="M80,82 Q120,80 162,83 L162,94 Q120,96 80,94 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M66,82 Q62,90 60,100 L70,100 Q72,92 72,84 Z" fill="url(#sk)"/>
+<g style="animation:curl-r 2s ease-in-out infinite;transform-origin:168px 90px">
+<path d="M166,90 Q178,90 192,96 L196,116 Q182,116 170,106 Z" fill="${ST}"/>
+<path d="M178,90 Q190,90 204,96 L208,116 Q192,116 182,106 Z" fill="#0F1828"/>
+<path d="M170,106 Q180,118 180,128 L168,130 Q166,118 168,110 Z" fill="url(#sk)"/>
+<path d="M182,106 Q192,118 192,128 L180,130 Q178,118 180,110 Z" fill="url(#sk)"/>
+<path d="M168,106 Q175,118 174,128 L172,130 Q168,118 166,108 Z" fill="#FFA726" opacity=".48" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+</g>
+${ML('HAMSTRINGS',120,90)}${ML('CALVES',178,120)}</svg>`,
 
 'leg-extension':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- machine seat --><rect x="72" y="118" width="80" height="16" rx="6" fill="#1E2E3E"/><rect x="72" y="118" width="80" height="6" rx="4" fill="#253545"/>
-<!-- machine back support --><rect x="72" y="60" width="16" height="62" rx="5" fill="#1A2A3A"/>
-<!-- machine arm --><rect x="148" y="78" width="16" height="58" rx="5" fill="#1A2A3A"/>
-<!-- shin roller --><rect x="144" y="132" width="24" height="10" rx="5" fill="#2A3A4A"/>
-<!-- seated figure -->
-<ellipse cx="118" cy="36" rx="13" ry="14" fill="${SK}"/><path d="M105,32 Q118,18 131,32 L129,26 Q118,14 107,26 Z" fill="${HR}"/><ellipse cx="105" cy="36" rx="3" ry="4" fill="${SD}"/><ellipse cx="131" cy="36" rx="3" ry="4" fill="${SD}"/>
-<rect x="111" y="48" width="14" height="10" rx="3" fill="${SK}"/>
-<polygon points="102,58 134,58 130,96 106,96" fill="${SHT}"/>
-<polygon points="106,96 130,96 132,118 104,118" fill="${ST}"/>
-<!-- arms on thighs --><polygon points="102,72 112,74 104,100 94,98" fill="${SK}"/><polygon points="122,74 132,72 140,98 130,100" fill="${SK}"/>
-<!-- thigh horizontal --><polygon points="90,118 148,118 150,130 88,130" fill="${ST}"/>
-<!-- animated lower leg extension -->
-<g style="animation:lgext-r 2s ease-in-out infinite;transform-origin:150px 122px">
-<polygon points="148,122 160,122 176,152 164,154" fill="${SK}"/>
-<!-- shin pad --><rect x="155" y="138" width="28" height="14" rx="5" fill="#2A3A4A"/>
-<rect x="72" y="152" width="22" height="9" rx="4" fill="${SHO}"/>
-</g></svg>`,
+${DEFS}${GFL}
+<rect x="72" y="118" width="80" height="16" rx="6" fill="#1E2E3E"/>
+<rect x="72" y="118" width="80" height="6" rx="4" fill="#253545"/>
+<rect x="72" y="60" width="16" height="62" rx="5" fill="#1A2A3A"/>
+<rect x="148" y="78" width="16" height="58" rx="5" fill="#1A2A3A"/>
+<rect x="144" y="132" width="24" height="10" rx="5" fill="#2A3A4A"/>
+${HD(118,36)}
+<path d="M116,48 Q120,46 124,48 L126,60 Q120,62 114,60 Z" fill="url(#sk)"/>
+<path d="M100,60 Q110,56 130,60 L128,118 Q120,120 112,118 Z" fill="${SHT}"/>
+<path d="M100,72 Q90,76 84,92 L94,94 Q100,80 108,74 Z" fill="url(#sk)"/>
+<path d="M130,72 Q140,76 146,92 L136,94 Q130,80 122,74 Z" fill="url(#sk)"/>
+<path d="M88,118 Q120,120 152,118 L152,132 Q120,134 88,132 Z" fill="${ST}"/>
+<path d="M92,118 Q120,120 148,118 L148,131 Q120,134 92,132 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<g style="animation:lgext-r 2s ease-in-out infinite;transform-origin:150px 124px">
+<path d="M148,124 Q158,124 168,128 L176,152 L164,154 Q156,134 148,130 Z" fill="url(#sk)"/>
+<rect x="155" y="140" width="28" height="12" rx="5" fill="#2A3A4A"/>
+<path d="M70,144 Q80,152 86,152 L78,160 Q70,160 66,152 Z" fill="${SHO}"/>
+</g>
+${ML('QUADS',120,125)}</svg>`,
 
 'box-jump':`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-${GFL}
-<!-- wooden plyometric box --><rect x="128" y="108" width="96" height="46" rx="4" fill="#5C3A1E"/><rect x="128" y="108" width="96" height="10" rx="4" fill="#7A4E2A"/>
-<line x1="134" y1="108" x2="134" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
-<line x1="172" y1="108" x2="172" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
-<line x1="210" y1="108" x2="210" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
-<!-- jumping figure animated -->
-<g style="animation:pull-ud 2s ease-in-out infinite;transform-origin:80px 120px">
-<ellipse cx="80" cy="30" rx="13" ry="14" fill="${SK}"/><path d="M67,26 Q80,12 93,26 L91,20 Q80,8 69,20 Z" fill="${HR}"/><ellipse cx="67" cy="30" rx="3" ry="4" fill="${SD}"/><ellipse cx="93" cy="30" rx="3" ry="4" fill="${SD}"/>
-<rect x="73" y="42" width="14" height="10" rx="3" fill="${SK}"/>
-<!-- torso --><polygon points="64,52 96,52 92,90 68,90" fill="${SHT}"/>
-<!-- shorts --><polygon points="68,90 92,90 94,108 66,108" fill="${ST}"/>
-<!-- arms raised for momentum --><polygon points="64,58 74,60 48,38 38,36" fill="${SK}"/><polygon points="90,60 100,58 114,38 104,40" fill="${SK}"/>
-<!-- tuck legs --><polygon points="66,108 78,108 66,134 54,134" fill="${ST}"/><polygon points="78,108 90,108 96,132 84,132" fill="${ST}"/>
-<polygon points="54,134 66,134 60,148 48,148" fill="${SK}"/><polygon points="84,132 96,132 100,146 88,146" fill="${SK}"/>
-<rect x="44" y="146" width="22" height="9" rx="4" fill="${SHO}"/><rect x="87" y="144" width="22" height="9" rx="4" fill="${SHO}"/>
-</g></svg>`
+${DEFS}${GFL}
+<rect x="130" y="108" width="94" height="46" rx="4" fill="#5C3A1E"/>
+<rect x="130" y="108" width="94" height="10" rx="4" fill="#7A4E2A"/>
+<line x1="136" y1="108" x2="136" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
+<line x1="174" y1="108" x2="174" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
+<line x1="212" y1="108" x2="212" y2="154" stroke="#4A2E14" stroke-width="1.5"/>
+<g style="animation:pull-ud 2.2s ease-in-out infinite;transform-origin:72px 100px">
+${HD(72,24)}
+<path d="M56,34 Q72,32 88,34 L84,72 Q72,74 60,72 Z" fill="${SHT}"/>
+<path d="M60,74 Q50,82 44,100 L56,100 Q62,84 66,74 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M84,74 Q94,82 100,100 L88,100 Q82,84 78,74 Z" fill="#FF5722" opacity=".65" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M60,74 Q72,78 84,74 L86,92 Q72,96 58,92 Z" fill="#FFA726" opacity=".5" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>
+<path d="M60,74 Q72,76 84,74 L86,94 Q72,96 58,94 Z" fill="${ST}"/>
+<path d="M56,38 Q44,42 28,30 L24,20 Q40,28 52,36 Z" fill="url(#sk)"/>
+<path d="M88,38 Q100,42 116,30 L120,20 Q104,28 92,36 Z" fill="url(#sk)"/>
+<path d="M58,94 Q48,100 40,118 L52,120 Q58,104 62,94 Z" fill="${ST}"/>
+<path d="M86,94 Q96,100 104,118 L92,120 Q86,104 82,94 Z" fill="${ST}"/>
+<path d="M40,118 Q34,128 34,138 L46,138 Q46,128 52,120 Z" fill="url(#sk)"/>
+<path d="M92,120 Q98,128 98,138 L86,138 Q86,128 80,118 Z" fill="url(#sk)"/>
+<rect x="28" y="136" width="22" height="8" rx="4" fill="${SHO}"/>
+<rect x="82" y="136" width="22" height="8" rx="4" fill="${SHO}"/>
+</g>
+${ML('QUADS',72,86)}${ML('GLUTES',72,80)}</svg>`
 };
 
 /* ══════════════ EXERCISE DATA ══════════════ */
