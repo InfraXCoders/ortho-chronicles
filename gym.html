@@ -147,6 +147,8 @@
   @keyframes lgext-r{0%,100%{transform:rotate(80deg)}50%{transform:rotate(0deg)}}
   @keyframes muscle-pulse{0%,100%{opacity:.38;filter:brightness(1)}50%{opacity:.78;filter:brightness(1.35)}}
   @keyframes kb-ext-anim{0%,100%{transform:rotate(-80deg)}50%{transform:rotate(0deg)}}
+  @keyframes body-breathe{0%,100%{transform:scaleY(1) translateY(0px)}50%{transform:scaleY(1.012) translateY(-1px)}}
+  @keyframes arm-sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(2deg)}}
 
   @media(max-width:600px){.ex-grid{grid-template-columns:1fr;}.gym-hero{padding:80px 16px 40px;}.gym-hero-stats{gap:20px;}.plan-day table{font-size:.78rem;}}
   @media(max-width:900px){.ex-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}}
@@ -326,102 +328,109 @@ const GFL=`<rect x="0" y="152" width="240" height="28" fill="#0E0E22"/><line x1=
 /* SVG gradient + glow defs */
 const DEFS=`<defs><radialGradient id="sk" cx="42%" cy="38%" r="68%"><stop offset="0%" stop-color="#D9A070"/><stop offset="55%" stop-color="#C68642"/><stop offset="100%" stop-color="#884E1E"/></radialGradient><filter id="mg" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
 
-/* Realistic head: gradient skin, hair, ears, eyes */
-function HD(cx,cy,rx=13,ry=14){return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#sk)"/>
-<path d="M${cx-rx},${cy-ry*.3} Q${cx},${cy-ry*1.55} ${cx+rx},${cy-ry*.3} L${cx+rx*.85},${cy-ry*.84} Q${cx},${cy-ry*1.78} ${cx-rx*.85},${cy-ry*.84} Z" fill="#1A0F0A"/>
-<ellipse cx="${cx-rx-1.5}" cy="${cy+.5}" rx="3" ry="4.5" fill="${SD}"/>
-<ellipse cx="${cx+rx+1.5}" cy="${cy+.5}" rx="3" ry="4.5" fill="${SD}"/>
-<ellipse cx="${cx-rx*.28}" cy="${cy+1}" rx="2.2" ry="1.5" fill="#160900"/>
-<path d="M${cx-2.5},${cy+5} Q${cx},${cy+7} ${cx+2.5},${cy+5}" stroke="${SD}" stroke-width="1.1" fill="none"/>`;}
+/* Head — strong jaw, heavy brow, downward gaze matching reference */
+function HD(cx,cy,rx=11,ry=12){const hx=cx,hy=cy;return `
+<ellipse cx="${hx}" cy="${hy}" rx="${rx}" ry="${ry}" fill="url(#sk)"/>
+<path d="M${hx-rx*.95},${hy-ry*.25} Q${hx},${hy-ry*1.7} ${hx+rx*.95},${hy-ry*.25} L${hx+rx*.85},${hy-ry*.88} Q${hx},${hy-ry*1.92} ${hx-rx*.85},${hy-ry*.88} Z" fill="#180A02"/>
+<ellipse cx="${hx-rx-2}" cy="${hy}" rx="3.2" ry="4.5" fill="#9E5620"/>
+<ellipse cx="${hx+rx+2}" cy="${hy}" rx="3.2" ry="4.5" fill="#9E5620"/>
+<path d="M${hx-rx*.75},${hy-2.5} Q${hx},${hy-5} ${hx+rx*.75},${hy-2.5}" stroke="#2A0E02" stroke-width="2.8" fill="none" opacity=".82" stroke-linecap="round"/>
+<ellipse cx="${hx-rx*.32}" cy="${hy+1.5}" rx="2.2" ry="1.4" fill="#1A0802"/>
+<ellipse cx="${hx+rx*.32}" cy="${hy+1.5}" rx="2.2" ry="1.4" fill="#1A0802"/>
+<path d="M${hx-rx*.6},${hy+ry*.45} Q${hx},${hy+ry*.55} ${hx+rx*.6},${hy+ry*.45}" stroke="#7A3A10" stroke-width="1.4" fill="none" opacity=".65"/>
+<path d="M${hx-rx*.8},${hy+ry*.35} Q${hx},${hy+ry*.5} ${hx+rx*.8},${hy+ry*.35}" stroke="#5A2006" stroke-width=".8" fill="none" opacity=".4"/>`;}
 
-/* ── BODYBUILDER reference style — bold muscle shapes, clear definition ── */
-function SB(cx=120){const x=cx,d='#5E2A06',h='#E8A060',m='#B06828',s='#904A18';return `
-<path d="M${x-8},41 Q${x-28},46 ${x-40},60 Q${x-30},67 ${x-14},62 Q${x-10},50 ${x-8},41 Z" fill="${m}"/>
-<path d="M${x+8},41 Q${x+28},46 ${x+40},60 Q${x+30},67 ${x+14},62 Q${x+10},50 ${x+8},41 Z" fill="${m}"/>
-<path d="M${x-12},44 Q${x-24},48 ${x-36},58" stroke="${h}" stroke-width="1.6" fill="none" opacity=".55"/>
-<path d="M${x+12},44 Q${x+24},48 ${x+36},58" stroke="${h}" stroke-width="1.6" fill="none" opacity=".55"/>
+/* ── BODYBUILDER — reference silhouette style, animated breathing ── */
+function SB(cx=120){const x=cx,d='#3A1604',h='#D99060',m='#AA6428',b='#C07838',s='#7A3810';return `
+<g style="animation:body-breathe 4s ease-in-out infinite;transform-origin:${x}px 90px">
+<path d="M${x-8},40 Q${x-34},47 ${x-46},63 Q${x-35},71 ${x-16},65 Q${x-11},51 ${x-8},40 Z" fill="${m}"/>
+<path d="M${x+8},40 Q${x+34},47 ${x+46},63 Q${x+35},71 ${x+16},65 Q${x+11},51 ${x+8},40 Z" fill="${m}"/>
+<path d="M${x-11},43 Q${x-26},49 ${x-42},62" stroke="${h}" stroke-width="1.8" fill="none" opacity=".52"/>
+<path d="M${x+11},43 Q${x+26},49 ${x+42},62" stroke="${h}" stroke-width="1.8" fill="none" opacity=".52"/>
 <path d="M${x-8},39 Q${x},36 ${x+8},39 L${x+9},52 Q${x},54 ${x-9},52 Z" fill="url(#sk)"/>
-<ellipse cx="${x-38}" cy="68" rx="14" ry="17" fill="${m}"/>
-<path d="M${x-52},66 Q${x-50},57 ${x-40},52" stroke="${h}" stroke-width="2.2" fill="none" opacity=".7"/>
-<path d="M${x-52},72 Q${x-50},78 ${x-45},76" stroke="${d}" stroke-width="1.2" fill="none" opacity=".5"/>
-<ellipse cx="${x+38}" cy="68" rx="14" ry="17" fill="${m}"/>
-<path d="M${x+52},66 Q${x+50},57 ${x+40},52" stroke="${h}" stroke-width="2.2" fill="none" opacity=".7"/>
-<path d="M${x+52},72 Q${x+50},78 ${x+45},76" stroke="${d}" stroke-width="1.2" fill="none" opacity=".5"/>
-<path d="M${x-11},52 Q${x-36},58 ${x-36},74 Q${x-34},85 ${x-15},87 L${x-1},87 L${x-1},52 Z" fill="#C47840"/>
-<path d="M${x+11},52 Q${x+36},58 ${x+36},74 Q${x+34},85 ${x+15},87 L${x+1},87 L${x+1},52 Z" fill="#C47840"/>
-<line x1="${x}" y1="52" x2="${x}" y2="87" stroke="${d}" stroke-width="2.5" opacity=".78"/>
-<path d="M${x-36},73 Q${x-22},82 ${x-1},84" stroke="${d}" stroke-width="1.5" fill="none" opacity=".65"/>
-<path d="M${x+36},73 Q${x+22},82 ${x+1},84" stroke="${d}" stroke-width="1.5" fill="none" opacity=".65"/>
-<path d="M${x-10},54 Q${x-28},61 ${x-30},70" stroke="${h}" stroke-width="1.6" fill="none" opacity=".55"/>
-<path d="M${x+10},54 Q${x+28},61 ${x+30},70" stroke="${h}" stroke-width="1.6" fill="none" opacity=".55"/>
-<path d="M${x-32},74 Q${x-39},79 ${x-36},85" stroke="${s}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-<path d="M${x-29},81 Q${x-37},87 ${x-34},93" stroke="${s}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-<path d="M${x-26},88 Q${x-35},94 ${x-32},100" stroke="${s}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-<path d="M${x+32},74 Q${x+39},79 ${x+36},85" stroke="${s}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-<path d="M${x+29},81 Q${x+37},87 ${x+34},93" stroke="${s}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-<path d="M${x+26},88 Q${x+35},94 ${x+32},100" stroke="${s}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-<rect x="${x-13}" y="87" width="12" height="8" rx="2.5" fill="#C07840"/>
-<rect x="${x-13}" y="97" width="12" height="8" rx="2.5" fill="#C07840"/>
-<rect x="${x-13}" y="107" width="12" height="7" rx="2.5" fill="#C07840"/>
-<rect x="${x+1}" y="87" width="12" height="8" rx="2.5" fill="#C07840"/>
-<rect x="${x+1}" y="97" width="12" height="8" rx="2.5" fill="#C07840"/>
-<rect x="${x+1}" y="107" width="12" height="7" rx="2.5" fill="#C07840"/>
-<line x1="${x-13}" y1="87" x2="${x+13}" y2="87" stroke="${d}" stroke-width="2" opacity=".8"/>
-<line x1="${x-13}" y1="96" x2="${x+13}" y2="96" stroke="${d}" stroke-width="2" opacity=".8"/>
-<line x1="${x-13}" y1="106" x2="${x+13}" y2="106" stroke="${d}" stroke-width="2" opacity=".78"/>
-<line x1="${x-12}" y1="115" x2="${x+12}" y2="115" stroke="${d}" stroke-width="1.8" opacity=".72"/>
-<line x1="${x}" y1="87" x2="${x}" y2="115" stroke="${d}" stroke-width="2.2" opacity=".82"/>
-<path d="M${x-4},89 Q${x-5},100 ${x-5},112" stroke="${h}" stroke-width="1" fill="none" opacity=".38"/>
-<path d="M${x+4},89 Q${x+5},100 ${x+5},112" stroke="${h}" stroke-width="1" fill="none" opacity=".38"/>
-<path d="M${x-13},89 Q${x-23},101 ${x-21},115 L${x-13},115 Z" fill="#A05828"/>
-<path d="M${x+13},89 Q${x+23},101 ${x+21},115 L${x+13},115 Z" fill="#A05828"/>
-<path d="M${x-14},89 Q${x-22},100 ${x-20},113" stroke="${h}" stroke-width="1" fill="none" opacity=".38"/>
-<path d="M${x+14},89 Q${x+22},100 ${x+20},113" stroke="${h}" stroke-width="1" fill="none" opacity=".38"/>
-<path d="M${x-23},113 Q${x},115 ${x+23},113 L${x+25},135 Q${x},137 ${x-25},135 Z" fill="#0F1520"/>
-<rect x="${x-25}" y="111" width="50" height="5" rx="2" fill="#0B1220"/>
-<path d="M${x-25},135 Q${x-31},148 ${x-25},152 L${x-6},152 Q${x-5},147 ${x-5},135 Z" fill="#C27840"/>
-<path d="M${x-30},141 Q${x-33},147 ${x-29},151" stroke="${h}" stroke-width="1.6" fill="none" opacity=".65"/>
-<path d="M${x-23},137 Q${x-26},145 ${x-23},151" stroke="${d}" stroke-width="1" fill="none" opacity=".4"/>
-<ellipse cx="${x-16}" cy="151" rx="8" ry="5" fill="${m}"/>
-<path d="M${x+5},135 Q${x+5},147 ${x+7},152 L${x+25},152 Q${x+31},148 ${x+25},135 Z" fill="#C27840"/>
-<path d="M${x+30},141 Q${x+33},147 ${x+29},151" stroke="${h}" stroke-width="1.6" fill="none" opacity=".65"/>
-<path d="M${x+23},137 Q${x+26},145 ${x+23},151" stroke="${d}" stroke-width="1" fill="none" opacity=".4"/>
-<ellipse cx="${x+16}" cy="151" rx="8" ry="5" fill="${m}"/>
-<path d="M${x-34},151 Q${x-31},149 ${x-6},149 Q${x-2},150 ${x-3},155 Q${x-4},158 ${x-32},158 Q${x-36},156 ${x-34},151 Z" fill="${SHO}"/>
-<path d="M${x+3},149 Q${x+26},149 ${x+32},151 Q${x+34},155 ${x+30},158 Q${x+2},158 ${x+1},155 Q${x},150 ${x+3},149 Z" fill="${SHO}"/>`;}
+<path d="M${x-9},49 Q${x},51 ${x+9},49" stroke="${d}" stroke-width="1.5" fill="none" opacity=".5"/>
+<ellipse cx="${x-42}" cy="71" rx="15" ry="19" fill="${m}"/>
+<path d="M${x-57},69 Q${x-54},59 ${x-44},54" stroke="${h}" stroke-width="2.5" fill="none" opacity=".72"/>
+<path d="M${x-57},75 Q${x-54},82 ${x-48},80" stroke="${d}" stroke-width="1.3" fill="none" opacity=".55"/>
+<ellipse cx="${x+42}" cy="71" rx="15" ry="19" fill="${m}"/>
+<path d="M${x+57},69 Q${x+54},59 ${x+44},54" stroke="${h}" stroke-width="2.5" fill="none" opacity=".72"/>
+<path d="M${x+57},75 Q${x+54},82 ${x+48},80" stroke="${d}" stroke-width="1.3" fill="none" opacity=".55"/>
+<path d="M${x-11},52 Q${x-40},59 ${x-40},77 Q${x-38},90 ${x-16},92 L${x-1},92 L${x-1},52 Z" fill="${b}"/>
+<path d="M${x+11},52 Q${x+40},59 ${x+40},77 Q${x+38},90 ${x+16},92 L${x+1},92 L${x+1},52 Z" fill="${b}"/>
+<line x1="${x}" y1="52" x2="${x}" y2="92" stroke="${d}" stroke-width="3" opacity=".88"/>
+<path d="M${x-40},76 Q${x-24},87 ${x-1},89" stroke="${d}" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M${x+40},76 Q${x+24},87 ${x+1},89" stroke="${d}" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M${x-10},55 Q${x-32},63 ${x-34},74" stroke="${h}" stroke-width="1.8" fill="none" opacity=".55"/>
+<path d="M${x+10},55 Q${x+32},63 ${x+34},74" stroke="${h}" stroke-width="1.8" fill="none" opacity=".55"/>
+<path d="M${x-36},77 Q${x-45},83 ${x-41},90" stroke="${s}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M${x-32},85 Q${x-43},92 ${x-39},100" stroke="${s}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M${x-28},93 Q${x-40},101 ${x-36},109" stroke="${s}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+<path d="M${x+36},77 Q${x+45},83 ${x+41},90" stroke="${s}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M${x+32},85 Q${x+43},92 ${x+39},100" stroke="${s}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M${x+28},93 Q${x+40},101 ${x+36},109" stroke="${s}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+<rect x="${x-14}" y="92" width="13" height="9" rx="3" fill="${b}"/>
+<rect x="${x-14}" y="103" width="13" height="9" rx="3" fill="${b}"/>
+<rect x="${x-14}" y="114" width="13" height="8" rx="3" fill="${b}"/>
+<rect x="${x+1}" y="92" width="13" height="9" rx="3" fill="${b}"/>
+<rect x="${x+1}" y="103" width="13" height="9" rx="3" fill="${b}"/>
+<rect x="${x+1}" y="114" width="13" height="8" rx="3" fill="${b}"/>
+<line x1="${x-14}" y1="92" x2="${x+14}" y2="92" stroke="${d}" stroke-width="2.4" opacity=".88"/>
+<line x1="${x-14}" y1="102" x2="${x+14}" y2="102" stroke="${d}" stroke-width="2.4" opacity=".88"/>
+<line x1="${x-14}" y1="113" x2="${x+14}" y2="113" stroke="${d}" stroke-width="2.3" opacity=".85"/>
+<line x1="${x-13}" y1="123" x2="${x+13}" y2="123" stroke="${d}" stroke-width="2.1" opacity=".8"/>
+<line x1="${x}" y1="92" x2="${x}" y2="123" stroke="${d}" stroke-width="3" opacity=".9"/>
+<path d="M${x-4},94 Q${x-5},106 ${x-5},120" stroke="${h}" stroke-width="1.1" fill="none" opacity=".32"/>
+<path d="M${x+4},94 Q${x+5},106 ${x+5},120" stroke="${h}" stroke-width="1.1" fill="none" opacity=".32"/>
+<path d="M${x-14},94 Q${x-26},108 ${x-24},123 L${x-14},123 Z" fill="#9E5622"/>
+<path d="M${x+14},94 Q${x+26},108 ${x+24},123 L${x+14},123 Z" fill="#9E5622"/>
+<path d="M${x-15},96 Q${x-24},109 ${x-22},121" stroke="${h}" stroke-width="1.1" fill="none" opacity=".38"/>
+<path d="M${x+15},96 Q${x+24},109 ${x+22},121" stroke="${h}" stroke-width="1.1" fill="none" opacity=".38"/>
+<path d="M${x-26},121 Q${x},124 ${x+26},121 L${x+28},144 Q${x},147 ${x-28},144 Z" fill="#0F1520"/>
+<rect x="${x-28}" y="119" width="56" height="5" rx="2" fill="#0B1220"/>
+<path d="M${x-28},144 Q${x-35},150 ${x-28},152 L${x-7},152 Q${x-6},149 ${x-6},144 Z" fill="#C27840"/>
+<path d="M${x-34},147 Q${x-38},151 ${x-33},152" stroke="${h}" stroke-width="1.8" fill="none" opacity=".65"/>
+<ellipse cx="${x-18}" cy="151" rx="9" ry="5" fill="${m}"/>
+<path d="M${x+6},144 Q${x+6},149 ${x+8},152 L${x+27},152 Q${x+35},150 ${x+28},144 Z" fill="#C27840"/>
+<path d="M${x+34},147 Q${x+38},151 ${x+33},152" stroke="${h}" stroke-width="1.8" fill="none" opacity=".65"/>
+<ellipse cx="${x+18}" cy="151" rx="9" ry="5" fill="${m}"/>
+<path d="M${x-40},151 Q${x-37},149 ${x-7},149 Q${x-2},150 ${x-3},156 Q${x-4},160 ${x-38},160 Q${x-42},158 ${x-40},151 Z" fill="${SHO}"/>
+<path d="M${x+3},149 Q${x+32},149 ${x+38},151 Q${x+40},157 ${x+36},160 Q${x+2},160 ${x+1},156 Q${x},150 ${x+3},149 Z" fill="${SHO}"/>
+</g>`;}
 
-/* Massive peaked biceps, forearm definition — bodybuilder reference style */
-function AR(cx=120){const x=cx,d='#5E2A06',h='#E8A060';return `
-<path d="M${x-20},54 Q${x-46},66 ${x-46},84 Q${x-44},96 ${x-29},100 Q${x-17},96 ${x-14},84 Q${x-14},67 ${x-22},54 Z" fill="#C07840"/>
-<path d="M${x-46},76 Q${x-50},83 ${x-46},90" stroke="${h}" stroke-width="2.6" fill="none" opacity=".75"/>
-<path d="M${x-20},57 Q${x-24},70 ${x-23},84" stroke="${d}" stroke-width="1.4" fill="none" opacity=".5"/>
-<path d="M${x-29},100 Q${x-34},114 ${x-31},128 L${x-17},128 Q${x-13},114 ${x-14},100 Z" fill="#B87040"/>
-<path d="M${x-35},110 Q${x-38},119 ${x-34},126" stroke="${h}" stroke-width="1.5" fill="none" opacity=".58"/>
-<path d="M${x+20},54 Q${x+46},66 ${x+46},84 Q${x+44},96 ${x+29},100 Q${x+17},96 ${x+14},84 Q${x+14},67 ${x+22},54 Z" fill="#C07840"/>
-<path d="M${x+46},76 Q${x+50},83 ${x+46},90" stroke="${h}" stroke-width="2.6" fill="none" opacity=".75"/>
-<path d="M${x+20},57 Q${x+24},70 ${x+23},84" stroke="${d}" stroke-width="1.4" fill="none" opacity=".5"/>
-<path d="M${x+14},100 Q${x+13},114 ${x+17},128 L${x+31},128 Q${x+34},114 ${x+29},100 Z" fill="#B87040"/>
-<path d="M${x+35},110 Q${x+38},119 ${x+34},126" stroke="${h}" stroke-width="1.5" fill="none" opacity=".58"/>`;}
+/* Arms — massive peaked biceps, tricep groove, tapered forearms */
+function AR(cx=120){const x=cx,d='#3A1604',h='#D99060';return `
+<g style="animation:body-breathe 4s ease-in-out infinite;transform-origin:${x}px 90px">
+<path d="M${x-22},55 Q${x-52},70 ${x-52},90 Q${x-50},105 ${x-33},110 Q${x-19},105 ${x-15},90 Q${x-15},70 ${x-24},55 Z" fill="#C07838"/>
+<path d="M${x-52},82 Q${x-57},90 ${x-52},98" stroke="${h}" stroke-width="3.2" fill="none" opacity=".8"/>
+<path d="M${x-22},58 Q${x-27},74 ${x-26},90" stroke="${d}" stroke-width="1.6" fill="none" opacity=".52"/>
+<path d="M${x-33},110 Q${x-39},126 ${x-35},140 L${x-20},140 Q${x-15},126 ${x-15},110 Z" fill="#B87040"/>
+<path d="M${x-40},120 Q${x-44},130 ${x-39},138" stroke="${h}" stroke-width="1.7" fill="none" opacity=".6"/>
+<path d="M${x+22},55 Q${x+52},70 ${x+52},90 Q${x+50},105 ${x+33},110 Q${x+19},105 ${x+15},90 Q${x+15},70 ${x+24},55 Z" fill="#C07838"/>
+<path d="M${x+52},82 Q${x+57},90 ${x+52},98" stroke="${h}" stroke-width="3.2" fill="none" opacity=".8"/>
+<path d="M${x+22},58 Q${x+27},74 ${x+26},90" stroke="${d}" stroke-width="1.6" fill="none" opacity=".52"/>
+<path d="M${x+15},110 Q${x+15},126 ${x+20},140 L${x+35},140 Q${x+39},126 ${x+33},110 Z" fill="#B87040"/>
+<path d="M${x+40},120 Q${x+44},130 ${x+39},138" stroke="${h}" stroke-width="1.7" fill="none" opacity=".6"/>
+</g>`;}
 
-/* Muscle highlight overlay — matched to bodybuilder reference anatomy */
+/* Muscle highlights — updated to match new reference anatomy */
 function HL(grp,pri=true,cx=120){
-  const x=cx,c=pri?'#FF5722':'#FFA726',op=pri?.66:.52;
+  const x=cx,c=pri?'#FF5722':'#FFA726',op=pri?.68:.54;
   const a=`fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"`;
   const G={
-    chest:`<path d="M${x-11},54 Q${x-1},52 ${x-1},87 Q${x-9},89 ${x-15},87 Q${x-34},80 ${x-34},68 Z" ${a}/><path d="M${x+11},54 Q${x+1},52 ${x+1},87 Q${x+9},89 ${x+15},87 Q${x+34},80 ${x+34},68 Z" ${a}/>`,
-    triceps:`<path d="M${x-22},56 Q${x-46},67 ${x-46},85 Q${x-44},96 ${x-30},100 Q${x-18},93 ${x-18},82 Q${x-19},68 ${x-24},56 Z" ${a}/><path d="M${x+22},56 Q${x+46},67 ${x+46},85 Q${x+44},96 ${x+30},100 Q${x+18},93 ${x+18},82 Q${x+19},68 ${x+24},56 Z" ${a}/>`,
-    biceps:`<path d="M${x-20},56 Q${x-48},67 ${x-47},85 Q${x-44},97 ${x-29},101 Q${x-17},96 ${x-14},84 Q${x-14},67 ${x-21},55 Z" ${a}/><path d="M${x+20},55 Q${x+14},67 ${x+14},84 Q${x+17},96 ${x+29},101 Q${x+44},97 ${x+47},85 Q${x+48},67 ${x+21},56 Z" ${a}/>`,
-    shoulders:`<ellipse cx="${x-38}" cy="68" rx="14" ry="17" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><ellipse cx="${x+38}" cy="68" rx="14" ry="17" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
-    lats:`<path d="M${x-20},55 Q${x-46},66 ${x-46},84 Q${x-44},94 ${x-30},99 Q${x-16},84 ${x-14},66 Z" ${a}/><path d="M${x+20},55 Q${x+46},66 ${x+46},84 Q${x+44},94 ${x+30},99 Q${x+16},84 ${x+14},66 Z" ${a}/>`,
-    traps:`<path d="M${x-8},41 Q${x-28},46 ${x-40},60 Q${x-30},67 ${x-14},62 Z" ${a}/><path d="M${x+8},41 Q${x+28},46 ${x+40},60 Q${x+30},67 ${x+14},62 Z" ${a}/>`,
-    abs:`<rect x="${x-13}" y="87" width="12" height="8" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x-13}" y="97" width="12" height="8" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x-13}" y="107" width="12" height="7" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="87" width="12" height="8" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="97" width="12" height="8" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="107" width="12" height="7" rx="2.5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
-    core:`<rect x="${x-14}" y="87" width="28" height="28" rx="5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
-    obliques:`<path d="M${x-13},89 Q${x-23},101 ${x-21},115 L${x-13},115 Z" ${a}/><path d="M${x+13},89 Q${x+23},101 ${x+21},115 L${x+13},115 Z" ${a}/>`,
-    glutes:`<path d="M${x-25},113 Q${x-27},124 ${x-25},135 L${x-6},135 Q${x-5},124 ${x-5},113 Z" ${a}/><path d="M${x+5},113 Q${x+5},124 ${x+7},135 L${x+25},135 Q${x+27},124 ${x+25},113 Z" ${a}/>`,
-    quads:`<path d="M${x-25},135 Q${x-31},148 ${x-25},152 L${x-6},152 Q${x-5},147 ${x-5},135 Z" ${a}/><path d="M${x+5},135 Q${x+5},147 ${x+7},152 L${x+25},152 Q${x+31},148 ${x+25},135 Z" ${a}/>`,
-    hamstrings:`<path d="M${x-7},135 Q${x-10},148 ${x-7},152 L${x-5},152 Q${x-5},147 ${x-6},135 Z" ${a}/><path d="M${x+5},135 Q${x+6},147 ${x+8},152 L${x+7},152 Q${x+7},148 ${x+5},135 Z" ${a}/>`,
-    calves:`<path d="M${x-34},151 Q${x-36},155 ${x-34},158 L${x-6},158 Q${x-5},155 ${x-6},151 Z" ${a}/><path d="M${x+3},151 Q${x+3},155 ${x+5},158 L${x+32},158 Q${x+34},155 ${x+32},151 Z" ${a}/>`,
-    forearms:`<path d="M${x-29},100 Q${x-34},114 ${x-31},128 L${x-17},128 Q${x-13},114 ${x-14},100 Z" ${a}/><path d="M${x+14},100 Q${x+13},114 ${x+17},128 L${x+31},128 Q${x+34},114 ${x+29},100 Z" ${a}/>`,
+    chest:`<path d="M${x-11},54 Q${x-1},52 ${x-1},92 Q${x-10},94 ${x-16},92 Q${x-38},84 ${x-38},72 Z" ${a}/><path d="M${x+11},54 Q${x+1},52 ${x+1},92 Q${x+10},94 ${x+16},92 Q${x+38},84 ${x+38},72 Z" ${a}/>`,
+    triceps:`<path d="M${x-24},57 Q${x-52},71 ${x-52},91 Q${x-50},106 ${x-33},110 Q${x-20},102 ${x-20},88 Q${x-21},72 ${x-26},57 Z" ${a}/><path d="M${x+24},57 Q${x+52},71 ${x+52},91 Q${x+50},106 ${x+33},110 Q${x+20},102 ${x+20},88 Q${x+21},72 ${x+26},57 Z" ${a}/>`,
+    biceps:`<path d="M${x-22},57 Q${x-54},71 ${x-53},91 Q${x-50},106 ${x-33},111 Q${x-19},105 ${x-15},90 Q${x-15},70 ${x-23},56 Z" ${a}/><path d="M${x+22},56 Q${x+15},70 ${x+15},90 Q${x+19},105 ${x+33},111 Q${x+50},106 ${x+53},91 Q${x+54},71 ${x+23},57 Z" ${a}/>`,
+    shoulders:`<ellipse cx="${x-42}" cy="71" rx="15" ry="19" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><ellipse cx="${x+42}" cy="71" rx="15" ry="19" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
+    lats:`<path d="M${x-22},56 Q${x-52},70 ${x-52},90 Q${x-50},104 ${x-34},109 Q${x-18},92 ${x-15},72 Z" ${a}/><path d="M${x+22},56 Q${x+52},70 ${x+52},90 Q${x+50},104 ${x+34},109 Q${x+18},92 ${x+15},72 Z" ${a}/>`,
+    traps:`<path d="M${x-8},40 Q${x-34},47 ${x-46},63 Q${x-35},71 ${x-16},65 Z" ${a}/><path d="M${x+8},40 Q${x+34},47 ${x+46},63 Q${x+35},71 ${x+16},65 Z" ${a}/>`,
+    abs:`<rect x="${x-14}" y="92" width="13" height="9" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x-14}" y="103" width="13" height="9" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x-14}" y="114" width="13" height="8" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="92" width="13" height="9" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="103" width="13" height="9" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/><rect x="${x+1}" y="114" width="13" height="8" rx="3" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
+    core:`<rect x="${x-15}" y="92" width="30" height="31" rx="5" fill="${c}" opacity="${op}" filter="url(#mg)" style="animation:muscle-pulse 1.5s ease-in-out infinite"/>`,
+    obliques:`<path d="M${x-14},94 Q${x-26},108 ${x-24},123 L${x-14},123 Z" ${a}/><path d="M${x+14},94 Q${x+26},108 ${x+24},123 L${x+14},123 Z" ${a}/>`,
+    glutes:`<path d="M${x-28},121 Q${x-30},133 ${x-28},144 L${x-7},144 Q${x-6},133 ${x-6},121 Z" ${a}/><path d="M${x+6},121 Q${x+6},133 ${x+8},144 L${x+27},144 Q${x+30},133 ${x+28},121 Z" ${a}/>`,
+    quads:`<path d="M${x-28},144 Q${x-35},150 ${x-28},152 L${x-7},152 Q${x-6},149 ${x-6},144 Z" ${a}/><path d="M${x+6},144 Q${x+6},149 ${x+8},152 L${x+27},152 Q${x+35},150 ${x+28},144 Z" ${a}/>`,
+    hamstrings:`<path d="M${x-8},144 Q${x-11},150 ${x-8},152 L${x-6},152 Q${x-6},149 ${x-7},144 Z" ${a}/><path d="M${x+6},144 Q${x+7},149 ${x+7},152 L${x+9},152 Q${x+11},150 ${x+8},144 Z" ${a}/>`,
+    calves:`<path d="M${x-40},151 Q${x-42},156 ${x-40},160 L${x-7},160 Q${x-6},156 ${x-7},151 Z" ${a}/><path d="M${x+3},151 Q${x+3},156 ${x+5},160 L${x+38},160 Q${x+40},156 ${x+38},151 Z" ${a}/>`,
+    forearms:`<path d="M${x-33},110 Q${x-39},126 ${x-35},140 L${x-20},140 Q${x-15},126 ${x-15},110 Z" ${a}/><path d="M${x+15},110 Q${x+15},126 ${x+20},140 L${x+35},140 Q${x+39},126 ${x+33},110 Z" ${a}/>`,
   };
   return G[grp]||'';}
 
