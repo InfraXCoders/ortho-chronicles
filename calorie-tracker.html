@@ -570,6 +570,9 @@
       <button class="src-add-btn" onclick="addScannedFood()">
         <i class="fas fa-plus-circle"></i> Add to Today's Log
       </button>
+      <button onclick="scanAgain()" style="width:100%;margin-top:8px;background:none;border:1.5px solid var(--br);border-radius:10px;padding:9px;font-size:.82rem;color:var(--mu);cursor:pointer;font-family:Inter,sans-serif;">
+        🔄 Scan Another Item
+      </button>
     </div>
 
     <div class="src-not-found" id="srcNotFound">
@@ -1321,6 +1324,9 @@ function setScanMode(mode){
   }else{
     setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
     document.getElementById('scanHint').textContent='Hold steady 10–15 cm from the barcode label on packaged food.';
+    /* Stop plain camera stream before handing over to ZXing */
+    const vid2=document.getElementById('scannerVideo');
+    if(vid2.srcObject){vid2.srcObject.getTracks().forEach(t=>t.stop());vid2.srcObject=null;}
     startBarcodeReader();
   }
 }
@@ -1337,7 +1343,9 @@ function camConstraints(){
 
 function startCamera(){
   const vid=document.getElementById('scannerVideo');
-  if(vid.srcObject)return;
+  /* Always stop any existing stream before requesting a new one */
+  if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
+  vid.style.display='block';
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
     setScanStatus('error','Camera not supported on this browser. Use manual entry below.');
     return;
@@ -1345,8 +1353,6 @@ function startCamera(){
   navigator.mediaDevices.getUserMedia(camConstraints())
     .then(stream=>{
       vid.srcObject=stream;
-      vid.setAttribute('playsinline','');
-      vid.setAttribute('muted','');
       vid.muted=true;
       vid.play().catch(()=>{});
     })
@@ -1364,14 +1370,13 @@ function startBarcodeReader(){
     setScanStatus('error','Scanner library not loaded — enter barcode manually below.');
     return;
   }
-  /* ZXing handles its own camera stream — stop any existing one first */
+  /* Stop any existing camera stream before ZXing takes over */
   const vid=document.getElementById('scannerVideo');
   if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
+  if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
 
   try{
     zxingReader=new ZXing.BrowserMultiFormatReader();
-    /* Pass ideal constraints; ZXing falls back gracefully on iOS */
-    const hints=new Map();
     zxingReader.decodeFromConstraints(
       camConstraints(),
       'scannerVideo',
@@ -1380,15 +1385,16 @@ function startBarcodeReader(){
           const code=result.getText();
           setScanStatus('loading','Barcode detected — looking up nutrition…');
           if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
+          /* Also stop video tracks in case ZXing didn't */
+          if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
           lookupBarcode(code);
         }
-        /* Ignore DecodeHintType errors during continuous scanning */
+        /* err fires every frame when no barcode found — safe to ignore */
       }
     );
     setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
   }catch(e){
     setScanStatus('error','Scanner error: '+e.message);
-    /* Fallback: start plain camera so user can at least take AI photo */
     startCamera();
   }
 }
@@ -1412,8 +1418,10 @@ function lookupBarcode(code){
   document.getElementById('scanResultCard').classList.remove('visible');
   document.getElementById('srcNotFound').classList.remove('visible');
 
-  fetch(`https://world.openfoodfacts.org/api/v2/product/${code}?fields=product_name,brands,nutriments,serving_size`)
-    .then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),10000);
+  fetch(`https://world.openfoodfacts.org/api/v2/product/${code}?fields=product_name,brands,nutriments,serving_size`,{signal:ctrl.signal})
+    .then(r=>{clearTimeout(tid);if(!r.ok)throw new Error(r.status);return r.json();})
     .then(d=>{
       if(d.status!==1||!d.product){showNotFound(code);return;}
       const pr=d.product, nu=pr.nutriments||{};
@@ -1588,14 +1596,24 @@ function round1(v){return Math.round(v*10)/10;}
 
 function addScannedFood(){
   if(!scannedFood)return;
-  FOODS.unshift(scannedFood);
-  pendingFood=scannedFood;
-  document.getElementById('qtyFoodName').textContent=scannedFood.name;
+  const food=scannedFood;
+  closeScanner();
+  FOODS.unshift(food);
+  pendingFood=food;
+  document.getElementById('qtyFoodName').textContent=food.name;
   document.getElementById('qtyFoodInfo').textContent=
-    `${scannedFood.cal} kcal · P:${scannedFood.prot}g C:${scannedFood.carb}g F:${scannedFood.fat}g per 100g`;
+    `${food.cal} kcal · P:${food.prot}g C:${food.carb}g F:${food.fat}g per 100g`;
   document.getElementById('qtyAmount').value=100;
   document.getElementById('qtyModal').classList.add('open');
   document.getElementById('qtyOverlay').classList.add('open');
+}
+
+function scanAgain(){
+  scannedFood=null;
+  document.getElementById('scanResultCard').classList.remove('visible');
+  document.getElementById('srcNotFound').classList.remove('visible');
+  document.getElementById('aiResults').classList.remove('visible');
+  setScanMode(scanMode);
 }
 
 function closeScanner(){
