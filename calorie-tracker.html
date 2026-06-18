@@ -1286,13 +1286,41 @@ const AI_FOOD_MAP={
   'pizza':'sn09','hamburger':'sn09','sandwich':'gr10',
   /* nuts */
   'peanut':'sn01','almond':'sn02','walnut':'sn03','cashew':'sn01',
+  /* MobileNet ImageNet label variants */
+  'granny_smith':'fr03','fig':'fr15','lemon':'fr07','orange':'fr07',
+  'strawberry':'fr03','pineapple':'fr10','banana_a_fruit':'fr01',
+  'pizza_pizza_pie':'sn09','cheeseburger':'sn09','hotdog':'sn09',
+  'french_loaf':'gr10','bagel':'gr10','pretzel':'gr10',
+  'ice_cream':'da01','chocolate_sauce':'sn13',
+  'head_cabbage':'vg01','broccoli':'vg05','cauliflower':'vg05',
+  'zucchini':'vg18','cucumber':'vg18','artichoke':'vg01',
+  'mushroom':'vg16','corn':'vg13','acorn_squash':'vg19',
+  'spaghetti_squash':'vg19','butternut_squash':'vg19',
+  'hen_of_the_woods':'vg16','agaric':'vg16',
+  'eggnog':'da01','espresso':'cf01','cup':'cf01',
+  'meat_loaf':'pr05','pork_loin':'pr05','pot_roast':'pr05',
+  'burrito':'sn09','taco':'sn09','guacamole':'vg02',
+  'carbonara':'sn09','lasagna':'sn09','spaghetti':'sn09',
 };
 
-/* Hugging Face food classification models (free, no key required) */
-const HF_MODELS=[
-  'https://api-inference.huggingface.co/models/nateraw/food',
-  'https://api-inference.huggingface.co/models/Kaludi/food-category-classification-v2.0',
-];
+/* TensorFlow.js MobileNet — in-browser food recognition, no API key needed */
+let _tfModel=null;
+function loadTFScript(src){
+  return new Promise((res,rej)=>{
+    if(document.querySelector('script[src="'+src+'"]')){res();return;}
+    const s=document.createElement('script');
+    s.src=src;s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+async function getTFModel(){
+  if(_tfModel)return _tfModel;
+  setScanStatus('loading','Loading AI model…');
+  await loadTFScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js');
+  await loadTFScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js');
+  _tfModel=await window.mobilenet.load({version:1,alpha:0.5});
+  return _tfModel;
+}
 
 function setScanStatus(type,msg){
   document.getElementById('scanDot').className='scan-dot '+type;
@@ -1475,46 +1503,31 @@ function snapPhoto(){
 }
 
 async function runAIRecognition(blob){
-  let predictions=null;
-  // Try both HF models, use first that responds
-  for(const url of HF_MODELS){
-    try{
-      const res=await fetch(url,{
-        method:'POST',
-        headers:{'Content-Type':'image/jpeg'},
-        body:blob
-      });
-      if(res.ok){
-        const data=await res.json();
-        if(Array.isArray(data)&&data.length>0&&data[0].score!==undefined){
-          predictions=data;break;
-        }
-      }
-    }catch(e){/* try next */}
-  }
-
-  if(!predictions||predictions.length===0){
-    // Model loading on HF (cold start) — retry once after 8s
-    setScanStatus('loading','Model warming up, retrying…');
-    await new Promise(r=>setTimeout(r,8000));
-    try{
-      const res=await fetch(HF_MODELS[0],{method:'POST',headers:{'Content-Type':'image/jpeg'},body:blob});
-      if(res.ok)predictions=await res.json();
-    }catch(e){}
-  }
-
-  if(!predictions||!Array.isArray(predictions)||predictions.length===0){
-    setScanStatus('error','AI recognition unavailable. Try barcode mode or search manually.');
-    document.getElementById('scanHint').textContent='Hugging Face model may be loading — wait 30s and try again.';
+  try{
+    const model=await getTFModel();
+    setScanStatus('loading','Analysing food with AI…');
+    /* Create an img element from the blob for TF.js */
+    const url=URL.createObjectURL(blob);
+    const img=new Image();
+    await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url;});
+    const predictions=await model.classify(img,8);
+    URL.revokeObjectURL(url);
+    if(!predictions||predictions.length===0){
+      setScanStatus('error','Could not identify food. Try a clearer photo.');
+      showRetryPhoto();return;
+    }
+    showAIResults(predictions.map(p=>({label:p.className,score:p.probability})));
+  }catch(e){
+    setScanStatus('error','AI error — try barcode mode or search manually.');
+    document.getElementById('scanHint').textContent=e.message||'Unknown error';
     showRetryPhoto();
-    return;
   }
-
-  showAIResults(predictions);
 }
 
 function normLabel(label){
-  return label.toLowerCase().replace(/[\s\-\/]+/g,'_').replace(/[^a-z0-9_]/g,'');
+  /* MobileNet returns "banana, a fruit" or "pizza, pizza pie" — take first word/phrase */
+  const first=label.split(',')[0].trim();
+  return first.toLowerCase().replace(/[\s\-\/]+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
 
 function showAIResults(predictions){
