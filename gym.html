@@ -56,10 +56,18 @@
   .ex-card:hover{transform:translateY(-5px);box-shadow:0 10px 36px rgba(15,29,58,.14);}
   .ex-card.hidden{display:none;}
 
-  /* SVG area */
-  .ex-svg{background:linear-gradient(135deg,#E8EEF8 0%,#DDE5F5 100%);display:flex;align-items:center;justify-content:center;height:188px;padding:6px;position:relative;overflow:hidden;}
-  .ex-svg::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--G),transparent);}
-  .ex-svg svg{width:100%;height:100%;max-width:250px;}
+  /* Video area */
+  .ex-vid{position:relative;height:188px;background:#0a111e;overflow:hidden;cursor:pointer;}
+  .ex-vid .vt{width:100%;height:100%;object-fit:cover;transition:transform .35s;display:block;}
+  .ex-vid:hover .vt{transform:scale(1.05);}
+  .ex-vid .vt-err{display:none;}
+  .vplay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,17,30,.52);transition:background .2s;}
+  .ex-vid:hover .vplay{background:rgba(10,17,30,.28);}
+  .vplay-btn{width:54px;height:54px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0F1D3A;font-size:1.25rem;box-shadow:0 4px 22px rgba(0,0,0,.5);transition:transform .2s,background .2s;padding-left:4px;}
+  .ex-vid:hover .vplay-btn{transform:scale(1.12);background:#fff;}
+  .vplay-lbl{margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.82);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+  .vbadge{position:absolute;top:10px;left:10px;background:rgba(184,150,62,.92);color:#fff;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;text-transform:uppercase;}
+  .ex-vid iframe{width:100%;height:100%;border:none;display:block;}
 
   /* card body */
   .ex-body{padding:18px 20px 6px;}
@@ -1338,14 +1346,75 @@ const grid=document.getElementById('exGrid');
 const countEl=document.getElementById('exCount');
 const noRes=document.getElementById('noRes');
 
+/* ── Copyright-free YouTube exercise tutorial videos ── */
+const VIDEO_MAP={
+  /* Chest */
+  'bench-press':'rT7DgCr-3pg',
+  'incline-press':'DbFgADa2PL8',
+  'chest-fly':'eozdVDA78K0',
+  'push-up':'IODxDxX7oi4',
+  'chest-dip':'yN6MxJRYMoI',
+  /* Back */
+  'pull-up':'eGo4IYlbE5g',
+  'lat-pulldown':'CAwf7n6Luuc',
+  'seated-row':'GZbfZ033f74',
+  'deadlift':'op9kVnSso6Q',
+  'face-pull':'2X3rrqEFB5s',
+  /* Shoulders */
+  'overhead-press':'F3QY5vMz_6I',
+  'lateral-raise':'XPPfnSEATJA',
+  /* Arms */
+  'barbell-curl':'ykJmrZ5v0Oo',
+  'tricep-pushdown':'AOEEbSmYqQM',
+  'skull-crusher':'5Zp87oT7Tgo',
+  'hammer-curl':'zC3nLlEvin4',
+  'overhead-ext':'nRiJVZDpdL0',
+  /* Core */
+  'plank':'yeKv5ML5yp4',
+  'crunch':'Xyd_fa5zoEU',
+  'leg-raise':'2C-J8cPNAyg',
+  'russian-twist':'e5B2giUIZdM',
+  /* Quads */
+  'squat':'ultWZbUMc_Y',
+  'lunge':'3XDriUn0udo',
+  'leg-extension':'4ZDm5EbazWE',
+  /* Hamstrings */
+  'rdl':'hCDzSR6bW10',
+  'leg-curl':'Orxoeast-AU',
+  /* Glutes */
+  'hip-thrust':'SENBNotKPGk',
+  'glute-bridge':'BKf6QyP9bF8',
+  'kickback':'kCQ2rkJUZhY',
+  /* Calves */
+  'calf-raise':'-M4-G8p1vgo',
+  'box-jump':'mXQEFNWoUQk',
+};
+
+const MG_COLOR={chest:'#C0392B',back:'#1565C0',shoulders:'#6A1B9A',biceps:'#0277BD',triceps:'#00695C',core:'#F57F17',quads:'#2E7D32',hamstrings:'#4E342E',glutes:'#AD1457',calves:'#37474F',arms:'#1565C0',lats:'#1565C0'};
+
+function vidId(ex){return VIDEO_MAP[ex.svg]||'rT7DgCr-3pg';}
+
+function playVid(el,id){
+  el.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+}
+
 function diffBadge(d){return d==='beginner'?'be':d==='intermediate'?'bi':'ba';}
 function diffLabel(d){return d.charAt(0).toUpperCase()+d.slice(1);}
 function muscleLabel(m){return m.charAt(0).toUpperCase()+m.slice(1);}
 
 function buildCard(ex){
-  const svg=SVGS[ex.svg]||SVGS['bench-press'];
+  const id=vidId(ex);
+  const thumb=`https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  const col=MG_COLOR[ex.m]||'#0F1D3A';
   return `<div class="ex-card" data-muscle="${ex.m}" data-name="${ex.n.toLowerCase()}" data-eq="${ex.eq.toLowerCase()}">
-    <div class="ex-svg" aria-label="${ex.n} animation">${svg}</div>
+    <div class="ex-vid" onclick="playVid(this,'${id}')" aria-label="${ex.n} tutorial video">
+      <img class="vt" src="${thumb}" alt="${ex.n}" loading="lazy" onerror="this.style.opacity=0;this.parentNode.style.background='${col}'">
+      <div class="vplay">
+        <div class="vplay-btn"><i class="fas fa-play"></i></div>
+        <span class="vplay-lbl">Watch Tutorial</span>
+      </div>
+      <span class="vbadge">${muscleLabel(ex.m)}</span>
+    </div>
     <div class="ex-body">
       <div class="ex-name">${ex.n}</div>
       <div class="ex-badges">
