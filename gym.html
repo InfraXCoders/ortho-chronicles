@@ -68,6 +68,7 @@
   .vplay-lbl{margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.82);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
   .vbadge{position:absolute;top:10px;left:10px;background:rgba(184,150,62,.92);color:#fff;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;text-transform:uppercase;}
   .ex-vid iframe{width:100%;height:100%;border:none;display:block;}
+  .vt{width:100%;height:100%;object-fit:cover;display:block;}
 
   /* card body */
   .ex-body{padding:18px 20px 6px;}
@@ -225,7 +226,7 @@
   <div class="mf-inner" id="mfInner">
     <button class="mf-btn active" data-f="all"><span class="mf-icon">🏋️</span>All</button>
     <button class="mf-btn" data-f="chest"><span class="mf-icon">💪</span>Chest</button>
-    <button class="mf-btn" data-f="back"><span class="mf-icon">🔙</span>Back</button>
+    <button class="mf-btn" data-f="back"><span class="mf-icon">🏋️</span>Back</button>
     <button class="mf-btn" data-f="shoulders"><span class="mf-icon">🦾</span>Shoulders</button>
     <button class="mf-btn" data-f="biceps"><span class="mf-icon">🤸</span>Biceps</button>
     <button class="mf-btn" data-f="triceps"><span class="mf-icon">💪</span>Triceps</button>
@@ -1352,21 +1353,22 @@ const VIDEO_MAP={
   /* Chest */
   'bench-press':'rT7DgCr-3pg',
   'incline-press':'DbFgADa2PL8',
-  'chest-fly':'eozdVDA78K0',
+  'chest-fly':'eozdVDA78K0','fly':'eozdVDA78K0',
   'push-up':'IODxDxX7oi4',
-  'chest-dip':'yN6MxJRYMoI',
+  'chest-dip':'yN6MxJRYMoI','dip':'yN6MxJRYMoI',
   /* Back */
   'pull-up':'eGo4IYlbE5g',
   'lat-pulldown':'CAwf7n6Luuc',
-  'seated-row':'GZbfZ033f74',
+  'seated-row':'GZbfZ033f74','row':'GZbfZ033f74',
   'deadlift':'op9kVnSso6Q',
   'face-pull':'2X3rrqEFB5s',
   /* Shoulders */
-  'overhead-press':'F3QY5vMz_6I',
+  'overhead-press':'F3QY5vMz_6I','ohp':'F3QY5vMz_6I',
   'lateral-raise':'XPPfnSEATJA',
+  'front-raise':'IO9pb9xVMpk',
   /* Arms */
-  'barbell-curl':'ykJmrZ5v0Oo',
-  'tricep-pushdown':'AOEEbSmYqQM',
+  'barbell-curl':'ykJmrZ5v0Oo','curl':'ykJmrZ5v0Oo',
+  'tricep-pushdown':'AOEEbSmYqQM','pushdown':'AOEEbSmYqQM',
   'skull-crusher':'5Zp87oT7Tgo',
   'hammer-curl':'zC3nLlEvin4',
   'overhead-ext':'nRiJVZDpdL0',
