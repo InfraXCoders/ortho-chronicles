@@ -4,8 +4,8 @@ const PRECACHE = [
   '/calorie-tracker.html',
   '/style.css',
   '/assets/logo.png',
-  '/assets/ct-icon-192.png',
-  '/assets/ct-icon-512.png',
+  '/ct-icon-192.png',
+  '/ct-icon-512.png',
 ];
 
 self.addEventListener('install', e => {

@@ -2,10 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
   <meta name="theme-color" content="#0F1D3A"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Calorie Tracker"/>
   <link rel="manifest" href="ct-manifest.json"/>
-  <link rel="apple-touch-icon" href="assets/ct-icon-192.png"/>
+  <link rel="apple-touch-icon" href="/ct-icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="192x192" href="/ct-icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="512x512" href="/ct-icon-512.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="/ct-icon-192.png"/>
   <title>Calorie & Nutrition Tracker — Indian Diet | OrthoChronicles</title>
   <meta name="description" content="Track calories, macronutrients and water content for Indian foods, fruits and vegetables. Get personalised weight loss and weight gain diet plans."/>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
@@ -1251,37 +1258,72 @@ function setScanMode(mode){
   }
 }
 
+/* iOS Safari needs ideal (not exact) facingMode and no width/height constraints */
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||
+             (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+
+function camConstraints(){
+  /* iOS: minimal constraints — exact facingMode crashes Safari */
+  if(isIOS) return {video:{facingMode:{ideal:'environment'}}};
+  return {video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}};
+}
+
 function startCamera(){
   const vid=document.getElementById('scannerVideo');
-  if(vid.srcObject)return; // already running
-  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}})
-    .then(stream=>{vid.srcObject=stream;vid.play();})
-    .catch(e=>{setScanStatus('error','Camera denied: '+e.message);});
+  if(vid.srcObject)return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    setScanStatus('error','Camera not supported on this browser. Use manual entry below.');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia(camConstraints())
+    .then(stream=>{
+      vid.srcObject=stream;
+      vid.setAttribute('playsinline','');
+      vid.setAttribute('muted','');
+      vid.muted=true;
+      vid.play().catch(()=>{});
+    })
+    .catch(err=>{
+      const msg=err.name==='NotAllowedError'?'Camera permission denied — tap Allow and try again':
+                err.name==='NotFoundError'?'No camera found on this device':
+                'Camera error: '+err.message;
+      setScanStatus('error',msg);
+      document.getElementById('scanHint').textContent='Use manual barcode entry or Search Indian Food Database below.';
+    });
 }
 
 function startBarcodeReader(){
-  if(!window.ZXing){setScanStatus('error','Scanner not loaded. Enter barcode manually.');return;}
-  startCamera();
+  if(!window.ZXing){
+    setScanStatus('error','Scanner library not loaded — enter barcode manually below.');
+    return;
+  }
+  /* ZXing handles its own camera stream — stop any existing one first */
   const vid=document.getElementById('scannerVideo');
-  const tryRead=()=>{
-    if(!vid.srcObject){return;}
-    try{
-      zxingReader=new ZXing.BrowserMultiFormatReader();
-      zxingReader.decodeFromConstraints(
-        {video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}},
-        'scannerVideo',
-        (result,err)=>{
-          if(result){
-            const code=result.getText();
-            setScanStatus('loading','Barcode detected — looking up nutrition…');
-            if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
-            lookupBarcode(code);
-          }
+  if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
+
+  try{
+    zxingReader=new ZXing.BrowserMultiFormatReader();
+    /* Pass ideal constraints; ZXing falls back gracefully on iOS */
+    const hints=new Map();
+    zxingReader.decodeFromConstraints(
+      camConstraints(),
+      'scannerVideo',
+      (result,err)=>{
+        if(result){
+          const code=result.getText();
+          setScanStatus('loading','Barcode detected — looking up nutrition…');
+          if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
+          lookupBarcode(code);
         }
-      );
-    }catch(e){setScanStatus('error','Barcode reader error: '+e.message);}
-  };
-  if(vid.readyState>=2)tryRead(); else vid.addEventListener('loadeddata',tryRead,{once:true});
+        /* Ignore DecodeHintType errors during continuous scanning */
+      }
+    );
+    setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
+  }catch(e){
+    setScanStatus('error','Scanner error: '+e.message);
+    /* Fallback: start plain camera so user can at least take AI photo */
+    startCamera();
+  }
 }
 
 function openScanner(){
@@ -1659,45 +1701,144 @@ init();
 })();
 </script>
 
-<!-- PWA: Service Worker + Install Prompt -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;background:#0F1D3A;border:1.5px solid #B8963E;border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.45);max-width:340px;width:calc(100% - 32px);">
-  <img src="assets/ct-icon-192.png" width="44" height="44" style="border-radius:10px;flex-shrink:0;" alt=""/>
-  <div style="flex:1;min-width:0;">
-    <div style="color:#D4AF5A;font-weight:700;font-size:.95rem;">Install Calorie Tracker</div>
-    <div style="color:#CADCFC;font-size:.8rem;margin-top:2px;">Add to home screen for quick access</div>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
-    <button onclick="pwaInstall()" style="background:#B8963E;color:#0F1D3A;border:none;border-radius:8px;padding:7px 14px;font-weight:700;font-size:.82rem;cursor:pointer;">Install</button>
-    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748B;border:none;font-size:.75rem;cursor:pointer;">Not now</button>
+<!-- ── INSTALL SHORTCUT MODAL (iOS instructions) ── -->
+<div id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:flex-end;justify-content:center;">
+  <div style="background:#1E293B;border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:24px 22px 36px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <div style="color:#D4AF5A;font-size:1.05rem;font-weight:800;">📲 Add to Home Screen</div>
+      <button onclick="document.getElementById('ios-install-modal').style.display='none'" style="background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
+        <span style="font-size:1.6rem;flex-shrink:0;">1️⃣</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap the <strong style="color:#D4AF5A;">Share</strong> button <span style="font-size:1.1rem;">⎋</span> at the bottom of Safari</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
+        <span style="font-size:1.6rem;flex-shrink:0;">2️⃣</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Scroll down and tap <strong style="color:#D4AF5A;">"Add to Home Screen"</strong> <span style="font-size:1.1rem;">＋</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
+        <span style="font-size:1.6rem;flex-shrink:0;">3️⃣</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap <strong style="color:#D4AF5A;">"Add"</strong> — the app icon appears on your home screen</div>
+      </div>
+    </div>
+    <div style="margin-top:18px;background:rgba(184,150,62,.12);border:1px solid rgba(184,150,62,.3);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#94A3B8;text-align:center;">
+      Works offline · No app store needed · Free forever
+    </div>
   </div>
 </div>
+
+<!-- ── INSTALL BANNER (Android / Windows / Desktop) ── -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0F1D3A;border:1.5px solid #B8963E;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
+  <img src="/ct-icon-192.png" width="44" height="44" style="border-radius:12px;flex-shrink:0;" alt="" onerror="this.style.display='none'"/>
+  <div style="flex:1;min-width:0;">
+    <div style="color:#D4AF5A;font-weight:700;font-size:.92rem;">Add Calorie Tracker Shortcut</div>
+    <div style="color:#CADCFC;font-size:.75rem;margin-top:2px;">Install as app — works offline, no store needed</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
+    <button onclick="pwaInstall()" style="background:#B8963E;color:#0F1D3A;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:.8rem;cursor:pointer;white-space:nowrap;">📲 Install</button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748B;border:none;font-size:.72rem;cursor:pointer;text-align:center;">Not now</button>
+  </div>
+</div>
+
+<!-- ── FLOATING INSTALL BUTTON (always visible) ── -->
+<button id="pwa-fab" onclick="showInstallUI()" title="Add shortcut to home screen / desktop"
+  style="position:fixed;bottom:92px;right:20px;z-index:900;background:#0F1D3A;border:2px solid #B8963E;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:Inter,sans-serif;transition:transform .2s;">
+  <img src="/ct-icon-192.png" width="26" height="26" style="border-radius:6px;" alt="" onerror="this.style.display='none'"/>
+  <div style="text-align:left;">
+    <div style="color:#D4AF5A;font-size:.75rem;font-weight:800;line-height:1.2;">Add Shortcut</div>
+    <div style="color:#CADCFC;font-size:.62rem;line-height:1.2;">Home Screen</div>
+  </div>
+</button>
+
 <script>
 (function(){
-  // Register service worker
+  /* ── Service Worker ── */
   if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/ct-sw.js').catch(function(){});
+    navigator.serviceWorker.register('/ct-sw.js',{scope:'/'}).catch(function(){});
   }
-  // Install prompt
+
   var _deferredPrompt=null;
+  var _installed=window.matchMedia('(display-mode: standalone)').matches||
+                  window.navigator.standalone===true;
+
+  /* Hide FAB if already installed as PWA */
+  if(_installed){
+    var fab=document.getElementById('pwa-fab');
+    if(fab)fab.style.display='none';
+  }
+
+  /* Android / Windows / Desktop Chrome & Edge */
   window.addEventListener('beforeinstallprompt',function(e){
     e.preventDefault();
     _deferredPrompt=e;
-    var b=document.getElementById('pwa-banner');
-    if(b)b.style.display='flex';
+    /* Auto-show banner after 4 seconds */
+    setTimeout(function(){
+      if(!_installed){
+        var b=document.getElementById('pwa-banner');
+        if(b)b.style.display='flex';
+      }
+    },4000);
   });
+
   window.pwaInstall=function(){
-    var b=document.getElementById('pwa-banner');
-    if(b)b.style.display='none';
+    document.getElementById('pwa-banner').style.display='none';
     if(_deferredPrompt){
       _deferredPrompt.prompt();
-      _deferredPrompt.userChoice.then(function(){_deferredPrompt=null;});
+      _deferredPrompt.userChoice.then(function(c){
+        if(c.outcome==='accepted')hideFab();
+        _deferredPrompt=null;
+      });
     }
   };
+
   window.addEventListener('appinstalled',function(){
-    var b=document.getElementById('pwa-banner');
-    if(b)b.style.display='none';
+    document.getElementById('pwa-banner').style.display='none';
+    hideFab();
     _deferredPrompt=null;
   });
+
+  function hideFab(){
+    var fab=document.getElementById('pwa-fab');
+    if(fab)fab.style.display='none';
+  }
+
+  /* ── showInstallUI: detects platform and shows right UI ── */
+  window.showInstallUI=function(){
+    var ua=navigator.userAgent.toLowerCase();
+    var isIOS=/iphone|ipad|ipod/.test(ua)||
+               (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    var isSafari=/safari/.test(ua)&&!/chrome|crios|fxios/.test(ua);
+
+    if(isIOS){
+      /* iOS — must use Safari Share sheet */
+      var modal=document.getElementById('ios-install-modal');
+      modal.style.display='flex';
+      if(!isSafari){
+        /* User is on Chrome/Firefox for iOS — redirect them to Safari */
+        modal.querySelector('div:nth-child(2)').innerHTML=
+          '<div style="background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.3);border-radius:12px;padding:14px;color:#FCA5A5;font-size:.85rem;line-height:1.6;text-align:center;">'+
+          '⚠️ Please open this page in <strong>Safari</strong> to add it to your home screen.<br><br>'+
+          'Copy this URL and paste it in Safari:<br><span style="color:#D4AF5A;word-break:break-all;font-size:.78rem;">'+window.location.href+'</span></div>';
+      }
+    }else if(_deferredPrompt){
+      /* Android / Windows — native install prompt available */
+      document.getElementById('pwa-banner').style.display='none';
+      _deferredPrompt.prompt();
+      _deferredPrompt.userChoice.then(function(c){
+        if(c.outcome==='accepted')hideFab();
+        _deferredPrompt=null;
+      });
+    }else{
+      /* Desktop fallback — show banner with browser instructions */
+      var b=document.getElementById('pwa-banner');
+      b.style.display='flex';
+      b.querySelector('div:nth-child(2)').innerHTML=
+        '<div style="color:#D4AF5A;font-weight:700;font-size:.88rem;">Add Shortcut</div>'+
+        '<div style="color:#CADCFC;font-size:.72rem;margin-top:2px;">Click ⊕ in the address bar of Chrome/Edge to install</div>';
+      b.querySelector('button').style.display='none';
+    }
+  };
 })();
 </script>
 </body>
