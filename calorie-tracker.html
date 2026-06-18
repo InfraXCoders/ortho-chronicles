@@ -141,20 +141,55 @@
   .qty-unit{font-size:.85rem;color:var(--mu);white-space:nowrap;}
   .qty-confirm{width:100%;background:var(--N);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 
-  /* ── QR SCANNER ── */
-  .scanner-modal{position:fixed;inset:0;background:#000;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;}
+  /* ── BARCODE/QR SCANNER ── */
+  .scanner-modal{position:fixed;inset:0;background:#000;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:0;overflow-y:auto;}
   .scanner-modal.open{display:flex;}
-  .scanner-inner{position:relative;width:100%;max-width:400px;}
-  #scannerVideo{width:100%;border-radius:12px;display:block;}
-  .scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:240px;height:240px;border:3px solid var(--GL);border-radius:16px;pointer-events:none;}
-  .scan-line{position:absolute;top:0;left:0;right:0;height:3px;background:var(--GL);animation:scan-move 2s ease-in-out infinite;}
-  @keyframes scan-move{0%,100%{top:0}50%{top:calc(100% - 3px)}}
-  .scanner-msg{color:#fff;font-size:.9rem;text-align:center;margin-top:16px;opacity:.8;}
-  .scanner-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:44px;height:44px;font-size:1.1rem;cursor:pointer;z-index:1;}
-  .scan-btn-row{display:flex;gap:12px;margin-top:20px;}
-  .scan-action-btn{padding:11px 22px;border-radius:10px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-  .scan-manual{background:rgba(255,255,255,.15);color:#fff;}
-  .scan-manual:hover{background:rgba(255,255,255,.25);}
+  .scanner-top{position:relative;width:100%;max-width:480px;margin-top:0;}
+  #scannerVideo{width:100%;max-height:60vh;object-fit:cover;display:block;}
+  .scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;max-width:300px;height:120px;border:3px solid var(--GL);border-radius:10px;pointer-events:none;}
+  .scan-corner{position:absolute;width:20px;height:20px;border-color:var(--GL);border-style:solid;}
+  .scan-corner.tl{top:-3px;left:-3px;border-width:4px 0 0 4px;border-radius:4px 0 0 0;}
+  .scan-corner.tr{top:-3px;right:-3px;border-width:4px 4px 0 0;border-radius:0 4px 0 0;}
+  .scan-corner.bl{bottom:-3px;left:-3px;border-width:0 0 4px 4px;border-radius:0 0 0 4px;}
+  .scan-corner.br{bottom:-3px;right:-3px;border-width:0 4px 4px 0;border-radius:0 0 4px 0;}
+  .scan-line{position:absolute;left:4px;right:4px;height:2px;background:linear-gradient(90deg,transparent,var(--GL),transparent);animation:scan-move 1.8s ease-in-out infinite;top:0;}
+  @keyframes scan-move{0%{top:4px}100%{top:calc(100% - 6px)}}
+  .scanner-close{position:fixed;top:16px;right:16px;background:rgba(0,0,0,.6);border:none;color:#fff;border-radius:50%;width:44px;height:44px;font-size:1.1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
+  .scan-bottom{width:100%;max-width:480px;padding:16px 20px 30px;background:#111827;}
+  .scan-status{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .scan-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;flex-shrink:0;}
+  .scan-dot.scanning{animation:dot-pulse 1s ease-in-out infinite;}
+  .scan-dot.error{background:#f87171;box-shadow:0 0 8px #f87171;animation:none;}
+  .scan-dot.loading{background:var(--GL);box-shadow:0 0 8px var(--GL);animation:dot-pulse 0.5s ease-in-out infinite;}
+  @keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .scan-msg-txt{color:#fff;font-size:.88rem;font-weight:500;}
+  .scan-hint{font-size:.75rem;color:#6B7280;margin-bottom:16px;line-height:1.5;}
+  /* Scan result card */
+  .scan-result-card{background:#1F2937;border:1px solid #374151;border-radius:14px;padding:16px;margin-bottom:14px;display:none;}
+  .scan-result-card.visible{display:block;}
+  .src-product{font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px;}
+  .src-brand{font-size:.78rem;color:#9CA3AF;margin-bottom:12px;}
+  .src-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+  .src-macro{background:#111827;border-radius:8px;padding:8px 4px;text-align:center;}
+  .src-macro strong{display:block;font-size:1rem;font-weight:800;color:#fff;}
+  .src-macro span{font-size:.65rem;color:#9CA3AF;text-transform:uppercase;}
+  .src-macro.cal strong{color:var(--GL);}
+  .src-macro.prot strong{color:#60A5FA;}
+  .src-macro.carb strong{color:#FBBF24;}
+  .src-macro.fat strong{color:#F87171;}
+  .src-per{font-size:.72rem;color:#6B7280;margin-bottom:12px;}
+  .src-water{font-size:.8rem;color:#34D399;margin-bottom:12px;}
+  .src-add-btn{width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .src-not-found{background:#1F2937;border:1px solid #374151;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;color:#9CA3AF;font-size:.85rem;display:none;}
+  .src-not-found.visible{display:block;}
+  /* manual barcode entry */
+  .manual-entry{display:flex;gap:8px;margin-bottom:12px;}
+  .barcode-input{flex:1;padding:10px 14px;border:1.5px solid #374151;border-radius:10px;background:#1F2937;color:#fff;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;}
+  .barcode-input:focus{border-color:var(--GL);}
+  .barcode-lookup-btn{background:var(--G);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;font-size:.85rem;}
+  .scan-action-btn{padding:11px 0;border-radius:10px;border:none;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;text-align:center;}
+  .scan-manual{background:rgba(255,255,255,.1);color:#fff;margin-top:4px;}
+  .scan-manual:hover{background:rgba(255,255,255,.18);}
 
   /* ── MEAL PLANS ── */
   .plans-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
@@ -416,21 +451,63 @@
   <button class="qty-confirm" onclick="confirmAdd()">Add to Log</button>
 </div>
 
-<!-- QR SCANNER MODAL -->
+<!-- BARCODE / QR SCANNER MODAL -->
 <div class="scanner-modal" id="scannerModal">
   <button class="scanner-close" onclick="closeScanner()"><i class="fas fa-times"></i></button>
-  <div class="scanner-inner">
+  <div class="scanner-top">
     <video id="scannerVideo" playsinline autoplay muted></video>
-    <div class="scan-frame"><div class="scan-line"></div></div>
+    <div class="scan-frame">
+      <div class="scan-corner tl"></div><div class="scan-corner tr"></div>
+      <div class="scan-corner bl"></div><div class="scan-corner br"></div>
+      <div class="scan-line"></div>
+    </div>
   </div>
-  <div class="scanner-msg" id="scannerMsg">Point camera at a barcode or QR code</div>
-  <div class="scan-btn-row">
-    <button class="scan-action-btn scan-manual" onclick="closeScanner();openFoodModal('all')">Search Manually Instead</button>
+  <div class="scan-bottom">
+    <div class="scan-status">
+      <div class="scan-dot scanning" id="scanDot"></div>
+      <span class="scan-msg-txt" id="scannerMsg">Scanning for barcodes…</span>
+    </div>
+    <div class="scan-hint">Works with EAN-13, UPC-A, QR codes on packaged food. Hold steady 10–15 cm from label.</div>
+
+    <!-- Scan result appears here -->
+    <div class="scan-result-card" id="scanResultCard">
+      <div class="src-product" id="srcProduct"></div>
+      <div class="src-brand" id="srcBrand"></div>
+      <div class="src-macros">
+        <div class="src-macro cal"><strong id="srcCal">—</strong><span>kcal</span></div>
+        <div class="src-macro prot"><strong id="srcProt">—</strong><span>protein</span></div>
+        <div class="src-macro carb"><strong id="srcCarb">—</strong><span>carbs</span></div>
+        <div class="src-macro fat"><strong id="srcFat">—</strong><span>fat</span></div>
+      </div>
+      <div class="src-per" id="srcPer">per 100g</div>
+      <div class="src-water" id="srcWater"></div>
+      <button class="src-add-btn" onclick="addScannedFood()">
+        <i class="fas fa-plus-circle"></i> Add to Today's Log
+      </button>
+    </div>
+
+    <div class="src-not-found" id="srcNotFound">
+      Product not found in database.<br>
+      <span style="font-size:.78rem">Try <strong>Search Manually</strong> below or enter the barcode number.</span>
+    </div>
+
+    <!-- Manual barcode entry -->
+    <div class="manual-entry">
+      <input class="barcode-input" id="barcodeInput" type="number" placeholder="Enter barcode number manually"/>
+      <button class="barcode-lookup-btn" onclick="lookupBarcode(document.getElementById('barcodeInput').value)">
+        <i class="fas fa-search"></i> Lookup
+      </button>
+    </div>
+
+    <button class="scan-action-btn scan-manual" onclick="closeScanner();openFoodModal('all')">
+      <i class="fas fa-list"></i> Search Indian Food Database Instead
+    </button>
   </div>
 </div>
 <div class="modal-overlay" id="qtyOverlay" style="background:rgba(0,0,0,.4);" onclick="closeQtyModal()"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<!-- ZXing multi-format barcode library (EAN-13, UPC-A, QR, Code128…) -->
+<script src="https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════
    INDIAN FOOD DATABASE  (per 100g unless noted)
@@ -830,72 +907,129 @@ function confirmAdd(){
   saveState();closeQtyModal();closeFoodModal();renderMeals();
 }
 
-/* ── QR SCANNER ── */
-function openScanner(){
-  document.getElementById('scannerModal').classList.add('open');
-  document.getElementById('scannerMsg').textContent='Starting camera…';
-  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(stream=>{
-    scanStream=stream;
-    const vid=document.getElementById('scannerVideo');
-    vid.srcObject=stream;vid.play();
-    document.getElementById('scannerMsg').textContent='Point camera at a barcode or QR code';
-    scanInterval=setInterval(()=>scanFrame(vid),300);
-  }).catch(()=>{
-    document.getElementById('scannerMsg').textContent='Camera access denied — use manual search instead';
-  });
+/* ── BARCODE / QR SCANNER (ZXing multi-format) ── */
+let zxingReader=null;
+let scannedFood=null;
+
+function setScanStatus(type,msg){
+  const dot=document.getElementById('scanDot');
+  dot.className='scan-dot '+type;
+  document.getElementById('scannerMsg').textContent=msg;
 }
 
-function scanFrame(vid){
-  if(!vid.videoWidth)return;
-  const canvas=document.createElement('canvas');
-  canvas.width=vid.videoWidth;canvas.height=vid.videoHeight;
-  canvas.getContext('2d').drawImage(vid,0,0);
-  const img=canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height);
-  const code=jsQR(img.data,img.width,img.height);
-  if(code){
-    closeScanner();
-    lookupBarcode(code.data);
+function openScanner(){
+  currentMeal=currentMeal||'snacks';
+  document.getElementById('scannerModal').classList.add('open');
+  document.getElementById('scanResultCard').classList.remove('visible');
+  document.getElementById('srcNotFound').classList.remove('visible');
+  scannedFood=null;
+  setScanStatus('scanning','Starting camera…');
+
+  if(!window.ZXing){
+    setScanStatus('error','Scanner library not loaded. Use manual entry below.');
+    return;
+  }
+
+  try{
+    zxingReader=new ZXing.BrowserMultiFormatReader();
+    zxingReader.decodeFromConstraints(
+      {video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}},
+      'scannerVideo',
+      (result,err)=>{
+        if(result){
+          const code=result.getText();
+          setScanStatus('loading','Barcode detected! Looking up nutrition…');
+          zxingReader.reset();
+          lookupBarcode(code);
+        }
+      }
+    );
+    setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
+  }catch(e){
+    setScanStatus('error','Camera error: '+e.message);
   }
 }
 
 function lookupBarcode(code){
-  document.getElementById('scannerMsg').textContent='Looking up: '+code;
-  // Try Open Food Facts API
-  fetch(`https://world.openfoodfacts.org/api/v0/product/${code}.json`)
-    .then(r=>r.json())
+  code=String(code).trim();
+  if(!code){setScanStatus('error','Invalid barcode');return;}
+  setScanStatus('loading','Looking up "'+code+'"…');
+  document.getElementById('scanResultCard').classList.remove('visible');
+  document.getElementById('srcNotFound').classList.remove('visible');
+
+  // Open Food Facts (free, no API key required)
+  fetch(`https://world.openfoodfacts.org/api/v2/product/${code}?fields=product_name,brands,nutriments,image_small_url,serving_size`)
+    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
     .then(d=>{
-      if(d.status===1&&d.product){
-        const p=d.product.nutriments;
-        const name=d.product.product_name||'Scanned Item';
-        const f={
-          id:'scan_'+Date.now(),
-          name,cat:'snack',
-          cal:Math.round(p['energy-kcal_100g']||p['energy-kcal']||0),
-          prot:Math.round((p.proteins_100g||0)*10)/10,
-          carb:Math.round((p.carbohydrates_100g||0)*10)/10,
-          fat:Math.round((p.fat_100g||0)*10)/10,
-          fiber:Math.round((p.fiber_100g||0)*10)/10,
-          water:Math.round(p.water_100g||0),
-        };
-        FOODS.unshift(f);
-        pendingFood=f;
-        openFoodModal(currentMeal||'snacks');
-        selectFood(f.id);
-      }else{
-        alert('Product not found. Please search manually.');
-        openFoodModal('snacks');
+      if(d.status!==1||!d.product){
+        showNotFound(code);return;
       }
-    }).catch(()=>{
-      alert('Network error. Please search manually.');
-      openFoodModal('snacks');
+      const pr=d.product;
+      const nu=pr.nutriments||{};
+      const name=(pr.product_name||'').trim()||'Scanned Product';
+      const brand=(pr.brands||'').trim();
+
+      // Prefer _100g values; fall back to per-serving values normalised to 100g
+      const cal=Math.round(nu['energy-kcal_100g']||nu['energy-kcal']||
+                            (nu['energy-kcal_serving']&&pr.serving_size?
+                             nu['energy-kcal_serving']/(parseFloat(pr.serving_size)||100)*100:0));
+      const prot=round1(nu.proteins_100g||0);
+      const carb=round1(nu.carbohydrates_100g||0);
+      const fat=round1(nu.fat_100g||0);
+      const fiber=round1(nu.fiber_100g||0);
+      const water=Math.round(nu.water_100g||0);
+      const sugar=round1(nu.sugars_100g||0);
+      const sodium=Math.round((nu.sodium_100g||0)*1000); // mg
+
+      scannedFood={
+        id:'scan_'+Date.now(),name,cat:'snack',
+        cal,prot,carb,fat,fiber,water
+      };
+
+      // Fill result card
+      document.getElementById('srcProduct').textContent=name;
+      document.getElementById('srcBrand').textContent=brand?(brand+' · Barcode: '+code):'Barcode: '+code;
+      document.getElementById('srcCal').textContent=cal||'—';
+      document.getElementById('srcProt').textContent=(prot||'—')+'g';
+      document.getElementById('srcCarb').textContent=(carb||'—')+'g';
+      document.getElementById('srcFat').textContent=(fat||'—')+'g';
+      document.getElementById('srcPer').textContent=
+        `per 100g · Fiber: ${fiber}g · Sugar: ${sugar}g · Sodium: ${sodium}mg`;
+      document.getElementById('srcWater').textContent=
+        water?`💧 Water content: ${water}%`:'';
+      document.getElementById('scanResultCard').classList.add('visible');
+      setScanStatus('scanning','✅ Found! Review details below.');
+    })
+    .catch(err=>{
+      console.warn('Lookup error',err);
+      showNotFound(code);
     });
+}
+
+function showNotFound(code){
+  setScanStatus('error','Product not found for barcode: '+code);
+  document.getElementById('srcNotFound').classList.add('visible');
+}
+
+function round1(v){return Math.round(v*10)/10;}
+
+function addScannedFood(){
+  if(!scannedFood)return;
+  FOODS.unshift(scannedFood);
+  pendingFood=scannedFood;
+  document.getElementById('qtyFoodName').textContent=scannedFood.name;
+  document.getElementById('qtyFoodInfo').textContent=
+    `${scannedFood.cal} kcal · P:${scannedFood.prot}g C:${scannedFood.carb}g F:${scannedFood.fat}g per 100g`;
+  document.getElementById('qtyAmount').value=100;
+  document.getElementById('qtyModal').classList.add('open');
+  document.getElementById('qtyOverlay').classList.add('open');
 }
 
 function closeScanner(){
   document.getElementById('scannerModal').classList.remove('open');
-  if(scanStream)scanStream.getTracks().forEach(t=>t.stop());
-  if(scanInterval)clearInterval(scanInterval);
-  scanStream=null;scanInterval=null;
+  if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
+  const vid=document.getElementById('scannerVideo');
+  if(vid&&vid.srcObject)vid.srcObject.getTracks().forEach(t=>t.stop());
 }
 
 /* ── MEAL PLANS ── */
