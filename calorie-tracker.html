@@ -141,55 +141,84 @@
   .qty-unit{font-size:.85rem;color:var(--mu);white-space:nowrap;}
   .qty-confirm{width:100%;background:var(--N);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 
-  /* ── BARCODE/QR SCANNER ── */
-  .scanner-modal{position:fixed;inset:0;background:#000;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:0;overflow-y:auto;}
+  /* ── SCANNER MODAL ── */
+  .scanner-modal{position:fixed;inset:0;background:#0a0f1a;z-index:2000;display:none;flex-direction:column;align-items:center;overflow-y:auto;}
   .scanner-modal.open{display:flex;}
-  .scanner-top{position:relative;width:100%;max-width:480px;margin-top:0;}
-  #scannerVideo{width:100%;max-height:60vh;object-fit:cover;display:block;}
-  .scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;max-width:300px;height:120px;border:3px solid var(--GL);border-radius:10px;pointer-events:none;}
-  .scan-corner{position:absolute;width:20px;height:20px;border-color:var(--GL);border-style:solid;}
-  .scan-corner.tl{top:-3px;left:-3px;border-width:4px 0 0 4px;border-radius:4px 0 0 0;}
-  .scan-corner.tr{top:-3px;right:-3px;border-width:4px 4px 0 0;border-radius:0 4px 0 0;}
-  .scan-corner.bl{bottom:-3px;left:-3px;border-width:0 0 4px 4px;border-radius:0 0 0 4px;}
-  .scan-corner.br{bottom:-3px;right:-3px;border-width:0 4px 4px 0;border-radius:0 0 4px 0;}
+  /* mode tabs */
+  .scan-mode-bar{width:100%;max-width:480px;display:flex;gap:0;padding:12px 16px 0;flex-shrink:0;}
+  .scan-mode-btn{flex:1;padding:10px 0;border:2px solid #374151;background:transparent;color:#9CA3AF;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+  .scan-mode-btn:first-child{border-radius:10px 0 0 10px;}
+  .scan-mode-btn:last-child{border-radius:0 10px 10px 0;}
+  .scan-mode-btn.active{background:var(--G);border-color:var(--G);color:#fff;}
+  /* camera */
+  .scanner-top{position:relative;width:100%;max-width:480px;flex-shrink:0;}
+  #scannerVideo{width:100%;max-height:55vh;object-fit:cover;display:block;background:#000;}
+  /* barcode frame */
+  .scan-frame-barcode{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:82%;max-width:310px;height:110px;border:2.5px solid var(--GL);border-radius:10px;pointer-events:none;}
+  .scan-corner{position:absolute;width:18px;height:18px;border-color:var(--GL);border-style:solid;}
+  .scan-corner.tl{top:-2px;left:-2px;border-width:4px 0 0 4px;border-radius:3px 0 0 0;}
+  .scan-corner.tr{top:-2px;right:-2px;border-width:4px 4px 0 0;border-radius:0 3px 0 0;}
+  .scan-corner.bl{bottom:-2px;left:-2px;border-width:0 0 4px 4px;border-radius:0 0 0 3px;}
+  .scan-corner.br{bottom:-2px;right:-2px;border-width:0 4px 4px 0;border-radius:0 0 3px 0;}
   .scan-line{position:absolute;left:4px;right:4px;height:2px;background:linear-gradient(90deg,transparent,var(--GL),transparent);animation:scan-move 1.8s ease-in-out infinite;top:0;}
   @keyframes scan-move{0%{top:4px}100%{top:calc(100% - 6px)}}
-  .scanner-close{position:fixed;top:16px;right:16px;background:rgba(0,0,0,.6);border:none;color:#fff;border-radius:50%;width:44px;height:44px;font-size:1.1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
-  .scan-bottom{width:100%;max-width:480px;padding:16px 20px 30px;background:#111827;}
-  .scan-status{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-  .scan-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;flex-shrink:0;}
+  /* AI photo frame */
+  .scan-frame-photo{position:absolute;inset:12px;border:2.5px dashed rgba(212,175,90,.6);border-radius:14px;pointer-events:none;display:none;}
+  .scan-frame-photo.active{display:block;}
+  .photo-overlay{position:absolute;inset:0;background:rgba(10,15,26,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;display:none;}
+  .photo-overlay.active{display:flex;}
+  .photo-snap-btn{background:rgba(255,255,255,.95);border:none;border-radius:50%;width:68px;height:68px;font-size:1.6rem;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+  .photo-snap-btn:hover{transform:scale(1.08);}
+  .photo-snap-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;letter-spacing:.4px;}
+  /* captured preview */
+  #capturedCanvas{width:100%;max-width:480px;display:none;border-bottom:2px solid #374151;}
+  .scanner-close{position:fixed;top:14px;right:14px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
+  /* bottom panel */
+  .scan-bottom{width:100%;max-width:480px;padding:14px 18px 28px;background:#111827;flex:1;}
+  .scan-status{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+  .scan-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 7px #4ade80;flex-shrink:0;}
   .scan-dot.scanning{animation:dot-pulse 1s ease-in-out infinite;}
-  .scan-dot.error{background:#f87171;box-shadow:0 0 8px #f87171;animation:none;}
-  .scan-dot.loading{background:var(--GL);box-shadow:0 0 8px var(--GL);animation:dot-pulse 0.5s ease-in-out infinite;}
+  .scan-dot.error{background:#f87171;box-shadow:0 0 7px #f87171;animation:none;}
+  .scan-dot.loading{background:var(--GL);box-shadow:0 0 7px var(--GL);animation:dot-pulse 0.5s ease-in-out infinite;}
   @keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  .scan-msg-txt{color:#fff;font-size:.88rem;font-weight:500;}
-  .scan-hint{font-size:.75rem;color:#6B7280;margin-bottom:16px;line-height:1.5;}
-  /* Scan result card */
-  .scan-result-card{background:#1F2937;border:1px solid #374151;border-radius:14px;padding:16px;margin-bottom:14px;display:none;}
+  .scan-msg-txt{color:#fff;font-size:.87rem;font-weight:500;}
+  .scan-hint{font-size:.73rem;color:#6B7280;margin-bottom:13px;line-height:1.55;}
+  /* AI results list */
+  .ai-results{margin-bottom:12px;display:none;}
+  .ai-results.visible{display:block;}
+  .ai-result-item{background:#1F2937;border:1.5px solid #374151;border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .18s;}
+  .ai-result-item:hover,.ai-result-item.selected{border-color:var(--GL);}
+  .air-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .air-name{font-size:.95rem;font-weight:700;color:#fff;}
+  .air-conf{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;background:#064E3B;color:#34D399;}
+  .air-macros{display:flex;gap:10px;font-size:.75rem;}
+  .air-macro{color:#9CA3AF;}<strong>.air-macro span{color:#fff;font-weight:600;}</strong>
+  .air-add{margin-top:10px;width:100%;background:var(--G);color:#fff;border:none;border-radius:8px;padding:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  /* barcode result card */
+  .scan-result-card{background:#1F2937;border:1px solid #374151;border-radius:14px;padding:14px;margin-bottom:12px;display:none;}
   .scan-result-card.visible{display:block;}
-  .src-product{font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px;}
-  .src-brand{font-size:.78rem;color:#9CA3AF;margin-bottom:12px;}
-  .src-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
-  .src-macro{background:#111827;border-radius:8px;padding:8px 4px;text-align:center;}
-  .src-macro strong{display:block;font-size:1rem;font-weight:800;color:#fff;}
-  .src-macro span{font-size:.65rem;color:#9CA3AF;text-transform:uppercase;}
+  .src-product{font-size:1rem;font-weight:700;color:#fff;margin-bottom:3px;}
+  .src-brand{font-size:.76rem;color:#9CA3AF;margin-bottom:11px;}
+  .src-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px;}
+  .src-macro{background:#111827;border-radius:8px;padding:7px 4px;text-align:center;}
+  .src-macro strong{display:block;font-size:.95rem;font-weight:800;color:#fff;}
+  .src-macro span{font-size:.62rem;color:#9CA3AF;text-transform:uppercase;}
   .src-macro.cal strong{color:var(--GL);}
   .src-macro.prot strong{color:#60A5FA;}
   .src-macro.carb strong{color:#FBBF24;}
   .src-macro.fat strong{color:#F87171;}
-  .src-per{font-size:.72rem;color:#6B7280;margin-bottom:12px;}
-  .src-water{font-size:.8rem;color:#34D399;margin-bottom:12px;}
-  .src-add-btn{width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
-  .src-not-found{background:#1F2937;border:1px solid #374151;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;color:#9CA3AF;font-size:.85rem;display:none;}
+  .src-per{font-size:.7rem;color:#6B7280;margin-bottom:10px;}
+  .src-water{font-size:.78rem;color:#34D399;margin-bottom:10px;}
+  .src-add-btn{width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .src-not-found{background:#1F2937;border:1px solid #374151;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;color:#9CA3AF;font-size:.83rem;display:none;}
   .src-not-found.visible{display:block;}
-  /* manual barcode entry */
-  .manual-entry{display:flex;gap:8px;margin-bottom:12px;}
-  .barcode-input{flex:1;padding:10px 14px;border:1.5px solid #374151;border-radius:10px;background:#1F2937;color:#fff;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;}
+  .manual-entry{display:flex;gap:8px;margin-bottom:10px;}
+  .barcode-input{flex:1;padding:9px 13px;border:1.5px solid #374151;border-radius:10px;background:#1F2937;color:#fff;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;}
   .barcode-input:focus{border-color:var(--GL);}
-  .barcode-lookup-btn{background:var(--G);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;font-size:.85rem;}
-  .scan-action-btn{padding:11px 0;border-radius:10px;border:none;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;text-align:center;}
-  .scan-manual{background:rgba(255,255,255,.1);color:#fff;margin-top:4px;}
-  .scan-manual:hover{background:rgba(255,255,255,.18);}
+  .barcode-lookup-btn{background:var(--G);color:#fff;border:none;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;font-size:.82rem;}
+  .scan-action-btn{padding:10px 0;border-radius:10px;border:none;font-size:.83rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;text-align:center;}
+  .scan-manual{background:rgba(255,255,255,.09);color:#9CA3AF;margin-top:6px;}
+  .scan-manual:hover{background:rgba(255,255,255,.15);color:#fff;}
 
   /* ── MEAL PLANS ── */
   .plans-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
@@ -451,25 +480,53 @@
   <button class="qty-confirm" onclick="confirmAdd()">Add to Log</button>
 </div>
 
-<!-- BARCODE / QR SCANNER MODAL -->
+<!-- SCANNER MODAL — dual mode: Barcode + AI Photo -->
 <div class="scanner-modal" id="scannerModal">
   <button class="scanner-close" onclick="closeScanner()"><i class="fas fa-times"></i></button>
+
+  <!-- Mode selector -->
+  <div class="scan-mode-bar">
+    <button class="scan-mode-btn active" id="modeBarcodeBtn" onclick="setScanMode('barcode')">
+      📦 Barcode / QR
+    </button>
+    <button class="scan-mode-btn" id="modePhotoBtn" onclick="setScanMode('photo')">
+      🤖 AI Food Recognition
+    </button>
+  </div>
+
+  <!-- Live camera -->
   <div class="scanner-top">
     <video id="scannerVideo" playsinline autoplay muted></video>
-    <div class="scan-frame">
+
+    <!-- Barcode frame (horizontal slit) -->
+    <div class="scan-frame-barcode" id="barcodeFrame">
       <div class="scan-corner tl"></div><div class="scan-corner tr"></div>
       <div class="scan-corner bl"></div><div class="scan-corner br"></div>
       <div class="scan-line"></div>
     </div>
+
+    <!-- AI photo frame + snap button -->
+    <div class="scan-frame-photo" id="photoFrame"></div>
+    <div class="photo-overlay" id="photoOverlay">
+      <button class="photo-snap-btn" onclick="snapPhoto()" title="Take photo to identify food">📷</button>
+      <span class="photo-snap-label">TAP TO IDENTIFY FOOD</span>
+    </div>
   </div>
+
+  <!-- Captured photo preview (AI mode) -->
+  <canvas id="capturedCanvas"></canvas>
+
   <div class="scan-bottom">
     <div class="scan-status">
       <div class="scan-dot scanning" id="scanDot"></div>
-      <span class="scan-msg-txt" id="scannerMsg">Scanning for barcodes…</span>
+      <span class="scan-msg-txt" id="scannerMsg">Ready</span>
     </div>
-    <div class="scan-hint">Works with EAN-13, UPC-A, QR codes on packaged food. Hold steady 10–15 cm from label.</div>
+    <div class="scan-hint" id="scanHint"></div>
 
-    <!-- Scan result appears here -->
+    <!-- AI Results -->
+    <div class="ai-results" id="aiResults"></div>
+
+    <!-- Barcode product result -->
     <div class="scan-result-card" id="scanResultCard">
       <div class="src-product" id="srcProduct"></div>
       <div class="src-brand" id="srcBrand"></div>
@@ -487,20 +544,19 @@
     </div>
 
     <div class="src-not-found" id="srcNotFound">
-      Product not found in database.<br>
-      <span style="font-size:.78rem">Try <strong>Search Manually</strong> below or enter the barcode number.</span>
+      Not found. Try entering barcode below or search manually.
     </div>
 
-    <!-- Manual barcode entry -->
-    <div class="manual-entry">
-      <input class="barcode-input" id="barcodeInput" type="number" placeholder="Enter barcode number manually"/>
+    <!-- Manual barcode entry (barcode mode) -->
+    <div class="manual-entry" id="manualEntry">
+      <input class="barcode-input" id="barcodeInput" type="number" placeholder="Enter barcode number"/>
       <button class="barcode-lookup-btn" onclick="lookupBarcode(document.getElementById('barcodeInput').value)">
-        <i class="fas fa-search"></i> Lookup
+        <i class="fas fa-search"></i>
       </button>
     </div>
 
     <button class="scan-action-btn scan-manual" onclick="closeScanner();openFoodModal('all')">
-      <i class="fas fa-list"></i> Search Indian Food Database Instead
+      <i class="fas fa-list"></i> Search Indian Food Database
     </button>
   </div>
 </div>
@@ -911,10 +967,115 @@ function confirmAdd(){
 let zxingReader=null;
 let scannedFood=null;
 
+/* ═══════════════════════════════════════════════
+   FOOD VISION — AI label-to-nutrition mapping
+   Maps Hugging Face Food-101 + ImageNet labels
+   to entries in our FOODS database.
+═══════════════════════════════════════════════ */
+const AI_FOOD_MAP={
+  /* fruits */
+  'banana':'fr01','mango':'fr02','apple':'fr03','granny_smith':'fr03',
+  'papaya':'fr04','guava':'fr05','watermelon':'fr06','orange':'fr07',
+  'pomegranate':'fr08','grape':'fr09','grapes':'fr09','pineapple':'fr10',
+  'lychee':'fr11','jackfruit':'fr13','coconut':'fr14','fig':'fr15',
+  /* vegetables */
+  'spinach':'vg01','tomato':'vg02','potato':'vg03','onion':'vg04',
+  'cauliflower':'vg05','pea':'vg06','brinjal':'vg07','eggplant':'vg07',
+  'okra':'vg08','bell_pepper':'vg09','capsicum':'vg09','bitter_gourd':'vg10',
+  'carrot':'vg14','beetroot':'vg15','radish':'vg17','cucumber':'vg18',
+  'sweet_potato':'vg19','corn':'vg13','broccoli':'vg05','mushroom':'vg16',
+  /* grains */
+  'chapati':'gr01','roti':'gr01','bread':'gr10','rice':'gr03','oatmeal':'gr06',
+  'oats':'gr06','fried_rice':'gr03','naan':'gr01','paratha':'gr02',
+  /* legumes */
+  'dal':'dl01','lentil':'dl04','chickpea':'dl06','rajma':'dl05',
+  'hummus':'dl06','edamame':'dl09','soybean':'dl09','beans':'dl05',
+  /* dairy */
+  'milk':'da01','curd':'da02','yogurt':'da02','paneer':'da03',
+  'cheese':'da03','butter':'da05','lassi':'da07','ice_cream':'da01',
+  /* protein */
+  'chicken':'pr01','chicken_curry':'pr01','egg':'pr02','fish':'pr04',
+  'mutton':'pr05','steak':'pr05','salmon':'pr04','shrimp':'pr04',
+  /* indian dishes */
+  'samosa':'sn07','biryani':'sn09','pav_bhaji':'sn11','chole':'sn12',
+  'idli':'sn04','dosa':'sn04','upma':'sn06','khichdi':'sn08',
+  'spring_rolls':'sn07','fried_rice':'sn09','curry':'sn09',
+  'pizza':'sn09','hamburger':'sn09','sandwich':'gr10',
+  /* nuts */
+  'peanut':'sn01','almond':'sn02','walnut':'sn03','cashew':'sn01',
+};
+
+/* Hugging Face food classification models (free, no key required) */
+const HF_MODELS=[
+  'https://api-inference.huggingface.co/models/nateraw/food',
+  'https://api-inference.huggingface.co/models/Kaludi/food-category-classification-v2.0',
+];
+
 function setScanStatus(type,msg){
-  const dot=document.getElementById('scanDot');
-  dot.className='scan-dot '+type;
+  document.getElementById('scanDot').className='scan-dot '+type;
   document.getElementById('scannerMsg').textContent=msg;
+}
+
+let scanMode='barcode'; // 'barcode' | 'photo'
+
+function setScanMode(mode){
+  scanMode=mode;
+  const isPhoto=mode==='photo';
+  document.getElementById('modeBarcodeBtn').classList.toggle('active',!isPhoto);
+  document.getElementById('modePhotoBtn').classList.toggle('active',isPhoto);
+  document.getElementById('barcodeFrame').style.display=isPhoto?'none':'block';
+  document.getElementById('photoFrame').classList.toggle('active',isPhoto);
+  document.getElementById('photoOverlay').classList.toggle('active',isPhoto);
+  document.getElementById('manualEntry').style.display=isPhoto?'none':'flex';
+  document.getElementById('capturedCanvas').style.display='none';
+  document.getElementById('aiResults').classList.remove('visible');
+  document.getElementById('scanResultCard').classList.remove('visible');
+  document.getElementById('srcNotFound').classList.remove('visible');
+
+  if(isPhoto){
+    setScanStatus('scanning','Point camera at any food and tap 📷');
+    document.getElementById('scanHint').textContent='Works on fruits, vegetables, cooked meals, snacks, and Indian dishes.';
+    // Stop ZXing barcode reader if running
+    if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
+    startCamera();
+  }else{
+    setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
+    document.getElementById('scanHint').textContent='Hold steady 10–15 cm from the barcode label on packaged food.';
+    startBarcodeReader();
+  }
+}
+
+function startCamera(){
+  const vid=document.getElementById('scannerVideo');
+  if(vid.srcObject)return; // already running
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}})
+    .then(stream=>{vid.srcObject=stream;vid.play();})
+    .catch(e=>{setScanStatus('error','Camera denied: '+e.message);});
+}
+
+function startBarcodeReader(){
+  if(!window.ZXing){setScanStatus('error','Scanner not loaded. Enter barcode manually.');return;}
+  startCamera();
+  const vid=document.getElementById('scannerVideo');
+  const tryRead=()=>{
+    if(!vid.srcObject){return;}
+    try{
+      zxingReader=new ZXing.BrowserMultiFormatReader();
+      zxingReader.decodeFromConstraints(
+        {video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}},
+        'scannerVideo',
+        (result,err)=>{
+          if(result){
+            const code=result.getText();
+            setScanStatus('loading','Barcode detected — looking up nutrition…');
+            if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
+            lookupBarcode(code);
+          }
+        }
+      );
+    }catch(e){setScanStatus('error','Barcode reader error: '+e.message);}
+  };
+  if(vid.readyState>=2)tryRead(); else vid.addEventListener('loadeddata',tryRead,{once:true});
 }
 
 function openScanner(){
@@ -922,93 +1083,190 @@ function openScanner(){
   document.getElementById('scannerModal').classList.add('open');
   document.getElementById('scanResultCard').classList.remove('visible');
   document.getElementById('srcNotFound').classList.remove('visible');
+  document.getElementById('aiResults').classList.remove('visible');
+  document.getElementById('capturedCanvas').style.display='none';
   scannedFood=null;
-  setScanStatus('scanning','Starting camera…');
-
-  if(!window.ZXing){
-    setScanStatus('error','Scanner library not loaded. Use manual entry below.');
-    return;
-  }
-
-  try{
-    zxingReader=new ZXing.BrowserMultiFormatReader();
-    zxingReader.decodeFromConstraints(
-      {video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}},
-      'scannerVideo',
-      (result,err)=>{
-        if(result){
-          const code=result.getText();
-          setScanStatus('loading','Barcode detected! Looking up nutrition…');
-          zxingReader.reset();
-          lookupBarcode(code);
-        }
-      }
-    );
-    setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
-  }catch(e){
-    setScanStatus('error','Camera error: '+e.message);
-  }
+  setScanMode('barcode');
 }
 
+/* ── BARCODE LOOKUP via Open Food Facts ── */
 function lookupBarcode(code){
   code=String(code).trim();
-  if(!code){setScanStatus('error','Invalid barcode');return;}
-  setScanStatus('loading','Looking up "'+code+'"…');
+  if(!code){setScanStatus('error','Enter a valid barcode');return;}
+  setScanStatus('loading','Looking up barcode '+code+'…');
   document.getElementById('scanResultCard').classList.remove('visible');
   document.getElementById('srcNotFound').classList.remove('visible');
 
-  // Open Food Facts (free, no API key required)
-  fetch(`https://world.openfoodfacts.org/api/v2/product/${code}?fields=product_name,brands,nutriments,image_small_url,serving_size`)
-    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  fetch(`https://world.openfoodfacts.org/api/v2/product/${code}?fields=product_name,brands,nutriments,serving_size`)
+    .then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})
     .then(d=>{
-      if(d.status!==1||!d.product){
-        showNotFound(code);return;
-      }
-      const pr=d.product;
-      const nu=pr.nutriments||{};
+      if(d.status!==1||!d.product){showNotFound(code);return;}
+      const pr=d.product, nu=pr.nutriments||{};
       const name=(pr.product_name||'').trim()||'Scanned Product';
       const brand=(pr.brands||'').trim();
-
-      // Prefer _100g values; fall back to per-serving values normalised to 100g
-      const cal=Math.round(nu['energy-kcal_100g']||nu['energy-kcal']||
-                            (nu['energy-kcal_serving']&&pr.serving_size?
-                             nu['energy-kcal_serving']/(parseFloat(pr.serving_size)||100)*100:0));
+      const cal=Math.round(nu['energy-kcal_100g']||nu['energy-kcal']||0);
       const prot=round1(nu.proteins_100g||0);
       const carb=round1(nu.carbohydrates_100g||0);
       const fat=round1(nu.fat_100g||0);
       const fiber=round1(nu.fiber_100g||0);
       const water=Math.round(nu.water_100g||0);
       const sugar=round1(nu.sugars_100g||0);
-      const sodium=Math.round((nu.sodium_100g||0)*1000); // mg
-
-      scannedFood={
-        id:'scan_'+Date.now(),name,cat:'snack',
-        cal,prot,carb,fat,fiber,water
-      };
-
-      // Fill result card
+      const sodium=Math.round((nu.sodium_100g||0)*1000);
+      scannedFood={id:'scan_'+Date.now(),name,cat:'snack',cal,prot,carb,fat,fiber,water};
       document.getElementById('srcProduct').textContent=name;
-      document.getElementById('srcBrand').textContent=brand?(brand+' · Barcode: '+code):'Barcode: '+code;
+      document.getElementById('srcBrand').textContent=(brand?brand+' · ':'')+('Barcode: '+code);
       document.getElementById('srcCal').textContent=cal||'—';
       document.getElementById('srcProt').textContent=(prot||'—')+'g';
       document.getElementById('srcCarb').textContent=(carb||'—')+'g';
       document.getElementById('srcFat').textContent=(fat||'—')+'g';
-      document.getElementById('srcPer').textContent=
-        `per 100g · Fiber: ${fiber}g · Sugar: ${sugar}g · Sodium: ${sodium}mg`;
-      document.getElementById('srcWater').textContent=
-        water?`💧 Water content: ${water}%`:'';
+      document.getElementById('srcPer').textContent=`per 100g · Fiber:${fiber}g · Sugar:${sugar}g · Na:${sodium}mg`;
+      document.getElementById('srcWater').textContent=water?`💧 Water: ${water}%`:'';
       document.getElementById('scanResultCard').classList.add('visible');
-      setScanStatus('scanning','✅ Found! Review details below.');
+      setScanStatus('scanning','✅ Product found — review below');
     })
-    .catch(err=>{
-      console.warn('Lookup error',err);
-      showNotFound(code);
-    });
+    .catch(()=>showNotFound(code));
 }
 
 function showNotFound(code){
-  setScanStatus('error','Product not found for barcode: '+code);
+  setScanStatus('error','Not found'+(code?' for '+code:''));
   document.getElementById('srcNotFound').classList.add('visible');
+}
+
+/* ── AI PHOTO FOOD RECOGNITION ── */
+function snapPhoto(){
+  const vid=document.getElementById('scannerVideo');
+  if(!vid.srcObject||!vid.videoWidth){setScanStatus('error','Camera not ready');return;}
+  const canvas=document.getElementById('capturedCanvas');
+  canvas.width=vid.videoWidth;
+  canvas.height=vid.videoHeight;
+  canvas.getContext('2d').drawImage(vid,0,0);
+  canvas.style.display='block';
+  document.getElementById('scannerVideo').style.display='none';
+  document.getElementById('photoOverlay').classList.remove('active');
+  document.getElementById('photoFrame').classList.remove('active');
+  setScanStatus('loading','Analysing food with AI…');
+  document.getElementById('scanHint').textContent='Checking against food recognition model…';
+  document.getElementById('aiResults').classList.remove('visible');
+
+  canvas.toBlob(blob=>runAIRecognition(blob),'image/jpeg',0.85);
+}
+
+async function runAIRecognition(blob){
+  let predictions=null;
+  // Try both HF models, use first that responds
+  for(const url of HF_MODELS){
+    try{
+      const res=await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'image/jpeg'},
+        body:blob
+      });
+      if(res.ok){
+        const data=await res.json();
+        if(Array.isArray(data)&&data.length>0&&data[0].score!==undefined){
+          predictions=data;break;
+        }
+      }
+    }catch(e){/* try next */}
+  }
+
+  if(!predictions||predictions.length===0){
+    // Model loading on HF (cold start) — retry once after 8s
+    setScanStatus('loading','Model warming up, retrying…');
+    await new Promise(r=>setTimeout(r,8000));
+    try{
+      const res=await fetch(HF_MODELS[0],{method:'POST',headers:{'Content-Type':'image/jpeg'},body:blob});
+      if(res.ok)predictions=await res.json();
+    }catch(e){}
+  }
+
+  if(!predictions||!Array.isArray(predictions)||predictions.length===0){
+    setScanStatus('error','AI recognition unavailable. Try barcode mode or search manually.');
+    document.getElementById('scanHint').textContent='Hugging Face model may be loading — wait 30s and try again.';
+    showRetryPhoto();
+    return;
+  }
+
+  showAIResults(predictions);
+}
+
+function normLabel(label){
+  return label.toLowerCase().replace(/[\s\-\/]+/g,'_').replace(/[^a-z0-9_]/g,'');
+}
+
+function showAIResults(predictions){
+  // Take top 5, map to food DB
+  const top=predictions.slice(0,5);
+  const container=document.getElementById('aiResults');
+  let html='<div style="font-size:.78rem;color:#9CA3AF;margin-bottom:10px;font-weight:600;">AI IDENTIFIED — Select to add:</div>';
+  let found=0;
+
+  top.forEach(p=>{
+    const label=normLabel(p.label||p.className||'');
+    const conf=Math.round((p.score||p.probability||0)*100);
+    // Try exact match, then partial match in FOODS name
+    let food=null;
+    if(AI_FOOD_MAP[label]){
+      food=FOODS.find(f=>f.id===AI_FOOD_MAP[label]);
+    }
+    if(!food){
+      // Fuzzy: check if label words appear in food names
+      const words=label.split('_').filter(w=>w.length>2);
+      food=FOODS.find(f=>words.some(w=>f.name.toLowerCase().includes(w)));
+    }
+    if(!food)return;
+    found++;
+    const displayName=p.label||p.className||food.name;
+    html+=`<div class="ai-result-item" onclick="selectAIFood('${food.id}',this)">
+      <div class="air-top">
+        <span class="air-name">${food.name}</span>
+        <span class="air-conf">${conf}% match</span>
+      </div>
+      <div style="font-size:.72rem;color:#9CA3AF;margin-bottom:6px;font-style:italic;">Recognised as: ${displayName.replace(/_/g,' ')}</div>
+      <div class="air-macros">
+        <span class="air-macro">🔥 <strong>${food.cal}</strong> kcal</span>
+        <span class="air-macro">💪 <strong>${food.prot}g</strong> protein</span>
+        <span class="air-macro">🌾 <strong>${food.carb}g</strong> carbs</span>
+        <span class="air-macro">💧 <strong>${food.water}%</strong> water</span>
+      </div>
+      <button class="air-add" onclick="event.stopPropagation();selectAIFood('${food.id}',this.closest('.ai-result-item'))">
+        <i class="fas fa-plus"></i> Add to Log
+      </button>
+    </div>`;
+  });
+
+  if(found===0){
+    container.innerHTML=`<div style="text-align:center;padding:14px;color:#9CA3AF;font-size:.85rem">
+      Could not match to known foods.<br>
+      <span style="font-size:.75rem">AI saw: ${top.map(p=>(p.label||p.className||'').replace(/_/g,' ')).join(', ')}</span>
+    </div>`;
+    setScanStatus('error','No match — try search manually');
+  }else{
+    container.innerHTML=html;
+    setScanStatus('scanning',`✅ ${found} food${found>1?'s':''} identified`);
+    document.getElementById('scanHint').textContent='Tap any result to add it to your meal log.';
+  }
+  container.classList.add('visible');
+}
+
+function selectAIFood(id,el){
+  document.querySelectorAll('.ai-result-item').forEach(e=>e.classList.remove('selected'));
+  if(el)el.classList.add('selected');
+  selectFood(id);
+}
+
+function showRetryPhoto(){
+  const c=document.getElementById('aiResults');
+  c.innerHTML=`<button onclick="retryPhoto()" style="width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">
+    🔄 Retry AI Recognition
+  </button>`;
+  c.classList.add('visible');
+}
+
+function retryPhoto(){
+  const canvas=document.getElementById('capturedCanvas');
+  canvas.toBlob(blob=>runAIRecognition(blob),'image/jpeg',0.85);
+  setScanStatus('loading','Retrying AI recognition…');
 }
 
 function round1(v){return Math.round(v*10)/10;}
@@ -1029,7 +1287,9 @@ function closeScanner(){
   document.getElementById('scannerModal').classList.remove('open');
   if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
   const vid=document.getElementById('scannerVideo');
-  if(vid&&vid.srcObject)vid.srcObject.getTracks().forEach(t=>t.stop());
+  if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
+  vid.style.display='block';
+  document.getElementById('capturedCanvas').style.display='none';
 }
 
 /* ── MEAL PLANS ── */
