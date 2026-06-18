@@ -149,6 +149,15 @@
   .qty-input:focus{border-color:var(--G);}
   .qty-unit{font-size:.85rem;color:var(--mu);white-space:nowrap;}
   .qty-confirm{width:100%;background:var(--N);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  /* Egg counter */
+  .egg-counter{display:none;align-items:center;justify-content:center;gap:0;margin-bottom:16px;}
+  .egg-counter.show{display:flex;}
+  .egg-btn{width:48px;height:48px;border:2px solid var(--N);background:#fff;border-radius:50%;font-size:1.4rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--N);transition:background .15s;}
+  .egg-btn:hover{background:var(--N);color:#fff;}
+  .egg-count{min-width:80px;text-align:center;font-size:2rem;font-weight:800;color:var(--N);}
+  .egg-count-label{font-size:.7rem;color:var(--mu);margin-top:2px;}
+  .egg-preview{text-align:center;font-size:.8rem;color:var(--mu);margin-bottom:12px;display:none;}
+  .egg-preview.show{display:block;}
 
   /* ── SCANNER MODAL ── */
   .scanner-modal{position:fixed;inset:0;background:#0a0f1a;z-index:2000;display:none;flex-direction:column;align-items:center;overflow-y:auto;}
@@ -482,7 +491,18 @@
 <div class="qty-modal" id="qtyModal">
   <h4 id="qtyFoodName">Food Name</h4>
   <p id="qtyFoodInfo">0 kcal per 100g</p>
-  <div class="qty-input-wrap">
+  <!-- Egg counter (shown for egg items) -->
+  <div class="egg-counter" id="eggCounter">
+    <button class="egg-btn" onclick="changeEggs(-1)">−</button>
+    <div style="text-align:center;padding:0 16px;">
+      <div class="egg-count" id="eggCount">1</div>
+      <div class="egg-count-label">🥚 eggs</div>
+    </div>
+    <button class="egg-btn" onclick="changeEggs(1)">+</button>
+  </div>
+  <div class="egg-preview" id="eggPreview"></div>
+  <!-- Gram input (shown for non-egg items) -->
+  <div class="qty-input-wrap" id="qtyInputWrap">
     <input class="qty-input" type="number" id="qtyAmount" value="100" min="1" max="2000"/>
     <span class="qty-unit">grams</span>
   </div>
@@ -1144,12 +1164,54 @@ function filterFoods(){
     </div>`).join('')||'<div class="section-empty"><i class="fas fa-search"></i>No foods found</div>';
 }
 
+/* Egg IDs and per-unit weights (grams) */
+const EGG_UNITS={
+  pr02:{label:'whole egg',g:50},
+  pr03:{label:'egg white',g:33},
+  pr06:{label:'2-egg omelette',g:100},
+  pr07:{label:'2-egg masala omelette',g:110},
+  pr08:{label:'2-egg bhurji',g:110},
+  pr09:{label:'2-egg bhurji + 2 bread',g:200},
+};
+var _eggCount=1;
+
+function _isEgg(id){return !!EGG_UNITS[id];}
+
+function changeEggs(delta){
+  _eggCount=Math.max(1,Math.min(20,_eggCount+delta));
+  document.getElementById('eggCount').textContent=_eggCount;
+  _updateEggPreview();
+}
+function _updateEggPreview(){
+  if(!pendingFood||!_isEgg(pendingFood.id))return;
+  const eu=EGG_UNITS[pendingFood.id];
+  const r=(_eggCount*eu.g)/100;
+  const cal=Math.round(pendingFood.cal*r);
+  const prot=Math.round(pendingFood.prot*r*10)/10;
+  document.getElementById('eggPreview').textContent=`${cal} kcal · ${prot}g protein`;
+}
+
 function selectFood(id){
   pendingFood=FOODS.find(f=>f.id===id);
   if(!pendingFood)return;
+  const isEgg=_isEgg(id);
   document.getElementById('qtyFoodName').textContent=pendingFood.name;
-  document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal · P:${pendingFood.prot}g C:${pendingFood.carb}g F:${pendingFood.fat}g per 100g`;
-  document.getElementById('qtyAmount').value=100;
+  if(isEgg){
+    const eu=EGG_UNITS[id];
+    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal per 100g · 1 ${eu.label} ≈ ${eu.g}g`;
+    _eggCount=1;
+    document.getElementById('eggCount').textContent='1';
+    document.getElementById('eggCounter').classList.add('show');
+    document.getElementById('eggPreview').classList.add('show');
+    document.getElementById('qtyInputWrap').style.display='none';
+    _updateEggPreview();
+  }else{
+    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal · P:${pendingFood.prot}g C:${pendingFood.carb}g F:${pendingFood.fat}g per 100g`;
+    document.getElementById('eggCounter').classList.remove('show');
+    document.getElementById('eggPreview').classList.remove('show');
+    document.getElementById('qtyInputWrap').style.display='flex';
+    document.getElementById('qtyAmount').value=100;
+  }
   document.getElementById('qtyModal').classList.add('open');
   document.getElementById('qtyOverlay').classList.add('open');
 }
@@ -1160,7 +1222,12 @@ function closeQtyModal(){
 }
 function confirmAdd(){
   if(!pendingFood||!currentMeal)return;
-  const qty=+document.getElementById('qtyAmount').value||100;
+  let qty;
+  if(_isEgg(pendingFood.id)){
+    qty=_eggCount*EGG_UNITS[pendingFood.id].g;
+  }else{
+    qty=+document.getElementById('qtyAmount').value||100;
+  }
   const r=qty/100;
   const item={
     name:pendingFood.name,qty,
