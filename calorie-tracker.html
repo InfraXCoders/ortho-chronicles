@@ -1588,6 +1588,7 @@ function showAIResults(predictions){
 function selectAIFood(id,el){
   document.querySelectorAll('.ai-result-item').forEach(e=>e.classList.remove('selected'));
   if(el)el.classList.add('selected');
+  closeScanner();
   selectFood(id);
 }
 
