@@ -68,7 +68,6 @@
   .vplay-lbl{margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.82);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
   .vbadge{position:absolute;top:10px;left:10px;background:rgba(184,150,62,.92);color:#fff;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;text-transform:uppercase;}
   .ex-vid iframe{width:100%;height:100%;border:none;display:block;}
-  .vt{width:100%;height:100%;object-fit:cover;display:block;}
 
   /* card body */
   .ex-body{padding:18px 20px 6px;}
@@ -1407,11 +1406,11 @@ function muscleLabel(m){return m.charAt(0).toUpperCase()+m.slice(1);}
 
 function buildCard(ex){
   const id=vidId(ex);
-  const thumb=`https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  const thumb=`https://img.youtube.com/vi/${id}/hqdefault.jpg`;
   const col=MG_COLOR[ex.m]||'#0F1D3A';
   return `<div class="ex-card" data-muscle="${ex.m}" data-name="${ex.n.toLowerCase()}" data-eq="${ex.eq.toLowerCase()}">
     <div class="ex-vid" onclick="playVid(this,'${id}')" aria-label="${ex.n} tutorial video">
-      <img class="vt" src="${thumb}" alt="${ex.n}" loading="lazy" onerror="this.style.opacity=0;this.parentNode.style.background='${col}'">
+      <img class="vt" src="${thumb}" alt="${ex.n}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${id}/mqdefault.jpg';this.onerror=function(){this.style.opacity=0;this.parentNode.style.background='${col}';}">
       <div class="vplay">
         <div class="vplay-btn"><i class="fas fa-play"></i></div>
         <span class="vplay-lbl">Watch Tutorial</span>
