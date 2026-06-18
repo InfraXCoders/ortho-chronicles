@@ -1364,7 +1364,7 @@ const VIDEO_MAP={
   /* Shoulders */
   'overhead-press':'F3QY5vMz_6I','ohp':'F3QY5vMz_6I',
   'lateral-raise':'XPPfnSEATJA',
-  'front-raise':'IO9pb9xVMpk',
+  'front-raise':'XPPfnSEATJA',
   /* Arms */
   'barbell-curl':'ykJmrZ5v0Oo','curl':'ykJmrZ5v0Oo',
   'tricep-pushdown':'AOEEbSmYqQM','pushdown':'AOEEbSmYqQM',
@@ -1410,7 +1410,7 @@ function buildCard(ex){
   const col=MG_COLOR[ex.m]||'#0F1D3A';
   return `<div class="ex-card" data-muscle="${ex.m}" data-name="${ex.n.toLowerCase()}" data-eq="${ex.eq.toLowerCase()}">
     <div class="ex-vid" onclick="playVid(this,'${id}')" aria-label="${ex.n} tutorial video">
-      <img class="vt" src="${thumb}" alt="${ex.n}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${id}/mqdefault.jpg';this.onerror=function(){this.style.opacity=0;this.parentNode.style.background='${col}';}">
+      <img class="vt" src="${thumb}" alt="${ex.n}" onerror="this.src='https://img.youtube.com/vi/${id}/mqdefault.jpg';this.onerror=function(){this.style.opacity=0;this.parentNode.style.background='${col}';}">
       <div class="vplay">
         <div class="vplay-btn"><i class="fas fa-play"></i></div>
         <span class="vplay-lbl">Watch Tutorial</span>
