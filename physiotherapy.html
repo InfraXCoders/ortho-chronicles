@@ -450,10 +450,10 @@ function renderCards(list){
   noRes.style.display=list.length===0?'block':'none';
 }
 
-renderCards(exercises);
-
 let activeRegion='all';
 let searchQ='';
+
+renderCards(exercises);
 
 function filterRegion(r){
   activeRegion=r;
