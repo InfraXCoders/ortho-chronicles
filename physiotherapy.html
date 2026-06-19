@@ -140,7 +140,7 @@
     <div class="gsearch-wrap"><i class="fas fa-search gsearch-icon"></i><input class="gsearch" id="ptSearch" placeholder="Search exercises, muscles, conditions…" autocomplete="off"/></div>
     <div class="pt-hero-stats">
       <div class="gstat"><strong>6</strong><span>Body Regions</span></div>
-      <div class="gstat"><strong>16</strong><span>Exercises</span></div>
+      <div class="gstat"><strong>26</strong><span>Exercises</span></div>
       <div class="gstat"><strong>4</strong><span>Exercise Types</span></div>
     </div>
   </div>
@@ -164,7 +164,7 @@
 
 <section class="pt-main">
   <div class="section-hdr"><h2>Exercise Library</h2></div>
-  <p class="ex-count" id="exCount">Showing all 16 exercises</p>
+  <p class="ex-count" id="exCount">Showing all 26 exercises</p>
   <div class="ex-grid" id="exGrid">
     <div class="no-res" id="noRes"><i class="fas fa-heartbeat"></i><p>No exercises found. Try a different filter or search term.</p></div>
   </div>
@@ -232,6 +232,16 @@ const VIDEO_MAP={
   'chin-tuck':'7rnlAVhAK-8',
   'wall-slides':'oMSVe7PWJ3o',
   'prone-hip-ext':'CLxYwpYDX9U',
+  'levator-stretch':'GSoXPJRnR6E',
+  'foam-thoracic':'sPqjAWD8rNk',
+  'scap-retraction':'ouRhQE2iOI8',
+  'pendulum':'wD3jQJ-dGnY',
+  'bird-dog':'QQot16miua8',
+  'dead-bug':'zechBkcIMf0',
+  'glute-bridge':'PhTDzR0TpZs',
+  'hip-9090':'t4Zz6-aG8Iw',
+  'hip-abduction':'g9FtnmsIYgI',
+  'tke':'W7n9dUiEbLM',
 };
 
 const REGION={
@@ -352,6 +362,71 @@ const exercises=[
  steps:["Lie on your back — one knee bent with foot flat, one leg straight","Tighten the quadriceps of the straight leg to lock the knee firmly","Lift the straight leg to the height of the bent knee (≈30–45°)","Hold 2 seconds at the top — lower slowly","Complete all reps on one side before switching"],
  tips:["Standard quadriceps rehabilitation after knee surgery or injury","Key exercise for: knee OA, post-op ACL reconstruction, knee replacement rehab","Tighten the quad before every lift — this prevents patellofemoral stress"],
  err:["Allowing the knee to bend during the lift — defeats the entire purpose","Lifting too high — above 45° shifts dominance to the hip flexors","Not tightening the quad before lifting the leg"]},
+
+{n:"Terminal Knee Extension",m:"knee",etype:"Strengthening",eq:"Resistance Band",sets:"3",reps:"15–20 each leg",rest:"30s",
+ pri:["Vastus Medialis Oblique (VMO)","Quadriceps"],sec:["Hamstrings","Gastrocnemius"],svg:"tke",
+ steps:["Loop a resistance band around a fixed point at knee height — step inside it so band sits behind the knee","Stand with a slight bend in the working knee — weight on that leg","Straighten the knee fully against the band resistance — squeeze the quad at end range","Slowly allow the knee to bend back to start — control the return","Keep the heel on the floor throughout — do not rise onto toes"],
+ tips:["The single most important exercise for VMO activation after knee surgery","Essential after ACL reconstruction, knee replacement, and for patellofemoral syndrome","The band provides resistance specifically in the last 30° of extension — the deficit range after knee injury"],
+ err:["Locking the knee by hyperextending — stay within comfortable end range","Letting the heel lift off the floor — lose ground contact and stability","Rushing — the squeeze at full extension is the key part of the movement"]},
+
+/* ── CERVICAL — additional ── */
+{n:"Levator Scapulae Stretch",m:"cervical",etype:"Stretch",eq:"Chair",sets:"2–3",reps:"Hold 30s each side",rest:"20s",
+ pri:["Levator Scapulae"],sec:["Upper Trapezius","Splenius Cervicis","Posterior Scalene"],svg:"levator-stretch",
+ steps:["Sit tall — anchor the right hand under your thigh","Turn the head 45° to the left (look toward left armpit direction)","Tuck the chin slightly and tilt the head downward toward the left armpit","Place the left hand gently on top of the head — apply light downward pressure","Hold — breathe — switch sides"],
+ tips:["Targets the levator scapulae which runs from cervical spine to the shoulder blade — often the source of neck-shoulder ache","Keeping the shoulder anchored down is essential — prevents compensation","Also relieves thoracic outlet symptoms from tight posterior scalene"],
+ err:["Rotating the head too far — should be 45°, not 90°","Shrugging the shoulder on the same side — releases the stretch entirely","Pulling the head too hard — a gentle sustained hold is sufficient"]},
+
+/* ── THORACIC — additional ── */
+{n:"Foam Roller Thoracic Extension",m:"thoracic",etype:"Mobility",eq:"Foam Roller",sets:"2–3",reps:"8–10 reps each segment",rest:"30s",
+ pri:["Thoracic Erector Spinae","Thoracic Facet Joints"],sec:["Rib Cage Intercostals","Thoracic Multifidus"],svg:"foam-thoracic",
+ steps:["Place foam roller horizontally on the mat — sit in front of it","Lean back so the roller sits at the mid-thoracic spine (T6–T8 level)","Support your head with both hands — elbows forward","Gently extend over the roller — breathe in and allow the thoracic spine to open","Shift the roller up one segment and repeat — work from mid to upper thoracic"],
+ tips:["One of the most effective tools for reversing desk-related thoracic kyphosis","Move the roller in small increments — do not roll continuously","Avoid placing the roller on the lumbar spine or neck"],
+ err:["Rolling onto the lower back — risk of lumbar hyperextension","Holding the breath — a full inhale opens the thoracic cage and enhances mobility","Moving too quickly through segments — spend 30–60 seconds at each level"]},
+
+{n:"Scapular Retraction",m:"thoracic",etype:"Strengthening",eq:"Chair / Band",sets:"3",reps:"15–20",rest:"30s",
+ pri:["Rhomboids","Middle Trapezius"],sec:["Lower Trapezius","Posterior Deltoid","Serratus Anterior"],svg:"scap-retraction",
+ steps:["Sit or stand tall — arms relaxed at sides","Draw the shoulder blades toward each other — as if squeezing a pencil between them","Hold the retracted position for 3–5 seconds","Release slowly — do not let shoulders roll forward beyond neutral","Progress with a resistance band: hold ends, pull apart horizontally at chest height"],
+ tips:["Foundation exercise for scapular dyskinesis, rounded shoulders, and thoracic pain","Pairs perfectly with chin tuck for complete postural correction","Perform every hour during desk work — set a timer"],
+ err:["Shrugging the shoulders upward instead of retracting — activates upper trap, not rhomboids","Retracting too forcefully — a moderate squeeze held for time is more effective","Forgetting to breathe — relaxed breathing maintains thoracic mobility during the hold"]},
+
+/* ── LUMBAR — additional ── */
+{n:"Bird Dog",m:"lumbar",etype:"Strengthening",eq:"Mat",sets:"3",reps:"10 each side",rest:"45s",
+ pri:["Lumbar Multifidus","Erector Spinae","Gluteus Maximus"],sec:["Transversus Abdominis","Hamstrings","Contralateral Shoulder Flexors"],svg:"bird-dog",
+ steps:["Start on all fours — wrists under shoulders, knees under hips","Tighten the core gently — maintain a neutral (flat) lower back","Simultaneously extend the right arm forward and left leg backward","Hold 3–5 seconds — spine must stay completely level","Return and alternate sides — no rotation of the pelvis or lumbar spine"],
+ tips:["The benchmark lumbar stabilisation exercise — used in all evidence-based back rehab programmes","Imagine balancing a glass of water on your lower back throughout the movement","Progress: add a resistance band around the wrist or ankle"],
+ err:["Allowing the lower back to sag or rotate — the most common error","Lifting the leg too high — causes lumbar hyperextension","Rushing — a slow, controlled hold activates deep stabilisers far more effectively"]},
+
+{n:"Dead Bug",m:"lumbar",etype:"Strengthening",eq:"Mat",sets:"3",reps:"8–10 each side",rest:"45s",
+ pri:["Transversus Abdominis","Rectus Abdominis","Lumbar Multifidus"],sec:["Hip Flexors","Diaphragm","Pelvic Floor"],svg:"dead-bug",
+ steps:["Lie on your back — arms straight up toward the ceiling, hips and knees at 90°","Press the lower back firmly into the mat — maintain this throughout","Slowly lower the right arm overhead and extend the left leg simultaneously","Stop just before the lower back lifts off the mat — return slowly","Alternate sides — exhale during the lowering phase"],
+ tips:["Superior to crunches for deep core activation with zero spinal flexion loading","The key is keeping the lumbar spine flat — never allow it to arch away from the mat","Regress by moving one limb at a time; progress by adding a resistance band"],
+ err:["The lower back lifting off the mat — the exercise has failed at that point — reduce range","Holding the breath — continuous breathing is essential for deep core co-contraction","Moving both limbs on the same side — must always use opposite arm and leg"]},
+
+{n:"Glute Bridge",m:"lumbar",etype:"Strengthening",eq:"Mat",sets:"3",reps:"15–20",rest:"45s",
+ pri:["Gluteus Maximus","Hamstrings","Lumbar Erector Spinae"],sec:["Transversus Abdominis","Gluteus Medius","Pelvic Floor"],svg:"glute-bridge",
+ steps:["Lie on your back — knees bent at 90°, feet flat, hip-width apart","Press through the heels — squeeze the glutes and lift the hips until the body forms a straight line from knees to shoulders","Hold 2–3 seconds at the top — breathe and maintain the squeeze","Lower slowly — do not fully rest the hips on the floor between reps","Progress: single-leg bridge, or place a band above the knees"],
+ tips:["Essential for all lumbar rehabilitation — gluteal weakness directly increases lumbar loading","Drive through the heels, not the toes — shifts activation to the gluteals","The straight-line position: avoid hyperextending the lumbar spine at the top"],
+ err:["Pushing through the toes — activates quads instead of glutes","Hyperextending the lower back at the top — risk of facet joint pain","Letting the knees cave inward — add a band to train gluteal control"]},
+
+/* ── SHOULDER — additional ── */
+{n:"Pendulum Exercise",m:"shoulder",etype:"Mobility",eq:"Chair",sets:"2–3",reps:"20 circles each direction",rest:"30s",
+ pri:["Shoulder Joint Capsule","Glenohumeral Passive Mobility"],sec:["Rotator Cuff (passive relaxation)","Biceps Tendon"],svg:"pendulum",
+ steps:["Lean forward — support yourself with one hand on a table or chair back","Let the injured arm hang completely relaxed — do not activate the shoulder muscles","Use gentle body momentum (not shoulder muscles) to make small circles — clockwise then anticlockwise","Progress to forward-backward and side-to-side pendulum swings","Keep all movements pain-free and small — gradually increase range over weeks"],
+ tips:["First-line exercise after shoulder surgery, frozen shoulder, and rotator cuff injury","The arm must be completely relaxed — gravity provides the traction that decompresses the joint","Start with circles the size of a dinner plate — increase only as pain allows"],
+ err:["Using the shoulder muscles to swing the arm — defeats the purpose entirely","Making circles too large too soon — start very small","Bending the elbow — the arm must remain straight to allow full decompression"]},
+
+/* ── HIP — additional ── */
+{n:"90/90 Hip Stretch",m:"hip",etype:"Mobility",eq:"Mat",sets:"2–3",reps:"Hold 60–90s each side",rest:"30s",
+ pri:["Hip External Rotators (back leg)","Hip Internal Rotators (front leg)","Piriformis"],sec:["Gluteus Medius","TFL","Psoas"],svg:"hip-9090",
+ steps:["Sit on the floor — front leg at 90° (shin perpendicular), back leg at 90° (shin parallel to body)","Sit tall — avoid rounding the lower back","Feel the stretch in the back hip's external rotators and front hip's internal rotators simultaneously","For deeper stretch: lean the torso forward over the front shin while maintaining a flat back","Hold — breathe — then switch sides"],
+ tips:["The most comprehensive hip mobility exercise — works both rotation directions simultaneously","Progress: lean forward over the front leg with a flat back for a deep internal rotator stretch","Daily practice significantly reduces hip impingement symptoms and lower back pain"],
+ err:["Allowing the lower back to round — shifts stress to the lumbar spine","Forcing the pelvis flat if flexibility is limited — allow a slight lean and progress gradually","Bouncing into the stretch — passive sustained holds produce lasting mobility gains"]},
+
+{n:"Side-Lying Hip Abduction",m:"hip",etype:"Strengthening",eq:"Mat / Band",sets:"3",reps:"15–20 each side",rest:"45s",
+ pri:["Gluteus Medius","Gluteus Minimus","TFL"],sec:["Piriformis","Quadratus Lumborum"],svg:"hip-abduction",
+ steps:["Lie on your side — body in a straight line, lower arm supporting head","Keep the top leg straight — foot neutral (do not turn toes up or down)","Lift the top leg to approximately 30–40° — feel the outer hip engage","Hold 1–2 seconds — lower with control — do not let it crash down","Add a resistance band above the knees to increase load progressively"],
+ tips:["Key strengthening exercise for IT band syndrome, hip bursitis, patellofemoral pain, and SIJ dysfunction","The gluteus medius stabilises the pelvis during single-leg stance — weakness causes the Trendelenburg gait","Perform slowly — the eccentric lowering phase is as important as the lift"],
+ err:["Rotating the hip so toes point toward the ceiling — recruits TFL instead of glute medius","Lifting too high (above 45°) — causes the pelvis to hike — a compensatory movement","Using a swinging momentum — slow, isolated movement is essential"]},
 ];
 
 function vidId(ex){return VIDEO_MAP[ex.svg]||'kqnua4rHVVA';}
