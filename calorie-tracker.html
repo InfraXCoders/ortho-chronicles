@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-  <meta name="theme-color" content="#431407"/>
+  <meta name="theme-color" content="#0C4A6E"/>
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -21,12 +21,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-  :root{--N:#431407;--G:#D97706;--GL:#F59E0B;--bg:#FFF7ED;--cb:#fff;--tx:#1C1917;--mu:#78716C;--br:#FED7AA;--ln:#7C2D12;--ic:#FFEDD5;--green:#16A34A;--red:#DC2626;--orange:#EA580C;--blue:#2563EB;}
+  :root{--N:#0C4A6E;--G:#0EA5E9;--GL:#38BDF8;--bg:#F0F9FF;--cb:#fff;--tx:#0F172A;--mu:#64748B;--br:#BAE6FD;--ln:#075985;--ic:#E0F2FE;--green:#16A34A;--red:#DC2626;--orange:#EA580C;--blue:#2563EB;}
   *{box-sizing:border-box;margin:0;padding:0;}
 
   /* ── HERO ── */
   .ct-hero{background:var(--N);padding:90px 20px 50px;text-align:center;position:relative;overflow:hidden;}
-  .ct-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(217,119,6,.28) 0%,transparent 65%);pointer-events:none;}
+  .ct-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(14,165,233,.25) 0%,transparent 65%);pointer-events:none;}
   .ct-hero>div{position:relative;z-index:1;}
   .ct-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,3rem);color:#fff;margin-bottom:12px;line-height:1.15;}
   .ct-hero h1 span{color:var(--GL);}
@@ -37,7 +37,7 @@
   .pf-field label{display:block;font-size:.7rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
   .pf-field input,.pf-field select{width:100%;padding:8px 12px;border:1.5px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;}
   .pf-field input::placeholder{color:#64748B;}
-  .pf-field select option{background:#431407;color:#fff;}
+  .pf-field select option{background:#0C4A6E;color:#fff;}
   .pf-calc-btn{grid-column:1/-1;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:.9rem;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s;}
   .pf-calc-btn:hover{background:var(--GL);}
 
@@ -84,7 +84,7 @@
   .mb-track{height:6px;background:var(--bg);border-radius:4px;overflow:hidden;}
   .mb-fill{height:100%;border-radius:4px;transition:width .4s;}
   .mb-fill.prot{background:#3B82F6;}
-  .mb-fill.carb{background:#F59E0B;}
+  .mb-fill.carb{background:#0EA5E9;}
   .mb-fill.fat{background:#EF4444;}
   .mb-fill.fiber{background:#10B981;}
   .water-row{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--br);}
@@ -292,7 +292,7 @@
   .hd-item:last-child{border-bottom:none;}
 
   /* Misc */
-  .qr-fab{position:fixed;bottom:24px;right:24px;width:60px;height:60px;background:var(--G);border:none;border-radius:50%;color:#fff;font-size:1.4rem;cursor:pointer;box-shadow:0 6px 24px rgba(217,119,6,.5);z-index:500;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;}
+  .qr-fab{position:fixed;bottom:24px;right:24px;width:60px;height:60px;background:var(--G);border:none;border-radius:50%;color:#fff;font-size:1.4rem;cursor:pointer;box-shadow:0 6px 24px rgba(14,165,233,.5);z-index:500;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;}
   .qr-fab:hover{transform:scale(1.1);background:var(--GL);}
   .section-empty{text-align:center;padding:50px 20px;color:var(--mu);}
   .section-empty i{font-size:2.5rem;margin-bottom:12px;display:block;color:var(--br);}
@@ -316,7 +316,7 @@
   <li><a href="index.html#blog">Blog</a></li>
   <li><a href="gym.html">Gym</a></li>
   <li><a href="gym.html?filter=physio">Physiotherapy</a></li>
-  <li><a href="calorie-tracker.html" style="color:#F59E0B;font-weight:700;">Calorie Tracker</a></li>
+  <li><a href="calorie-tracker.html" style="color:#38BDF8;font-weight:700;">Calorie Tracker</a></li>
   <li><a href="index.html#mentor">About Dr. Singh</a></li>
   <li><a href="index.html#contact">Contact</a></li>
   <li><a href="index.html#submit" class="btn-nav">Submit Article</a></li>
@@ -390,7 +390,7 @@
             <div class="cal-ring">
               <svg width="90" height="90" viewBox="0 0 90 90">
                 <circle cx="45" cy="45" r="38" fill="none" stroke="#E2E8F0" stroke-width="9"/>
-                <circle id="calRingFill" cx="45" cy="45" r="38" fill="none" stroke="#D97706" stroke-width="9" stroke-linecap="round"
+                <circle id="calRingFill" cx="45" cy="45" r="38" fill="none" stroke="#0EA5E9" stroke-width="9" stroke-linecap="round"
                   stroke-dasharray="239" stroke-dashoffset="239" style="transition:stroke-dashoffset .5s"/>
               </svg>
               <div class="cal-ring-text"><strong id="calConsumed">0</strong><span>eaten</span></div>
@@ -1109,7 +1109,7 @@ function updateMacroCard(){
   const total=totProt*4+totCarb*4+totFat*9||1;
   document.getElementById('macroSplit').innerHTML=
     `<span style="background:#EFF6FF;color:#2563EB;padding:3px 9px;border-radius:10px;font-weight:700">P: ${Math.round(totProt*4/total*100)}%</span>
-     <span style="background:#FFFBEB;color:#D97706;padding:3px 9px;border-radius:10px;font-weight:700">C: ${Math.round(totCarb*4/total*100)}%</span>
+     <span style="background:#E0F2FE;color:#0EA5E9;padding:3px 9px;border-radius:10px;font-weight:700">C: ${Math.round(totCarb*4/total*100)}%</span>
      <span style="background:#FEF2F2;color:#DC2626;padding:3px 9px;border-radius:10px;font-weight:700">F: ${Math.round(totFat*9/total*100)}%</span>`;
 }
 
@@ -1805,49 +1805,49 @@ init();
 <div id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:flex-end;justify-content:center;">
   <div style="background:#1E293B;border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:24px 22px 36px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-      <div style="color:#F59E0B;font-size:1.05rem;font-weight:800;">📲 Add to Home Screen</div>
+      <div style="color:#38BDF8;font-size:1.05rem;font-weight:800;">📲 Add to Home Screen</div>
       <button onclick="document.getElementById('ios-install-modal').style.display='none'" style="background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;">✕</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;">
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
         <span style="font-size:1.6rem;flex-shrink:0;">1️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap the <strong style="color:#F59E0B;">Share</strong> button <span style="font-size:1.1rem;">⎋</span> at the bottom of Safari</div>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap the <strong style="color:#38BDF8;">Share</strong> button <span style="font-size:1.1rem;">⎋</span> at the bottom of Safari</div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
         <span style="font-size:1.6rem;flex-shrink:0;">2️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Scroll down and tap <strong style="color:#F59E0B;">"Add to Home Screen"</strong> <span style="font-size:1.1rem;">＋</span></div>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Scroll down and tap <strong style="color:#38BDF8;">"Add to Home Screen"</strong> <span style="font-size:1.1rem;">＋</span></div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
         <span style="font-size:1.6rem;flex-shrink:0;">3️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap <strong style="color:#F59E0B;">"Add"</strong> — the app icon appears on your home screen</div>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap <strong style="color:#38BDF8;">"Add"</strong> — the app icon appears on your home screen</div>
       </div>
     </div>
-    <div style="margin-top:18px;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.3);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#94A3B8;text-align:center;">
+    <div style="margin-top:18px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.3);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#94A3B8;text-align:center;">
       Works offline · No app store needed · Free forever
     </div>
   </div>
 </div>
 
 <!-- ── INSTALL BANNER (Android / Windows / Desktop) ── -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#431407;border:1.5px solid #D97706;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
+<div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0C4A6E;border:1.5px solid #0EA5E9;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
   <img src="/ct-icon-192.png" width="44" height="44" style="border-radius:12px;flex-shrink:0;" alt="" onerror="this.style.display='none'"/>
   <div style="flex:1;min-width:0;">
-    <div style="color:#F59E0B;font-weight:700;font-size:.92rem;">Add Calorie Tracker Shortcut</div>
-    <div style="color:#FFEDD5;font-size:.75rem;margin-top:2px;">Install as app — works offline, no store needed</div>
+    <div style="color:#38BDF8;font-weight:700;font-size:.92rem;">Add Calorie Tracker Shortcut</div>
+    <div style="color:#E0F2FE;font-size:.75rem;margin-top:2px;">Install as app — works offline, no store needed</div>
   </div>
   <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
-    <button onclick="pwaInstall()" style="background:#D97706;color:#431407;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:.8rem;cursor:pointer;white-space:nowrap;">📲 Install</button>
+    <button onclick="pwaInstall()" style="background:#0EA5E9;color:#0C4A6E;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:.8rem;cursor:pointer;white-space:nowrap;">📲 Install</button>
     <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748B;border:none;font-size:.72rem;cursor:pointer;text-align:center;">Not now</button>
   </div>
 </div>
 
 <!-- ── FLOATING INSTALL BUTTON (always visible) ── -->
 <button id="pwa-fab" onclick="showInstallUI()" title="Add shortcut to home screen / desktop"
-  style="position:fixed;bottom:92px;right:20px;z-index:900;background:#431407;border:2px solid #D97706;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:Inter,sans-serif;transition:transform .2s;">
+  style="position:fixed;bottom:92px;right:20px;z-index:900;background:#0C4A6E;border:2px solid #0EA5E9;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:Inter,sans-serif;transition:transform .2s;">
   <img src="/ct-icon-192.png" width="26" height="26" style="border-radius:6px;" alt="" onerror="this.style.display='none'"/>
   <div style="text-align:left;">
-    <div style="color:#F59E0B;font-size:.75rem;font-weight:800;line-height:1.2;">Add Shortcut</div>
-    <div style="color:#FFEDD5;font-size:.62rem;line-height:1.2;">Home Screen</div>
+    <div style="color:#38BDF8;font-size:.75rem;font-weight:800;line-height:1.2;">Add Shortcut</div>
+    <div style="color:#E0F2FE;font-size:.62rem;line-height:1.2;">Home Screen</div>
   </div>
 </button>
 
@@ -1919,7 +1919,7 @@ init();
         modal.querySelector('div:nth-child(2)').innerHTML=
           '<div style="background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.3);border-radius:12px;padding:14px;color:#FCA5A5;font-size:.85rem;line-height:1.6;text-align:center;">'+
           '⚠️ Please open this page in <strong>Safari</strong> to add it to your home screen.<br><br>'+
-          'Copy this URL and paste it in Safari:<br><span style="color:#F59E0B;word-break:break-all;font-size:.78rem;">'+window.location.href+'</span></div>';
+          'Copy this URL and paste it in Safari:<br><span style="color:#38BDF8;word-break:break-all;font-size:.78rem;">'+window.location.href+'</span></div>';
       }
     }else if(_deferredPrompt){
       /* Android / Windows — native install prompt available */
@@ -1934,8 +1934,8 @@ init();
       var b=document.getElementById('pwa-banner');
       b.style.display='flex';
       b.querySelector('div:nth-child(2)').innerHTML=
-        '<div style="color:#F59E0B;font-weight:700;font-size:.88rem;">Add Shortcut</div>'+
-        '<div style="color:#FFEDD5;font-size:.72rem;margin-top:2px;">Click ⊕ in the address bar of Chrome/Edge to install</div>';
+        '<div style="color:#38BDF8;font-weight:700;font-size:.88rem;">Add Shortcut</div>'+
+        '<div style="color:#E0F2FE;font-size:.72rem;margin-top:2px;">Click ⊕ in the address bar of Chrome/Edge to install</div>';
       b.querySelector('button').style.display='none';
     }
   };
