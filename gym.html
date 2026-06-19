@@ -181,7 +181,7 @@
   <li><a href="index.html#books">Books</a></li>
   <li><a href="index.html#slides">Slides</a></li>
   <li><a href="gym.html" style="color:#FCD34D;font-weight:700;">Gym</a></li>
-  <li><a href="gym.html?filter=physio" style="color:#2DD4BF;font-weight:700;">Physiotherapy</a></li>
+  <li><a href="physiotherapy.html" style="color:#2DD4BF;font-weight:700;">Physiotherapy</a></li>
   <li><a href="calorie-tracker.html">Calorie Tracker</a></li>
   <li><a href="index.html#mentor">About Dr. Singh</a></li>
   <li><a href="index.html#contact">Contact</a></li>
@@ -195,8 +195,8 @@
     <p>Animated guides for every muscle group — technique, sets, reps, tips & common mistakes. Built for orthopedic professionals and fitness enthusiasts.</p>
     <div class="gsearch-wrap"><i class="fas fa-search gsearch-icon"></i><input class="gsearch" id="gymSearch" placeholder="Search exercises, muscles, equipment…" autocomplete="off"/></div>
     <div class="gym-hero-stats">
-      <div class="gstat"><strong>11</strong><span>Muscle Groups</span></div>
-      <div class="gstat"><strong>61</strong><span>Exercises</span></div>
+      <div class="gstat"><strong>10</strong><span>Muscle Groups</span></div>
+      <div class="gstat"><strong>45</strong><span>Exercises</span></div>
       <div class="gstat"><strong>3</strong><span>Workout Plans</span></div>
     </div>
   </div>
@@ -235,15 +235,6 @@
     <button class="mf-btn" data-f="hamstrings"><span class="mf-icon">🦵</span>Hamstrings</button>
     <button class="mf-btn" data-f="glutes"><span class="mf-icon">🏃</span>Glutes</button>
     <button class="mf-btn" data-f="calves"><span class="mf-icon">👟</span>Calves</button>
-    <button class="mf-btn" data-f="physio" style="border-color:#0D9488;"><span class="mf-icon">🩺</span>Physiotherapy</button>
-  </div>
-</div>
-
-<!-- PHYSIO BANNER — shown only when physio filter active -->
-<div id="physioBanner" style="display:none;background:linear-gradient(135deg,#0D9488 0%,#065F52 100%);padding:18px 20px;text-align:center;">
-  <div style="max-width:760px;margin:0 auto;">
-    <p style="color:#fff;font-size:.95rem;font-weight:600;margin-bottom:4px;">🩺 Physiotherapy &amp; Rehabilitation Exercises</p>
-    <p style="color:#CCFBF1;font-size:.82rem;line-height:1.6;">Evidence-based stretching, mobility, and pain-relief exercises. Always consult a physiotherapist before starting a rehabilitation programme — especially post-surgery or with neurological symptoms.</p>
   </div>
 </div>
 
@@ -1332,104 +1323,6 @@ const exercises=[
  tips:["Hip extension is the motion — don't flex knee too much","At full extension: squeeze glute hard for 1–2s","Add resistance band for home variation"],
  err:["Swinging leg with momentum instead of controlled extension","Bending knee too much — activates hamstring too much","Rotating pelvis — cheat to get weight up"]},
 
-/* ─── PHYSIOTHERAPY — STRETCHING & MOBILITY ─── */
-{n:"Cat-Cow Stretch",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"10–15 cycles",rest:"30s",
- pri:["Lumbar Erector Spinae","Multifidus"],sec:["Thoracic Extensors","Hip Flexors","Abdominals"],svg:"cat-cow",
- steps:["Start on all fours — wrists under shoulders, knees under hips","Cow: Inhale, let belly drop, lift head and tailbone","Cat: Exhale, round spine to ceiling, tuck chin and pelvis","Move slowly and rhythmically — 3s each direction","Synchronise movement with breath"],
- tips:["Ideal morning warm-up for back pain sufferers","Go to your comfortable end-range — no forcing","Each cycle mobilises all spinal segments from lumbar to thoracic"],
- err:["Moving only the lower back — try to mobilise the entire spine","Holding breath — breath drives the movement","Rushing — slow rhythm is the key to pain relief"]},
-
-{n:"Child's Pose",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"Hold 30–60s",rest:"30s",
- pri:["Lumbar Erector Spinae","Quadratus Lumborum"],sec:["Gluteus Maximus","Thoracic Extensors","Shoulder Flexors"],svg:"childs-pose",
- steps:["Kneel with big toes touching, knees hip-width apart","Sit back toward heels (or as far as comfortable)","Walk hands forward, lower forehead to mat","Arms extended or alongside body (relaxation version)","Breathe deeply into the lower back — hold and release tension"],
- tips:["Wide-knee version reduces hip compression for tight hips","Place pillow under forehead if neck is uncomfortable","Excellent for lumbar disc decompression and stress relief"],
- err:["Straining to reach the floor — use a pillow under chest","Holding breath — passive relaxation requires slow exhalation","Sitting too far forward — hips should stay near heels"]},
-
-{n:"Hip Flexor Stretch",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
- pri:["Iliopsoas","Rectus Femoris"],sec:["TFL","Sartorius","Quadriceps"],svg:"hip-flexor-stretch",
- steps:["Kneel on one knee — back knee on mat, front foot flat","Shift hips forward gently until stretch is felt in front of back hip","Keep torso upright — do not lean forward","For deeper stretch: raise same-side arm overhead","Hold, breathe, then switch sides"],
- tips:["Tuck pelvis slightly (posterior pelvic tilt) to intensify stretch","Tight hip flexors are a major contributor to lower back pain","Daily stretching after prolonged sitting is especially beneficial"],
- err:["Leaning torso forward — reduces hip flexor stretch","Anterior pelvic tilt — flattens the stretch","Bouncing the stretch — risk of muscle strain"]},
-
-{n:"Piriformis Stretch (Figure-4)",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
- pri:["Piriformis","External Hip Rotators"],sec:["Gluteus Medius","Gluteus Minimus"],svg:"piriformis-stretch",
- steps:["Lie on back, both knees bent","Cross right ankle over left thigh — just above knee","Flex right foot to protect knee","Lift both legs and draw left thigh toward chest","Feel stretch deep in right buttock — hold"],
- tips:["This stretch directly relieves sciatica caused by piriformis syndrome","Keep head and shoulders relaxed on floor","Supine version is safer than seated for most patients"],
- err:["Pulling with hip flexors instead of keeping pelvis flat","Pointing toes instead of flexing — reduces knee protection","Over-pulling — a mild to moderate stretch is sufficient"]},
-
-{n:"Seated Hamstring Stretch",m:"physio",eq:"Chair / Mat",d:"beginner",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
- pri:["Biceps Femoris","Semitendinosus","Semimembranosus"],sec:["Gastrocnemius","Lumbar Erectors"],svg:"hamstring-stretch",
- steps:["Sit on edge of chair — extend one leg straight, heel on floor","Keep back straight — do not round lumbar spine","Hinge from hips forward until hamstring stretch is felt","Flex foot (toes toward shin) to deepen stretch","Hold and breathe — switch sides"],
- tips:["Lumbar flexion is not the goal — maintain neutral spine while hinging","Neural tension (sciatica) may limit this stretch — do not force","Tight hamstrings are strongly linked to lower back pain"],
- err:["Rounding the back instead of hinging at hips","Bouncing to increase range","Locking the knee aggressively — gentle extension only"]},
-
-{n:"Doorway Chest Opener",m:"physio",eq:"Doorway",d:"beginner",sets:"2–3",reps:"Hold 30s each arm",rest:"20s",
- pri:["Pectoralis Major","Pectoralis Minor"],sec:["Anterior Deltoid","Biceps Brachii"],svg:"doorway-stretch",
- steps:["Stand in doorway — place forearm on doorframe at 90°","Step through doorway gently — feel stretch across chest","Position hand higher for lower pec; level for mid pec","Keep shoulder blades gently retracted","Hold — breathe into chest — switch sides"],
- tips:["Essential for forward head posture and rounded shoulder correction","Perform at multiple arm heights to stretch all chest fibres","Can be done hourly for desk workers with shoulder pain"],
- err:["Leaning too aggressively — hyperextend shoulder risk","Not retracting scapulae — reduces stretch on pec minor","Holding breath — relaxation is key to connective tissue release"]},
-
-{n:"Thoracic Rotation Stretch",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"10 reps each side",rest:"30s",
- pri:["Thoracic Rotators","Multifidus","Internal Oblique"],sec:["External Oblique","Rhomboids","Serratus Anterior"],svg:"thoracic-rotation",
- steps:["Lie on side — knees bent at 90°, stacked","Place top hand behind head — elbow pointing up","Rotate top elbow toward ceiling and as far back as possible","Let thoracic spine rotate — lumbar stays stable","Return and repeat — switch sides"],
- tips:["Excellent for thoracic stiffness from desk work and chronic back pain","Keep knees stacked to prevent lumbar rotation — thoracic only","Deep breathing at end range increases joint mobility"],
- err:["Rotating from the lumbar spine — defeats the purpose","Rushing the movement — slow rotation gives better results","Top knee lifting off the floor — lose the fixation"]},
-
-{n:"Cervical Side Bend Stretch",m:"physio",eq:"Chair",d:"beginner",sets:"2–3",reps:"Hold 20–30s each side",rest:"20s",
- pri:["Sternocleidomastoid","Scalenes","Upper Trapezius","Levator Scapulae"],sec:["Splenius Capitis","Longus Colli"],svg:"neck-stretch",
- steps:["Sit tall — anchor one hand under thigh or grip chair","Gently tilt ear toward opposite shoulder","For deeper stretch: place same-side hand lightly over head","Hold — breathe — feel the lateral neck stretch","Return slowly — repeat other side"],
- tips:["Avoid pulling the head forcibly — gravity plus breath is enough","Add scalene bias: look slightly downward to target anterior neck","Daily stretching corrects neck posture from phone/screen use"],
- err:["Rotating instead of pure lateral flexion — different muscles","Shrugging shoulder upward — kills the stretch","Pulling hard with the hand — cervical strain risk"]},
-
-/* ─── PHYSIOTHERAPY — PAIN RELIEF & REHABILITATION ─── */
-{n:"McKenzie Press Up",m:"physio",eq:"Mat",d:"beginner",sets:"3–4",reps:"10 reps",rest:"30s",
- pri:["Lumbar Erector Spinae","Multifidus"],sec:["Gluteus Maximus","Abdominals"],svg:"mckenzie-press",
- steps:["Lie face down (prone) — hands under shoulders like top of push-up","Keeping pelvis on floor, slowly press upper body up with arms","Go to comfortable end range — hips stay grounded","Hold 1–2s at top, then lower back down","Repeat rhythmically — breathing throughout"],
- tips:["The gold standard for acute discogenic lower back pain (McKenzie method)","Centralisation of pain (pain moves from leg to back) is a good sign — continue","Start with partial range and progress over days"],
- err:["Allowing hips to lift off floor — changes the mechanics","Performing in presence of spinal stenosis pain — contraindicated","Going too far too soon — build up range gradually over days"]},
-
-{n:"Pelvic Tilt",m:"physio",eq:"Mat",d:"beginner",sets:"3",reps:"15–20",rest:"30s",
- pri:["Transversus Abdominis","Multifidus"],sec:["Gluteus Maximus","Lumbar Flexors","Pelvic Floor"],svg:"pelvic-tilt",
- steps:["Lie on back — knees bent, feet flat on floor","Gently flatten lower back into mat by tightening abs and tilting pelvis","Hold 5 seconds — breathe throughout","Release and allow natural curve to return","Repeat — this is a micro-movement, not a crunch"],
- tips:["Foundation exercise for lumbar stabilisation programme","Activates deep stabilisers (TVA, multifidus) that protect the spine","Progress to: dead bug, bird dog, and bridges when easy"],
- err:["Using gluteal push instead of abdominal control","Holding breath — core stabilisation requires breathing","Making it a large movement — the tilt is subtle"]},
-
-{n:"Knee to Chest",m:"physio",eq:"Mat",d:"beginner",sets:"2–3",reps:"Hold 20–30s each side",rest:"20s",
- pri:["Lumbar Erector Spinae","Sacroiliac Ligaments"],sec:["Gluteus Maximus","Hip External Rotators"],svg:"knee-to-chest",
- steps:["Lie on back — both knees bent","Bring one knee toward chest — hold behind thigh or shin","Keep other foot flat on floor","Gently pull knee in until comfortable lumbar stretch","Hold and breathe — switch sides; then both knees together"],
- tips:["Excellent first-line treatment for acute lower back pain","Double knee version provides lumbar flexion decompression","Add gentle rocking side to side for sacroiliac joint mobilisation"],
- err:["Pulling aggressively — should be gentle traction only","Lifting head off floor — adds unnecessary cervical strain","Performing with a herniated disc causing leg symptoms — use extension instead (McKenzie)"]},
-
-{n:"Clamshell Exercise",m:"physio",eq:"Resistance Band (optional)",d:"beginner",sets:"3",reps:"15–20 each side",rest:"45s",
- pri:["Gluteus Medius","Gluteus Minimus"],sec:["Piriformis","Deep Hip Rotators","TFL"],svg:"clamshell",
- steps:["Lie on side — hips stacked, knees bent at 45°","Keep feet together — lift top knee toward ceiling like a clamshell opening","Rotate from the hip — pelvis stays completely still","Hold 1–2s at top — squeeze glute","Lower with control — repeat — switch sides"],
- tips:["Primary rehab exercise for: knee pain, IT band syndrome, hip pain, SIJ dysfunction","Add resistance band above knees to progress","Weak glute medius is the underlying cause of many lower limb injuries"],
- err:["Rotating the pelvis backward — compensatory movement","Not going to full ROM at top — partial activation","Using momentum — slow controlled reps are essential"]},
-
-{n:"Straight Leg Raise",m:"physio",eq:"Mat",d:"beginner",sets:"3",reps:"15 each leg",rest:"45s",
- pri:["Quadriceps (Rectus Femoris)","Hip Flexors"],sec:["Transversus Abdominis","Tensor Fascia Latae"],svg:"straight-leg-raise",
- steps:["Lie on back — one knee bent (foot flat), one leg straight","Tighten quadriceps of straight leg — lock the knee","Lift straight leg to height of bent knee (≈30–45°)","Hold 2s — lower slowly","Complete all reps before switching sides"],
- tips:["Standard quadriceps rehabilitation after knee surgery or injury","Key exercise for: knee OA, post-op ACL, post-op knee replacement","Tighten quad first before lifting — prevents patellofemoral stress"],
- err:["Letting the knee bend during lift — defeats the purpose","Lifting too high — above 45° increases hip flexor dominance","Not tightening the quad before lifting"]},
-
-{n:"Chin Tuck (Cervical Retraction)",m:"physio",eq:"Chair / Wall",d:"beginner",sets:"3",reps:"10–15 reps",rest:"30s",
- pri:["Deep Cervical Flexors (Longus Colli)","Suboccipital Muscles"],sec:["Sternocleidomastoid","Scalenes"],svg:"chin-tuck",
- steps:["Sit or stand against wall","Without tilting head, glide chin straight back ('make a double chin')","Feel a gentle stretch at base of skull","Hold 5s — release forward to neutral","Perform rhythmically — no pain should occur"],
- tips:["Most effective exercise for forward head posture and cervical pain","Activates deep neck flexors which are weak in chronic neck pain","Perform 10 reps every hour if working at screen"],
- err:["Tilting chin downward instead of retracting straight back","Pushing too hard — should be gentle end-range hold","Performing with dizziness — stop and consult physician"]},
-
-{n:"Wall Slides (Shoulder Rehab)",m:"physio",eq:"Wall",d:"beginner",sets:"3",reps:"12–15",rest:"45s",
- pri:["Lower Trapezius","Serratus Anterior"],sec:["Rotator Cuff","Rhomboids","Posterior Deltoid"],svg:"wall-slides",
- steps:["Stand with back against wall — lumbar and head touching wall","Place forearms against wall at 90°, elbows level with shoulders","Slide arms up wall toward full overhead — keep forearms on wall","Lower back to 90° with control","Keep core engaged and low back flat against wall"],
- tips:["Excellent for shoulder impingement, rotator cuff rehab, and posture","Forces scapular upward rotation — the deficit in most shoulder conditions","If forearms come off wall — reduce range until strength improves"],
- err:["Arching the lower back — loses the stabilisation","Forearms losing contact with wall — indicates limited scapular control","Going too fast — slow controlled movement activates stabilisers better"]},
-
-{n:"Prone Hip Extension",m:"physio",eq:"Mat",d:"beginner",sets:"3",reps:"12–15 each side",rest:"45s",
- pri:["Gluteus Maximus","Hamstrings","Lumbar Multifidus"],sec:["Erector Spinae","Glute Medius"],svg:"prone-hip-ext",
- steps:["Lie face down — forehead on folded hands","Tighten core — protect lower back","Keeping knee straight, lift one leg off floor 6–8 inches","Squeeze glute at top — hold 2s","Lower slowly — alternate sides"],
- tips:["Excellent for lumbar-gluteal strengthening in back pain rehabilitation","Progress to: on-elbows, then all-fours (bird dog)","Weak gluteals increase lumbar load — this exercise corrects the imbalance"],
- err:["Rotating pelvis to get more range — compensatory movement","Bending the knee — shifts work to hamstrings","Lifting too high — causes lumbar hyperextension"]},
-
 /* ─── CALVES ─── */
 {n:"Standing Calf Raise",m:"calves",eq:"Machine / Bodyweight",d:"beginner",sets:"3–5",reps:"12–20",rest:"60s",
  pri:["Gastrocnemius (Medial + Lateral Head)"],sec:["Soleus","Tibialis Posterior"],svg:"calf-raise",
@@ -1498,27 +1391,9 @@ const VIDEO_MAP={
   /* Calves */
   'calf-raise':'c5Kv6-fnTj8',
   'box-jump':'NBY9-kTuHEk',
-  /* Physiotherapy — Stretching */
-  'cat-cow':'kqnua4rHVVA',
-  'childs-pose':'2MJGg-dUKh0',
-  'hip-flexor-stretch':'zTPfzlZbtz8',
-  'piriformis-stretch':'VmbrkHf9Nps',
-  'hamstring-stretch':'WTH1w_sAe2E',
-  'doorway-stretch':'B9uY01NoqBg',
-  'thoracic-rotation':'j6hv8Q5QtL8',
-  'neck-stretch':'UUXUVFQS5u0',
-  /* Physiotherapy — Pain Relief & Rehab */
-  'mckenzie-press':'tIZppe-RB0g',
-  'pelvic-tilt':'u0AJnVg0tcc',
-  'knee-to-chest':'n6_Z3I0zBcI',
-  'clamshell':'K9qytmsQVu0',
-  'straight-leg-raise':'zo2pqw794B0',
-  'chin-tuck':'7rnlAVhAK-8',
-  'wall-slides':'oMSVe7PWJ3o',
-  'prone-hip-ext':'CLxYwpYDX9U',
 };
 
-const MG_COLOR={chest:'#C0392B',back:'#1565C0',shoulders:'#6A1B9A',biceps:'#0277BD',triceps:'#00695C',core:'#F57F17',quads:'#2E7D32',hamstrings:'#4E342E',glutes:'#AD1457',calves:'#37474F',arms:'#1565C0',lats:'#1565C0',physio:'#0D9488'};
+const MG_COLOR={chest:'#C0392B',back:'#1565C0',shoulders:'#6A1B9A',biceps:'#0277BD',triceps:'#00695C',core:'#F57F17',quads:'#2E7D32',hamstrings:'#4E342E',glutes:'#AD1457',calves:'#37474F',arms:'#1565C0',lats:'#1565C0'};
 
 function vidId(ex){return VIDEO_MAP[ex.svg]||'rT7DgCr-3pg';}
 
@@ -1601,10 +1476,7 @@ function renderCards(list){
   noRes.style.display=list.length===0?'block':'none';
 }
 
-/* initial render — honour ?filter= URL param */
-const _urlFilter=new URLSearchParams(location.search).get('filter');
 renderCards(exercises);
-if(_urlFilter){setTimeout(()=>filterMuscle(_urlFilter),0);}
 
 /* ─── FILTER ─── */
 let activeMuscle='all';
@@ -1613,7 +1485,6 @@ let searchQ='';
 function filterMuscle(m){
   activeMuscle=m;
   document.querySelectorAll('.mf-btn').forEach(b=>b.classList.toggle('active',b.dataset.f===m));
-  document.getElementById('physioBanner').style.display=(m==='physio')?'block':'none';
   applyFilter();
   document.querySelector('.gym-main').scrollIntoView({behavior:'smooth',block:'start'});
 }

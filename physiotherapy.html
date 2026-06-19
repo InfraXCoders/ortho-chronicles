@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#0D4D47"/>
+  <title>Physiotherapy & Rehabilitation Exercises | OrthoChronicles</title>
+  <meta name="description" content="Evidence-based physiotherapy exercises for neck, back, shoulder, hip and knee pain — stretching, mobility and rehabilitation guides by Dr. Maninder Singh MS Orth."/>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css?v=6"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+  :root{--N:#0D4D47;--G:#14B8A6;--GL:#2DD4BF;--bg:#F0FDFA;--cb:#fff;--tx:#0F2420;--mu:#6B7280;--br:#99F6E4;--ln:#134E4A;--ic:#CCFBF1;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  .pt-hero{background:var(--N);padding:90px 20px 56px;text-align:center;position:relative;overflow:hidden;}
+  .pt-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 35%,rgba(20,184,166,.28) 0%,transparent 70%);pointer-events:none;}
+  .pt-hero>div{position:relative;z-index:1;}
+  .pt-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,3.2rem);color:#fff;margin-bottom:14px;line-height:1.15;}
+  .pt-hero h1 span{color:var(--GL);}
+  .pt-hero p{font-size:1.05rem;color:var(--ic);max-width:600px;margin:0 auto 28px;line-height:1.65;}
+  .pt-hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+  .pt-hero-stats .gstat strong{display:block;font-size:2rem;font-weight:800;color:var(--GL);}
+  .pt-hero-stats .gstat span{font-size:.8rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;}
+
+  .gsearch-wrap{max-width:440px;margin:0 auto 32px;position:relative;}
+  .gsearch{width:100%;padding:13px 20px 13px 46px;border:2px solid rgba(255,255,255,.18);border-radius:50px;font-size:1rem;outline:none;background:rgba(255,255,255,.1);color:#fff;font-family:'Inter',sans-serif;transition:border-color .2s;}
+  .gsearch::placeholder{color:#94A3B8;}
+  .gsearch:focus{border-color:var(--G);}
+  .gsearch-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#94A3B8;pointer-events:none;}
+
+  .pt-disclaimer{background:rgba(20,184,166,.1);border-bottom:1px solid rgba(20,184,166,.22);padding:13px 20px;text-align:center;}
+  .pt-disclaimer p{font-size:.8rem;color:#0F766E;max-width:820px;margin:0 auto;line-height:1.6;}
+  .pt-disclaimer strong{color:var(--N);}
+
+  .mf-section{background:#fff;border-bottom:1px solid var(--br);position:sticky;top:60px;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,.06);}
+  .mf-inner{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .mf-inner::-webkit-scrollbar{display:none;}
+  .mf-btn{display:flex;align-items:center;gap:6px;padding:7px 16px;border:2px solid var(--br);border-radius:50px;background:#fff;color:var(--mu);font-size:.82rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+  .mf-btn:hover{border-color:var(--G);color:var(--N);}
+  .mf-btn.active{background:var(--N);border-color:var(--N);color:#fff;}
+  .mf-icon{font-size:1rem;}
+
+  .pt-main{max-width:1240px;margin:0 auto;padding:44px 20px 80px;}
+  .section-hdr{margin-bottom:6px;}
+  .section-hdr h2{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--N);}
+  .ex-count{font-size:.88rem;color:var(--mu);margin-bottom:26px;}
+  .ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+
+  .ex-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);border:1px solid var(--br);transition:transform .22s,box-shadow .22s;}
+  .ex-card:hover{transform:translateY(-5px);box-shadow:0 10px 36px rgba(13,77,71,.15);}
+
+  .ex-vid{position:relative;height:188px;background:#0a2e2b;overflow:hidden;cursor:pointer;}
+  .ex-vid .vt{width:100%;height:100%;object-fit:cover;transition:transform .35s;display:block;}
+  .ex-vid:hover .vt{transform:scale(1.05);}
+  .vplay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.18);transition:background .2s;}
+  .ex-vid:hover .vplay{background:rgba(0,0,0,.08);}
+  .vplay-btn{width:54px;height:54px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0D4D47;font-size:1.25rem;box-shadow:0 4px 22px rgba(0,0,0,.5);transition:transform .2s,background .2s;padding-left:4px;}
+  .ex-vid:hover .vplay-btn{transform:scale(1.12);background:#fff;}
+  .vplay-lbl{margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.82);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+  .vbadge{position:absolute;top:10px;left:10px;color:#fff;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;text-transform:uppercase;}
+  .vtype{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.52);color:#fff;font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.3px;text-transform:uppercase;}
+  .ex-vid iframe{width:100%;height:100%;border:none;display:block;}
+
+  .ex-body{padding:18px 20px 6px;}
+  .ex-name{font-size:1.05rem;font-weight:700;color:var(--N);font-family:'Inter',sans-serif;margin-bottom:10px;}
+  .ex-badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+  .badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .bm{background:#E5F9F6;color:#0D4D47;}
+  .be{background:#DCFCE7;color:#166534;}
+  .bi{background:#FEF9C3;color:#713F12;}
+  .ba{background:#FEE2E2;color:#991B1B;}
+  .bv{background:#EDE9FE;color:#4C1D95;}
+
+  .ex-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+  .ex-stat{background:var(--bg);border-radius:8px;padding:8px 6px;text-align:center;}
+  .ex-stat strong{display:block;font-size:.88rem;color:var(--N);font-weight:700;}
+  .ex-stat span{font-size:.68rem;color:var(--mu);text-transform:uppercase;letter-spacing:.3px;}
+
+  .ex-muscles{font-size:.81rem;color:var(--mu);margin-bottom:4px;line-height:1.6;}
+  .ex-muscles strong{color:var(--N);}
+
+  .ex-acc{border-top:1px solid var(--br);}
+  .acc-item{border-bottom:1px solid var(--br);}
+  .acc-item:last-child{border-bottom:none;}
+  .acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 20px;background:none;border:none;cursor:pointer;font-size:.83rem;font-weight:600;color:var(--N);font-family:'Inter',sans-serif;text-align:left;transition:background .18s;}
+  .acc-btn:hover{background:var(--bg);}
+  .acc-arrow{transition:transform .22s;color:var(--G);font-size:.7rem;}
+  .acc-btn.open .acc-arrow{transform:rotate(180deg);}
+  .acc-body{padding:0 20px 14px;display:none;}
+  .acc-body.show{display:block;}
+  .acc-body ol,.acc-body ul{padding-left:16px;}
+  .acc-body li{font-size:.82rem;color:var(--tx);line-height:1.65;margin-bottom:5px;}
+  .tip-li{color:#0F766E;}
+  .err-li{color:#B91C1C;}
+
+  .no-res{text-align:center;padding:60px 20px;color:var(--mu);display:none;grid-column:1/-1;}
+  .no-res i{font-size:3rem;margin-bottom:14px;color:var(--br);display:block;}
+
+  .region-divider{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:18px 0 4px;}
+  .region-divider h3{font-family:'Playfair Display',serif;font-size:1.15rem;white-space:nowrap;}
+  .region-divider hr{flex:1;border:none;border-top:2px solid var(--br);}
+
+  @media(max-width:600px){.ex-grid{grid-template-columns:1fr;}.pt-hero{padding:80px 16px 40px;}.pt-hero-stats{gap:20px;}}
+  @media(max-width:900px){.ex-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}}
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="OrthoChronicles"/></a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+<ul class="nav-links" id="navLinks">
+  <li class="nav-close-row"><button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu"><i class="fas fa-arrow-left"></i> Back</button></li>
+  <li><a href="index.html#home">Home</a></li>
+  <li><a href="index.html#publish">What We Publish</a></li>
+  <li><a href="index.html#blog">Blog</a></li>
+  <li><a href="index.html#videos">Videos</a></li>
+  <li><a href="index.html#books">Books</a></li>
+  <li><a href="index.html#slides">Slides</a></li>
+  <li><a href="gym.html">Gym</a></li>
+  <li><a href="physiotherapy.html" style="color:#2DD4BF;font-weight:700;">Physiotherapy</a></li>
+  <li><a href="calorie-tracker.html">Calorie Tracker</a></li>
+  <li><a href="index.html#mentor">About Dr. Singh</a></li>
+  <li><a href="index.html#contact">Contact</a></li>
+  <li><a href="index.html#submit" class="btn-nav">Submit Article</a></li>
+</ul>
+
+<section class="pt-hero">
+  <div>
+    <h1><span>Physiotherapy</span> &amp; Rehabilitation</h1>
+    <p>Evidence-based stretching, mobility and pain-relief exercises organised by body region — designed for post-injury recovery, chronic pain management and surgical rehabilitation.</p>
+    <div class="gsearch-wrap"><i class="fas fa-search gsearch-icon"></i><input class="gsearch" id="ptSearch" placeholder="Search exercises, muscles, conditions…" autocomplete="off"/></div>
+    <div class="pt-hero-stats">
+      <div class="gstat"><strong>6</strong><span>Body Regions</span></div>
+      <div class="gstat"><strong>16</strong><span>Exercises</span></div>
+      <div class="gstat"><strong>4</strong><span>Exercise Types</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="pt-disclaimer">
+  <p><strong>Medical notice:</strong> These exercises are for educational purposes only. Always consult a qualified physiotherapist or physician before starting a rehabilitation programme — especially following surgery, fracture, or with neurological symptoms such as radiating pain or weakness.</p>
+</div>
+
+<div class="mf-section">
+  <div class="mf-inner" id="mfInner">
+    <button class="mf-btn active" data-f="all"><span class="mf-icon">🩺</span>All</button>
+    <button class="mf-btn" data-f="cervical"><span class="mf-icon">🔵</span>Neck</button>
+    <button class="mf-btn" data-f="thoracic"><span class="mf-icon">🟣</span>Upper Back</button>
+    <button class="mf-btn" data-f="lumbar"><span class="mf-icon">🟡</span>Lower Back</button>
+    <button class="mf-btn" data-f="shoulder"><span class="mf-icon">🟢</span>Shoulder</button>
+    <button class="mf-btn" data-f="hip"><span class="mf-icon">🩷</span>Hip</button>
+    <button class="mf-btn" data-f="knee"><span class="mf-icon">🔴</span>Knee</button>
+  </div>
+</div>
+
+<section class="pt-main">
+  <div class="section-hdr"><h2>Exercise Library</h2></div>
+  <p class="ex-count" id="exCount">Showing all 16 exercises</p>
+  <div class="ex-grid" id="exGrid">
+    <div class="no-res" id="noRes"><i class="fas fa-heartbeat"></i><p>No exercises found. Try a different filter or search term.</p></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="OrthoChronicles"/>
+        <p>A community platform for the orthopedic world — curated and supervised by Dr. Maninder Singh, MS Orthopedics, Associate Professor, GMCH Amritsar.</p>
+      </div>
+      <div class="footer-links"><h4>Platform</h4><ul>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="gym.html">Gym</a></li>
+        <li><a href="physiotherapy.html">Physiotherapy</a></li>
+        <li><a href="calorie-tracker.html">Calorie Tracker</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Body Regions</h4><ul>
+        <li><a href="#" onclick="filterRegion('cervical');return false;">Neck (Cervical)</a></li>
+        <li><a href="#" onclick="filterRegion('thoracic');return false;">Upper Back</a></li>
+        <li><a href="#" onclick="filterRegion('lumbar');return false;">Lower Back</a></li>
+        <li><a href="#" onclick="filterRegion('shoulder');return false;">Shoulder</a></li>
+        <li><a href="#" onclick="filterRegion('hip');return false;">Hip</a></li>
+        <li><a href="#" onclick="filterRegion('knee');return false;">Knee</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Dr. Singh</h4>
+        <p><i class="fas fa-phone-alt"></i> <a href="tel:9779212479">+91 97792 12479</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> GMCH, Amritsar – 143001</p>
+        <div class="footer-social">
+          <a href="https://wa.me/919779212479" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="tel:9779212479" aria-label="Call"><i class="fas fa-phone"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 OrthoChronicles.info &nbsp;|&nbsp; Managed by Dr. Pawanpreet Singh &nbsp;|&nbsp; All rights reserved.</p>
+      <p class="disclaimer">Content is for educational purposes only. Consult a qualified physician or physiotherapist before starting any exercise programme.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const hbg=document.getElementById('hamburger'),nl=document.getElementById('navLinks'),nb=document.getElementById('navBackdrop'),nc=document.getElementById('navCloseBtn');
+function oN(){nl.classList.add('open');nb.classList.add('open');hbg.setAttribute('aria-expanded','true');}
+function cN(){nl.classList.remove('open');nb.classList.remove('open');hbg.setAttribute('aria-expanded','false');}
+hbg.addEventListener('click',oN);nb.addEventListener('click',cN);nc.addEventListener('click',cN);
+nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',cN));
+
+const VIDEO_MAP={
+  'cat-cow':'kqnua4rHVVA',
+  'childs-pose':'2MJGg-dUKh0',
+  'hip-flexor-stretch':'zTPfzlZbtz8',
+  'piriformis-stretch':'VmbrkHf9Nps',
+  'hamstring-stretch':'WTH1w_sAe2E',
+  'doorway-stretch':'B9uY01NoqBg',
+  'thoracic-rotation':'j6hv8Q5QtL8',
+  'neck-stretch':'UUXUVFQS5u0',
+  'mckenzie-press':'tIZppe-RB0g',
+  'pelvic-tilt':'u0AJnVg0tcc',
+  'knee-to-chest':'n6_Z3I0zBcI',
+  'clamshell':'K9qytmsQVu0',
+  'straight-leg-raise':'zo2pqw794B0',
+  'chin-tuck':'7rnlAVhAK-8',
+  'wall-slides':'oMSVe7PWJ3o',
+  'prone-hip-ext':'CLxYwpYDX9U',
+};
+
+const REGION={
+  cervical:{label:'Neck',color:'#0369A1',bg:'#DBEAFE'},
+  thoracic:{label:'Upper Back',color:'#6D28D9',bg:'#EDE9FE'},
+  lumbar:  {label:'Lower Back',color:'#B45309',bg:'#FEF3C7'},
+  shoulder:{label:'Shoulder',  color:'#047857',bg:'#D1FAE5'},
+  hip:     {label:'Hip',       color:'#9D174D',bg:'#FCE7F3'},
+  knee:    {label:'Knee',      color:'#B91C1C',bg:'#FEE2E2'},
+};
+
+const ETYPE_BADGE={
+  'Stretch':'be',
+  'Mobility':'bm',
+  'Strengthening':'bi',
+  'Pain Relief':'ba',
+};
+
+const exercises=[
+/* ── CERVICAL — NECK ── */
+{n:"Cervical Side Bend Stretch",m:"cervical",etype:"Stretch",eq:"Chair",sets:"2–3",reps:"Hold 20–30s",rest:"20s",
+ pri:["Sternocleidomastoid","Scalenes","Upper Trapezius","Levator Scapulae"],sec:["Splenius Capitis","Longus Colli"],svg:"neck-stretch",
+ steps:["Sit tall — anchor one hand under thigh or grip chair side","Gently tilt ear toward opposite shoulder","Place same-side hand lightly over head for a deeper stretch","Hold — breathe slowly — feel the lateral neck stretch","Return slowly and repeat on the other side"],
+ tips:["Let gravity do the work — do not pull the head forcibly","Add scalene bias by looking slightly downward to target the anterior neck","Daily stretching corrects neck posture from prolonged phone and screen use"],
+ err:["Rotating the head instead of a pure lateral bend — targets different muscles","Shrugging the shoulder upward — eliminates the stretch","Pulling hard with the hand — risk of cervical strain"]},
+
+{n:"Chin Tuck (Cervical Retraction)",m:"cervical",etype:"Strengthening",eq:"Chair / Wall",sets:"3",reps:"10–15 reps",rest:"30s",
+ pri:["Deep Cervical Flexors (Longus Colli)","Suboccipitals"],sec:["Sternocleidomastoid","Scalenes"],svg:"chin-tuck",
+ steps:["Sit or stand with back against wall","Without tilting the head, glide the chin straight back — 'make a double chin'","Feel a gentle stretch at the base of the skull","Hold 5 seconds — release forward to neutral","Perform rhythmically — no pain should occur"],
+ tips:["The most effective exercise for forward head posture and cervical pain","Activates deep neck flexors which are weak in chronic neck pain","Perform 10 reps every hour during prolonged screen use"],
+ err:["Tilting the chin downward instead of retracting straight back","Pushing too hard — this is a gentle end-range hold","Continuing if dizziness occurs — stop and consult a physician"]},
+
+/* ── THORACIC — UPPER BACK ── */
+{n:"Thoracic Rotation Stretch",m:"thoracic",etype:"Mobility",eq:"Mat",sets:"2–3",reps:"10 reps each side",rest:"30s",
+ pri:["Thoracic Rotators","Multifidus","Internal Oblique"],sec:["External Oblique","Rhomboids","Serratus Anterior"],svg:"thoracic-rotation",
+ steps:["Lie on your side — knees bent at 90°, stacked","Place the top hand behind your head — elbow pointing upward","Rotate the top elbow toward the ceiling as far as comfortable","Let the thoracic spine rotate — keep the lumbar spine stable","Return slowly and repeat — then switch sides"],
+ tips:["Excellent for thoracic stiffness from desk work and chronic back pain","Keep knees stacked throughout to isolate thoracic rotation","Breathe deeply at end range to increase joint mobility"],
+ err:["Rotating from the lumbar spine instead of the thoracic — defeats the purpose","Rushing the movement — slow rotation is more effective","Top knee lifting off the floor — causes lumbar compensation"]},
+
+{n:"Doorway Chest Opener",m:"thoracic",etype:"Stretch",eq:"Doorway",sets:"2–3",reps:"Hold 30s each arm",rest:"20s",
+ pri:["Pectoralis Major","Pectoralis Minor"],sec:["Anterior Deltoid","Biceps Brachii"],svg:"doorway-stretch",
+ steps:["Stand in a doorway — place forearm on the doorframe at 90°","Step gently through the doorway until stretch is felt across the chest","Position hand higher for lower pec; level for mid pec emphasis","Keep shoulder blades gently retracted throughout","Hold, breathe into the chest, then switch sides"],
+ tips:["Essential for correcting forward head posture and rounded shoulders","Perform at multiple arm heights to stretch all chest fibres","Can be done hourly for desk workers experiencing shoulder pain"],
+ err:["Leaning too aggressively — risk of shoulder hyperextension","Not retracting scapulae — reduces the stretch on pectoralis minor","Holding the breath — relaxation is key to connective tissue release"]},
+
+/* ── LUMBAR — LOWER BACK ── */
+{n:"Cat-Cow Stretch",m:"lumbar",etype:"Mobility",eq:"Mat",sets:"2–3",reps:"10–15 cycles",rest:"30s",
+ pri:["Lumbar Erector Spinae","Multifidus"],sec:["Thoracic Extensors","Hip Flexors","Abdominals"],svg:"cat-cow",
+ steps:["Start on all fours — wrists under shoulders, knees under hips","Cow: Inhale, let belly drop, lift head and tailbone","Cat: Exhale, round the entire spine to the ceiling, tuck chin and pelvis","Move slowly and rhythmically — 3 seconds each direction","Synchronise every movement with breathing"],
+ tips:["Ideal morning warm-up for back pain sufferers","Move to your comfortable end-range — never force the motion","Each cycle mobilises all spinal segments from lumbar to thoracic"],
+ err:["Moving only the lower back — aim to mobilise the entire spine","Holding the breath — breath is what drives the movement","Rushing — a slow rhythm is the key to pain relief"]},
+
+{n:"Child's Pose",m:"lumbar",etype:"Stretch",eq:"Mat",sets:"2–3",reps:"Hold 30–60s",rest:"30s",
+ pri:["Lumbar Erector Spinae","Quadratus Lumborum"],sec:["Gluteus Maximus","Thoracic Extensors","Shoulder Flexors"],svg:"childs-pose",
+ steps:["Kneel with big toes touching and knees hip-width apart","Sit back toward heels as far as comfortable","Walk hands forward and lower forehead to the mat","Arms extended (mobility) or alongside body (relaxation)","Breathe deeply into the lower back — hold and release tension"],
+ tips:["Wide-knee version reduces hip compression for tight hips","Place a pillow under the forehead if neck is uncomfortable","Excellent for lumbar disc decompression and post-work stress relief"],
+ err:["Straining to reach the floor — use a pillow under the chest if needed","Holding the breath — passive relaxation requires slow exhalation","Hips too far forward — they should stay near the heels"]},
+
+{n:"McKenzie Press Up",m:"lumbar",etype:"Pain Relief",eq:"Mat",sets:"3–4",reps:"10 reps",rest:"30s",
+ pri:["Lumbar Erector Spinae","Multifidus"],sec:["Gluteus Maximus","Abdominals"],svg:"mckenzie-press",
+ steps:["Lie face down (prone) — hands under shoulders as in the top of a push-up","Keeping the pelvis on the floor, slowly press the upper body up with both arms","Go to your comfortable end range — hips must stay grounded","Hold 1–2 seconds at the top, then lower back down","Repeat rhythmically — breathe throughout"],
+ tips:["Gold-standard treatment for acute discogenic lower back pain (McKenzie Method)","Centralisation of symptoms — pain moving from leg back toward the spine — is a positive sign","Start with partial range and progress the extension over several days"],
+ err:["Allowing hips to lift off the floor — fundamentally changes the mechanics","Performing this with spinal stenosis symptoms — it is contraindicated","Going to full range too quickly — build up gradually over days"]},
+
+{n:"Pelvic Tilt",m:"lumbar",etype:"Strengthening",eq:"Mat",sets:"3",reps:"15–20",rest:"30s",
+ pri:["Transversus Abdominis","Multifidus"],sec:["Gluteus Maximus","Pelvic Floor","Lumbar Flexors"],svg:"pelvic-tilt",
+ steps:["Lie on your back — knees bent, feet flat on the floor","Gently flatten the lower back into the mat by tightening the abdominals","Tilt the pelvis slightly — hold 5 seconds — breathe throughout","Release and allow the natural lumbar curve to return","Repeat — this is a micro-movement, not a crunch"],
+ tips:["The foundation exercise of all lumbar stabilisation programmes","Activates deep stabilisers (TVA and multifidus) that protect the spine","Progress to: dead bug, bird dog, and bridges once this feels easy"],
+ err:["Pushing with the gluteals instead of abdominal control","Holding the breath — core stabilisation requires continued breathing","Making it a large movement — the pelvic tilt is a very subtle action"]},
+
+{n:"Knee to Chest",m:"lumbar",etype:"Stretch",eq:"Mat",sets:"2–3",reps:"Hold 20–30s each side",rest:"20s",
+ pri:["Lumbar Erector Spinae","Sacroiliac Ligaments"],sec:["Gluteus Maximus","Hip External Rotators"],svg:"knee-to-chest",
+ steps:["Lie on your back — both knees bent","Bring one knee toward the chest — hold behind the thigh or shin","Keep the other foot flat on the floor","Gently pull the knee in until a comfortable lumbar stretch is felt","Hold and breathe — switch sides; then perform both knees together"],
+ tips:["Excellent first-line intervention for acute lower back pain","The double-knee version provides lumbar flexion decompression","Add gentle side-to-side rocking for sacroiliac joint mobilisation"],
+ err:["Pulling too aggressively — this should be gentle lumbar traction only","Lifting the head off the floor — adds unnecessary cervical strain","Using this for a herniated disc with leg symptoms — use McKenzie extension instead"]},
+
+{n:"Prone Hip Extension",m:"lumbar",etype:"Strengthening",eq:"Mat",sets:"3",reps:"12–15 each side",rest:"45s",
+ pri:["Gluteus Maximus","Hamstrings","Lumbar Multifidus"],sec:["Erector Spinae","Gluteus Medius"],svg:"prone-hip-ext",
+ steps:["Lie face down — forehead resting on folded hands","Tighten the core gently to protect the lower back","Keeping the knee straight, lift one leg 6–8 inches off the floor","Squeeze the glute at the top and hold 2 seconds","Lower slowly — alternate sides for all reps"],
+ tips:["Excellent lumbar-gluteal strengthening exercise in back pain rehabilitation","Progress to: supported on elbows, then bird dog on all fours","Weak gluteals directly increase lumbar loading — this exercise corrects that"]  ,
+ err:["Rotating the pelvis to gain more range — a compensatory movement","Bending the knee during the lift — shifts the load to the hamstrings","Lifting too high — causes lumbar hyperextension"]},
+
+/* ── SHOULDER ── */
+{n:"Wall Slides",m:"shoulder",etype:"Strengthening",eq:"Wall",sets:"3",reps:"12–15",rest:"45s",
+ pri:["Lower Trapezius","Serratus Anterior"],sec:["Rotator Cuff","Rhomboids","Posterior Deltoid"],svg:"wall-slides",
+ steps:["Stand with the back against a wall — lumbar and head touching","Place forearms against the wall at 90°, elbows at shoulder height","Slide both arms up the wall toward full overhead — keep forearms in contact","Lower back to 90° with control","Keep core engaged and lower back flat against the wall throughout"],
+ tips:["Key exercise for shoulder impingement, rotator cuff rehab and poor posture","Forces scapular upward rotation — the movement deficit in most shoulder conditions","If forearms lose contact with the wall, reduce the range until strength improves"],
+ err:["Arching the lower back away from the wall — loses all stabilisation","Forearms losing contact with the wall — indicates limited scapular control","Moving too quickly — slow movement is essential for activating stabilisers"]},
+
+/* ── HIP ── */
+{n:"Hip Flexor Stretch",m:"hip",etype:"Stretch",eq:"Mat",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
+ pri:["Iliopsoas","Rectus Femoris"],sec:["TFL","Sartorius","Quadriceps"],svg:"hip-flexor-stretch",
+ steps:["Kneel on one knee — back knee on mat, front foot flat on floor","Shift hips forward gently until stretch is felt in front of the back hip","Keep the torso upright — do not lean forward","For a deeper stretch, raise the same-side arm overhead","Hold, breathe, then switch sides"],
+ tips:["A slight posterior pelvic tilt intensifies the stretch significantly","Tight hip flexors are a major contributing cause of lower back pain","Daily stretching after prolonged sitting is especially beneficial"],
+ err:["Leaning the torso forward — reduces the hip flexor stretch","Allowing an anterior pelvic tilt — negates the stretch entirely","Bouncing into the stretch — risk of muscle strain"]},
+
+{n:"Piriformis Stretch (Figure-4)",m:"hip",etype:"Stretch",eq:"Mat",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
+ pri:["Piriformis","External Hip Rotators"],sec:["Gluteus Medius","Gluteus Minimus"],svg:"piriformis-stretch",
+ steps:["Lie on your back with both knees bent","Cross the right ankle over the left thigh — just above the knee","Flex the right foot to protect the knee joint","Lift both legs and draw the left thigh toward the chest","Feel a deep stretch in the right buttock — hold"],
+ tips:["Directly relieves sciatica caused by piriformis syndrome","Keep the head and shoulders relaxed on the floor throughout","The supine version is safer than the seated version for most patients"],
+ err:["Pulling with hip flexors instead of keeping the pelvis flat","Pointing the toes instead of flexing the foot — reduces knee protection","Over-pulling — a mild to moderate stretch is entirely sufficient"]},
+
+{n:"Clamshell Exercise",m:"hip",etype:"Strengthening",eq:"Resistance Band (optional)",sets:"3",reps:"15–20 each side",rest:"45s",
+ pri:["Gluteus Medius","Gluteus Minimus"],sec:["Piriformis","Deep Hip Rotators","TFL"],svg:"clamshell",
+ steps:["Lie on your side — hips stacked, knees bent at 45°","Keep feet together — lift the top knee toward the ceiling like a clamshell opening","Rotate from the hip — the pelvis must stay completely still","Hold 1–2 seconds at the top — squeeze the glute","Lower with control — complete all reps then switch sides"],
+ tips:["Primary rehab exercise for knee pain, IT band syndrome, hip pain and SIJ dysfunction","Add a resistance band above the knees to progressively load the movement","Weak gluteus medius is the root cause of many lower limb overuse injuries"],
+ err:["Rotating the pelvis backward — the most common compensatory movement","Not reaching full range of motion at the top — results in partial activation","Using momentum — slow, controlled reps are essential for effectiveness"]},
+
+/* ── KNEE ── */
+{n:"Seated Hamstring Stretch",m:"knee",etype:"Stretch",eq:"Chair / Mat",sets:"2–3",reps:"Hold 30–45s each side",rest:"20s",
+ pri:["Biceps Femoris","Semitendinosus","Semimembranosus"],sec:["Gastrocnemius","Lumbar Erectors"],svg:"hamstring-stretch",
+ steps:["Sit on the edge of a chair — extend one leg straight with heel on the floor","Keep the back straight — do not round the lumbar spine","Hinge forward from the hips until a hamstring stretch is felt","Flex the foot (toes toward shin) to deepen the stretch","Hold and breathe — then switch sides"],
+ tips:["Maintain a neutral spine while hinging — lumbar flexion is not the goal","Neural tension (sciatica) may limit this stretch — never force it","Tight hamstrings are strongly associated with both knee and lower back pain"],
+ err:["Rounding the back instead of hinging at the hips","Bouncing to increase range — ineffective and potentially harmful","Locking the knee aggressively — gentle extension only"]},
+
+{n:"Straight Leg Raise",m:"knee",etype:"Strengthening",eq:"Mat",sets:"3",reps:"15 each leg",rest:"45s",
+ pri:["Quadriceps (Rectus Femoris)","Hip Flexors"],sec:["Transversus Abdominis","Tensor Fascia Latae"],svg:"straight-leg-raise",
+ steps:["Lie on your back — one knee bent with foot flat, one leg straight","Tighten the quadriceps of the straight leg to lock the knee firmly","Lift the straight leg to the height of the bent knee (≈30–45°)","Hold 2 seconds at the top — lower slowly","Complete all reps on one side before switching"],
+ tips:["Standard quadriceps rehabilitation after knee surgery or injury","Key exercise for: knee OA, post-op ACL reconstruction, knee replacement rehab","Tighten the quad before every lift — this prevents patellofemoral stress"],
+ err:["Allowing the knee to bend during the lift — defeats the entire purpose","Lifting too high — above 45° shifts dominance to the hip flexors","Not tightening the quad before lifting the leg"]},
+];
+
+function vidId(ex){return VIDEO_MAP[ex.svg]||'kqnua4rHVVA';}
+
+function playVid(el,id){
+  el.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+}
+
+function buildCard(ex){
+  const id=vidId(ex);
+  const thumb=`https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  const r=REGION[ex.m]||{label:ex.m,color:'#0D4D47',bg:'#E5F9F6'};
+  const ebadge=ETYPE_BADGE[ex.etype]||'bm';
+  return `<div class="ex-card" data-region="${ex.m}" data-name="${ex.n.toLowerCase()}" data-eq="${(ex.eq||'').toLowerCase()}">
+    <div class="ex-vid" onclick="playVid(this,'${id}')" aria-label="${ex.n} tutorial video">
+      <img class="vt" src="${thumb}" alt="${ex.n}" onerror="this.src='https://img.youtube.com/vi/${id}/mqdefault.jpg';this.onerror=function(){this.style.opacity=0;this.parentNode.style.background='${r.color}';}">
+      <div class="vplay">
+        <div class="vplay-btn"><i class="fas fa-play"></i></div>
+        <span class="vplay-lbl">Watch Tutorial</span>
+      </div>
+      <span class="vbadge" style="background:${r.color};">${r.label}</span>
+      <span class="vtype">${ex.etype}</span>
+    </div>
+    <div class="ex-body">
+      <div class="ex-name">${ex.n}</div>
+      <div class="ex-badges">
+        <span class="badge" style="background:${r.bg};color:${r.color};">${r.label}</span>
+        <span class="badge ${ebadge}">${ex.etype}</span>
+        <span class="badge bm">${ex.eq}</span>
+      </div>
+      <div class="ex-stats">
+        <div class="ex-stat"><strong>${ex.sets}</strong><span>Sets</span></div>
+        <div class="ex-stat"><strong style="font-size:.76rem">${ex.reps}</strong><span>Reps / Hold</span></div>
+        <div class="ex-stat"><strong>${ex.rest}</strong><span>Rest</span></div>
+      </div>
+      <div class="ex-muscles">
+        <strong>Primary:</strong> ${ex.pri.join(', ')}<br>
+        <strong>Secondary:</strong> ${ex.sec.join(', ')}
+      </div>
+    </div>
+    <div class="ex-acc">
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)">
+          <span>📋 How to Perform</span><i class="fas fa-chevron-down acc-arrow"></i>
+        </button>
+        <div class="acc-body"><ol>${ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)">
+          <span>💡 Clinical Tips</span><i class="fas fa-chevron-down acc-arrow"></i>
+        </button>
+        <div class="acc-body"><ul>${ex.tips.map(t=>`<li class="tip-li">✓ ${t}</li>`).join('')}</ul></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)">
+          <span>⚠️ Common Errors</span><i class="fas fa-chevron-down acc-arrow"></i>
+        </button>
+        <div class="acc-body"><ul>${ex.err.map(e=>`<li class="err-li">✗ ${e}</li>`).join('')}</ul></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const grid=document.getElementById('exGrid');
+const countEl=document.getElementById('exCount');
+const noRes=document.getElementById('noRes');
+
+const REGION_ORDER=['cervical','thoracic','lumbar','shoulder','hip','knee'];
+
+function renderCards(list){
+  [...grid.querySelectorAll('.ex-card,.region-divider')].forEach(c=>c.remove());
+  const activeAll=activeRegion==='all';
+  if(activeAll){
+    REGION_ORDER.forEach(reg=>{
+      const group=list.filter(e=>e.m===reg);
+      if(!group.length)return;
+      const r=REGION[reg];
+      const div=document.createElement('div');
+      div.className='region-divider';
+      div.innerHTML=`<h3 style="color:${r.color}">${r.label}</h3><hr style="border-color:${r.color}33">`;
+      grid.appendChild(div);
+      group.forEach(ex=>{
+        const tmp=document.createElement('div');
+        tmp.innerHTML=buildCard(ex);
+        grid.appendChild(tmp.firstElementChild);
+      });
+    });
+  }else{
+    list.forEach(ex=>{
+      const tmp=document.createElement('div');
+      tmp.innerHTML=buildCard(ex);
+      grid.appendChild(tmp.firstElementChild);
+    });
+  }
+  countEl.textContent=`Showing ${list.length} of ${exercises.length} exercises`;
+  noRes.style.display=list.length===0?'block':'none';
+}
+
+renderCards(exercises);
+
+let activeRegion='all';
+let searchQ='';
+
+function filterRegion(r){
+  activeRegion=r;
+  document.querySelectorAll('.mf-btn').forEach(b=>b.classList.toggle('active',b.dataset.f===r));
+  applyFilter();
+  document.querySelector('.pt-main').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function applyFilter(){
+  const q=searchQ.trim().toLowerCase();
+  const list=exercises.filter(ex=>{
+    const rMatch=activeRegion==='all'||ex.m===activeRegion;
+    const sMatch=!q||ex.n.toLowerCase().includes(q)||ex.m.includes(q)||(ex.eq||'').toLowerCase().includes(q)||ex.etype.toLowerCase().includes(q)||ex.pri.join(' ').toLowerCase().includes(q)||ex.sec.join(' ').toLowerCase().includes(q);
+    return rMatch&&sMatch;
+  });
+  renderCards(list);
+}
+
+document.getElementById('mfInner').addEventListener('click',e=>{
+  const btn=e.target.closest('.mf-btn');
+  if(btn)filterRegion(btn.dataset.f);
+});
+
+document.getElementById('ptSearch').addEventListener('input',e=>{
+  searchQ=e.target.value;
+  applyFilter();
+});
+
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=body.classList.contains('show');
+  btn.closest('.ex-acc').querySelectorAll('.acc-body.show').forEach(b=>{
+    b.classList.remove('show');
+    b.previousElementSibling.classList.remove('open');
+  });
+  if(!isOpen){body.classList.add('show');btn.classList.add('open');}
+}
+</script>
+</body>
+</html>
