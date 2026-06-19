@@ -181,6 +181,7 @@
   <li><a href="index.html#books">Books</a></li>
   <li><a href="index.html#slides">Slides</a></li>
   <li><a href="gym.html" style="color:var(--gold-light,#D4AF5A);font-weight:700;">Gym</a></li>
+  <li><a href="gym.html?filter=physio" style="color:#2DD4BF;font-weight:700;">Physiotherapy</a></li>
   <li><a href="calorie-tracker.html">Calorie Tracker</a></li>
   <li><a href="index.html#mentor">About Dr. Singh</a></li>
   <li><a href="index.html#contact">Contact</a></li>
@@ -1600,8 +1601,10 @@ function renderCards(list){
   noRes.style.display=list.length===0?'block':'none';
 }
 
-/* initial render */
+/* initial render — honour ?filter= URL param */
+const _urlFilter=new URLSearchParams(location.search).get('filter');
 renderCards(exercises);
+if(_urlFilter){setTimeout(()=>filterMuscle(_urlFilter),0);}
 
 /* ─── FILTER ─── */
 let activeMuscle='all';
