@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -18,11 +18,23 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css?v=6"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-  :root{--N:#0C4A6E;--G:#0EA5E9;--GL:#38BDF8;--bg:#F0F9FF;--cb:#fff;--tx:#0F172A;--mu:#64748B;--br:#BAE6FD;--ln:#075985;--ic:#E0F2FE;--green:#16A34A;--red:#DC2626;--orange:#EA580C;--blue:#2563EB;}
+  :root{--N:#0C4A6E;--G:#0EA5E9;--GL:#38BDF8;--bg:#F0F9FF;--cb:#fff;--tx:#0F172A;--mu:#64748B;--br:#BAE6FD;--ln:#075985;--ic:#E0F2FE;--green:#16A34A;--red:#DC2626;--orange:#EA580C;--blue:#2563EB;--font:'Poppins',system-ui,-apple-system,sans-serif;}
   *{box-sizing:border-box;margin:0;padding:0;}
+
+  /* ── Global mobile-first typography ── */
+  html{font-size:15px;-webkit-text-size-adjust:100%;}
+  body{font-family:var(--font);font-weight:400;line-height:1.6;color:var(--tx);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.2;font-weight:700;}
+  button,input,select,textarea{font-family:var(--font);}
+  /* Tabular numbers for calorie counts and macros */
+  .cal-ring-text,.cr-num,.tdee-stat strong,.mb-val,.macro-val,
+  .fr-macros,.meal-cal-badge,.water-count{font-variant-numeric:tabular-nums;letter-spacing:0;}
+  /* Tighter caps on small labels */
+  .fr-cat,.mb-label,.tdee-stat span,.water-lbl,.cal-remain .cr-lbl{letter-spacing:0.03em;}
 
   /* ── HERO ── */
   .ct-hero{background:var(--N);padding:90px 20px 50px;text-align:center;position:relative;overflow:hidden;}
@@ -35,10 +47,10 @@
   /* Profile strip */
   .profile-strip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;max-width:800px;margin:0 auto;padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;}
   .pf-field label{display:block;font-size:.7rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
-  .pf-field input,.pf-field select{width:100%;padding:8px 12px;border:1.5px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;}
+  .pf-field input,.pf-field select{width:100%;padding:8px 12px;border:1.5px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-size:.9rem;font-family:'Poppins',system-ui,sans-serif;outline:none;}
   .pf-field input::placeholder{color:#64748B;}
   .pf-field select option{background:#0C4A6E;color:#fff;}
-  .pf-calc-btn{grid-column:1/-1;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:.9rem;font-family:'Inter',sans-serif;cursor:pointer;transition:background .2s;}
+  .pf-calc-btn{grid-column:1/-1;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:.9rem;font-family:'Poppins',system-ui,sans-serif;cursor:pointer;transition:background .2s;}
   .pf-calc-btn:hover{background:var(--GL);}
 
   /* TDEE bar */
@@ -51,7 +63,7 @@
   .ct-tabs{background:#fff;border-bottom:1px solid var(--br);position:sticky;top:60px;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06);}
   .ct-tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
   .ct-tabs-inner::-webkit-scrollbar{display:none;}
-  .tab-btn{padding:14px 22px;border:none;background:none;font-size:.88rem;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;}
+  .tab-btn{padding:14px 22px;border:none;background:none;font-size:.88rem;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Poppins',system-ui,sans-serif;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;}
   .tab-btn.active{color:var(--N);border-bottom-color:var(--G);}
   .tab-btn i{margin-right:6px;}
 
@@ -100,7 +112,7 @@
   .meal-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
   .meal-name{font-size:.95rem;font-weight:700;color:var(--N);}
   .meal-cal-badge{font-size:.75rem;color:var(--mu);}
-  .meal-add-btn{background:var(--N);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;transition:background .2s;}
+  .meal-add-btn{background:var(--N);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;display:flex;align-items:center;gap:6px;transition:background .2s;}
   .meal-add-btn:hover{background:var(--ln);}
   .meal-items{padding:0 18px 14px;}
   .food-item-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bg);}
@@ -123,7 +135,7 @@
   .modal-hdr h3{font-size:1.05rem;font-weight:700;color:var(--N);}
   .modal-close{background:var(--bg);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;color:var(--mu);}
   .modal-search-wrap{padding:14px 20px;}
-  .modal-search{width:100%;padding:11px 16px 11px 40px;border:2px solid var(--br);border-radius:12px;font-size:.95rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+  .modal-search{width:100%;padding:11px 16px 11px 40px;border:2px solid var(--br);border-radius:12px;font-size:.95rem;font-family:'Poppins',system-ui,sans-serif;outline:none;transition:border-color .2s;}
   .modal-search:focus{border-color:var(--G);}
   .modal-search-icon{position:absolute;left:34px;top:50%;transform:translateY(-50%);color:var(--mu);pointer-events:none;}
   .modal-search-wrap{position:relative;}
@@ -145,10 +157,10 @@
   .qty-modal h4{font-size:1rem;font-weight:700;color:var(--N);margin-bottom:4px;}
   .qty-modal p{font-size:.78rem;color:var(--mu);margin-bottom:16px;}
   .qty-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
-  .qty-input{width:100%;padding:10px 14px;border:2px solid var(--br);border-radius:10px;font-size:1rem;font-family:'Inter',sans-serif;outline:none;}
+  .qty-input{width:100%;padding:10px 14px;border:2px solid var(--br);border-radius:10px;font-size:1rem;font-family:'Poppins',system-ui,sans-serif;outline:none;}
   .qty-input:focus{border-color:var(--G);}
   .qty-unit{font-size:.85rem;color:var(--mu);white-space:nowrap;}
-  .qty-confirm{width:100%;background:var(--N);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .qty-confirm{width:100%;background:var(--N);color:#fff;border:none;border-radius:10px;padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;}
   /* Egg counter */
   .egg-counter{display:none;align-items:center;justify-content:center;gap:0;margin-bottom:16px;}
   .egg-counter.show{display:flex;}
@@ -166,7 +178,7 @@
   .scanner-modal.open{display:flex;}
   /* mode tabs — extra top gap so they clear the camera island */
   .scan-mode-bar{width:100%;max-width:480px;display:flex;gap:0;padding:18px 16px 0;flex-shrink:0;margin-top:max(8px,env(safe-area-inset-top,0px));}
-  .scan-mode-btn{flex:1;padding:10px 0;border:2px solid #374151;background:transparent;color:#9CA3AF;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+  .scan-mode-btn{flex:1;padding:10px 0;border:2px solid #374151;background:transparent;color:#9CA3AF;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;transition:all .2s;}
   .scan-mode-btn:first-child{border-radius:10px 0 0 10px;}
   .scan-mode-btn:last-child{border-radius:0 10px 10px 0;}
   .scan-mode-btn.active{background:var(--G);border-color:var(--G);color:#fff;}
@@ -213,7 +225,7 @@
   .air-conf{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;background:#064E3B;color:#34D399;}
   .air-macros{display:flex;gap:10px;font-size:.75rem;}
   .air-macro{color:#9CA3AF;}<strong>.air-macro span{color:#fff;font-weight:600;}</strong>
-  .air-add{margin-top:10px;width:100%;background:var(--G);color:#fff;border:none;border-radius:8px;padding:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .air-add{margin-top:10px;width:100%;background:var(--G);color:#fff;border:none;border-radius:8px;padding:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;}
   /* barcode result card */
   .scan-result-card{background:#1F2937;border:1px solid #374151;border-radius:14px;padding:14px;margin-bottom:12px;display:none;}
   .scan-result-card.visible{display:block;}
@@ -229,14 +241,14 @@
   .src-macro.fat strong{color:#F87171;}
   .src-per{font-size:.7rem;color:#6B7280;margin-bottom:10px;}
   .src-water{font-size:.78rem;color:#34D399;margin-bottom:10px;}
-  .src-add-btn{width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .src-add-btn{width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;}
   .src-not-found{background:#1F2937;border:1px solid #374151;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;color:#9CA3AF;font-size:.83rem;display:none;}
   .src-not-found.visible{display:block;}
   .manual-entry{display:flex;gap:8px;margin-bottom:10px;}
-  .barcode-input{flex:1;padding:9px 13px;border:1.5px solid #374151;border-radius:10px;background:#1F2937;color:#fff;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;}
+  .barcode-input{flex:1;padding:9px 13px;border:1.5px solid #374151;border-radius:10px;background:#1F2937;color:#fff;font-size:.88rem;font-family:'Poppins',system-ui,sans-serif;outline:none;}
   .barcode-input:focus{border-color:var(--GL);}
-  .barcode-lookup-btn{background:var(--G);color:#fff;border:none;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;font-size:.82rem;}
-  .scan-action-btn{padding:10px 0;border-radius:10px;border:none;font-size:.83rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;text-align:center;}
+  .barcode-lookup-btn{background:var(--G);color:#fff;border:none;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;white-space:nowrap;font-size:.82rem;}
+  .scan-action-btn{padding:10px 0;border-radius:10px;border:none;font-size:.83rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;width:100%;text-align:center;}
   .scan-manual{background:rgba(255,255,255,.09);color:#9CA3AF;margin-top:6px;}
   .scan-manual:hover{background:rgba(255,255,255,.15);color:#fff;}
 
@@ -244,7 +256,7 @@
   .plans-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
   .plans-header h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--N);}
   .plan-toggle{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;}
-  .ptog{padding:8px 20px;border:none;border-radius:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;color:var(--mu);background:transparent;transition:all .2s;}
+  .ptog{padding:8px 20px;border:none;border-radius:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;color:var(--mu);background:transparent;transition:all .2s;}
   .ptog.active{background:#fff;color:var(--N);box-shadow:0 2px 8px rgba(0,0,0,.1);}
 
   .plan-card{background:#fff;border-radius:16px;border:1px solid var(--br);margin-bottom:20px;overflow:hidden;}
@@ -261,7 +273,7 @@
   .pm-foods{}
   .pm-foods .pm-food{font-size:.85rem;color:var(--tx);line-height:1.6;}
   .pm-foods .pm-food-cal{font-size:.72rem;color:var(--mu);}
-  .plan-use-btn{display:block;width:calc(100% - 40px);margin:12px 20px 16px;background:var(--N);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;}
+  .plan-use-btn{display:block;width:calc(100% - 40px);margin:12px 20px 16px;background:var(--N);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;transition:background .2s;}
   .plan-use-btn:hover{background:var(--ln);}
 
   /* ── PROGRESS ── */
@@ -273,9 +285,9 @@
   .weight-log-wrap{background:#fff;border-radius:16px;border:1px solid var(--br);padding:22px;}
   .weight-log-wrap h3{font-size:1rem;font-weight:700;color:var(--N);margin-bottom:16px;}
   .wt-input-row{display:flex;gap:10px;margin-bottom:16px;}
-  .wt-input{flex:1;padding:10px 14px;border:2px solid var(--br);border-radius:10px;font-size:.95rem;font-family:'Inter',sans-serif;outline:none;}
+  .wt-input{flex:1;padding:10px 14px;border:2px solid var(--br);border-radius:10px;font-size:.95rem;font-family:'Poppins',system-ui,sans-serif;outline:none;}
   .wt-input:focus{border-color:var(--G);}
-  .wt-log-btn{background:var(--N);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .wt-log-btn{background:var(--N);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:'Poppins',system-ui,sans-serif;}
   .wt-history{max-height:220px;overflow-y:auto;}
   .wt-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bg);font-size:.85rem;}
   .wt-row .wt-date{color:var(--mu);}
@@ -300,6 +312,65 @@
   .section-empty i{font-size:2.5rem;margin-bottom:12px;display:block;color:var(--br);}
 
   @media(max-width:600px){.profile-strip{grid-template-columns:repeat(2,1fr);}.tdee-bar{gap:8px;}.macro-card{position:static;}}
+
+  /* ── Mobile typography improvements ── */
+  @media(max-width:600px){
+    html{font-size:15px;}
+
+    /* Hero */
+    .ct-hero{padding:72px 18px 36px;}
+    .ct-hero p{font-size:.95rem;line-height:1.6;}
+
+    /* Profile inputs */
+    .pf-field label{font-size:.72rem;letter-spacing:.4px;}
+    .pf-field input,.pf-field select{font-size:1rem;padding:10px 12px;}
+    .pf-calc-btn{font-size:1rem;padding:13px;}
+
+    /* TDEE stats */
+    .tdee-stat strong{font-size:1.25rem;}
+    .tdee-stat span{font-size:.72rem;}
+
+    /* Tabs */
+    .tab-btn{font-size:.85rem;padding:12px 16px;font-weight:600;}
+
+    /* Macro card */
+    .macro-card h3{font-size:1rem;}
+    .cal-ring-text strong{font-size:1rem;}
+    .cal-ring-text span{font-size:.68rem;}
+    .cal-remain .cr-num{font-size:1.45rem;}
+    .cal-remain .cr-lbl{font-size:.75rem;}
+    .mb-label{font-size:.8rem;}
+    .water-lbl{font-size:.8rem;}
+
+    /* Meal rows */
+    .meal-name{font-size:.95rem;}
+    .meal-cal-badge{font-size:.77rem;}
+    .meal-add-btn{font-size:.8rem;padding:7px 14px;}
+    .fi-name{font-size:.9rem;}
+    .fi-qty{font-size:.77rem;}
+    .fi-macros{font-size:.75rem;}
+    .fi-cal{font-size:.92rem;}
+
+    /* Food search modal */
+    .modal-hdr h3{font-size:1.05rem;}
+    .modal-search{font-size:1rem;}
+    .mtab{font-size:.78rem;padding:6px 14px;}
+    .fr-name{font-size:.92rem;}
+    .fr-cat{font-size:.75rem;}
+    .fr-cal{font-size:.9rem;}
+    .fr-macros{font-size:.73rem;}
+    .fr-add-btn{font-size:.8rem;padding:6px 14px;}
+
+    /* Qty modal */
+    .qty-modal{width:calc(100% - 40px);}
+    .qty-modal h4{font-size:1.05rem;}
+    .qty-modal p{font-size:.82rem;}
+    .qty-input{font-size:1.05rem;}
+    .qty-confirm{font-size:1rem;}
+
+    /* Meal empty state */
+    .meal-empty{font-size:.85rem;}
+  }
   </style>
 </head>
 <body>
@@ -573,7 +644,7 @@
       <button class="src-add-btn" onclick="addScannedFood()">
         <i class="fas fa-plus-circle"></i> Add to Today's Log
       </button>
-      <button onclick="scanAgain()" style="width:100%;margin-top:8px;background:none;border:1.5px solid var(--br);border-radius:10px;padding:9px;font-size:.82rem;color:var(--mu);cursor:pointer;font-family:Inter,sans-serif;">
+      <button onclick="scanAgain()" style="width:100%;margin-top:8px;background:none;border:1.5px solid var(--br);border-radius:10px;padding:9px;font-size:.82rem;color:var(--mu);cursor:pointer;font-family:'Poppins',system-ui,sans-serif;">
         🔄 Scan Another Item
       </button>
     </div>
@@ -1788,7 +1859,7 @@ function showAIResults(hits){
   <div style="position:relative;margin-top:6px;">
     <input id="aiInlineSearch" type="text" placeholder="Type food name…"
       style="width:100%;padding:9px 12px;border:1.5px solid #374151;border-radius:10px;
-             background:#1F2937;color:#fff;font-size:.85rem;font-family:Inter,sans-serif;outline:none;"
+             background:#1F2937;color:#fff;font-size:.85rem;font-family:'Poppins',system-ui,sans-serif;outline:none;"
       oninput="aiInlineFilter(this.value)" autocomplete="off"/>
   </div>
   <div id="aiInlineResults" style="margin-top:6px;"></div>`;
@@ -1812,7 +1883,7 @@ function showInlineSearch(){
   const extra=`<div style="position:relative;margin-top:4px;">
     <input id="aiInlineSearch" type="text" placeholder="Type food name to search…"
       style="width:100%;padding:10px 13px;border:1.5px solid #374151;border-radius:10px;
-             background:#1F2937;color:#fff;font-size:.88rem;font-family:Inter,sans-serif;outline:none;"
+             background:#1F2937;color:#fff;font-size:.88rem;font-family:'Poppins',system-ui,sans-serif;outline:none;"
       oninput="aiInlineFilter(this.value)" autocomplete="off"/>
   </div>
   <div id="aiInlineResults" style="margin-top:6px;"></div>`;
@@ -1842,7 +1913,7 @@ function showRetryPhoto(){
   const c=document.getElementById('aiResults');
   c.innerHTML=`<button onclick="retryPhoto()" style="width:100%;background:var(--G);color:#fff;border:none;
     border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;
-    font-family:Inter,sans-serif;margin-bottom:8px;">🔄 Retry AI Recognition</button>`;
+    font-family:'Poppins',system-ui,sans-serif;margin-bottom:8px;">🔄 Retry AI Recognition</button>`;
   showInlineSearch();
   c.classList.add('visible');
 }
@@ -2098,7 +2169,7 @@ init();
 
 <!-- ── FLOATING INSTALL BUTTON (always visible) ── -->
 <button id="pwa-fab" onclick="showInstallUI()" title="Add shortcut to home screen / desktop"
-  style="position:fixed;bottom:92px;right:20px;z-index:900;background:#0C4A6E;border:2px solid #0EA5E9;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:Inter,sans-serif;transition:transform .2s;">
+  style="position:fixed;bottom:92px;right:20px;z-index:900;background:#0C4A6E;border:2px solid #0EA5E9;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:'Poppins',system-ui,sans-serif;transition:transform .2s;">
   <img src="/assets/ct-icon-192.png" width="26" height="26" style="border-radius:6px;" alt="" onerror="this.style.display='none'"/>
   <div style="text-align:left;">
     <div style="color:#38BDF8;font-size:.75rem;font-weight:800;line-height:1.2;">Add Shortcut</div>
