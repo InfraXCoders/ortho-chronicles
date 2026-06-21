@@ -3620,3 +3620,116 @@ html {
 @media (max-width: 380px) {
   .mentor-info h3 { font-size: 1.25rem; }
 }
+
+/* ╔═══════════════════════════════════════════════════════════════╗
+   ║   MOBILE OPTIMISATION — PHASE 3 (merged section + physio)    ║
+   ╚═══════════════════════════════════════════════════════════════╝ */
+
+/* ── Merged publish+mentor grid: stack on mobile ── */
+@media (max-width: 768px) {
+  .publish-expert-grid {
+    grid-template-columns: 1fr !important;
+  }
+  /* mentor card becomes horizontal strip on tablet */
+  .publish-expert-grid .mentor-card {
+    max-width: 100% !important;
+    min-width: auto !important;
+    flex-direction: row;
+    text-align: left !important;
+    padding: 16px !important;
+    gap: 16px !important;
+  }
+  .publish-expert-grid .mentor-card .mentor-info {
+    text-align: left !important;
+  }
+  .publish-expert-grid .mentor-card .mentor-tags {
+    justify-content: flex-start !important;
+  }
+}
+@media (max-width: 480px) {
+  /* mentor card stacks vertically on phone */
+  .publish-expert-grid .mentor-card {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 14px !important;
+  }
+  .publish-expert-grid .mentor-card .mentor-info {
+    text-align: center !important;
+  }
+  .publish-expert-grid .mentor-card .mentor-tags {
+    justify-content: center !important;
+  }
+  /* publish list items hide action links on very small phones to prevent overflow */
+  .publish-list li > a { display: none; }
+  /* tighten list rows */
+  .publish-list li { padding: 10px 14px !important; gap: 10px !important; }
+}
+
+/* ── Physiotherapy page mobile ── */
+@media (max-width: 600px) {
+  /* lang bar wraps cleanly */
+  .lang-bar { padding: 8px 14px; gap: 8px; }
+  .lang-btn  { padding: 5px 11px; font-size: .75rem; }
+
+  /* filter tabs row — smaller pills */
+  .mf-btn { padding: 6px 12px; font-size: .78rem; gap: 4px; }
+  .mf-icon { font-size: .9rem; }
+
+  /* exercise cards — single column, no overflow */
+  .ex-card { border-radius: 10px; }
+  .ex-vid  { border-radius: 10px 10px 0 0; }
+  .ex-body { padding: 12px 12px 6px; }
+  .ex-name { font-size: .95rem; }
+  .ex-stats { gap: 8px; }
+  .ex-stat strong { font-size: 1rem; }
+  .acc-btn { padding: 10px 12px; font-size: .78rem; }
+  .acc-body { padding: 10px 12px; }
+  .acc-body li { font-size: .79rem; }
+
+  /* region divider */
+  .region-divider h3 { font-size: 1rem; }
+
+  /* hero stats row on physio/gym pages */
+  .pt-hero-stats { gap: 20px; }
+  .pt-hero-stats .gstat strong { font-size: 1.6rem; }
+}
+
+/* ── Gym page exercise cards ── */
+@media (max-width: 600px) {
+  .gym-main   { padding: 24px 12px 60px; }
+  .gsearch    { font-size: 1rem; padding: 12px 16px 12px 42px; }
+  .ex-badges  { flex-wrap: wrap; gap: 5px; }
+  .badge      { font-size: .68rem; padding: 3px 9px; }
+}
+
+/* ── Calorie tracker mobile ── */
+@media (max-width: 480px) {
+  .ct-hero { padding: 80px 14px 36px; }
+  .ring-wrap { width: 140px; height: 140px; }
+  .macro-bar-row { gap: 8px; }
+  .food-row { padding: 10px 12px; gap: 10px; }
+  .food-row .food-name { font-size: .85rem; }
+  .food-row .food-cal  { font-size: .78rem; }
+  .qr-fab  { bottom: 16px; right: 14px; width: 50px; height: 50px; font-size: 1.2rem; }
+}
+
+/* ── Global: prevent horizontal scroll from any inline-wide elements ── */
+@media (max-width: 768px) {
+  section, .container, .section { overflow-x: hidden; }
+  img, iframe, video { max-width: 100%; height: auto; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ── Hero: fix padding-top on short phones in landscape ── */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero { height: auto; min-height: 100dvh; padding-top: 70px; padding-bottom: 40px; }
+  .hero-content { padding: 30px 20px; }
+  .scroll-indicator { display: none; }
+}
+
+/* ── Typography: base font slightly smaller on tiny phones ── */
+@media (max-width: 360px) {
+  body { font-size: 14px; }
+  .container { padding: 0 10px; }
+  .publish-list li { flex-direction: column; align-items: flex-start; }
+}
