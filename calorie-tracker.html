@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -9,11 +9,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Calorie Tracker"/>
   <link rel="manifest" href="ct-manifest.json"/>
-  <link rel="apple-touch-icon" href="/ct-icon-192.png"/>
-  <link rel="apple-touch-icon" sizes="192x192" href="/ct-icon-192.png"/>
-  <link rel="apple-touch-icon" sizes="512x512" href="/ct-icon-512.png"/>
-  <link rel="icon" type="image/png" sizes="192x192" href="/ct-icon-192.png"/>
-  <title>Calorie & Nutrition Tracker — Indian Diet | OrthoChronicles</title>
+  <link rel="apple-touch-icon" href="/assets/ct-icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/ct-icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="512x512" href="/assets/ct-icon-512.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/ct-icon-192.png"/>
+  <title>Calorie & Nutrition Tracker â€” Indian Diet | OrthoChronicles</title>
   <meta name="description" content="Track calories, macronutrients and water content for Indian foods, fruits and vegetables. Get personalised weight loss and weight gain diet plans."/>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css?v=6"/>
@@ -24,7 +24,7 @@
   :root{--N:#0C4A6E;--G:#0EA5E9;--GL:#38BDF8;--bg:#F0F9FF;--cb:#fff;--tx:#0F172A;--mu:#64748B;--br:#BAE6FD;--ln:#075985;--ic:#E0F2FE;--green:#16A34A;--red:#DC2626;--orange:#EA580C;--blue:#2563EB;}
   *{box-sizing:border-box;margin:0;padding:0;}
 
-  /* ── HERO ── */
+  /* â”€â”€ HERO â”€â”€ */
   .ct-hero{background:var(--N);padding:90px 20px 50px;text-align:center;position:relative;overflow:hidden;}
   .ct-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(14,165,233,.25) 0%,transparent 65%);pointer-events:none;}
   .ct-hero>div{position:relative;z-index:1;}
@@ -47,7 +47,7 @@
   .tdee-stat strong{display:block;font-size:1.4rem;font-weight:800;color:var(--GL);}
   .tdee-stat span{font-size:.72rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;}
 
-  /* ── NAV TABS ── */
+  /* â”€â”€ NAV TABS â”€â”€ */
   .ct-tabs{background:#fff;border-bottom:1px solid var(--br);position:sticky;top:60px;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06);}
   .ct-tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
   .ct-tabs-inner::-webkit-scrollbar{display:none;}
@@ -55,12 +55,12 @@
   .tab-btn.active{color:var(--N);border-bottom-color:var(--G);}
   .tab-btn i{margin-right:6px;}
 
-  /* ── MAIN ── */
+  /* â”€â”€ MAIN â”€â”€ */
   .ct-main{max-width:1100px;margin:0 auto;padding:32px 20px 80px;}
   .ct-panel{display:none;}
   .ct-panel.active{display:block;}
 
-  /* ── DAILY LOG ── */
+  /* â”€â”€ DAILY LOG â”€â”€ */
   .log-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;}
   @media(max-width:900px){.log-layout{grid-template-columns:1fr;}}
 
@@ -113,7 +113,7 @@
   .fi-del:hover{color:var(--red);}
   .meal-empty{padding:14px 18px;font-size:.82rem;color:var(--mu);font-style:italic;}
 
-  /* ── FOOD SEARCH MODAL ── */
+  /* â”€â”€ FOOD SEARCH MODAL â”€â”€ */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:none;align-items:flex-end;justify-content:center;}
   .modal-overlay.open{display:flex;}
   @media(min-width:600px){.modal-overlay{align-items:center;}}
@@ -159,12 +159,12 @@
   .egg-preview{text-align:center;font-size:.8rem;color:var(--mu);margin-bottom:12px;display:none;}
   .egg-preview.show{display:block;}
 
-  /* ── SCANNER MODAL ── */
+  /* â”€â”€ SCANNER MODAL â”€â”€ */
   .scanner-modal{position:fixed;inset:0;background:#0a0f1a;z-index:2000;display:none;flex-direction:column;align-items:center;overflow-y:auto;
     /* push content below Dynamic Island / notch on iPhone */
     padding-top:env(safe-area-inset-top,0px);}
   .scanner-modal.open{display:flex;}
-  /* mode tabs — extra top gap so they clear the camera island */
+  /* mode tabs â€” extra top gap so they clear the camera island */
   .scan-mode-bar{width:100%;max-width:480px;display:flex;gap:0;padding:18px 16px 0;flex-shrink:0;margin-top:max(8px,env(safe-area-inset-top,0px));}
   .scan-mode-btn{flex:1;padding:10px 0;border:2px solid #374151;background:transparent;color:#9CA3AF;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
   .scan-mode-btn:first-child{border-radius:10px 0 0 10px;}
@@ -240,7 +240,7 @@
   .scan-manual{background:rgba(255,255,255,.09);color:#9CA3AF;margin-top:6px;}
   .scan-manual:hover{background:rgba(255,255,255,.15);color:#fff;}
 
-  /* ── MEAL PLANS ── */
+  /* â”€â”€ MEAL PLANS â”€â”€ */
   .plans-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
   .plans-header h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--N);}
   .plan-toggle{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;}
@@ -264,7 +264,7 @@
   .plan-use-btn{display:block;width:calc(100% - 40px);margin:12px 20px 16px;background:var(--N);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;}
   .plan-use-btn:hover{background:var(--ln);}
 
-  /* ── PROGRESS ── */
+  /* â”€â”€ PROGRESS â”€â”€ */
   .prog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
   .prog-stat-card{background:#fff;border-radius:14px;border:1px solid var(--br);padding:20px;}
   .psc-icon{font-size:1.6rem;margin-bottom:8px;}
@@ -284,7 +284,7 @@
   .wt-diff.up{background:#FEE2E2;color:var(--red);}
   .wt-diff.dn{background:#DCFCE7;color:var(--green);}
 
-  /* ── HISTORY ── */
+  /* â”€â”€ HISTORY â”€â”€ */
   .history-day{background:#fff;border-radius:14px;border:1px solid var(--br);margin-bottom:14px;overflow:hidden;}
   .hd-hdr{padding:12px 18px;display:flex;justify-content:space-between;align-items:center;background:var(--bg);}
   .hd-date{font-weight:700;color:var(--N);font-size:.9rem;}
@@ -339,9 +339,9 @@
       <div class="pf-field"><label>Activity Level</label>
         <select id="pfActivity">
           <option value="1.2">Sedentary (desk job)</option>
-          <option value="1.375">Light (1–3 days/wk)</option>
-          <option value="1.55" selected>Moderate (3–5 days/wk)</option>
-          <option value="1.725">Active (6–7 days/wk)</option>
+          <option value="1.375">Light (1â€“3 days/wk)</option>
+          <option value="1.55" selected>Moderate (3â€“5 days/wk)</option>
+          <option value="1.725">Active (6â€“7 days/wk)</option>
           <option value="1.9">Very Active (athlete)</option>
         </select>
       </div>
@@ -355,11 +355,11 @@
       <button class="pf-calc-btn" onclick="calcTDEE()"><i class="fas fa-calculator"></i> Calculate My Daily Target</button>
     </div>
     <div class="tdee-bar" id="tdeebar">
-      <div class="tdee-stat"><strong id="tdeeVal">—</strong><span>Calories/day</span></div>
-      <div class="tdee-stat"><strong id="protTarget">—</strong><span>Protein (g)</span></div>
-      <div class="tdee-stat"><strong id="carbTarget">—</strong><span>Carbs (g)</span></div>
-      <div class="tdee-stat"><strong id="fatTarget">—</strong><span>Fat (g)</span></div>
-      <div class="tdee-stat"><strong id="waterTarget">—</strong><span>Water (ml)</span></div>
+      <div class="tdee-stat"><strong id="tdeeVal">â€”</strong><span>Calories/day</span></div>
+      <div class="tdee-stat"><strong id="protTarget">â€”</strong><span>Protein (g)</span></div>
+      <div class="tdee-stat"><strong id="carbTarget">â€”</strong><span>Carbs (g)</span></div>
+      <div class="tdee-stat"><strong id="fatTarget">â€”</strong><span>Fat (g)</span></div>
+      <div class="tdee-stat"><strong id="waterTarget">â€”</strong><span>Water (ml)</span></div>
     </div>
   </div>
 </section>
@@ -398,22 +398,22 @@
               <div class="cal-ring-text"><strong id="calConsumed">0</strong><span>eaten</span></div>
             </div>
             <div class="cal-remain">
-              <div class="cr-num" id="calRemain">—</div>
+              <div class="cr-num" id="calRemain">â€”</div>
               <div class="cr-lbl">kcal remaining</div>
-              <div style="font-size:.72rem;color:var(--mu);margin-top:4px;">Goal: <span id="calGoalDisp">—</span> kcal</div>
+              <div style="font-size:.72rem;color:var(--mu);margin-top:4px;">Goal: <span id="calGoalDisp">â€”</span> kcal</div>
             </div>
           </div>
           <div class="macro-bars">
             <div class="mb-row">
-              <div class="mb-label"><span>Protein</span><span id="protDisp">0 / — g</span></div>
+              <div class="mb-label"><span>Protein</span><span id="protDisp">0 / â€” g</span></div>
               <div class="mb-track"><div class="mb-fill prot" id="protBar" style="width:0%"></div></div>
             </div>
             <div class="mb-row">
-              <div class="mb-label"><span>Carbs</span><span id="carbDisp">0 / — g</span></div>
+              <div class="mb-label"><span>Carbs</span><span id="carbDisp">0 / â€” g</span></div>
               <div class="mb-track"><div class="mb-fill carb" id="carbBar" style="width:0%"></div></div>
             </div>
             <div class="mb-row">
-              <div class="mb-label"><span>Fat</span><span id="fatDisp">0 / — g</span></div>
+              <div class="mb-label"><span>Fat</span><span id="fatDisp">0 / â€” g</span></div>
               <div class="mb-track"><div class="mb-fill fat" id="fatBar" style="width:0%"></div></div>
             </div>
             <div class="mb-row">
@@ -423,13 +423,13 @@
           </div>
           <div class="water-row">
             <div style="flex:1">
-              <div style="font-size:.78rem;font-weight:700;color:var(--N);margin-bottom:6px;">💧 Water Intake</div>
+              <div style="font-size:.78rem;font-weight:700;color:var(--N);margin-bottom:6px;">ðŸ’§ Water Intake</div>
               <div class="water-glasses" id="waterGlasses"></div>
               <div class="water-lbl" id="waterLbl">0 / 8 glasses (0 ml)</div>
             </div>
           </div>
           <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--br);">
-            <div style="font-size:.78rem;font-weight:700;color:var(--N);margin-bottom:8px;">📊 Macros Split</div>
+            <div style="font-size:.78rem;font-weight:700;color:var(--N);margin-bottom:8px;">ðŸ“Š Macros Split</div>
             <div id="macroSplit" style="display:flex;gap:8px;font-size:.72rem;"></div>
           </div>
         </div>
@@ -440,7 +440,7 @@
   <!-- MEAL PLANS -->
   <div class="ct-panel" id="panel-plans">
     <div class="plans-header">
-      <h2>🍛 Indian Diet Plans</h2>
+      <h2>ðŸ› Indian Diet Plans</h2>
       <div class="plan-toggle">
         <button class="ptog active" id="ptogLose" onclick="showPlanType('lose')">Weight Loss</button>
         <button class="ptog" id="ptogGain" onclick="showPlanType('gain')">Weight Gain</button>
@@ -453,7 +453,7 @@
   <div class="ct-panel" id="panel-progress">
     <div class="prog-grid" id="progGrid"></div>
     <div class="weight-log-wrap">
-      <h3>⚖️ Weight Log</h3>
+      <h3>âš–ï¸ Weight Log</h3>
       <div class="wt-input-row">
         <input class="wt-input" type="number" id="wtInput" placeholder="Enter today's weight (kg)" step="0.1"/>
         <button class="wt-log-btn" onclick="logWeight()">Log</button>
@@ -483,7 +483,7 @@
     </div>
     <div class="modal-search-wrap">
       <i class="fas fa-search modal-search-icon"></i>
-      <input class="modal-search" id="foodSearch" placeholder="Search food…" oninput="filterFoods()" autocomplete="off"/>
+      <input class="modal-search" id="foodSearch" placeholder="Search foodâ€¦" oninput="filterFoods()" autocomplete="off"/>
     </div>
     <div class="modal-tabs" id="modalTabs"></div>
     <div class="food-list" id="foodList"></div>
@@ -496,10 +496,10 @@
   <p id="qtyFoodInfo">0 kcal per 100g</p>
   <!-- Egg counter (shown for egg items) -->
   <div class="egg-counter" id="eggCounter">
-    <button class="egg-btn" onclick="changeEggs(-1)">−</button>
+    <button class="egg-btn" onclick="changeEggs(-1)">âˆ’</button>
     <div style="text-align:center;padding:0 16px;">
       <div class="egg-count" id="eggCount">1</div>
-      <div class="egg-count-label">🥚 eggs</div>
+      <div class="egg-count-label">ðŸ¥š eggs</div>
     </div>
     <button class="egg-btn" onclick="changeEggs(1)">+</button>
   </div>
@@ -512,17 +512,17 @@
   <button class="qty-confirm" onclick="confirmAdd()">Add to Log</button>
 </div>
 
-<!-- SCANNER MODAL — dual mode: Barcode + AI Photo -->
+<!-- SCANNER MODAL â€” dual mode: Barcode + AI Photo -->
 <div class="scanner-modal" id="scannerModal">
   <button class="scanner-close" onclick="closeScanner()"><i class="fas fa-times"></i></button>
 
   <!-- Mode selector -->
   <div class="scan-mode-bar">
     <button class="scan-mode-btn active" id="modeBarcodeBtn" onclick="setScanMode('barcode')">
-      📦 Barcode / QR
+      ðŸ“¦ Barcode / QR
     </button>
     <button class="scan-mode-btn" id="modePhotoBtn" onclick="setScanMode('photo')">
-      🤖 AI Food Recognition
+      ðŸ¤– AI Food Recognition
     </button>
   </div>
 
@@ -540,7 +540,7 @@
     <!-- AI photo frame + snap button -->
     <div class="scan-frame-photo" id="photoFrame"></div>
     <div class="photo-overlay" id="photoOverlay">
-      <button class="photo-snap-btn" onclick="snapPhoto()" title="Take photo to identify food">📷</button>
+      <button class="photo-snap-btn" onclick="snapPhoto()" title="Take photo to identify food">ðŸ“·</button>
       <span class="photo-snap-label">TAP TO IDENTIFY FOOD</span>
     </div>
   </div>
@@ -563,10 +563,10 @@
       <div class="src-product" id="srcProduct"></div>
       <div class="src-brand" id="srcBrand"></div>
       <div class="src-macros">
-        <div class="src-macro cal"><strong id="srcCal">—</strong><span>kcal</span></div>
-        <div class="src-macro prot"><strong id="srcProt">—</strong><span>protein</span></div>
-        <div class="src-macro carb"><strong id="srcCarb">—</strong><span>carbs</span></div>
-        <div class="src-macro fat"><strong id="srcFat">—</strong><span>fat</span></div>
+        <div class="src-macro cal"><strong id="srcCal">â€”</strong><span>kcal</span></div>
+        <div class="src-macro prot"><strong id="srcProt">â€”</strong><span>protein</span></div>
+        <div class="src-macro carb"><strong id="srcCarb">â€”</strong><span>carbs</span></div>
+        <div class="src-macro fat"><strong id="srcFat">â€”</strong><span>fat</span></div>
       </div>
       <div class="src-per" id="srcPer">per 100g</div>
       <div class="src-water" id="srcWater"></div>
@@ -574,7 +574,7 @@
         <i class="fas fa-plus-circle"></i> Add to Today's Log
       </button>
       <button onclick="scanAgain()" style="width:100%;margin-top:8px;background:none;border:1.5px solid var(--br);border-radius:10px;padding:9px;font-size:.82rem;color:var(--mu);cursor:pointer;font-family:Inter,sans-serif;">
-        🔄 Scan Another Item
+        ðŸ”„ Scan Another Item
       </button>
     </div>
 
@@ -597,15 +597,15 @@
 </div>
 <div class="modal-overlay" id="qtyOverlay" style="background:rgba(0,0,0,.4);" onclick="closeQtyModal()"></div>
 
-<!-- ZXing multi-format barcode library (EAN-13, UPC-A, QR, Code128…) -->
+<!-- ZXing multi-format barcode library (EAN-13, UPC-A, QR, Code128â€¦) -->
 <script src="https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"></script>
 <script>
-/* ═══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    INDIAN FOOD DATABASE  (per 100g unless noted)
    Fields: id, name, cat, cal, prot, carb, fat, fiber, water
-═══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const FOODS=[
-/* ── FRUITS ── */
+/* â”€â”€ FRUITS â”€â”€ */
 {id:'fr01',name:'Banana',cat:'fruit',cal:89,prot:1.1,carb:23,fat:0.3,fiber:2.6,water:75},
 {id:'fr02',name:'Mango (Aam)',cat:'fruit',cal:60,prot:0.8,carb:15,fat:0.4,fiber:1.6,water:83},
 {id:'fr03',name:'Apple',cat:'fruit',cal:52,prot:0.3,carb:14,fat:0.2,fiber:2.4,water:86},
@@ -622,7 +622,7 @@ const FOODS=[
 {id:'fr14',name:'Coconut (fresh)',cat:'fruit',cal:354,prot:3.3,carb:15,fat:33,fiber:9.0,water:47},
 {id:'fr15',name:'Dates (Khajoor)',cat:'fruit',cal:282,prot:2.5,carb:75,fat:0.4,fiber:8.0,water:21},
 
-/* ── VEGETABLES ── */
+/* â”€â”€ VEGETABLES â”€â”€ */
 {id:'vg01',name:'Spinach (Palak)',cat:'vegetable',cal:23,prot:2.9,carb:3.6,fat:0.4,fiber:2.2,water:91},
 {id:'vg02',name:'Tomato',cat:'vegetable',cal:18,prot:0.9,carb:3.9,fat:0.2,fiber:1.2,water:95},
 {id:'vg03',name:'Potato (Aloo)',cat:'vegetable',cal:77,prot:2.0,carb:17,fat:0.1,fiber:2.2,water:79},
@@ -644,7 +644,7 @@ const FOODS=[
 {id:'vg19',name:'Sweet Potato (Shakarkandi)',cat:'vegetable',cal:86,prot:1.6,carb:20,fat:0.1,fiber:3.0,water:77},
 {id:'vg20',name:'Colocasia (Arbi)',cat:'vegetable',cal:112,prot:1.5,carb:26,fat:0.2,fiber:4.1,water:70},
 
-/* ── GRAINS & STAPLES ── */
+/* â”€â”€ GRAINS & STAPLES â”€â”€ */
 {id:'gr01',name:'Chapati / Roti (plain)',cat:'grain',cal:297,prot:7.9,carb:63,fat:1.3,fiber:4.2,water:30},
 {id:'gr02',name:'Paratha (plain, 1 pc ~70g)',cat:'grain',cal:260,prot:5.5,carb:40,fat:9.0,fiber:2.5,water:35},
 {id:'gr03',name:'Boiled Rice (cooked)',cat:'grain',cal:130,prot:2.7,carb:28,fat:0.3,fiber:0.4,water:68},
@@ -656,7 +656,7 @@ const FOODS=[
 {id:'gr09',name:'Jowar Roti (sorghum)',cat:'grain',cal:270,prot:9.5,carb:56,fat:1.8,fiber:6.0,water:26},
 {id:'gr10',name:'Whole Wheat Bread (1 slice)',cat:'grain',cal:69,prot:3.6,carb:12,fat:1.0,fiber:1.9,water:37},
 
-/* ── DALS & LEGUMES ── */
+/* â”€â”€ DALS & LEGUMES â”€â”€ */
 {id:'dl01',name:'Toor Dal (cooked)',cat:'legume',cal:116,prot:7.2,carb:20,fat:0.5,fiber:6.7,water:68},
 {id:'dl02',name:'Moong Dal (cooked)',cat:'legume',cal:105,prot:7.0,carb:19,fat:0.4,fiber:7.6,water:70},
 {id:'dl03',name:'Chana Dal (cooked)',cat:'legume',cal:164,prot:8.9,carb:27,fat:2.7,fiber:7.6,water:60},
@@ -667,7 +667,7 @@ const FOODS=[
 {id:'dl08',name:'Moong Sprouts (raw)',cat:'legume',cal:30,prot:3.0,carb:5.9,fat:0.2,fiber:1.8,water:90},
 {id:'dl09',name:'Soybean (cooked)',cat:'legume',cal:173,prot:17,carb:10,fat:9.0,fiber:6.0,water:63},
 
-/* ── DAIRY ── */
+/* â”€â”€ DAIRY â”€â”€ */
 {id:'da01',name:'Whole Milk (cow)',cat:'dairy',cal:61,prot:3.2,carb:4.8,fat:3.3,fiber:0,water:88},
 {id:'da02',name:'Curd / Dahi (full fat)',cat:'dairy',cal:98,prot:11,carb:3.4,fat:4.3,fiber:0,water:81},
 {id:'da03',name:'Paneer (cottage cheese)',cat:'dairy',cal:265,prot:18,carb:3.4,fat:20,fiber:0,water:55},
@@ -678,7 +678,7 @@ const FOODS=[
 {id:'da08',name:'Chaas / Buttermilk (200ml)',cat:'dairy',cal:40,prot:3.0,carb:5.0,fat:0.8,fiber:0,water:91},
 {id:'da09',name:'Whey Protein (1 scoop 30g)',cat:'dairy',cal:120,prot:24,carb:3,fat:2,fiber:0,water:5},
 
-/* ── PROTEINS ── */
+/* â”€â”€ PROTEINS â”€â”€ */
 {id:'pr01',name:'Chicken Breast (grilled)',cat:'protein',cal:165,prot:31,carb:0,fat:3.6,fiber:0,water:65},
 {id:'pr02',name:'Egg (whole, 1 large ~50g)',cat:'protein',cal:78,prot:6.3,carb:0.6,fat:5.3,fiber:0,water:76},
 {id:'pr03',name:'Egg White (1 large)',cat:'protein',cal:17,prot:18.2,carb:0.2,fat:0.1,fiber:0,water:88},
@@ -686,7 +686,7 @@ const FOODS=[
 {id:'pr07',name:'Masala Omelette (2 eggs)',cat:'protein',cal:210,prot:13,carb:4,fat:16,fiber:0.8,water:68},
 {id:'pr08',name:'Egg Bhurji / Scrambled Eggs (2 eggs)',cat:'protein',cal:220,prot:14,carb:5,fat:16,fiber:1,water:65},
 {id:'pr09',name:'Egg Bhurji with Bread (2 eggs + 2 slices)',cat:'protein',cal:400,prot:18,carb:36,fat:19,fiber:2,water:52},
-/* ── CHICKEN ── */
+/* â”€â”€ CHICKEN â”€â”€ */
 {id:'pr04',name:'Fish Rohu (cooked)',cat:'protein',cal:97,prot:16,carb:0,fat:3.2,fiber:0,water:79},
 {id:'pr05',name:'Mutton (cooked)',cat:'protein',cal:294,prot:25,carb:0,fat:21,fiber:0,water:58},
 {id:'pr10',name:'Chicken Curry (1 bowl 250g)',cat:'protein',cal:330,prot:28,carb:6,fat:21,fiber:1,water:60},
@@ -697,13 +697,13 @@ const FOODS=[
 {id:'pr15',name:'Chicken Keema (100g)',cat:'protein',cal:218,prot:22,carb:4,fat:13,fiber:1,water:62},
 {id:'pr16',name:'Chicken Wings (4 pcs ~120g)',cat:'protein',cal:310,prot:26,carb:0,fat:22,fiber:0,water:54},
 {id:'pr17',name:'Chicken Leg Piece (1 pc ~120g)',cat:'protein',cal:210,prot:24,carb:0,fat:12,fiber:0,water:62},
-/* ── MUTTON & BEEF ── */
+/* â”€â”€ MUTTON & BEEF â”€â”€ */
 {id:'pr18',name:'Mutton Curry (1 bowl 250g)',cat:'protein',cal:420,prot:28,carb:7,fat:32,fiber:1,water:55},
 {id:'pr19',name:'Mutton Biryani (1 bowl 300g)',cat:'protein',cal:520,prot:26,carb:58,fat:19,fiber:2,water:48},
 {id:'pr20',name:'Mutton Keema (100g)',cat:'protein',cal:260,prot:21,carb:5,fat:18,fiber:1,water:60},
 {id:'pr21',name:'Mutton Seekh Kebab (2 pcs ~100g)',cat:'protein',cal:230,prot:20,carb:5,fat:15,fiber:0.5,water:55},
 {id:'pr22',name:'Mutton Rogan Josh (250g)',cat:'protein',cal:390,prot:27,carb:8,fat:28,fiber:1,water:54},
-/* ── FISH & SEAFOOD ── */
+/* â”€â”€ FISH & SEAFOOD â”€â”€ */
 {id:'pr23',name:'Fish Curry (1 bowl 250g)',cat:'protein',cal:280,prot:22,carb:6,fat:18,fiber:1,water:65},
 {id:'pr24',name:'Fish Fry / Tawa Fish (150g)',cat:'protein',cal:270,prot:28,carb:8,fat:14,fiber:0.5,water:58},
 {id:'pr25',name:'Surmai / King Fish (cooked 100g)',cat:'protein',cal:110,prot:19,carb:0,fat:3.5,fiber:0,water:76},
@@ -713,11 +713,11 @@ const FOODS=[
 {id:'pr29',name:'Tuna (canned in water 100g)',cat:'protein',cal:116,prot:26,carb:0,fat:1,fiber:0,water:73},
 {id:'pr30',name:'Salmon (grilled 100g)',cat:'protein',cal:208,prot:20,carb:0,fat:13,fiber:0,water:64},
 {id:'pr31',name:'Hilsa / Ilish (cooked 100g)',cat:'protein',cal:217,prot:22,carb:0,fat:14,fiber:0,water:62},
-/* ── LAMB / PORK ── */
+/* â”€â”€ LAMB / PORK â”€â”€ */
 {id:'pr32',name:'Lamb Chops (2 pcs ~120g)',cat:'protein',cal:310,prot:26,carb:0,fat:22,fiber:0,water:55},
 {id:'pr33',name:'Pork (cooked 100g)',cat:'protein',cal:297,prot:26,carb:0,fat:21,fiber:0,water:54},
 
-/* ── SNACKS & OTHERS ── */
+/* â”€â”€ SNACKS & OTHERS â”€â”€ */
 {id:'sn01',name:'Peanuts (roasted)',cat:'snack',cal:567,prot:26,carb:16,fat:49,fiber:8.5,water:2},
 {id:'sn02',name:'Almonds (Badam)',cat:'snack',cal:579,prot:21,carb:22,fat:50,fiber:12.5,water:4},
 {id:'sn03',name:'Walnuts (Akhrot)',cat:'snack',cal:654,prot:15,carb:14,fat:65,fiber:6.7,water:4},
@@ -732,7 +732,7 @@ const FOODS=[
 {id:'sn12',name:'Chole (1 bowl 200g)',cat:'snack',cal:270,prot:13,carb:40,fat:8.5,fiber:10,water:62},
 {id:'sn13',name:'Poha (1 plate 200g)',cat:'snack',cal:330,prot:6.0,carb:60,fat:7.0,fiber:3.0,water:52},
 
-/* ── COFFEE (per 240ml / 1 cup unless noted) ── */
+/* â”€â”€ COFFEE (per 240ml / 1 cup unless noted) â”€â”€ */
 {id:'cf01',name:'Black Coffee (plain, no sugar)',cat:'beverage',cal:2,prot:0.3,carb:0,fat:0,fiber:0,water:99},
 {id:'cf02',name:'Coffee with Milk & Sugar (1 tsp sugar)',cat:'beverage',cal:50,prot:1.8,carb:8,fat:1.5,fiber:0,water:90},
 {id:'cf03',name:'Cappuccino (240ml)',cat:'beverage',cal:74,prot:4.0,carb:8,fat:3.0,fiber:0,water:88},
@@ -746,7 +746,7 @@ const FOODS=[
 {id:'cf11',name:'Bulletproof Coffee (240ml + 1tbsp butter + 1tbsp MCT)',cat:'beverage',cal:230,prot:0.5,carb:0,fat:25,fiber:0,water:70},
 {id:'cf12',name:'Mocha (240ml)',cat:'beverage',cal:175,prot:5.0,carb:24,fat:6.5,fiber:1.0,water:82},
 
-/* ── TEA (per 240ml unless noted) ── */
+/* â”€â”€ TEA (per 240ml unless noted) â”€â”€ */
 {id:'te01',name:'Black Tea (plain, no sugar)',cat:'beverage',cal:2,prot:0,carb:0.5,fat:0,fiber:0,water:99},
 {id:'te02',name:'Masala Chai (with milk & 1 tsp sugar)',cat:'beverage',cal:55,prot:2.0,carb:9,fat:1.8,fiber:0.2,water:89},
 {id:'te03',name:'Masala Chai (with milk, no sugar)',cat:'beverage',cal:35,prot:2.0,carb:4,fat:1.8,fiber:0.2,water:91},
@@ -760,7 +760,7 @@ const FOODS=[
 {id:'te11',name:'Chamomile Tea',cat:'beverage',cal:2,prot:0,carb:0.5,fat:0,fiber:0,water:99},
 {id:'te12',name:'Herbal Kadha (immunity drink, 200ml)',cat:'beverage',cal:20,prot:0.5,carb:4,fat:0.2,fiber:0.5,water:94},
 
-/* ── SHAKES & SMOOTHIES (per 300ml unless noted) ── */
+/* â”€â”€ SHAKES & SMOOTHIES (per 300ml unless noted) â”€â”€ */
 {id:'sh01',name:'Banana Milk Shake (300ml)',cat:'beverage',cal:230,prot:7.0,carb:40,fat:5.5,fiber:1.5,water:78},
 {id:'sh02',name:'Mango Lassi (300ml)',cat:'beverage',cal:215,prot:6.5,carb:38,fat:4.0,fiber:1.0,water:78},
 {id:'sh03',name:'Strawberry Shake (300ml)',cat:'beverage',cal:195,prot:6.5,carb:32,fat:5.0,fiber:1.2,water:80},
@@ -775,7 +775,7 @@ const FOODS=[
 {id:'sh12',name:'Haldi Doodh / Golden Milk (250ml)',cat:'beverage',cal:155,prot:6.5,carb:14,fat:8.0,fiber:0.3,water:83},
 {id:'sh13',name:'Chocolate Protein Shake (30g whey + 250ml milk)',cat:'beverage',cal:295,prot:34,carb:22,fat:6.5,fiber:1.0,water:72},
 
-/* ── JUICES (per 200ml unless noted) ── */
+/* â”€â”€ JUICES (per 200ml unless noted) â”€â”€ */
 {id:'ju01',name:'Orange Juice (fresh, 200ml)',cat:'beverage',cal:88,prot:1.4,carb:20,fat:0.4,fiber:0.5,water:89},
 {id:'ju02',name:'Apple Juice (fresh, 200ml)',cat:'beverage',cal:94,prot:0.2,carb:24,fat:0.2,fiber:0.2,water:88},
 {id:'ju03',name:'Mango Juice / Aam Panna (200ml)',cat:'beverage',cal:96,prot:0.8,carb:24,fat:0.3,fiber:0.4,water:87},
@@ -795,7 +795,7 @@ const FOODS=[
 {id:'ju17',name:'Ash Gourd / Petha Juice (200ml)',cat:'beverage',cal:24,prot:0.5,carb:5,fat:0.1,fiber:0.4,water:96},
 {id:'ju18',name:'Jaljeera (200ml)',cat:'beverage',cal:28,prot:0.4,carb:6,fat:0.2,fiber:0.2,water:95},
 
-/* ── PROTEIN POWDER & SUPPLEMENTS ── */
+/* â”€â”€ PROTEIN POWDER & SUPPLEMENTS â”€â”€ */
 {id:'pp01',name:'Whey Protein Isolate (1 scoop 30g)',cat:'supplement',cal:110,prot:26,carb:1,fat:0.5,fiber:0,water:4},
 {id:'pp02',name:'Whey Protein Concentrate (1 scoop 30g)',cat:'supplement',cal:120,prot:22,carb:4,fat:2.0,fiber:0,water:4},
 {id:'pp03',name:'Casein Protein (1 scoop 34g)',cat:'supplement',cal:120,prot:24,carb:4,fat:1.0,fiber:1.0,water:4},
@@ -807,7 +807,7 @@ const FOODS=[
 {id:'pp09',name:'Collagen Peptides (1 scoop 10g)',cat:'supplement',cal:36,prot:9,carb:0,fat:0,fiber:0,water:2},
 {id:'pp10',name:'Doodh-Sattu Protein Drink (300ml)',cat:'supplement',cal:260,prot:14,carb:38,fat:5.5,fiber:3.5,water:72},
 
-/* ── SOFT DRINKS (per 330ml can unless noted) ── */
+/* â”€â”€ SOFT DRINKS (per 330ml can unless noted) â”€â”€ */
 {id:'sd01',name:'Coca-Cola (330ml)',cat:'softdrink',cal:139,prot:0,carb:35,fat:0,fiber:0,water:90},
 {id:'sd02',name:'Pepsi (330ml)',cat:'softdrink',cal:150,prot:0,carb:41,fat:0,fiber:0,water:89},
 {id:'sd03',name:'Sprite / 7-Up (330ml)',cat:'softdrink',cal:140,prot:0,carb:36,fat:0,fiber:0,water:90},
@@ -824,10 +824,10 @@ const FOODS=[
 {id:'sd14',name:'Rooh Afza Sharbat (250ml)',cat:'softdrink',cal:115,prot:0.2,carb:29,fat:0.1,fiber:0,water:88},
 {id:'sd15',name:'Tango / Fanta Orange (330ml)',cat:'softdrink',cal:144,prot:0,carb:36,fat:0,fiber:0,water:90},
 
-/* ── ALCOHOLIC DRINKS ── */
-{id:'al01',name:'Beer — Regular Lager / Kingfisher (330ml)',cat:'alcohol',cal:150,prot:1.3,carb:13,fat:0,fiber:0,water:92},
-{id:'al02',name:'Beer — Strong (8%, Kingfisher Strong 500ml)',cat:'alcohol',cal:295,prot:1.8,carb:22,fat:0,fiber:0,water:89},
-{id:'al03',name:'Beer — Light / Low-calorie (330ml)',cat:'alcohol',cal:99,prot:0.7,carb:5.0,fat:0,fiber:0,water:95},
+/* â”€â”€ ALCOHOLIC DRINKS â”€â”€ */
+{id:'al01',name:'Beer â€” Regular Lager / Kingfisher (330ml)',cat:'alcohol',cal:150,prot:1.3,carb:13,fat:0,fiber:0,water:92},
+{id:'al02',name:'Beer â€” Strong (8%, Kingfisher Strong 500ml)',cat:'alcohol',cal:295,prot:1.8,carb:22,fat:0,fiber:0,water:89},
+{id:'al03',name:'Beer â€” Light / Low-calorie (330ml)',cat:'alcohol',cal:99,prot:0.7,carb:5.0,fat:0,fiber:0,water:95},
 {id:'al04',name:'Whisky (30ml / 1 peg, neat)',cat:'alcohol',cal:70,prot:0,carb:0,fat:0,fiber:0,water:60},
 {id:'al05',name:'Whisky with Soda (60ml whisky + 150ml soda)',cat:'alcohol',cal:140,prot:0,carb:0,fat:0,fiber:0,water:80},
 {id:'al06',name:'Rum (30ml, dark/white)',cat:'alcohol',cal:65,prot:0,carb:0,fat:0,fiber:0,water:60},
@@ -836,9 +836,9 @@ const FOODS=[
 {id:'al09',name:'Vodka Soda (60ml vodka + 150ml soda)',cat:'alcohol',cal:130,prot:0,carb:0,fat:0,fiber:0,water:82},
 {id:'al10',name:'Gin (30ml, 40% ABV)',cat:'alcohol',cal:68,prot:0,carb:0,fat:0,fiber:0,water:60},
 {id:'al11',name:'Gin & Tonic (60ml gin + 150ml tonic)',cat:'alcohol',cal:195,prot:0,carb:16,fat:0,fiber:0,water:80},
-{id:'al12',name:'Wine — Red (150ml glass)',cat:'alcohol',cal:125,prot:0.1,carb:4,fat:0,fiber:0,water:88},
-{id:'al13',name:'Wine — White (150ml glass)',cat:'alcohol',cal:120,prot:0.1,carb:4,fat:0,fiber:0,water:89},
-{id:'al14',name:'Wine — Rosé (150ml glass)',cat:'alcohol',cal:120,prot:0.1,carb:5,fat:0,fiber:0,water:89},
+{id:'al12',name:'Wine â€” Red (150ml glass)',cat:'alcohol',cal:125,prot:0.1,carb:4,fat:0,fiber:0,water:88},
+{id:'al13',name:'Wine â€” White (150ml glass)',cat:'alcohol',cal:120,prot:0.1,carb:4,fat:0,fiber:0,water:89},
+{id:'al14',name:'Wine â€” RosÃ© (150ml glass)',cat:'alcohol',cal:120,prot:0.1,carb:5,fat:0,fiber:0,water:89},
 {id:'al15',name:'Champagne / Sparkling Wine (150ml)',cat:'alcohol',cal:95,prot:0.3,carb:5,fat:0,fiber:0,water:89},
 {id:'al16',name:'Old Monk Rum (30ml)',cat:'alcohol',cal:70,prot:0,carb:0,fat:0,fiber:0,water:58},
 {id:'al17',name:'Royal Stag / Officer\'s Choice Whisky (30ml)',cat:'alcohol',cal:70,prot:0,carb:0,fat:0,fiber:0,water:58},
@@ -846,12 +846,12 @@ const FOODS=[
 {id:'al19',name:'Tequila (30ml shot)',cat:'alcohol',cal:65,prot:0,carb:0,fat:0,fiber:0,water:60},
 {id:'al20',name:'Fenny (Goa Cashew Spirit, 30ml)',cat:'alcohol',cal:70,prot:0,carb:0,fat:0,fiber:0,water:58},
 {id:'al21',name:'Brandy (30ml)',cat:'alcohol',cal:65,prot:0,carb:0,fat:0,fiber:0,water:60},
-{id:'al22',name:'Cocktail — Mojito (250ml)',cat:'alcohol',cal:180,prot:0,carb:25,fat:0,fiber:0,water:82},
-{id:'al23',name:'Cocktail — Margarita (150ml)',cat:'alcohol',cal:200,prot:0,carb:20,fat:0,fiber:0,water:75},
-{id:'al24',name:'Cocktail — Long Island Iced Tea (250ml)',cat:'alcohol',cal:280,prot:0,carb:10,fat:0,fiber:0,water:70},
+{id:'al22',name:'Cocktail â€” Mojito (250ml)',cat:'alcohol',cal:180,prot:0,carb:25,fat:0,fiber:0,water:82},
+{id:'al23',name:'Cocktail â€” Margarita (150ml)',cat:'alcohol',cal:200,prot:0,carb:20,fat:0,fiber:0,water:75},
+{id:'al24',name:'Cocktail â€” Long Island Iced Tea (250ml)',cat:'alcohol',cal:280,prot:0,carb:10,fat:0,fiber:0,water:70},
 {id:'al25',name:'Hard Seltzer / White Claw (330ml)',cat:'alcohol',cal:100,prot:1.0,carb:2,fat:0,fiber:0,water:95},
 
-/* ── VEGETABLE SALADS (per 200g serving unless noted) ── */
+/* â”€â”€ VEGETABLE SALADS (per 200g serving unless noted) â”€â”€ */
 {id:'vs01',name:'Green Salad (lettuce, cucumber, tomato)',cat:'salad',cal:28,prot:1.8,carb:5,fat:0.3,fiber:2.2,water:95},
 {id:'vs02',name:'Kachumber Salad (cucumber+tomato+onion)',cat:'salad',cal:35,prot:1.5,carb:7,fat:0.4,fiber:2.0,water:94},
 {id:'vs03',name:'Carrot & Cucumber Salad',cat:'salad',cal:45,prot:1.5,carb:10,fat:0.3,fiber:2.8,water:92},
@@ -873,7 +873,7 @@ const FOODS=[
 {id:'vs19',name:'Peanut & Vegetable Salad (200g)',cat:'salad',cal:215,prot:9.0,carb:18,fat:12,fiber:4.5,water:68},
 {id:'vs20',name:'Avocado & Tomato Salad (200g)',cat:'salad',cal:185,prot:3.0,carb:10,fat:16,fiber:6.5,water:74},
 
-/* ── FRUIT SALADS (per 200g serving) ── */
+/* â”€â”€ FRUIT SALADS (per 200g serving) â”€â”€ */
 {id:'fs01',name:'Mixed Fruit Salad (seasonal Indian fruits)',cat:'salad',cal:75,prot:1.0,carb:18,fat:0.4,fiber:2.5,water:86},
 {id:'fs02',name:'Fruit Salad with Cream (200g)',cat:'salad',cal:195,prot:2.5,carb:26,fat:9.0,fiber:2.0,water:72},
 {id:'fs03',name:'Fruit Salad with Yogurt / Dahi (200g)',cat:'salad',cal:120,prot:4.5,carb:22,fat:2.5,fiber:2.0,water:80},
@@ -887,10 +887,10 @@ const FOODS=[
 {id:'fs11',name:'Orange & Carrot Salad (200g)',cat:'salad',cal:70,prot:1.2,carb:17,fat:0.3,fiber:3.0,water:88},
 {id:'fs12',name:'Kiwi & Grape Fruit Salad (200g)',cat:'salad',cal:80,prot:1.0,carb:19,fat:0.4,fiber:2.5,water:86},
 
-/* ── EXTRA COFFEE VARIETIES ── */
-{id:'cf13',name:'Instant Coffee (Nescafé, no milk/sugar)',cat:'beverage',cal:4,prot:0.2,carb:0.7,fat:0,fiber:0,water:99},
+/* â”€â”€ EXTRA COFFEE VARIETIES â”€â”€ */
+{id:'cf13',name:'Instant Coffee (NescafÃ©, no milk/sugar)',cat:'beverage',cal:4,prot:0.2,carb:0.7,fat:0,fiber:0,water:99},
 {id:'cf14',name:'Instant Coffee with Milk & Sugar (200ml)',cat:'beverage',cal:60,prot:2.5,carb:9,fat:2.0,fiber:0,water:88},
-{id:'cf15',name:'Café Mocha with Cream (350ml)',cat:'beverage',cal:310,prot:8.0,carb:38,fat:14,fiber:1.5,water:72},
+{id:'cf15',name:'CafÃ© Mocha with Cream (350ml)',cat:'beverage',cal:310,prot:8.0,carb:38,fat:14,fiber:1.5,water:72},
 {id:'cf16',name:'Macchiato (30ml espresso + 15ml foam)',cat:'beverage',cal:13,prot:0.7,carb:1.5,fat:0.4,fiber:0,water:94},
 {id:'cf17',name:'Flat White (180ml)',cat:'beverage',cal:110,prot:5.5,carb:9,fat:5.5,fiber:0,water:86},
 {id:'cf18',name:'Irish Coffee (200ml, with whisky & cream)',cat:'beverage',cal:210,prot:2.0,carb:12,fat:9.0,fiber:0,water:72},
@@ -904,7 +904,7 @@ const FOODS=[
 {id:'cf26',name:'Mushroom Coffee (250ml)',cat:'beverage',cal:30,prot:1.5,carb:5,fat:0.5,fiber:1.0,water:93},
 {id:'cf27',name:'Vienna Coffee (with whipped cream, 240ml)',cat:'beverage',cal:195,prot:3.5,carb:14,fat:14,fiber:0,water:76},
 
-/* ── ITALIAN FOOD ── */
+/* â”€â”€ ITALIAN FOOD â”€â”€ */
 {id:'it01',name:'Pizza Margherita (1 slice ~100g)',cat:'italian',cal:266,prot:11,carb:33,fat:10,fiber:2.3,water:46},
 {id:'it02',name:'Pizza Pepperoni (1 slice ~100g)',cat:'italian',cal:298,prot:12,carb:34,fat:13,fiber:2.0,water:43},
 {id:'it03',name:'Pizza Farmhouse / Veggie (1 slice ~100g)',cat:'italian',cal:243,prot:10,carb:32,fat:9,fiber:2.8,water:50},
@@ -938,70 +938,70 @@ const FOODS=[
 ];
 
 const CATS=['all','fruit','vegetable','salad','grain','legume','dairy','protein','snack','italian','beverage','supplement','softdrink','alcohol'];
-const CAT_LABELS={all:'All',fruit:'🍎 Fruits',vegetable:'🥦 Vegetables',salad:'🥗 Salads',grain:'🌾 Grains',legume:'🫘 Legumes',dairy:'🥛 Dairy',protein:'🍗 Protein',snack:'🍛 Indian',italian:'🍕 Italian',beverage:'☕ Beverages',supplement:'💊 Supplements',softdrink:'🥤 Soft Drinks',alcohol:'🍺 Alcohol'};
+const CAT_LABELS={all:'All',fruit:'ðŸŽ Fruits',vegetable:'ðŸ¥¦ Vegetables',salad:'ðŸ¥— Salads',grain:'ðŸŒ¾ Grains',legume:'ðŸ«˜ Legumes',dairy:'ðŸ¥› Dairy',protein:'ðŸ— Protein',snack:'ðŸ› Indian',italian:'ðŸ• Italian',beverage:'â˜• Beverages',supplement:'ðŸ’Š Supplements',softdrink:'ðŸ¥¤ Soft Drinks',alcohol:'ðŸº Alcohol'};
 
-/* ── MEAL PLANS ── */
+/* â”€â”€ MEAL PLANS â”€â”€ */
 const PLANS={
   lose:[
     {
-      title:'Indian Weight Loss Plan – 1400 kcal',
+      title:'Indian Weight Loss Plan â€“ 1400 kcal',
       kcal:1400,prot:105,carb:175,fat:38,
       meals:[
-        {time:'7:00 AM – Early Morning',foods:['Warm water with lemon & jeera','2 soaked almonds + 1 walnut'],cal:60},
-        {time:'8:30 AM – Breakfast',foods:['2 Multigrain roti with methi','1 bowl moong dal (thin)','1 bowl dahi (low fat)','1 small orange'],cal:380},
-        {time:'11:00 AM – Mid Morning',foods:['1 medium guava or apple','Green tea (no sugar)'],cal:70},
-        {time:'1:30 PM – Lunch',foods:['2 roti (wheat)','1 bowl sabzi (bhindi / lauki / turai)','1 bowl dal (toor / masoor)','Salad (cucumber, tomato, onion)','Chhachh / buttermilk 200ml'],cal:440},
-        {time:'4:30 PM – Evening Snack',foods:['Roasted chana 30g','Green tea / black coffee (no sugar)','2 rice cakes'],cal:130},
-        {time:'7:30 PM – Dinner',foods:['2 roti (wheat / bajra)','1 bowl sabzi (palak / karela / gobi)','1 bowl dal','Salad'],cal:320},
+        {time:'7:00 AM â€“ Early Morning',foods:['Warm water with lemon & jeera','2 soaked almonds + 1 walnut'],cal:60},
+        {time:'8:30 AM â€“ Breakfast',foods:['2 Multigrain roti with methi','1 bowl moong dal (thin)','1 bowl dahi (low fat)','1 small orange'],cal:380},
+        {time:'11:00 AM â€“ Mid Morning',foods:['1 medium guava or apple','Green tea (no sugar)'],cal:70},
+        {time:'1:30 PM â€“ Lunch',foods:['2 roti (wheat)','1 bowl sabzi (bhindi / lauki / turai)','1 bowl dal (toor / masoor)','Salad (cucumber, tomato, onion)','Chhachh / buttermilk 200ml'],cal:440},
+        {time:'4:30 PM â€“ Evening Snack',foods:['Roasted chana 30g','Green tea / black coffee (no sugar)','2 rice cakes'],cal:130},
+        {time:'7:30 PM â€“ Dinner',foods:['2 roti (wheat / bajra)','1 bowl sabzi (palak / karela / gobi)','1 bowl dal','Salad'],cal:320},
       ]
     },
     {
-      title:'Vegetarian Weight Loss – 1300 kcal',
+      title:'Vegetarian Weight Loss â€“ 1300 kcal',
       kcal:1300,prot:70,carb:180,fat:32,
       meals:[
         {time:'7:00 AM',foods:['Jeera water / fenugreek water','5 almonds (soaked)'],cal:40},
-        {time:'8:30 AM – Breakfast',foods:['Oats porridge with fruits (no sugar)','1 banana or 1 apple','Green tea'],cal:300},
-        {time:'11:00 AM – Mid Morning',foods:['1 bowl papaya / watermelon','Coconut water'],cal:80},
-        {time:'1:30 PM – Lunch',foods:['1 cup brown rice','1 bowl rajma / chole / soybean curry','1 bowl salad','Curd (low fat)'],cal:430},
-        {time:'4:00 PM – Snack',foods:['Sprouts chaat (50g moong sprouts)','1 cup green tea'],cal:80},
-        {time:'7:30 PM – Dinner',foods:['2 bajra roti','Palak paneer (100g paneer)','Cucumber raita','Salad'],cal:370},
+        {time:'8:30 AM â€“ Breakfast',foods:['Oats porridge with fruits (no sugar)','1 banana or 1 apple','Green tea'],cal:300},
+        {time:'11:00 AM â€“ Mid Morning',foods:['1 bowl papaya / watermelon','Coconut water'],cal:80},
+        {time:'1:30 PM â€“ Lunch',foods:['1 cup brown rice','1 bowl rajma / chole / soybean curry','1 bowl salad','Curd (low fat)'],cal:430},
+        {time:'4:00 PM â€“ Snack',foods:['Sprouts chaat (50g moong sprouts)','1 cup green tea'],cal:80},
+        {time:'7:30 PM â€“ Dinner',foods:['2 bajra roti','Palak paneer (100g paneer)','Cucumber raita','Salad'],cal:370},
       ]
     },
   ],
   gain:[
     {
-      title:'Indian Muscle Gain Plan – 2800 kcal',
+      title:'Indian Muscle Gain Plan â€“ 2800 kcal',
       kcal:2800,prot:175,carb:360,fat:78,
       meals:[
-        {time:'6:30 AM – Pre-Workout',foods:['Banana (2 nos)','Dry dates 4–5 nos','Black coffee'],cal:240},
-        {time:'8:30 AM – Breakfast',foods:['4 whole eggs + 2 egg whites (scrambled)','4 chapati with ghee','1 glass full-fat milk (300ml)','1 bowl sprouts'],cal:760},
-        {time:'11:00 AM – Mid Morning',foods:['Paneer 100g with chaat masala','3 dates + 10 almonds','1 banana'],cal:340},
-        {time:'1:30 PM – Lunch',foods:['2 cups boiled rice','Dal makhani 200g','Chicken breast 150g / Soybean curry','Roti 2 nos','Salad + dahi'],cal:780},
-        {time:'4:30 PM – Pre-Workout Snack',foods:['Peanut butter 2 tbsp + 2 slices bread','1 glass milk + 1 banana shake','Handful mixed nuts'],cal:420},
-        {time:'8:00 PM – Dinner',foods:['4 roti with ghee','Paneer bhurji 150g / Chicken curry','Rajma / dal','Mixed veg sabzi','Curd 150g'],cal:720},
+        {time:'6:30 AM â€“ Pre-Workout',foods:['Banana (2 nos)','Dry dates 4â€“5 nos','Black coffee'],cal:240},
+        {time:'8:30 AM â€“ Breakfast',foods:['4 whole eggs + 2 egg whites (scrambled)','4 chapati with ghee','1 glass full-fat milk (300ml)','1 bowl sprouts'],cal:760},
+        {time:'11:00 AM â€“ Mid Morning',foods:['Paneer 100g with chaat masala','3 dates + 10 almonds','1 banana'],cal:340},
+        {time:'1:30 PM â€“ Lunch',foods:['2 cups boiled rice','Dal makhani 200g','Chicken breast 150g / Soybean curry','Roti 2 nos','Salad + dahi'],cal:780},
+        {time:'4:30 PM â€“ Pre-Workout Snack',foods:['Peanut butter 2 tbsp + 2 slices bread','1 glass milk + 1 banana shake','Handful mixed nuts'],cal:420},
+        {time:'8:00 PM â€“ Dinner',foods:['4 roti with ghee','Paneer bhurji 150g / Chicken curry','Rajma / dal','Mixed veg sabzi','Curd 150g'],cal:720},
       ]
     },
     {
-      title:'Vegetarian Muscle Gain – 2600 kcal',
+      title:'Vegetarian Muscle Gain â€“ 2600 kcal',
       kcal:2600,prot:130,carb:350,fat:72,
       meals:[
-        {time:'6:30 AM – Early Morning',foods:['Banana shake (2 bananas + milk + peanut butter)'],cal:340},
-        {time:'8:30 AM – Breakfast',foods:['Paneer paratha (2 nos) with curd','1 glass full-fat milk','Mixed nuts 30g'],cal:680},
-        {time:'11:00 AM – Mid Morning',foods:['Chikoo / mango / dates (seasonal)','Peanut chikki or til laddoo'],cal:250},
-        {time:'1:30 PM – Lunch',foods:['2 cups rice','Soybean + paneer sabzi','Chole / rajma','3 roti with ghee','Dahi 200g'],cal:780},
-        {time:'4:30 PM – Post-Workout',foods:['Whey protein shake (1 scoop) or sattu drink','Banana 2 nos'],cal:280},
-        {time:'8:00 PM – Dinner',foods:['4 roti with ghee','Dal makhani 200g','Paneer sabzi 150g','Green salad + curd'],cal:680},
+        {time:'6:30 AM â€“ Early Morning',foods:['Banana shake (2 bananas + milk + peanut butter)'],cal:340},
+        {time:'8:30 AM â€“ Breakfast',foods:['Paneer paratha (2 nos) with curd','1 glass full-fat milk','Mixed nuts 30g'],cal:680},
+        {time:'11:00 AM â€“ Mid Morning',foods:['Chikoo / mango / dates (seasonal)','Peanut chikki or til laddoo'],cal:250},
+        {time:'1:30 PM â€“ Lunch',foods:['2 cups rice','Soybean + paneer sabzi','Chole / rajma','3 roti with ghee','Dahi 200g'],cal:780},
+        {time:'4:30 PM â€“ Post-Workout',foods:['Whey protein shake (1 scoop) or sattu drink','Banana 2 nos'],cal:280},
+        {time:'8:00 PM â€“ Dinner',foods:['4 roti with ghee','Dal makhani 200g','Paneer sabzi 150g','Green salad + curd'],cal:680},
       ]
     },
   ],
 };
 
-/* ── STATE ── */
+/* â”€â”€ STATE â”€â”€ */
 let MEALS_DEF=[
-  {id:'breakfast',label:'Breakfast',icon:'🌅',color:'#FEF3C7'},
-  {id:'lunch',label:'Lunch',icon:'☀️',color:'#DCFCE7'},
-  {id:'snacks',label:'Snacks',icon:'🍎',color:'#EDE9FE'},
-  {id:'dinner',label:'Dinner',icon:'🌙',color:'#DBEAFE'},
+  {id:'breakfast',label:'Breakfast',icon:'ðŸŒ…',color:'#FEF3C7'},
+  {id:'lunch',label:'Lunch',icon:'â˜€ï¸',color:'#DCFCE7'},
+  {id:'snacks',label:'Snacks',icon:'ðŸŽ',color:'#EDE9FE'},
+  {id:'dinner',label:'Dinner',icon:'ðŸŒ™',color:'#DBEAFE'},
 ];
 let todayKey=new Date().toISOString().slice(0,10);
 let state={log:{},profile:{},weights:[]};
@@ -1027,7 +1027,7 @@ function todayLog(){
   return state.log[todayKey];
 }
 
-/* ── TABS ── */
+/* â”€â”€ TABS â”€â”€ */
 function switchTab(tab, btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.ct-panel').forEach(p=>p.classList.remove('active'));
@@ -1037,7 +1037,7 @@ function switchTab(tab, btn){
   if(tab==='history')renderHistory();
 }
 
-/* ── TDEE CALC ── */
+/* â”€â”€ TDEE CALC â”€â”€ */
 function calcTDEE(){
   const age=+document.getElementById('pfAge').value||28;
   const wt=+document.getElementById('pfWeight').value||70;
@@ -1063,7 +1063,7 @@ function calcTDEE(){
   updateMacroCard();
 }
 
-/* ── MEALS RENDER ── */
+/* â”€â”€ MEALS RENDER â”€â”€ */
 function renderMeals(){
   const log=todayLog();
   const c=document.getElementById('mealsContainer');
@@ -1089,7 +1089,7 @@ function renderMeals(){
             <div>
               <div class="fi-name">${it.name}</div>
               <div class="fi-qty">${it.qty}g</div>
-              <div class="fi-macros">P: ${it.prot}g · C: ${it.carb}g · F: ${it.fat}g</div>
+              <div class="fi-macros">P: ${it.prot}g Â· C: ${it.carb}g Â· F: ${it.fat}g</div>
             </div>
             <div style="display:flex;align-items:center">
               <span class="fi-cal">${it.cal}</span>
@@ -1107,7 +1107,7 @@ function removeFood(meal,idx){
   saveState();renderMeals();
 }
 
-/* ── MACRO CARD ── */
+/* â”€â”€ MACRO CARD â”€â”€ */
 function updateMacroCard(){
   const log=todayLog();
   const p=state.profile;
@@ -1128,7 +1128,7 @@ function updateMacroCard(){
   document.getElementById('calRingFill').style.strokeDashoffset=circ-(circ*pct);
   // bars
   function setBar(id,barId,val,target){
-    document.getElementById(id).textContent=`${Math.round(val)} / ${target||'—'} g`;
+    document.getElementById(id).textContent=`${Math.round(val)} / ${target||'â€”'} g`;
     document.getElementById(barId).style.width=target?Math.min(val/target*100,100)+'%':'0%';
   }
   setBar('protDisp','protBar',totProt,p.prot);
@@ -1153,7 +1153,7 @@ function renderWater(){
   const ml=waterCount*300;
   const g=document.getElementById('waterGlasses');
   g.innerHTML=Array.from({length:target},(_,i)=>
-    `<span class="wg${i<waterCount?' filled':''}" onclick="setWater(${i+1})">💧</span>`
+    `<span class="wg${i<waterCount?' filled':''}" onclick="setWater(${i+1})">ðŸ’§</span>`
   ).join('');
   document.getElementById('waterLbl').textContent=`${waterCount} / ${target} glasses (${ml} ml)`;
 }
@@ -1165,7 +1165,7 @@ function setWater(n){
   saveState();renderWater();
 }
 
-/* ── FOOD MODAL ── */
+/* â”€â”€ FOOD MODAL â”€â”€ */
 let modalCat='all';
 function openFoodModal(meal){
   currentMeal=meal;
@@ -1192,7 +1192,7 @@ function filterFoods(){
     <div class="food-result" onclick="selectFood('${f.id}')">
       <div>
         <div class="fr-name">${f.name}</div>
-        <div class="fr-cat">${CAT_LABELS[f.cat]} · per 100g</div>
+        <div class="fr-cat">${CAT_LABELS[f.cat]} Â· per 100g</div>
         <div class="fr-macros">P:${f.prot}g C:${f.carb}g F:${f.fat}g Fiber:${f.fiber}g Water:${f.water}%</div>
       </div>
       <div style="text-align:right">
@@ -1226,7 +1226,7 @@ function _updateEggPreview(){
   const r=(_eggCount*eu.g)/100;
   const cal=Math.round(pendingFood.cal*r);
   const prot=Math.round(pendingFood.prot*r*10)/10;
-  document.getElementById('eggPreview').textContent=`${cal} kcal · ${prot}g protein`;
+  document.getElementById('eggPreview').textContent=`${cal} kcal Â· ${prot}g protein`;
 }
 
 function selectFood(id){
@@ -1236,7 +1236,7 @@ function selectFood(id){
   document.getElementById('qtyFoodName').textContent=pendingFood.name;
   if(isEgg){
     const eu=EGG_UNITS[id];
-    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal per 100g · 1 ${eu.label} ≈ ${eu.g}g`;
+    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal per 100g Â· 1 ${eu.label} â‰ˆ ${eu.g}g`;
     _eggCount=1;
     document.getElementById('eggCount').textContent='1';
     document.getElementById('eggCounter').classList.add('show');
@@ -1244,7 +1244,7 @@ function selectFood(id){
     document.getElementById('qtyInputWrap').style.display='none';
     _updateEggPreview();
   }else{
-    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal · P:${pendingFood.prot}g C:${pendingFood.carb}g F:${pendingFood.fat}g per 100g`;
+    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal Â· P:${pendingFood.prot}g C:${pendingFood.carb}g F:${pendingFood.fat}g per 100g`;
     document.getElementById('eggCounter').classList.remove('show');
     document.getElementById('eggPreview').classList.remove('show');
     document.getElementById('qtyInputWrap').style.display='flex';
@@ -1281,19 +1281,19 @@ function confirmAdd(){
   saveState();closeQtyModal();closeFoodModal();renderMeals();
 }
 
-/* ── BARCODE / QR SCANNER (ZXing multi-format) ── */
+/* â”€â”€ BARCODE / QR SCANNER (ZXing multi-format) â”€â”€ */
 let zxingReader=null;
 let scannedFood=null;
 
-/* ════════════════════════════════════════════════════════
-   AI FOOD RECOGNITION — Zero-config, no API key needed
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   AI FOOD RECOGNITION â€” Zero-config, no API key needed
    Three-layer engine:
    1. Dominant-colour heuristic  (instant, Indian-food aware)
-   2. MobileNet V2 α1.0          (TF.js, ~8 MB, better accuracy)
-   3. Weighted fusion → FOODS DB  + interactive fallback search
-════════════════════════════════════════════════════════ */
+   2. MobileNet V2 Î±1.0          (TF.js, ~8 MB, better accuracy)
+   3. Weighted fusion â†’ FOODS DB  + interactive fallback search
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── Complete ImageNet → FOODS ID map ── */
+/* â”€â”€ Complete ImageNet â†’ FOODS ID map â”€â”€ */
 const AI_FOOD_MAP={
   /* fruits */
   'banana':'fr01','banana,_a_fruit':'fr01','plantain':'fr01',
@@ -1382,34 +1382,34 @@ const AI_FOOD_MAP={
   'pistachio':'sn02','almond':'sn02',
 };
 
-/* ── Colour-profile → [food_id, label, confidence_boost] ──
+/* â”€â”€ Colour-profile â†’ [food_id, label, confidence_boost] â”€â”€
    Dominant-hue heuristics tuned for Indian cuisine.
    H = hue (0-360), S = saturation %, L = lightness %
-─────────────────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const COLOR_PROFILES=[
-  /* orange-red → dal / curry / sabzi */
+  /* orange-red â†’ dal / curry / sabzi */
   {hMin:10,hMax:38,sMin:45,lMin:25,lMax:72, matches:[['dl01','Dal / Lentil Soup',0.55],['sn12','Chole / Chickpea Curry',0.4],['sn11','Pav Bhaji',0.35]]},
-  /* deep red → tomato / rajma */
+  /* deep red â†’ tomato / rajma */
   {hMin:0,hMax:12,sMin:50,lMin:25,lMax:60,  matches:[['vg02','Tomato',0.6],['dl05','Rajma',0.4]]},
-  /* bright yellow → turmeric / dal tadka */
+  /* bright yellow â†’ turmeric / dal tadka */
   {hMin:40,hMax:62,sMin:50,lMin:45,lMax:80, matches:[['dl01','Dal Tadka',0.55],['dl07','Chana Dal',0.4],['gr03','Turmeric Rice',0.3]]},
-  /* white/cream → rice / roti / dahi / paneer */
+  /* white/cream â†’ rice / roti / dahi / paneer */
   {hMin:0,hMax:360,sMin:0,lMin:80,lMax:100, matches:[['gr03','Steamed Rice',0.55],['gr01','Roti / Chapati',0.45],['da02','Curd / Dahi',0.4],['da03','Paneer',0.35]]},
-  /* light tan/brown → roti / paratha / bread */
+  /* light tan/brown â†’ roti / paratha / bread */
   {hMin:22,hMax:50,sMin:15,lMin:45,lMax:75, matches:[['gr01','Roti / Chapati',0.6],['gr02','Paratha',0.5],['gr10','Bread',0.35]]},
-  /* dark brown → meat / chocolate */
+  /* dark brown â†’ meat / chocolate */
   {hMin:18,hMax:42,sMin:20,lMin:12,lMax:44, matches:[['pr05','Mutton Curry',0.5],['pr01','Chicken Curry',0.5],['sn13','Chocolate',0.3]]},
-  /* vivid green → spinach / vegetables */
+  /* vivid green â†’ spinach / vegetables */
   {hMin:80,hMax:155,sMin:35,lMin:22,lMax:65, matches:[['vg01','Spinach (Palak)',0.6],['vg05','Broccoli / Cauliflower',0.4],['vg06','Peas (Matar)',0.35]]},
-  /* pale yellow-green → moong / salad */
+  /* pale yellow-green â†’ moong / salad */
   {hMin:60,hMax:90,sMin:20,lMin:55,lMax:85,  matches:[['dl02','Moong Dal',0.55],['vg01','Salad',0.35]]},
-  /* purple/magenta → beetroot / brinjal */
+  /* purple/magenta â†’ beetroot / brinjal */
   {hMin:270,hMax:330,sMin:30,lMin:20,lMax:65, matches:[['vg15','Beetroot',0.55],['vg07','Brinjal (Baingan)',0.45]]},
-  /* golden → fried / samosa */
+  /* golden â†’ fried / samosa */
   {hMin:35,hMax:55,sMin:40,lMin:55,lMax:80,   matches:[['sn07','Samosa',0.5],['gr02','Paratha',0.45],['vg03','Aloo (Potato)',0.35]]},
 ];
 
-/* ── MobileNet V2 loader ── */
+/* â”€â”€ MobileNet V2 loader â”€â”€ */
 let _tfModel=null;
 function loadScript(src){
   return new Promise((res,rej)=>{
@@ -1421,18 +1421,18 @@ function loadScript(src){
 }
 async function getModel(){
   if(_tfModel)return _tfModel;
-  setScanStatus('loading','Loading AI model (first use ~8 MB)…');
+  setScanStatus('loading','Loading AI model (first use ~8 MB)â€¦');
   await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js');
   await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js');
-  /* V2 alpha 1.0 — significantly better accuracy than V1 alpha 0.5 */
+  /* V2 alpha 1.0 â€” significantly better accuracy than V1 alpha 0.5 */
   _tfModel=await window.mobilenet.load({version:2,alpha:1.0});
   return _tfModel;
 }
 
-/* ── Colour analysis ──
+/* â”€â”€ Colour analysis â”€â”€
    Samples a grid of pixels from the canvas, converts to HSL,
    finds the dominant hue zone, and returns matched food IDs.
-─────────────────────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function rgbToHsl(r,g,b){
   r/=255;g/=255;b/=255;
   const max=Math.max(r,g,b),min=Math.min(r,g,b);
@@ -1453,7 +1453,7 @@ function rgbToHsl(r,g,b){
 function analyseColour(canvas){
   const ctx=canvas.getContext('2d');
   const W=canvas.width,H=canvas.height;
-  /* Sample a 12×12 grid from the centre 60% of the image */
+  /* Sample a 12Ã—12 grid from the centre 60% of the image */
   const x0=Math.floor(W*0.2),x1=Math.floor(W*0.8);
   const y0=Math.floor(H*0.2),y1=Math.floor(H*0.8);
   const step=Math.max(1,Math.floor((x1-x0)/12));
@@ -1473,7 +1473,7 @@ function analyseColour(canvas){
 
   const avgS=totalS/samples;
   const avgL=totalL/samples;
-  /* Find dominant hue (smooth with ±5° window) */
+  /* Find dominant hue (smooth with Â±5Â° window) */
   let bestH=-1,bestCount=0;
   for(let h=0;h<360;h++){
     let count=0;
@@ -1496,7 +1496,7 @@ function analyseColour(canvas){
   return results;
 }
 
-/* ── Normalise MobileNet label ── */
+/* â”€â”€ Normalise MobileNet label â”€â”€ */
 function normLabel(raw){
   return raw.split(',')[0].trim()
     .toLowerCase()
@@ -1504,7 +1504,7 @@ function normLabel(raw){
     .replace(/[^a-z0-9_]/g,'');
 }
 
-/* ── Map MobileNet predictions to FOODS DB ── */
+/* â”€â”€ Map MobileNet predictions to FOODS DB â”€â”€ */
 function mapPredictions(preds){
   return preds.flatMap(p=>{
     const label=normLabel(p.className||p.label||'');
@@ -1519,7 +1519,7 @@ function mapPredictions(preds){
   });
 }
 
-/* ── Merge colour + MobileNet results ── */
+/* â”€â”€ Merge colour + MobileNet results â”€â”€ */
 function mergeResults(colorHits,tfHits){
   const map={};
   for(const h of colorHits){
@@ -1558,14 +1558,14 @@ function setScanMode(mode){
   document.getElementById('srcNotFound').classList.remove('visible');
 
   if(isPhoto){
-    setScanStatus('scanning','Point camera at any food and tap 📷');
+    setScanStatus('scanning','Point camera at any food and tap ðŸ“·');
     document.getElementById('scanHint').textContent='Works on fruits, vegetables, cooked meals, snacks, and Indian dishes.';
     // Stop ZXing barcode reader if running
     if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
     startCamera();
   }else{
     setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
-    document.getElementById('scanHint').textContent='Hold steady 10–15 cm from the barcode label on packaged food.';
+    document.getElementById('scanHint').textContent='Hold steady 10â€“15 cm from the barcode label on packaged food.';
     /* Stop plain camera stream before handing over to ZXing */
     const vid2=document.getElementById('scannerVideo');
     if(vid2.srcObject){vid2.srcObject.getTracks().forEach(t=>t.stop());vid2.srcObject=null;}
@@ -1578,7 +1578,7 @@ const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||
              (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 
 function camConstraints(){
-  /* iOS: minimal constraints — exact facingMode crashes Safari */
+  /* iOS: minimal constraints â€” exact facingMode crashes Safari */
   if(isIOS) return {video:{facingMode:{ideal:'environment'}}};
   return {video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}};
 }
@@ -1599,7 +1599,7 @@ function startCamera(){
       vid.play().catch(()=>{});
     })
     .catch(err=>{
-      const msg=err.name==='NotAllowedError'?'Camera permission denied — tap Allow and try again':
+      const msg=err.name==='NotAllowedError'?'Camera permission denied â€” tap Allow and try again':
                 err.name==='NotFoundError'?'No camera found on this device':
                 'Camera error: '+err.message;
       setScanStatus('error',msg);
@@ -1609,7 +1609,7 @@ function startCamera(){
 
 function startBarcodeReader(){
   if(!window.ZXing){
-    setScanStatus('error','Scanner library not loaded — enter barcode manually below.');
+    setScanStatus('error','Scanner library not loaded â€” enter barcode manually below.');
     return;
   }
   /* Stop any existing camera stream before ZXing takes over */
@@ -1625,13 +1625,13 @@ function startBarcodeReader(){
       (result,err)=>{
         if(result){
           const code=result.getText();
-          setScanStatus('loading','Barcode detected — looking up nutrition…');
+          setScanStatus('loading','Barcode detected â€” looking up nutritionâ€¦');
           if(zxingReader){try{zxingReader.reset();}catch(e){}zxingReader=null;}
           /* Also stop video tracks in case ZXing didn't */
           if(vid.srcObject){vid.srcObject.getTracks().forEach(t=>t.stop());vid.srcObject=null;}
           lookupBarcode(code);
         }
-        /* err fires every frame when no barcode found — safe to ignore */
+        /* err fires every frame when no barcode found â€” safe to ignore */
       }
     );
     setScanStatus('scanning','Point camera at food barcode (EAN-13 / UPC / QR)');
@@ -1652,11 +1652,11 @@ function openScanner(){
   setScanMode('barcode');
 }
 
-/* ── BARCODE LOOKUP via Open Food Facts ── */
+/* â”€â”€ BARCODE LOOKUP via Open Food Facts â”€â”€ */
 function lookupBarcode(code){
   code=String(code).trim();
   if(!code){setScanStatus('error','Enter a valid barcode');return;}
-  setScanStatus('loading','Looking up barcode '+code+'…');
+  setScanStatus('loading','Looking up barcode '+code+'â€¦');
   document.getElementById('scanResultCard').classList.remove('visible');
   document.getElementById('srcNotFound').classList.remove('visible');
 
@@ -1679,15 +1679,15 @@ function lookupBarcode(code){
       const sodium=Math.round((nu.sodium_100g||0)*1000);
       scannedFood={id:'scan_'+Date.now(),name,cat:'snack',cal,prot,carb,fat,fiber,water};
       document.getElementById('srcProduct').textContent=name;
-      document.getElementById('srcBrand').textContent=(brand?brand+' · ':'')+('Barcode: '+code);
-      document.getElementById('srcCal').textContent=cal||'—';
-      document.getElementById('srcProt').textContent=(prot||'—')+'g';
-      document.getElementById('srcCarb').textContent=(carb||'—')+'g';
-      document.getElementById('srcFat').textContent=(fat||'—')+'g';
-      document.getElementById('srcPer').textContent=`per 100g · Fiber:${fiber}g · Sugar:${sugar}g · Na:${sodium}mg`;
-      document.getElementById('srcWater').textContent=water?`💧 Water: ${water}%`:'';
+      document.getElementById('srcBrand').textContent=(brand?brand+' Â· ':'')+('Barcode: '+code);
+      document.getElementById('srcCal').textContent=cal||'â€”';
+      document.getElementById('srcProt').textContent=(prot||'â€”')+'g';
+      document.getElementById('srcCarb').textContent=(carb||'â€”')+'g';
+      document.getElementById('srcFat').textContent=(fat||'â€”')+'g';
+      document.getElementById('srcPer').textContent=`per 100g Â· Fiber:${fiber}g Â· Sugar:${sugar}g Â· Na:${sodium}mg`;
+      document.getElementById('srcWater').textContent=water?`ðŸ’§ Water: ${water}%`:'';
       document.getElementById('scanResultCard').classList.add('visible');
-      setScanStatus('scanning','✅ Product found — review below');
+      setScanStatus('scanning','âœ… Product found â€” review below');
     })
     .catch(()=>showNotFound(code));
 }
@@ -1697,10 +1697,10 @@ function showNotFound(code){
   document.getElementById('srcNotFound').classList.add('visible');
 }
 
-/* ── AI PHOTO FOOD RECOGNITION ── */
+/* â”€â”€ AI PHOTO FOOD RECOGNITION â”€â”€ */
 function snapPhoto(){
   const vid=document.getElementById('scannerVideo');
-  if(!vid.srcObject||!vid.videoWidth){setScanStatus('error','Camera not ready — try again');return;}
+  if(!vid.srcObject||!vid.videoWidth){setScanStatus('error','Camera not ready â€” try again');return;}
   const canvas=document.getElementById('capturedCanvas');
   canvas.width=vid.videoWidth;
   canvas.height=vid.videoHeight;
@@ -1714,17 +1714,17 @@ function snapPhoto(){
 }
 
 async function runAIRecognition(canvas){
-  /* ── Layer 1: colour analysis (instant) ── */
-  setScanStatus('loading','Analysing colours…');
-  document.getElementById('scanHint').textContent='Running colour + AI analysis on your photo…';
+  /* â”€â”€ Layer 1: colour analysis (instant) â”€â”€ */
+  setScanStatus('loading','Analysing coloursâ€¦');
+  document.getElementById('scanHint').textContent='Running colour + AI analysis on your photoâ€¦';
   const colorHits=analyseColour(canvas);
 
-  /* ── Layer 2: MobileNet V2 (async) ── */
+  /* â”€â”€ Layer 2: MobileNet V2 (async) â”€â”€ */
   let tfHits=[];
   try{
-    setScanStatus('loading','Running AI model…');
+    setScanStatus('loading','Running AI modelâ€¦');
     const model=await getModel();
-    /* Downscale canvas to 224×224 for MobileNet */
+    /* Downscale canvas to 224Ã—224 for MobileNet */
     const small=document.createElement('canvas');
     small.width=224;small.height=224;
     small.getContext('2d').drawImage(canvas,0,0,224,224);
@@ -1734,16 +1734,16 @@ async function runAIRecognition(canvas){
     const preds=await model.classify(img,10);
     tfHits=mapPredictions(preds);
   }catch(e){
-    /* MobileNet failed — colour-only mode */
-    document.getElementById('scanHint').textContent='AI model unavailable — using colour analysis only.';
+    /* MobileNet failed â€” colour-only mode */
+    document.getElementById('scanHint').textContent='AI model unavailable â€” using colour analysis only.';
   }
 
-  /* ── Layer 3: merge & render ── */
+  /* â”€â”€ Layer 3: merge & render â”€â”€ */
   const merged=mergeResults(colorHits,tfHits);
   showAIResults(merged);
 }
 
-/* ── Render fused results ── */
+/* â”€â”€ Render fused results â”€â”€ */
 function showAIResults(hits){
   const container=document.getElementById('aiResults');
 
@@ -1755,16 +1755,16 @@ function showAIResults(hits){
       </div>`;
     container.classList.add('visible');
     showInlineSearch();
-    setScanStatus('error','No match — type food name below');
+    setScanStatus('error','No match â€” type food name below');
     return;
   }
 
-  let html='<div style="font-size:.72rem;color:#9CA3AF;margin-bottom:8px;font-weight:700;letter-spacing:.4px;">🤖 AI IDENTIFIED — Tap to add</div>';
+  let html='<div style="font-size:.72rem;color:#9CA3AF;margin-bottom:8px;font-weight:700;letter-spacing:.4px;">ðŸ¤– AI IDENTIFIED â€” Tap to add</div>';
   hits.forEach((h,i)=>{
     const food=FOODS.find(f=>f.id===h.id);
     if(!food)return;
     const pct=Math.round(Math.min(99,h.score*100));
-    const badge=h.source==='both'?'🎯 Strong match':h.source==='colour'?'🎨 Colour match':'🧠 Shape match';
+    const badge=h.source==='both'?'ðŸŽ¯ Strong match':h.source==='colour'?'ðŸŽ¨ Colour match':'ðŸ§  Shape match';
     html+=`<div class="ai-result-item" onclick="pickAIFood('${food.id}',this)">
       <div class="air-top">
         <span class="air-name">${food.name}</span>
@@ -1772,10 +1772,10 @@ function showAIResults(hits){
       </div>
       <div style="font-size:.68rem;color:#6B7280;margin-bottom:5px;">${badge}</div>
       <div class="air-macros">
-        <span class="air-macro">🔥 <strong>${food.cal}</strong> kcal</span>
-        <span class="air-macro">💪 <strong>${food.prot}g</strong> prot</span>
-        <span class="air-macro">🌾 <strong>${food.carb}g</strong> carbs</span>
-        <span class="air-macro">💧 <strong>${food.water}%</strong> water</span>
+        <span class="air-macro">ðŸ”¥ <strong>${food.cal}</strong> kcal</span>
+        <span class="air-macro">ðŸ’ª <strong>${food.prot}g</strong> prot</span>
+        <span class="air-macro">ðŸŒ¾ <strong>${food.carb}g</strong> carbs</span>
+        <span class="air-macro">ðŸ’§ <strong>${food.water}%</strong> water</span>
       </div>
       <button class="air-add" onclick="event.stopPropagation();pickAIFood('${food.id}',this.closest('.ai-result-item'))">
         <i class="fas fa-plus"></i> Add to Log
@@ -1783,10 +1783,10 @@ function showAIResults(hits){
     </div>`;
   });
 
-  /* Always append inline search so user can correct ── */
+  /* Always append inline search so user can correct â”€â”€ */
   html+=`<div style="margin-top:10px;font-size:.72rem;color:#6B7280;font-weight:600;letter-spacing:.3px;">NOT RIGHT? SEARCH MANUALLY:</div>
   <div style="position:relative;margin-top:6px;">
-    <input id="aiInlineSearch" type="text" placeholder="Type food name…"
+    <input id="aiInlineSearch" type="text" placeholder="Type food nameâ€¦"
       style="width:100%;padding:9px 12px;border:1.5px solid #374151;border-radius:10px;
              background:#1F2937;color:#fff;font-size:.85rem;font-family:Inter,sans-serif;outline:none;"
       oninput="aiInlineFilter(this.value)" autocomplete="off"/>
@@ -1795,7 +1795,7 @@ function showAIResults(hits){
 
   container.innerHTML=html;
   container.classList.add('visible');
-  setScanStatus('scanning',`✅ ${hits.length} suggestion${hits.length>1?'s':''} found`);
+  setScanStatus('scanning',`âœ… ${hits.length} suggestion${hits.length>1?'s':''} found`);
   document.getElementById('scanHint').textContent='Tap a result to add, or type to search the full database.';
 }
 
@@ -1806,11 +1806,11 @@ function pickAIFood(id,el){
   selectFood(id);
 }
 
-/* ── Inline fallback search (typed inside the scanner) ── */
+/* â”€â”€ Inline fallback search (typed inside the scanner) â”€â”€ */
 function showInlineSearch(){
   const c=document.getElementById('aiResults');
   const extra=`<div style="position:relative;margin-top:4px;">
-    <input id="aiInlineSearch" type="text" placeholder="Type food name to search…"
+    <input id="aiInlineSearch" type="text" placeholder="Type food name to searchâ€¦"
       style="width:100%;padding:10px 13px;border:1.5px solid #374151;border-radius:10px;
              background:#1F2937;color:#fff;font-size:.88rem;font-family:Inter,sans-serif;outline:none;"
       oninput="aiInlineFilter(this.value)" autocomplete="off"/>
@@ -1825,14 +1825,14 @@ function aiInlineFilter(q){
   if(!out)return;
   if(q.length<2){out.innerHTML='';return;}
   const results=FOODS.filter(f=>f.name.toLowerCase().includes(q.toLowerCase())).slice(0,6);
-  if(!results.length){out.innerHTML='<div style="color:#6B7280;font-size:.78rem;padding:6px 0;">No match — try another spelling</div>';return;}
+  if(!results.length){out.innerHTML='<div style="color:#6B7280;font-size:.78rem;padding:6px 0;">No match â€” try another spelling</div>';return;}
   out.innerHTML=results.map(f=>`
     <div onclick="pickAIFood('${f.id}',null)"
       style="background:#1F2937;border:1px solid #374151;border-radius:9px;padding:10px 12px;
              margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
       <div>
         <div style="color:#fff;font-size:.87rem;font-weight:600;">${f.name}</div>
-        <div style="color:#9CA3AF;font-size:.7rem;">${f.cal} kcal · P${f.prot}g C${f.carb}g F${f.fat}g</div>
+        <div style="color:#9CA3AF;font-size:.7rem;">${f.cal} kcal Â· P${f.prot}g C${f.carb}g F${f.fat}g</div>
       </div>
       <button style="background:var(--G);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:.75rem;font-weight:700;cursor:pointer;">Add</button>
     </div>`).join('');
@@ -1842,7 +1842,7 @@ function showRetryPhoto(){
   const c=document.getElementById('aiResults');
   c.innerHTML=`<button onclick="retryPhoto()" style="width:100%;background:var(--G);color:#fff;border:none;
     border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;
-    font-family:Inter,sans-serif;margin-bottom:8px;">🔄 Retry AI Recognition</button>`;
+    font-family:Inter,sans-serif;margin-bottom:8px;">ðŸ”„ Retry AI Recognition</button>`;
   showInlineSearch();
   c.classList.add('visible');
 }
@@ -1851,14 +1851,14 @@ function retryPhoto(){
   const canvas=document.getElementById('capturedCanvas');
   if(canvas.width>0){
     document.getElementById('aiResults').classList.remove('visible');
-    setScanStatus('loading','Re-analysing…');
+    setScanStatus('loading','Re-analysingâ€¦');
     runAIRecognition(canvas);
   }else{
     document.getElementById('capturedCanvas').style.display='none';
     document.getElementById('scannerVideo').style.display='block';
     document.getElementById('photoOverlay').classList.add('active');
     document.getElementById('photoFrame').classList.add('active');
-    setScanStatus('scanning','Point camera at food and tap 📷');
+    setScanStatus('scanning','Point camera at food and tap ðŸ“·');
   }
 }
 
@@ -1872,7 +1872,7 @@ function addScannedFood(){
   pendingFood=food;
   document.getElementById('qtyFoodName').textContent=food.name;
   document.getElementById('qtyFoodInfo').textContent=
-    `${food.cal} kcal · P:${food.prot}g C:${food.carb}g F:${food.fat}g per 100g`;
+    `${food.cal} kcal Â· P:${food.prot}g C:${food.carb}g F:${food.fat}g per 100g`;
   document.getElementById('qtyAmount').value=100;
   document.getElementById('qtyModal').classList.add('open');
   document.getElementById('qtyOverlay').classList.add('open');
@@ -1895,7 +1895,7 @@ function closeScanner(){
   document.getElementById('capturedCanvas').style.display='none';
 }
 
-/* ── MEAL PLANS ── */
+/* â”€â”€ MEAL PLANS â”€â”€ */
 function showPlanType(type){
   activePlanType=type;
   document.getElementById('ptogLose').classList.toggle('active',type==='lose');
@@ -1921,13 +1921,13 @@ function renderPlans(){
           <div class="pm-row">
             <div class="pm-time">${m.time}</div>
             <div class="pm-foods">
-              ${m.foods.map(f=>`<div class="pm-food">• ${f}</div>`).join('')}
+              ${m.foods.map(f=>`<div class="pm-food">â€¢ ${f}</div>`).join('')}
               <div class="pm-food-cal">~${m.cal} kcal</div>
             </div>
           </div>`).join('')}
       </div>
       <button class="plan-use-btn" onclick="usePlan(${pi})">
-        <i class="fas fa-check-circle"></i> Use This Plan — Log All Meals Today
+        <i class="fas fa-check-circle"></i> Use This Plan â€” Log All Meals Today
       </button>
     </div>`).join('');
 }
@@ -1952,7 +1952,7 @@ function usePlan(pi){
   document.querySelector('.tab-btn').classList.add('active');
 }
 
-/* ── PROGRESS ── */
+/* â”€â”€ PROGRESS â”€â”€ */
 function renderProgress(){
   const p=state.profile;
   const logs=Object.entries(state.log);
@@ -1961,15 +1961,15 @@ function renderProgress(){
     return s+Object.values(d.meals||{}).flat().reduce((x,i)=>x+i.cal,0);
   },0)/days7.length):0;
   const wt=state.weights;
-  const lastWt=wt.length?wt[wt.length-1].w:p.weight||'—';
+  const lastWt=wt.length?wt[wt.length-1].w:p.weight||'â€”';
   const streak=calcStreak();
   document.getElementById('progGrid').innerHTML=`
-    <div class="prog-stat-card"><div class="psc-icon">🔥</div><div class="psc-val">${avgCal}</div><div class="psc-lbl">Avg kcal (7 days)</div></div>
-    <div class="prog-stat-card"><div class="psc-icon">📅</div><div class="psc-val">${streak}</div><div class="psc-lbl">Day Streak</div></div>
-    <div class="prog-stat-card"><div class="psc-icon">⚖️</div><div class="psc-val">${lastWt} kg</div><div class="psc-lbl">Current Weight</div></div>
-    <div class="prog-stat-card"><div class="psc-icon">🎯</div><div class="psc-val">${p.tdee||'—'}</div><div class="psc-lbl">Daily Calorie Goal</div></div>
-    <div class="prog-stat-card"><div class="psc-icon">🥩</div><div class="psc-val">${p.prot||'—'}g</div><div class="psc-lbl">Protein Target</div></div>
-    <div class="prog-stat-card"><div class="psc-icon">💧</div><div class="psc-val">${p.water||'—'}ml</div><div class="psc-lbl">Water Target</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">ðŸ”¥</div><div class="psc-val">${avgCal}</div><div class="psc-lbl">Avg kcal (7 days)</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">ðŸ“…</div><div class="psc-val">${streak}</div><div class="psc-lbl">Day Streak</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">âš–ï¸</div><div class="psc-val">${lastWt} kg</div><div class="psc-lbl">Current Weight</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">ðŸŽ¯</div><div class="psc-val">${p.tdee||'â€”'}</div><div class="psc-lbl">Daily Calorie Goal</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">ðŸ¥©</div><div class="psc-val">${p.prot||'â€”'}g</div><div class="psc-lbl">Protein Target</div></div>
+    <div class="prog-stat-card"><div class="psc-icon">ðŸ’§</div><div class="psc-val">${p.water||'â€”'}ml</div><div class="psc-lbl">Water Target</div></div>
   `;
   renderWeightHistory();
 }
@@ -1987,7 +1987,7 @@ function calcStreak(){
 
 function logWeight(){
   const w=+document.getElementById('wtInput').value;
-  if(!w||w<20||w>300){alert('Please enter a valid weight (20–300 kg)');return;}
+  if(!w||w<20||w>300){alert('Please enter a valid weight (20â€“300 kg)');return;}
   state.weights.push({date:todayKey,w});
   saveState();renderWeightHistory();
 }
@@ -2007,7 +2007,7 @@ function renderWeightHistory(){
     }).join('');
 }
 
-/* ── HISTORY ── */
+/* â”€â”€ HISTORY â”€â”€ */
 function renderHistory(){
   const entries=Object.entries(state.log).reverse().slice(0,30);
   if(entries.length===0){
@@ -2025,17 +2025,17 @@ function renderHistory(){
   }).join('');
 }
 
-/* ── INIT ── */
+/* â”€â”€ INIT â”€â”€ */
 function init(){
   loadState();
   // Restore profile fields
   const p=state.profile;
   if(p.tdee){
     document.getElementById('tdeeVal').textContent=p.tdee;
-    document.getElementById('protTarget').textContent=(p.prot||'—')+'g';
-    document.getElementById('carbTarget').textContent=(p.carb||'—')+'g';
-    document.getElementById('fatTarget').textContent=(p.fat||'—')+'g';
-    document.getElementById('waterTarget').textContent=(p.water||'—')+'ml';
+    document.getElementById('protTarget').textContent=(p.prot||'â€”')+'g';
+    document.getElementById('carbTarget').textContent=(p.carb||'â€”')+'g';
+    document.getElementById('fatTarget').textContent=(p.fat||'â€”')+'g';
+    document.getElementById('waterTarget').textContent=(p.water||'â€”')+'ml';
   }
   renderMeals();
   renderPlans();
@@ -2056,50 +2056,50 @@ init();
 })();
 </script>
 
-<!-- ── INSTALL SHORTCUT MODAL (iOS instructions) ── -->
+<!-- â”€â”€ INSTALL SHORTCUT MODAL (iOS instructions) â”€â”€ -->
 <div id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:flex-end;justify-content:center;">
   <div style="background:#1E293B;border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:24px 22px 36px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-      <div style="color:#38BDF8;font-size:1.05rem;font-weight:800;">📲 Add to Home Screen</div>
-      <button onclick="document.getElementById('ios-install-modal').style.display='none'" style="background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;">✕</button>
+      <div style="color:#38BDF8;font-size:1.05rem;font-weight:800;">ðŸ“² Add to Home Screen</div>
+      <button onclick="document.getElementById('ios-install-modal').style.display='none'" style="background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;">âœ•</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;">
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
-        <span style="font-size:1.6rem;flex-shrink:0;">1️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap the <strong style="color:#38BDF8;">Share</strong> button <span style="font-size:1.1rem;">⎋</span> at the bottom of Safari</div>
+        <span style="font-size:1.6rem;flex-shrink:0;">1ï¸âƒ£</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap the <strong style="color:#38BDF8;">Share</strong> button <span style="font-size:1.1rem;">âŽ‹</span> at the bottom of Safari</div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
-        <span style="font-size:1.6rem;flex-shrink:0;">2️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Scroll down and tap <strong style="color:#38BDF8;">"Add to Home Screen"</strong> <span style="font-size:1.1rem;">＋</span></div>
+        <span style="font-size:1.6rem;flex-shrink:0;">2ï¸âƒ£</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Scroll down and tap <strong style="color:#38BDF8;">"Add to Home Screen"</strong> <span style="font-size:1.1rem;">ï¼‹</span></div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;">
-        <span style="font-size:1.6rem;flex-shrink:0;">3️⃣</span>
-        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap <strong style="color:#38BDF8;">"Add"</strong> — the app icon appears on your home screen</div>
+        <span style="font-size:1.6rem;flex-shrink:0;">3ï¸âƒ£</span>
+        <div style="color:#E2E8F0;font-size:.88rem;line-height:1.5;">Tap <strong style="color:#38BDF8;">"Add"</strong> â€” the app icon appears on your home screen</div>
       </div>
     </div>
     <div style="margin-top:18px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.3);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#94A3B8;text-align:center;">
-      Works offline · No app store needed · Free forever
+      Works offline Â· No app store needed Â· Free forever
     </div>
   </div>
 </div>
 
-<!-- ── INSTALL BANNER (Android / Windows / Desktop) ── -->
+<!-- â”€â”€ INSTALL BANNER (Android / Windows / Desktop) â”€â”€ -->
 <div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0C4A6E;border:1.5px solid #0EA5E9;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
-  <img src="/ct-icon-192.png" width="44" height="44" style="border-radius:12px;flex-shrink:0;" alt="" onerror="this.style.display='none'"/>
+  <img src="/assets/ct-icon-192.png" width="44" height="44" style="border-radius:12px;flex-shrink:0;" alt="" onerror="this.style.display='none'"/>
   <div style="flex:1;min-width:0;">
     <div style="color:#38BDF8;font-weight:700;font-size:.92rem;">Add Calorie Tracker Shortcut</div>
-    <div style="color:#E0F2FE;font-size:.75rem;margin-top:2px;">Install as app — works offline, no store needed</div>
+    <div style="color:#E0F2FE;font-size:.75rem;margin-top:2px;">Install as app â€” works offline, no store needed</div>
   </div>
   <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
-    <button onclick="pwaInstall()" style="background:#0EA5E9;color:#0C4A6E;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:.8rem;cursor:pointer;white-space:nowrap;">📲 Install</button>
+    <button onclick="pwaInstall()" style="background:#0EA5E9;color:#0C4A6E;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:.8rem;cursor:pointer;white-space:nowrap;">ðŸ“² Install</button>
     <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748B;border:none;font-size:.72rem;cursor:pointer;text-align:center;">Not now</button>
   </div>
 </div>
 
-<!-- ── FLOATING INSTALL BUTTON (always visible) ── -->
+<!-- â”€â”€ FLOATING INSTALL BUTTON (always visible) â”€â”€ -->
 <button id="pwa-fab" onclick="showInstallUI()" title="Add shortcut to home screen / desktop"
   style="position:fixed;bottom:92px;right:20px;z-index:900;background:#0C4A6E;border:2px solid #0EA5E9;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);cursor:pointer;font-family:Inter,sans-serif;transition:transform .2s;">
-  <img src="/ct-icon-192.png" width="26" height="26" style="border-radius:6px;" alt="" onerror="this.style.display='none'"/>
+  <img src="/assets/ct-icon-192.png" width="26" height="26" style="border-radius:6px;" alt="" onerror="this.style.display='none'"/>
   <div style="text-align:left;">
     <div style="color:#38BDF8;font-size:.75rem;font-weight:800;line-height:1.2;">Add Shortcut</div>
     <div style="color:#E0F2FE;font-size:.62rem;line-height:1.2;">Home Screen</div>
@@ -2108,7 +2108,7 @@ init();
 
 <script>
 (function(){
-  /* ── Service Worker ── */
+  /* â”€â”€ Service Worker â”€â”€ */
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/ct-sw.js',{scope:'/'}).catch(function(){});
   }
@@ -2127,13 +2127,7 @@ init();
   window.addEventListener('beforeinstallprompt',function(e){
     e.preventDefault();
     _deferredPrompt=e;
-    /* Auto-show banner after 4 seconds */
-    setTimeout(function(){
-      if(!_installed){
-        var b=document.getElementById('pwa-banner');
-        if(b)b.style.display='flex';
-      }
-    },4000);
+    /* Store prompt — FAB tap triggers it instantly via showInstallUI() */
   });
 
   window.pwaInstall=function(){
@@ -2158,7 +2152,7 @@ init();
     if(fab)fab.style.display='none';
   }
 
-  /* ── showInstallUI: detects platform and shows right UI ── */
+  /* â”€â”€ showInstallUI: detects platform and shows right UI â”€â”€ */
   window.showInstallUI=function(){
     var ua=navigator.userAgent.toLowerCase();
     var isIOS=/iphone|ipad|ipod/.test(ua)||
@@ -2166,18 +2160,18 @@ init();
     var isSafari=/safari/.test(ua)&&!/chrome|crios|fxios/.test(ua);
 
     if(isIOS){
-      /* iOS — must use Safari Share sheet */
+      /* iOS â€” must use Safari Share sheet */
       var modal=document.getElementById('ios-install-modal');
       modal.style.display='flex';
       if(!isSafari){
-        /* User is on Chrome/Firefox for iOS — redirect them to Safari */
+        /* User is on Chrome/Firefox for iOS â€” redirect them to Safari */
         modal.querySelector('div:nth-child(2)').innerHTML=
           '<div style="background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.3);border-radius:12px;padding:14px;color:#FCA5A5;font-size:.85rem;line-height:1.6;text-align:center;">'+
-          '⚠️ Please open this page in <strong>Safari</strong> to add it to your home screen.<br><br>'+
+          'âš ï¸ Please open this page in <strong>Safari</strong> to add it to your home screen.<br><br>'+
           'Copy this URL and paste it in Safari:<br><span style="color:#38BDF8;word-break:break-all;font-size:.78rem;">'+window.location.href+'</span></div>';
       }
     }else if(_deferredPrompt){
-      /* Android / Windows — native install prompt available */
+      /* Android / Windows â€” native install prompt available */
       document.getElementById('pwa-banner').style.display='none';
       _deferredPrompt.prompt();
       _deferredPrompt.userChoice.then(function(c){
@@ -2185,12 +2179,12 @@ init();
         _deferredPrompt=null;
       });
     }else{
-      /* Desktop fallback — show banner with browser instructions */
+      /* Desktop fallback â€” show banner with browser instructions */
       var b=document.getElementById('pwa-banner');
       b.style.display='flex';
       b.querySelector('div:nth-child(2)').innerHTML=
         '<div style="color:#38BDF8;font-weight:700;font-size:.88rem;">Add Shortcut</div>'+
-        '<div style="color:#E0F2FE;font-size:.72rem;margin-top:2px;">Click ⊕ in the address bar of Chrome/Edge to install</div>';
+        '<div style="color:#E0F2FE;font-size:.72rem;margin-top:2px;">Click âŠ• in the address bar of Chrome/Edge to install</div>';
       b.querySelector('button').style.display='none';
     }
   };
