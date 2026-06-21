@@ -160,10 +160,12 @@
   .egg-preview.show{display:block;}
 
   /* ── SCANNER MODAL ── */
-  .scanner-modal{position:fixed;inset:0;background:#0a0f1a;z-index:2000;display:none;flex-direction:column;align-items:center;overflow-y:auto;}
+  .scanner-modal{position:fixed;inset:0;background:#0a0f1a;z-index:2000;display:none;flex-direction:column;align-items:center;overflow-y:auto;
+    /* push content below Dynamic Island / notch on iPhone */
+    padding-top:env(safe-area-inset-top,0px);}
   .scanner-modal.open{display:flex;}
-  /* mode tabs */
-  .scan-mode-bar{width:100%;max-width:480px;display:flex;gap:0;padding:12px 16px 0;flex-shrink:0;}
+  /* mode tabs — extra top gap so they clear the camera island */
+  .scan-mode-bar{width:100%;max-width:480px;display:flex;gap:0;padding:18px 16px 0;flex-shrink:0;margin-top:max(8px,env(safe-area-inset-top,0px));}
   .scan-mode-btn{flex:1;padding:10px 0;border:2px solid #374151;background:transparent;color:#9CA3AF;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
   .scan-mode-btn:first-child{border-radius:10px 0 0 10px;}
   .scan-mode-btn:last-child{border-radius:0 10px 10px 0;}
@@ -190,7 +192,7 @@
   .photo-snap-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;letter-spacing:.4px;}
   /* captured preview */
   #capturedCanvas{width:100%;max-width:480px;display:none;border-bottom:2px solid #374151;}
-  .scanner-close{position:fixed;top:14px;right:14px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
+  .scanner-close{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
   /* bottom panel */
   .scan-bottom{width:100%;max-width:480px;padding:14px 18px 28px;background:#111827;flex:1;}
   .scan-status{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
