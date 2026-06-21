@@ -1251,82 +1251,249 @@ function confirmAdd(){
 let zxingReader=null;
 let scannedFood=null;
 
-/* ═══════════════════════════════════════════════
-   FOOD VISION — AI label-to-nutrition mapping
-   Maps Hugging Face Food-101 + ImageNet labels
-   to entries in our FOODS database.
-═══════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════
+   AI FOOD RECOGNITION — Zero-config, no API key needed
+   Three-layer engine:
+   1. Dominant-colour heuristic  (instant, Indian-food aware)
+   2. MobileNet V2 α1.0          (TF.js, ~8 MB, better accuracy)
+   3. Weighted fusion → FOODS DB  + interactive fallback search
+════════════════════════════════════════════════════════ */
+
+/* ── Complete ImageNet → FOODS ID map ── */
 const AI_FOOD_MAP={
   /* fruits */
-  'banana':'fr01','mango':'fr02','apple':'fr03','granny_smith':'fr03',
-  'papaya':'fr04','guava':'fr05','watermelon':'fr06','orange':'fr07',
-  'pomegranate':'fr08','grape':'fr09','grapes':'fr09','pineapple':'fr10',
-  'lychee':'fr11','jackfruit':'fr13','coconut':'fr14','fig':'fr15',
+  'banana':'fr01','banana,_a_fruit':'fr01','plantain':'fr01',
+  'mango':'fr02','apple':'fr03','granny_smith':'fr03','fig':'fr03',
+  'lemon':'fr07','orange':'fr07','clementine':'fr07','papaya':'fr04',
+  'guava':'fr05','watermelon':'fr06','pomegranate':'fr08',
+  'grape':'fr09','grapes':'fr09','wine_bottle':'fr09',
+  'pineapple':'fr10','pineapple,_ananas':'fr10',
+  'lychee':'fr11','litchi':'fr11','jackfruit':'fr13',
+  'coconut':'fr14','date':'fr15','dates':'fr15',
   /* vegetables */
-  'spinach':'vg01','tomato':'vg02','potato':'vg03','onion':'vg04',
-  'cauliflower':'vg05','pea':'vg06','brinjal':'vg07','eggplant':'vg07',
-  'okra':'vg08','bell_pepper':'vg09','capsicum':'vg09','bitter_gourd':'vg10',
-  'carrot':'vg14','beetroot':'vg15','radish':'vg17','cucumber':'vg18',
-  'sweet_potato':'vg19','corn':'vg13','broccoli':'vg05','mushroom':'vg16',
+  'spinach':'vg01','head_cabbage':'vg01','cabbage':'vg01','artichoke':'vg01',
+  'tomato':'vg02','tomato,_cherry_tomato':'vg02',
+  'potato':'vg03','french_fries':'vg03','sweet_potato':'vg19',
+  'onion':'vg04','leek':'vg04',
+  'cauliflower':'vg05','broccoli':'vg05',
+  'pea':'vg06','green_pea':'vg06','peas':'vg06',
+  'eggplant':'vg07','brinjal':'vg07','aubergine':'vg07',
+  'okra':'vg08','bhindi':'vg08',
+  'bell_pepper':'vg09','capsicum':'vg09','green_pepper':'vg09',
+  'bitter_gourd':'vg10','bitter_melon':'vg10',
+  'corn':'vg13','ear_of_corn':'vg13','corn_on_the_cob':'vg13',
+  'carrot':'vg14','cucumber':'vg18','zucchini':'vg18','courgette':'vg18',
+  'beetroot':'vg15','beet':'vg15',
+  'mushroom':'vg16','hen_of_the_woods':'vg16','agaric':'vg16','chanterelle':'vg16',
+  'radish':'vg17','daikon':'vg17',
+  'acorn_squash':'vg19','butternut_squash':'vg19','spaghetti_squash':'vg19',
   /* grains */
-  'chapati':'gr01','roti':'gr01','bread':'gr10','rice':'gr03','oatmeal':'gr06',
-  'oats':'gr06','fried_rice':'gr03','naan':'gr01','paratha':'gr02',
-  /* legumes */
-  'dal':'dl01','lentil':'dl04','chickpea':'dl06','rajma':'dl05',
-  'hummus':'dl06','edamame':'dl09','soybean':'dl09','beans':'dl05',
+  'chapati':'gr01','roti':'gr01','flatbread':'gr01','naan':'gr01','tortilla':'gr01',
+  'paratha':'gr02',
+  'rice':'gr03','steamed_rice':'gr03','cooked_rice':'gr03','biryani_rice':'gr03',
+  'oatmeal':'gr06','oats':'gr06','porridge':'gr06',
+  'bread':'gr10','french_loaf':'gr10','bagel':'gr10','pretzel':'gr10',
+  'white_bread':'gr10','whole_wheat_bread':'gr10',
+  /* legumes / pulses */
+  'dal':'dl01','lentil_soup':'dl01','toor_dal':'dl01',
+  'moong':'dl02','mung_bean':'dl02','green_moong':'dl02',
+  'urad':'dl03','black_lentil':'dl03',
+  'lentil':'dl04','red_lentil':'dl04','masoor':'dl04',
+  'rajma':'dl05','kidney_bean':'dl05','red_bean':'dl05',
+  'chickpea':'dl06','chana':'dl06','hummus':'dl06','garbanzo':'dl06',
+  'chana_dal':'dl07','split_chickpea':'dl07',
+  'black_chana':'dl08','kala_chana':'dl08',
+  'edamame':'dl09','soybean':'dl09','soy':'dl09',
+  'pea_soup':'dl10','matar':'dl10',
   /* dairy */
-  'milk':'da01','curd':'da02','yogurt':'da02','paneer':'da03',
-  'cheese':'da03','butter':'da05','lassi':'da07','ice_cream':'da01',
+  'milk':'da01','glass_of_milk':'da01','eggnog':'da01',
+  'curd':'da02','yogurt':'da02','dahi':'da02',
+  'paneer':'da03','cottage_cheese':'da03','cheese':'da03',
+  'ghee':'da05','butter':'da05',
+  'lassi':'da07','buttermilk':'da07','chaach':'da07',
   /* protein */
-  'chicken':'pr01','chicken_curry':'pr01','egg':'pr02','fish':'pr04',
-  'mutton':'pr05','steak':'pr05','salmon':'pr04','shrimp':'pr04',
-  /* indian dishes */
-  'samosa':'sn07','biryani':'sn09','pav_bhaji':'sn11','chole':'sn12',
-  'idli':'sn04','dosa':'sn04','upma':'sn06','khichdi':'sn08',
-  'spring_rolls':'sn07','fried_rice':'sn09','curry':'sn09',
-  'pizza':'sn09','hamburger':'sn09','sandwich':'gr10',
-  /* nuts */
-  'peanut':'sn01','almond':'sn02','walnut':'sn03','cashew':'sn01',
-  /* MobileNet ImageNet label variants */
-  'granny_smith':'fr03','fig':'fr15','lemon':'fr07','orange':'fr07',
-  'strawberry':'fr03','pineapple':'fr10','banana_a_fruit':'fr01',
-  'pizza_pizza_pie':'sn09','cheeseburger':'sn09','hotdog':'sn09',
-  'french_loaf':'gr10','bagel':'gr10','pretzel':'gr10',
-  'ice_cream':'da01','chocolate_sauce':'sn13',
-  'head_cabbage':'vg01','broccoli':'vg05','cauliflower':'vg05',
-  'zucchini':'vg18','cucumber':'vg18','artichoke':'vg01',
-  'mushroom':'vg16','corn':'vg13','acorn_squash':'vg19',
-  'spaghetti_squash':'vg19','butternut_squash':'vg19',
-  'hen_of_the_woods':'vg16','agaric':'vg16',
-  'eggnog':'da01','espresso':'cf01','cup':'cf01',
-  'meat_loaf':'pr05','pork_loin':'pr05','pot_roast':'pr05',
-  'burrito':'sn09','taco':'sn09','guacamole':'vg02',
-  'carbonara':'sn09','lasagna':'sn09','spaghetti':'sn09',
+  'chicken':'pr01','hen':'pr01','roast_chicken':'pr01','chicken_curry':'pr01',
+  'egg':'pr02','fried_egg':'pr02','omelette':'pr02','boiled_egg':'pr02',
+  'tofu':'pr03','soy_protein':'pr03',
+  'fish':'pr04','salmon':'pr04','tilapia':'pr04','catfish':'pr04',
+  'mutton':'pr05','lamb':'pr05','meat_loaf':'pr05','pork_loin':'pr05',
+  'pot_roast':'pr05','steak':'pr05','beef':'pr05',
+  /* snacks / Indian dishes */
+  'peanut':'sn01','groundnut':'sn01',
+  'almond':'sn02','almond_nut':'sn02',
+  'walnut':'sn03',
+  'idli':'sn04','steamed_cake':'sn04',
+  'dosa':'sn05','crepe':'sn05',
+  'upma':'sn06','semolina_dish':'sn06',
+  'samosa':'sn07','spring_roll':'sn07','fried_pastry':'sn07',
+  'khichdi':'sn08','kedgeree':'sn08',
+  'biryani':'sn09','fried_rice':'sn09','pilaf':'sn09','curry':'sn09',
+  'pizza':'sn09','hamburger':'sn09','cheeseburger':'sn09',
+  'burrito':'sn09','taco':'sn09','lasagna':'sn09','spaghetti':'sn09',
+  'poha':'sn10','flattened_rice':'sn10',
+  'pav_bhaji':'sn11','bhaji':'sn11',
+  'chole':'sn12','chhole':'sn12','chickpea_curry':'sn12',
+  'chocolate':'sn13','chocolate_sauce':'sn13','brownie':'sn13',
+  /* beverages */
+  'coffee':'cf01','espresso':'cf01','cup':'cf01','tea':'cf01',
+  'chai':'cf01','masala_chai':'cf01',
+  /* nuts / seeds */
+  'cashew':'sn01','cashew_nut':'sn01',
+  'pistachio':'sn02','almond':'sn02',
 };
 
-/* ── GEMINI VISION AI — Food Recognition ──
-   Free tier: 15 req/min, no credit card needed.
-   Get key at: https://aistudio.google.com/app/apikey
-   Key is stored in localStorage (never sent to our servers).
-──────────────────────────────────────────── */
-const GEMINI_MODEL='gemini-1.5-flash';
-const GEMINI_URL=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+/* ── Colour-profile → [food_id, label, confidence_boost] ──
+   Dominant-hue heuristics tuned for Indian cuisine.
+   H = hue (0-360), S = saturation %, L = lightness %
+─────────────────────────────────────────────────────── */
+const COLOR_PROFILES=[
+  /* orange-red → dal / curry / sabzi */
+  {hMin:10,hMax:38,sMin:45,lMin:25,lMax:72, matches:[['dl01','Dal / Lentil Soup',0.55],['sn12','Chole / Chickpea Curry',0.4],['sn11','Pav Bhaji',0.35]]},
+  /* deep red → tomato / rajma */
+  {hMin:0,hMax:12,sMin:50,lMin:25,lMax:60,  matches:[['vg02','Tomato',0.6],['dl05','Rajma',0.4]]},
+  /* bright yellow → turmeric / dal tadka */
+  {hMin:40,hMax:62,sMin:50,lMin:45,lMax:80, matches:[['dl01','Dal Tadka',0.55],['dl07','Chana Dal',0.4],['gr03','Turmeric Rice',0.3]]},
+  /* white/cream → rice / roti / dahi / paneer */
+  {hMin:0,hMax:360,sMin:0,lMin:80,lMax:100, matches:[['gr03','Steamed Rice',0.55],['gr01','Roti / Chapati',0.45],['da02','Curd / Dahi',0.4],['da03','Paneer',0.35]]},
+  /* light tan/brown → roti / paratha / bread */
+  {hMin:22,hMax:50,sMin:15,lMin:45,lMax:75, matches:[['gr01','Roti / Chapati',0.6],['gr02','Paratha',0.5],['gr10','Bread',0.35]]},
+  /* dark brown → meat / chocolate */
+  {hMin:18,hMax:42,sMin:20,lMin:12,lMax:44, matches:[['pr05','Mutton Curry',0.5],['pr01','Chicken Curry',0.5],['sn13','Chocolate',0.3]]},
+  /* vivid green → spinach / vegetables */
+  {hMin:80,hMax:155,sMin:35,lMin:22,lMax:65, matches:[['vg01','Spinach (Palak)',0.6],['vg05','Broccoli / Cauliflower',0.4],['vg06','Peas (Matar)',0.35]]},
+  /* pale yellow-green → moong / salad */
+  {hMin:60,hMax:90,sMin:20,lMin:55,lMax:85,  matches:[['dl02','Moong Dal',0.55],['vg01','Salad',0.35]]},
+  /* purple/magenta → beetroot / brinjal */
+  {hMin:270,hMax:330,sMin:30,lMin:20,lMax:65, matches:[['vg15','Beetroot',0.55],['vg07','Brinjal (Baingan)',0.45]]},
+  /* golden → fried / samosa */
+  {hMin:35,hMax:55,sMin:40,lMin:55,lMax:80,   matches:[['sn07','Samosa',0.5],['gr02','Paratha',0.45],['vg03','Aloo (Potato)',0.35]]},
+];
 
-function getGeminiKey(){
-  return localStorage.getItem('ct_gemini_key')||'';
+/* ── MobileNet V2 loader ── */
+let _tfModel=null;
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    if(document.querySelector(`script[src="${src}"]`)){res();return;}
+    const s=document.createElement('script');
+    s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Script load failed: '+src));
+    document.head.appendChild(s);
+  });
 }
-function promptForKey(){
-  const k=prompt(
-    '🤖 AI Food Recognition needs a FREE Google Gemini API key.\n\n'+
-    'Steps:\n'+
-    '1. Open https://aistudio.google.com/app/apikey\n'+
-    '2. Sign in with Google → Click "Create API key"\n'+
-    '3. Copy the key and paste it below\n\n'+
-    'Your key is saved on this device only.',
-    getGeminiKey()
-  );
-  if(k&&k.trim()){localStorage.setItem('ct_gemini_key',k.trim());return k.trim();}
-  return '';
+async function getModel(){
+  if(_tfModel)return _tfModel;
+  setScanStatus('loading','Loading AI model (first use ~8 MB)…');
+  await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js');
+  await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js');
+  /* V2 alpha 1.0 — significantly better accuracy than V1 alpha 0.5 */
+  _tfModel=await window.mobilenet.load({version:2,alpha:1.0});
+  return _tfModel;
+}
+
+/* ── Colour analysis ──
+   Samples a grid of pixels from the canvas, converts to HSL,
+   finds the dominant hue zone, and returns matched food IDs.
+─────────────────────────────────────────────────────────── */
+function rgbToHsl(r,g,b){
+  r/=255;g/=255;b/=255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){h=s=0;}
+  else{
+    const d=max-min;
+    s=l>0.5?d/(2-max-min):d/(max+min);
+    switch(max){
+      case r:h=((g-b)/d+(g<b?6:0))/6;break;
+      case g:h=((b-r)/d+2)/6;break;
+      default:h=((r-g)/d+4)/6;
+    }
+  }
+  return[h*360,s*100,l*100];
+}
+
+function analyseColour(canvas){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  /* Sample a 12×12 grid from the centre 60% of the image */
+  const x0=Math.floor(W*0.2),x1=Math.floor(W*0.8);
+  const y0=Math.floor(H*0.2),y1=Math.floor(H*0.8);
+  const step=Math.max(1,Math.floor((x1-x0)/12));
+  const hBins=new Array(360).fill(0);
+  let totalS=0,totalL=0,samples=0;
+
+  for(let y=y0;y<y1;y+=step){
+    for(let x=x0;x<x1;x+=step){
+      const px=ctx.getImageData(x,y,1,1).data;
+      if(px[3]<128)continue; // skip transparent
+      const[h,s,l]=rgbToHsl(px[0],px[1],px[2]);
+      if(s>8){hBins[Math.floor(h)]++;}
+      totalS+=s;totalL+=l;samples++;
+    }
+  }
+  if(!samples)return[];
+
+  const avgS=totalS/samples;
+  const avgL=totalL/samples;
+  /* Find dominant hue (smooth with ±5° window) */
+  let bestH=-1,bestCount=0;
+  for(let h=0;h<360;h++){
+    let count=0;
+    for(let d=-5;d<=5;d++)count+=hBins[(h+d+360)%360];
+    if(count>bestCount){bestCount=count;bestH=h;}
+  }
+
+  /* Match against colour profiles */
+  const results=[];
+  for(const p of COLOR_PROFILES){
+    const hMatch=bestH>=p.hMin&&bestH<=p.hMax;
+    const sMatch=avgS>=p.sMin;
+    const lMatch=avgL>=p.lMin&&avgL<=p.lMax;
+    if(hMatch&&sMatch&&lMatch){
+      for(const[id,label,boost]of p.matches)
+        results.push({id,label,score:boost});
+      break; // first matching profile wins
+    }
+  }
+  return results;
+}
+
+/* ── Normalise MobileNet label ── */
+function normLabel(raw){
+  return raw.split(',')[0].trim()
+    .toLowerCase()
+    .replace(/[\s\-\/]+/g,'_')
+    .replace(/[^a-z0-9_]/g,'');
+}
+
+/* ── Map MobileNet predictions to FOODS DB ── */
+function mapPredictions(preds){
+  return preds.flatMap(p=>{
+    const label=normLabel(p.className||p.label||'');
+    const score=p.probability||p.score||0;
+    const id=AI_FOOD_MAP[label];
+    if(id)return[{id,label:label.replace(/_/g,' '),score}];
+    /* Fuzzy: any word in label appears in food name */
+    const words=label.split('_').filter(w=>w.length>3);
+    const food=FOODS.find(f=>words.some(w=>f.name.toLowerCase().includes(w)));
+    if(food)return[{id:food.id,label:label.replace(/_/g,' '),score:score*0.75}];
+    return[];
+  });
+}
+
+/* ── Merge colour + MobileNet results ── */
+function mergeResults(colorHits,tfHits){
+  const map={};
+  for(const h of colorHits){
+    map[h.id]={id:h.id,label:h.label,score:h.score,source:'colour'};
+  }
+  for(const h of tfHits){
+    if(map[h.id]){
+      map[h.id].score=Math.min(0.99,map[h.id].score+h.score*0.6);
+      map[h.id].source='both';
+    }else{
+      map[h.id]={id:h.id,label:h.label,score:h.score*0.85,source:'mobilenet'};
+    }
+  }
+  return Object.values(map).sort((a,b)=>b.score-a.score).slice(0,5);
 }
 
 function setScanStatus(type,msg){
@@ -1493,218 +1660,166 @@ function showNotFound(code){
 /* ── AI PHOTO FOOD RECOGNITION ── */
 function snapPhoto(){
   const vid=document.getElementById('scannerVideo');
-  if(!vid.srcObject||!vid.videoWidth){setScanStatus('error','Camera not ready');return;}
+  if(!vid.srcObject||!vid.videoWidth){setScanStatus('error','Camera not ready — try again');return;}
   const canvas=document.getElementById('capturedCanvas');
   canvas.width=vid.videoWidth;
   canvas.height=vid.videoHeight;
   canvas.getContext('2d').drawImage(vid,0,0);
   canvas.style.display='block';
-  document.getElementById('scannerVideo').style.display='none';
+  vid.style.display='none';
   document.getElementById('photoOverlay').classList.remove('active');
   document.getElementById('photoFrame').classList.remove('active');
-  setScanStatus('loading','Sending to Gemini AI…');
-  document.getElementById('scanHint').textContent='Identifying Indian foods in your photo…';
   document.getElementById('aiResults').classList.remove('visible');
-  canvas.toBlob(blob=>runAIRecognition(blob),'image/jpeg',0.88);
+  runAIRecognition(canvas);
 }
 
-function blobToBase64(blob){
-  return new Promise((res,rej)=>{
-    const r=new FileReader();
-    r.onload=()=>res(r.result.split(',')[1]);
-    r.onerror=rej;
-    r.readAsDataURL(blob);
-  });
-}
+async function runAIRecognition(canvas){
+  /* ── Layer 1: colour analysis (instant) ── */
+  setScanStatus('loading','Analysing colours…');
+  document.getElementById('scanHint').textContent='Running colour + AI analysis on your photo…';
+  const colorHits=analyseColour(canvas);
 
-async function runAIRecognition(blob){
-  let key=getGeminiKey();
-  if(!key){
-    key=promptForKey();
-    if(!key){
-      setScanStatus('error','API key required for AI recognition.');
-      document.getElementById('scanHint').textContent='Enter a free Gemini API key to use AI food recognition.';
-      showRetryPhoto();return;
-    }
-  }
-
+  /* ── Layer 2: MobileNet V2 (async) ── */
+  let tfHits=[];
   try{
-    setScanStatus('loading','Gemini AI is analysing your food…');
-    const b64=await blobToBase64(blob);
-
-    const prompt=`You are a nutrition expert specializing in Indian cuisine and international foods.
-Analyse this food photo and identify ALL visible food items.
-Return a JSON array (no other text) where each object has:
-- "name": food name in English (add Indian name in parentheses if applicable, e.g. "Lentil Soup (Dal)")
-- "confidence": integer 0-100
-- "cal": kcal per 100g (integer)
-- "prot": protein g per 100g (1 decimal)
-- "carb": carbohydrates g per 100g (1 decimal)
-- "fat": fat g per 100g (1 decimal)
-- "fiber": dietary fiber g per 100g (1 decimal)
-- "water": water content % (integer)
-- "portion": estimated grams of this item visible in the photo (integer)
-
-Sort by confidence descending. Return [] if no food is visible.
-Return ONLY the JSON array with no markdown, no explanation.`;
-
-    const resp=await fetch(`${GEMINI_URL}?key=${key}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[
-          {text:prompt},
-          {inline_data:{mime_type:'image/jpeg',data:b64}}
-        ]}],
-        generationConfig:{temperature:0.1,maxOutputTokens:800,responseMimeType:'application/json'}
-      })
-    });
-
-    if(resp.status===400){
-      /* Bad key — clear it and ask again next time */
-      localStorage.removeItem('ct_gemini_key');
-      throw new Error('Invalid API key — cleared. Tap retry and enter a valid key.');
-    }
-    if(resp.status===429){throw new Error('Rate limit hit — wait 1 minute and try again.');}
-    if(!resp.ok){throw new Error('Gemini API error '+resp.status);}
-
-    const data=await resp.json();
-    const raw=data?.candidates?.[0]?.content?.parts?.[0]?.text||'[]';
-    let foods;
-    try{foods=JSON.parse(raw);}
-    catch{
-      /* Try to extract JSON array from text if model ignored responseMimeType */
-      const m=raw.match(/\[[\s\S]*\]/);
-      foods=m?JSON.parse(m[0]):[];
-    }
-
-    if(!Array.isArray(foods)||foods.length===0){
-      setScanStatus('error','No food detected — try a closer, clearer photo.');
-      showRetryPhoto();return;
-    }
-    showGeminiResults(foods);
-
+    setScanStatus('loading','Running AI model…');
+    const model=await getModel();
+    /* Downscale canvas to 224×224 for MobileNet */
+    const small=document.createElement('canvas');
+    small.width=224;small.height=224;
+    small.getContext('2d').drawImage(canvas,0,0,224,224);
+    const img=new Image();
+    img.src=small.toDataURL('image/jpeg',0.9);
+    await new Promise(r=>{img.onload=r;});
+    const preds=await model.classify(img,10);
+    tfHits=mapPredictions(preds);
   }catch(e){
-    setScanStatus('error',e.message||'AI error');
-    document.getElementById('scanHint').textContent=e.message||'Try again or use barcode / manual search.';
-    showRetryPhoto();
+    /* MobileNet failed — colour-only mode */
+    document.getElementById('scanHint').textContent='AI model unavailable — using colour analysis only.';
   }
+
+  /* ── Layer 3: merge & render ── */
+  const merged=mergeResults(colorHits,tfHits);
+  showAIResults(merged);
 }
 
-/* Store last Gemini results for add-to-log */
-let _geminiResults=[];
-
-function showGeminiResults(foods){
-  _geminiResults=foods;
+/* ── Render fused results ── */
+function showAIResults(hits){
   const container=document.getElementById('aiResults');
-  let html='<div style="font-size:.78rem;color:#9CA3AF;margin-bottom:10px;font-weight:600;">🤖 GEMINI AI IDENTIFIED — Tap to add:</div>';
 
-  foods.forEach((f,i)=>{
-    /* Try to match against local FOODS database for verified macros */
-    const dbFood=findFoodInDB(f.name);
-    const cal=dbFood?dbFood.cal:Math.round(f.cal||0);
-    const prot=dbFood?dbFood.prot:round1(f.prot||0);
-    const carb=dbFood?dbFood.carb:round1(f.carb||0);
-    const fat=dbFood?dbFood.fat:round1(f.fat||0);
-    const displayName=dbFood?dbFood.name:f.name;
-    const portion=Math.round(f.portion||100);
-    const conf=Math.min(100,Math.max(0,Math.round(f.confidence||80)));
+  if(!hits.length){
+    container.innerHTML=`
+      <div style="text-align:center;padding:14px 0;color:#9CA3AF;font-size:.83rem;margin-bottom:10px;">
+        Couldn't identify food from colour or shape.<br>
+        <span style="font-size:.72rem">Try better lighting or type the food name below.</span>
+      </div>`;
+    container.classList.add('visible');
+    showInlineSearch();
+    setScanStatus('error','No match — type food name below');
+    return;
+  }
 
-    html+=`<div class="ai-result-item" onclick="selectGeminiFood(${i},this)">
+  let html='<div style="font-size:.72rem;color:#9CA3AF;margin-bottom:8px;font-weight:700;letter-spacing:.4px;">🤖 AI IDENTIFIED — Tap to add</div>';
+  hits.forEach((h,i)=>{
+    const food=FOODS.find(f=>f.id===h.id);
+    if(!food)return;
+    const pct=Math.round(Math.min(99,h.score*100));
+    const badge=h.source==='both'?'🎯 Strong match':h.source==='colour'?'🎨 Colour match':'🧠 Shape match';
+    html+=`<div class="ai-result-item" onclick="pickAIFood('${food.id}',this)">
       <div class="air-top">
-        <span class="air-name">${displayName}</span>
-        <span class="air-conf">${conf}%</span>
+        <span class="air-name">${food.name}</span>
+        <span class="air-conf">${pct}%</span>
       </div>
-      ${portion!==100?`<div style="font-size:.7rem;color:#6B7280;margin-bottom:5px;">Est. portion visible: ~${portion}g</div>`:''}
+      <div style="font-size:.68rem;color:#6B7280;margin-bottom:5px;">${badge}</div>
       <div class="air-macros">
-        <span class="air-macro">🔥 <strong>${cal}</strong> kcal</span>
-        <span class="air-macro">💪 <strong>${prot}g</strong> prot</span>
-        <span class="air-macro">🌾 <strong>${carb}g</strong> carbs</span>
-        <span class="air-macro">🧈 <strong>${fat}g</strong> fat</span>
+        <span class="air-macro">🔥 <strong>${food.cal}</strong> kcal</span>
+        <span class="air-macro">💪 <strong>${food.prot}g</strong> prot</span>
+        <span class="air-macro">🌾 <strong>${food.carb}g</strong> carbs</span>
+        <span class="air-macro">💧 <strong>${food.water}%</strong> water</span>
       </div>
-      <button class="air-add" onclick="event.stopPropagation();selectGeminiFood(${i},this.closest('.ai-result-item'))">
+      <button class="air-add" onclick="event.stopPropagation();pickAIFood('${food.id}',this.closest('.ai-result-item'))">
         <i class="fas fa-plus"></i> Add to Log
       </button>
     </div>`;
   });
 
+  /* Always append inline search so user can correct ── */
+  html+=`<div style="margin-top:10px;font-size:.72rem;color:#6B7280;font-weight:600;letter-spacing:.3px;">NOT RIGHT? SEARCH MANUALLY:</div>
+  <div style="position:relative;margin-top:6px;">
+    <input id="aiInlineSearch" type="text" placeholder="Type food name…"
+      style="width:100%;padding:9px 12px;border:1.5px solid #374151;border-radius:10px;
+             background:#1F2937;color:#fff;font-size:.85rem;font-family:Inter,sans-serif;outline:none;"
+      oninput="aiInlineFilter(this.value)" autocomplete="off"/>
+  </div>
+  <div id="aiInlineResults" style="margin-top:6px;"></div>`;
+
   container.innerHTML=html;
   container.classList.add('visible');
-  setScanStatus('scanning',`✅ ${foods.length} food${foods.length>1?'s':''} identified`);
-  document.getElementById('scanHint').textContent='Tap a result to set portion size and add to your meal log.';
+  setScanStatus('scanning',`✅ ${hits.length} suggestion${hits.length>1?'s':''} found`);
+  document.getElementById('scanHint').textContent='Tap a result to add, or type to search the full database.';
 }
 
-function findFoodInDB(name){
-  const n=name.toLowerCase().replace(/\s*\(.*?\)\s*/g,'').trim();
-  /* Exact match */
-  let m=FOODS.find(f=>f.name.toLowerCase()===n);
-  if(m)return m;
-  /* Partial: DB name inside AI name or vice versa */
-  m=FOODS.find(f=>{
-    const fn=f.name.toLowerCase().replace(/\s*\(.*?\)\s*/g,'').trim();
-    return n.includes(fn)||fn.includes(n)||
-           fn.split(' ').filter(w=>w.length>3).some(w=>n.includes(w));
-  });
-  return m||null;
-}
-
-function selectGeminiFood(idx,el){
+function pickAIFood(id,el){
   document.querySelectorAll('.ai-result-item').forEach(e=>e.classList.remove('selected'));
   if(el)el.classList.add('selected');
-  const f=_geminiResults[idx];
-  if(!f)return;
-
-  /* Prefer DB entry; else create ad-hoc food from Gemini data */
-  const dbFood=findFoodInDB(f.name);
-  if(dbFood){
-    closeScanner();
-    selectFood(dbFood.id);
-    return;
-  }
-  /* Ad-hoc food — add to FOODS array temporarily & open qty modal */
-  const adhoc={
-    id:'ai_'+Date.now(),
-    name:f.name,cat:'ai',
-    cal:Math.round(f.cal||0),
-    prot:round1(f.prot||0),carb:round1(f.carb||0),
-    fat:round1(f.fat||0),fiber:round1(f.fiber||0),water:Math.round(f.water||0)
-  };
-  FOODS.unshift(adhoc);
   closeScanner();
-  selectFood(adhoc.id);
+  selectFood(id);
+}
+
+/* ── Inline fallback search (typed inside the scanner) ── */
+function showInlineSearch(){
+  const c=document.getElementById('aiResults');
+  const extra=`<div style="position:relative;margin-top:4px;">
+    <input id="aiInlineSearch" type="text" placeholder="Type food name to search…"
+      style="width:100%;padding:10px 13px;border:1.5px solid #374151;border-radius:10px;
+             background:#1F2937;color:#fff;font-size:.88rem;font-family:Inter,sans-serif;outline:none;"
+      oninput="aiInlineFilter(this.value)" autocomplete="off"/>
+  </div>
+  <div id="aiInlineResults" style="margin-top:6px;"></div>`;
+  c.innerHTML+=extra;
+  setTimeout(()=>document.getElementById('aiInlineSearch')?.focus(),200);
+}
+
+function aiInlineFilter(q){
+  const out=document.getElementById('aiInlineResults');
+  if(!out)return;
+  if(q.length<2){out.innerHTML='';return;}
+  const results=FOODS.filter(f=>f.name.toLowerCase().includes(q.toLowerCase())).slice(0,6);
+  if(!results.length){out.innerHTML='<div style="color:#6B7280;font-size:.78rem;padding:6px 0;">No match — try another spelling</div>';return;}
+  out.innerHTML=results.map(f=>`
+    <div onclick="pickAIFood('${f.id}',null)"
+      style="background:#1F2937;border:1px solid #374151;border-radius:9px;padding:10px 12px;
+             margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="color:#fff;font-size:.87rem;font-weight:600;">${f.name}</div>
+        <div style="color:#9CA3AF;font-size:.7rem;">${f.cal} kcal · P${f.prot}g C${f.carb}g F${f.fat}g</div>
+      </div>
+      <button style="background:var(--G);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:.75rem;font-weight:700;cursor:pointer;">Add</button>
+    </div>`).join('');
 }
 
 function showRetryPhoto(){
   const c=document.getElementById('aiResults');
-  c.innerHTML=`
-    <button onclick="retryPhoto()" style="width:100%;background:var(--G);color:#fff;border:none;border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:8px;">
-      🔄 Retry with Gemini AI
-    </button>
-    <button onclick="changeGeminiKey()" style="width:100%;background:rgba(255,255,255,.09);color:#9CA3AF;border:1.5px solid #374151;border-radius:10px;padding:9px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">
-      🔑 Change API Key
-    </button>`;
+  c.innerHTML=`<button onclick="retryPhoto()" style="width:100%;background:var(--G);color:#fff;border:none;
+    border-radius:10px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;
+    font-family:Inter,sans-serif;margin-bottom:8px;">🔄 Retry AI Recognition</button>`;
+  showInlineSearch();
   c.classList.add('visible');
 }
 
 function retryPhoto(){
   const canvas=document.getElementById('capturedCanvas');
   if(canvas.width>0){
-    canvas.toBlob(blob=>runAIRecognition(blob),'image/jpeg',0.88);
-    setScanStatus('loading','Retrying with Gemini AI…');
+    document.getElementById('aiResults').classList.remove('visible');
+    setScanStatus('loading','Re-analysing…');
+    runAIRecognition(canvas);
   }else{
-    /* No captured image yet — go back to camera */
     document.getElementById('capturedCanvas').style.display='none';
     document.getElementById('scannerVideo').style.display='block';
     document.getElementById('photoOverlay').classList.add('active');
     document.getElementById('photoFrame').classList.add('active');
     setScanStatus('scanning','Point camera at food and tap 📷');
   }
-}
-
-function changeGeminiKey(){
-  localStorage.removeItem('ct_gemini_key');
-  const k=promptForKey();
-  if(k)retryPhoto();
 }
 
 function round1(v){return Math.round(v*10)/10;}
