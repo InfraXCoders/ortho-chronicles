@@ -132,6 +132,9 @@ let eggState='sitting';
 /* ── Slide animation ─────────────────────────────────────────────────── */
 let slideAnim=null;   // {t, total, bgStart}
 
+/* ── Hen intro animation ─────────────────────────────────────────────── */
+let henAnim=null;     // {t} counts up; null = not playing
+
 /* ── Background / FX ─────────────────────────────────────────────────── */
 let bgOffset=0, bgCache={}, particles=[], curTheme='';
 let scoreFxQueue=[];  // [{txt, col, x, y, life}]
@@ -213,8 +216,9 @@ function startGame(){
   egg.x=bowls[0].x+BOWL_W/2; egg.y=seatY(bowls[0]);
   egg.vx=0; egg.vy=0; egg.angle=0; egg.angV=0;
   egg.offsetX=0; egg.missed=false;
-  eggState='sitting';
+  eggState='intro';   // blocked until hen anim completes
   dying=false;
+  henAnim={t:0};
 
   running=true;
   if(animId) cancelAnimationFrame(animId);
@@ -238,6 +242,13 @@ function update(){
   squishT=Math.max(0,squishT-1);
   updateParticles();
   updateScoreFx();
+
+  // ── Hen intro animation ──
+  if(henAnim){
+    henAnim.t++;
+    if(henAnim.t>=130){ henAnim=null; eggState='sitting'; }
+    return; // freeze game during intro
+  }
 
   // ── Slide animation ──
   if(slideAnim){
@@ -416,7 +427,7 @@ document.addEventListener('mousedown',()=>{if(running)tap();});
 document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='ArrowUp')&&running){e.preventDefault();tap();}});
 
 function tap(){
-  if(eggState!=='sitting'||slideAnim||dying) return;
+  if(eggState!=='sitting'||slideAnim||dying||henAnim) return;
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
   // Arc ABOVE bowl by OVERSHOOT px so egg crests visibly then drops in
@@ -590,8 +601,11 @@ function render(){
   // ── Bowl rim BACK arc (behind egg) — top half of ellipse ──
   bowls.forEach((b,i)=>drawBowlRimArc(b,i===tgtIdx,false));
 
-  // ── EGG ──
-  if(eggState==='sitting'||eggState==='rolling'){
+  // ── Hen intro (replaces egg during intro) ──
+  if(henAnim){ renderHenIntro(); }
+
+  // ── EGG (hidden during intro) ──
+  if(!henAnim&&(eggState==='sitting'||eggState==='rolling')){
     // Clip to above bowl rim so only top half of egg is visible
     const cb=bowls[curIdx];
     ctx.save();
@@ -600,7 +614,7 @@ function render(){
     ctx.clip();
     drawEgg(egg.x,egg.y);
     ctx.restore();
-  } else {
+  } else if(!henAnim){
     drawEgg(egg.x,egg.y);
   }
 
@@ -799,6 +813,126 @@ function eggTrailRGB(){
   if(getEggType(level)==='cosmic')  return '180,80,255';
   return ({white:'255,248,205',bronze:'215,128,48',silver:'195,195,228',
     gold:'255,215,0',platinum:'198,224,240',diamond:'0,226,255'})[getEggType(level)]||'255,248,205';
+}
+
+/* ── Hen intro ───────────────────────────────────────────────────────── */
+function drawHen(hx, hy, t){
+  const c=ctx;
+  c.save();
+  c.translate(hx, hy);
+
+  // Wing flap: fast after t=70 (takeoff)
+  const flying = t>70;
+  const flapSpeed = flying ? 0.55 : 0.12;
+  const flapAmp  = flying ? 0.9  : 0.18;
+  const wingAngle = Math.sin(t * flapSpeed) * flapAmp;
+
+  // Body
+  c.save();
+  c.scale(1, 0.78);
+  const bg=c.createRadialGradient(-4,-4,2,0,0,22);
+  bg.addColorStop(0,'#d4621a'); bg.addColorStop(1,'#7a2c05');
+  c.fillStyle=bg;
+  c.beginPath(); c.ellipse(0,0,22,20,0,0,Math.PI*2); c.fill();
+  c.restore();
+
+  // Wing (animated)
+  c.save();
+  c.rotate(wingAngle);
+  c.beginPath();
+  c.moveTo(-2,-4);
+  c.bezierCurveTo(-22,-2,-28,10,-20,18);
+  c.bezierCurveTo(-12,24,4,16,4,6);
+  c.closePath();
+  const wg=c.createLinearGradient(-28,0,4,18);
+  wg.addColorStop(0,'#b8450e'); wg.addColorStop(1,'#5a1a02');
+  c.fillStyle=wg; c.fill();
+  c.restore();
+
+  // Tail feathers
+  [[-0.5,0.9],[-0.3,0.7],[0,0.55]].forEach(([ra,rb])=>{
+    c.save(); c.rotate(ra);
+    c.beginPath(); c.moveTo(16,-2);
+    c.quadraticCurveTo(32+rb*8,-14,28,-20);
+    c.quadraticCurveTo(22,-14,16,-2);
+    c.fillStyle='#a03008'; c.fill();
+    c.restore();
+  });
+
+  // Head
+  c.save(); c.translate(-14,-14);
+  const hg=c.createRadialGradient(-2,-2,1,0,0,10);
+  hg.addColorStop(0,'#e07030'); hg.addColorStop(1,'#8a2c08');
+  c.fillStyle=hg;
+  c.beginPath(); c.ellipse(0,0,10,9,0,0,Math.PI*2); c.fill();
+
+  // Comb
+  c.fillStyle='#e02020';
+  [[0,-10,4,5],[4,-9,3.5,5],[-4,-9,3.5,5]].forEach(([cx2,cy2,rx2,ry2])=>{
+    c.beginPath(); c.ellipse(cx2,cy2,rx2,ry2,0,0,Math.PI*2); c.fill();
+  });
+
+  // Wattle
+  c.fillStyle='#d01818';
+  c.beginPath(); c.ellipse(3,5,3.5,5,0.3,0,Math.PI*2); c.fill();
+
+  // Beak
+  c.fillStyle='#e8a020';
+  c.beginPath(); c.moveTo(8,-2); c.lineTo(16,0); c.lineTo(8,3); c.closePath(); c.fill();
+
+  // Eye
+  c.fillStyle='#111'; c.beginPath(); c.arc(3,-3,2.2,0,Math.PI*2); c.fill();
+  c.fillStyle='#fff'; c.beginPath(); c.arc(4,-4,0.9,0,Math.PI*2); c.fill();
+
+  c.restore(); // head
+
+  c.restore(); // main
+}
+
+function renderHenIntro(){
+  if(!henAnim) return;
+  const t=henAnim.t;
+  const bowl=bowls[0];
+  const bx=bowl.x+BOWL_W/2;
+  const by=bowl.y;
+
+  // Phase 1 (0-40): hen walks in from left, settles on bowl
+  // Phase 2 (40-70): hen squats, egg appears
+  // Phase 3 (70-130): hen flaps wings and flies up off screen
+  let hx, hy;
+
+  if(t<40){
+    const p=t/40;
+    hx = FL + (bx-FL)*easeOut(p);
+    hy = by - 28;
+  } else if(t<70){
+    const p=(t-40)/30;
+    hx = bx;
+    hy = by - 28 + p*8; // slight squat
+  } else {
+    const p=(t-70)/60;
+    hx = bx + Math.sin(p*4)*12; // wobble
+    hy = by - 28 + 8 - easeOut(p)*(by+60); // fly up
+  }
+
+  // Draw egg appearing at t=50-70
+  if(t>=50 && t<70){
+    const ep=Math.min(1,(t-50)/12);
+    ctx.save();
+    ctx.globalAlpha=ep;
+    // Small egg below hen
+    const ex=bx, ey=by-2;
+    ctx.save(); ctx.translate(ex,ey); ctx.scale(1,1.28);
+    ctx.fillStyle='#fffdf8';
+    ctx.beginPath(); ctx.arc(0,0,EGG_R*ep,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  }
+
+  // Fade hen out at end
+  if(t>110) ctx.globalAlpha=(130-t)/20;
+  drawHen(hx, hy, t);
+  ctx.globalAlpha=1;
 }
 
 /* ── Aim arc ─────────────────────────────────────────────────────────── */
