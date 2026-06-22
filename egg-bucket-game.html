@@ -421,12 +421,27 @@ function startSlide(){
 }
 function finishSlide(){
   const nextL=level+1;
-  const b1moves=false;             // middle bowl always stationary
-  const b2moves=nextL>=2;          // top bowl moves from level 2
+  let b1moves=false, b2moves=false; // b1=egg's bowl, b2=target bowl
+
+  if(nextL<=1){
+    b1moves=false; b2moves=false;
+  } else if(nextL<=10){
+    b1moves=false; b2moves=true;   // only target moves
+  } else {
+    // Progressive difficulty: more b1 movement (egg inside) as levels rise
+    const d=Math.min((nextL-10)/30,1); // 0 at L11 → 1 at L40+
+    const pBreather=Math.max(0.12-d*0.10,0.02);
+    const pTopOnly =Math.max(0.42-d*0.28,0.08);
+    const r=Math.random();
+    if(r<pBreather){            b1moves=false; b2moves=false; } // breather
+    else if(r<pBreather+pTopOnly){ b1moves=false; b2moves=true; } // top only
+    else{                       b1moves=true;  b2moves=true;  } // egg bowl + top
+  }
+
   const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary
   const b1spd=b1moves?randSpd(baseSpd(nextL)):0;
-  const b1x=b1moves?bowls[2].x:FL+FW/2-BOWL_W/2;
-  const b1={...bowls[2],y:YPOS[1],speed:b1spd,x:b1x};
+  const b1x=b1moves?FL+Math.random()*(FW-BOWL_W):FL+FW/2-BOWL_W/2;
+  const b1={y:YPOS[1],w:BOWL_W,h:BOWL_H,x:b1x,speed:b1spd,dir:Math.random()<.5?1:-1};
   const b2=mkBowl(YPOS[2],!b2moves);
   bowls=[b0,b1,b2];
   curIdx=1; tgtIdx=2;
