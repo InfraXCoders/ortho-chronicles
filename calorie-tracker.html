@@ -2159,9 +2159,10 @@ init();
      FIREBASE — Google Sign-In + Firestore cloud sync
      ═══════════════════════════════════════════════════════════════ -->
 <script type="module">
-import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,signOut as fbSignOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import{initializeApp}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
+import{getAnalytics}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js';
+import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,signOut as fbSignOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
+import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // PASTE YOUR FIREBASE CONFIG HERE
@@ -2191,6 +2192,7 @@ let auth,db,currentUser=null;
 
 if(CONFIGURED){
   const app=initializeApp(firebaseConfig);
+  getAnalytics(app);
   auth=getAuth(app);
   db=getFirestore(app);
 
