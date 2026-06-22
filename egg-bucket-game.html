@@ -160,7 +160,8 @@ function seatY(b){ return b.y; }
 
 /* ── Theme / egg ─────────────────────────────────────────────────────── */
 function getTheme(l){
-  if(l<25)   return 'beigewood';
+  if(l<10)   return 'beigewood';
+  if(l<25)   return 'stones';
   if(l<50)   return 'forest';
   if(l<100)  return 'flowers';
   if(l<200)  return 'mountains';
@@ -175,7 +176,7 @@ function getTheme(l){
   return cycle[Math.floor((l-550)/50)%cycle.length];
 }
 const THEME_LABELS={
-  beigewood:'🪵 Old Woodland',forest:'🌲 Forest',flowers:'🌸 Flower Fields',
+  beigewood:'🪵 Old Woodland',stones:'🪨 Stone Ruins',forest:'🌲 Forest',flowers:'🌸 Flower Fields',
   mountains:'⛰️ Mountains',clouds:'☁️ Above Clouds',fog:'🌫️ Foggy Valley',
   snow:'❄️ Snowfall',rain:'🌧️ Rainstorm',space:'🌌 Space Nebula',
   moon:'🌙 Moon',sun:'☀️ The Sun',universe:'🌌 Universe',
@@ -542,7 +543,47 @@ function makeBg(theme){
   const bx=bc.getContext('2d'); const w=bc.width,h=bc.height;
   const gfill=(a,b)=>{const g=bx.createLinearGradient(0,0,0,h);g.addColorStop(0,a);g.addColorStop(1,b);bx.fillStyle=g;bx.fillRect(0,0,w,h);};
 
-  if(theme==='beigewood'){
+  if(theme==='stones'){
+    // Dark stone wall — irregular cobblestones in grey/slate tones
+    gfill('#3a3530','#2a2520');
+    const seed=(x,y)=>(Math.sin(x*127.1+y*311.7)*43758.5453)%1;
+    const rows=Math.ceil(h/52)+1;
+    for(let row=0;row<rows;row++){
+      const rowY=row*52, offset=(row%2)*38;
+      const rowH=44+seed(row,0)*12;
+      let cx=offset-60;
+      while(cx<w+60){
+        const sw=55+seed(cx,row)*35;
+        const hue=25+seed(cx+1,row)*20;
+        const lig=22+seed(cx+2,row)*16;
+        bx.fillStyle=`hsl(${hue},8%,${lig}%)`;
+        bx.beginPath();
+        const r=5;
+        const x0=cx+3,y0=rowY+3,x1=cx+sw-3,y1=rowY+rowH-3;
+        bx.moveTo(x0+r,y0); bx.lineTo(x1-r,y0);
+        bx.arcTo(x1,y0,x1,y0+r,r); bx.lineTo(x1,y1-r);
+        bx.arcTo(x1,y1,x1-r,y1,r); bx.lineTo(x0+r,y1);
+        bx.arcTo(x0,y1,x0,y1-r,r); bx.lineTo(x0,y0+r);
+        bx.arcTo(x0,y0,x0+r,y0,r); bx.closePath();
+        bx.fill();
+        // Highlight edge
+        bx.strokeStyle=`rgba(180,160,130,${0.08+seed(cx+3,row)*0.08})`;
+        bx.lineWidth=1; bx.stroke();
+        // Surface cracks
+        bx.strokeStyle=`rgba(0,0,0,${0.18+seed(cx+4,row)*0.12})`;
+        bx.lineWidth=0.7; bx.beginPath();
+        const mx=cx+sw*0.3+seed(cx+5,row)*sw*0.4;
+        bx.moveTo(mx,rowY+8);
+        bx.quadraticCurveTo(mx+seed(cx+6,row)*14-7,rowY+rowH/2,mx+seed(cx+7,row)*10-5,rowY+rowH-8);
+        bx.stroke();
+        cx+=sw+4;
+      }
+    }
+    // Dark mortar gaps (already gaps between stones; add subtle moss tint)
+    bx.fillStyle='rgba(60,80,40,0.07)';
+    bx.fillRect(0,0,w,h);
+  }
+  else if(theme==='beigewood'){
     // Warm beige antique wood — planks in honey/amber tones
     gfill('#f0e2be','#d4b87a');
     const plH=54;
