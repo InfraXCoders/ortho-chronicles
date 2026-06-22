@@ -215,29 +215,53 @@ function _n(freq,t0,dur,type,vol,dst){
   o.connect(g); g.connect(dst||a.destination);
   o.start(t0); o.stop(t0+dur+0.01);
 }
-// Melody: cheerful pentatonic loop, 16 beats @ 120bpm = 8s
-const _B=60/120;
-const _HZ={C4:261.63,D4:293.66,E4:329.63,G4:392,A4:440,
-           C5:523.25,D5:587.33,E5:659.25,G5:784,A5:880,C6:1046.5};
+// Smooth ambient loop — 24 beats @ 75bpm = 19.2s
+const _B=60/75;
+const _HZ={B3:246.94,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,
+           C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:784,A5:880};
+// Gentle flowing melody (sine, slow sustained notes)
 const _MEL=[
-  [_HZ.E5,0,.5],[_HZ.G5,.5,.5],[_HZ.A5,1,1],[_HZ.G5,2,.5],[_HZ.E5,2.5,.5],
-  [_HZ.D5,3,.5],[_HZ.E5,3.5,.5],
-  [_HZ.G5,4,.5],[_HZ.A5,4.5,.5],[_HZ.C6,5,1],[_HZ.A5,6,.5],[_HZ.G5,6.5,.5],
-  [_HZ.E5,7,1],
-  [_HZ.E5,8,.5],[_HZ.G5,8.5,.5],[_HZ.A5,9,1],[_HZ.G5,10,.5],[_HZ.E5,10.5,.5],
-  [_HZ.D5,11,.5],[_HZ.E5,11.5,.5],
-  [_HZ.G5,12,.5],[_HZ.E5,12.5,.5],[_HZ.D5,13,.5],[_HZ.C5,13.5,.5],
-  [_HZ.C5,14,2],
+  [_HZ.E5,0,2.8],[_HZ.D5,3,1.8],[_HZ.C5,5,3.8],
+  [_HZ.G5,9,2.8],[_HZ.F5,12,1.8],[_HZ.E5,14,3.8],
+  [_HZ.D5,18,1.8],[_HZ.E5,20,1.2],[_HZ.C5,21.5,2.5],
 ];
+// Soft harmony a third below melody
+const _HARM=[
+  [_HZ.C5,0,2.8],[_HZ.B4,3,1.8],[_HZ.A4,5,3.8],
+  [_HZ.E5,9,2.8],[_HZ.D5,12,1.8],[_HZ.C5,14,3.8],
+  [_HZ.B4,18,1.8],[_HZ.C5,20,1.2],[_HZ.A4,21.5,2.5],
+];
+// Gentle bass pulses
 const _BASS=[
-  [_HZ.C4,0,1.8],[_HZ.G4,2,1.8],[_HZ.C4,4,1.8],[_HZ.A4,6,1.8],
-  [_HZ.C4,8,1.8],[_HZ.G4,10,1.8],[_HZ.C4,12,1.8],[_HZ.G4,14,1.8],
+  [_HZ.C4,0,3.5],[_HZ.A3||_HZ.B3,4,3.5],[_HZ.F4,8,3.5],[_HZ.G4,12,3.5],
+  [_HZ.C4,16,3.5],[_HZ.F4,20,4],
 ];
+// Warm pad chords (stacked sine, long attack)
+function _pad(freqs,t0,dur,vol){
+  freqs.forEach(f=>{
+    const a=_getAC(),o=a.createOscillator(),g=a.createGain(),mg=_getMG();
+    o.type='sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(0,t0);
+    g.gain.linearRampToValueAtTime(vol,t0+0.4);
+    g.gain.setValueAtTime(vol,t0+dur-0.5);
+    g.gain.linearRampToValueAtTime(0,t0+dur);
+    o.connect(g); g.connect(mg);
+    o.start(t0); o.stop(t0+dur+0.01);
+  });
+}
 function _schedMusic(){
   const now=_getAC().currentTime, mg=_getMG();
-  _MEL.forEach(([f,b,d])=>_n(f,now+b*_B,d*_B*.88,'triangle',.16,mg));
-  _BASS.forEach(([f,b,d])=>_n(f/2,now+b*_B,d*_B*.75,'sine',.08,mg));
-  _mTimer=setTimeout(_schedMusic,16*_B*1000-100);
+  // Melody and harmony — sine, soft attack
+  _MEL.forEach(([f,b,d])=>_n(f,now+b*_B,d*_B,'sine',.13,mg));
+  _HARM.forEach(([f,b,d])=>_n(f,now+b*_B,d*_B,'sine',.07,mg));
+  // Bass — deep sine
+  _BASS.forEach(([f,b,d])=>_n(f/2,now+b*_B,d*_B*.9,'sine',.07,mg));
+  // Pad chords every 8 beats
+  [[_HZ.C4,_HZ.E4,_HZ.G4],[_HZ.F4,_HZ.A4,_HZ.C5],
+   [_HZ.G4,_HZ.B4,_HZ.D5],[_HZ.C4,_HZ.E4,_HZ.G4]].forEach((ch,i)=>{
+    _pad(ch, now+i*6*_B, 6*_B*.95, .04);
+  });
+  _mTimer=setTimeout(_schedMusic,24*_B*1000-120);
 }
 function startMusic(){if(!_mTimer) _schedMusic();}
 function stopMusic(){if(_mTimer){clearTimeout(_mTimer);_mTimer=null;}}
