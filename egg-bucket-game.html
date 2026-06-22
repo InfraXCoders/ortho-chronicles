@@ -104,7 +104,7 @@ function initCv(){
   W=window.innerWidth; H=window.innerHeight;
   cv.width=W; cv.height=H;
   ctx=cv.getContext('2d');
-  FW=Math.round(W*0.80); FL=Math.round((W-FW)/2);
+  FW=Math.round(W*0.58); FL=Math.round((W-FW)/2);
   YPOS=[Math.round(H*.76), Math.round(H*.48), Math.round(H*.21)];
 }
 window.addEventListener('resize',()=>{if(running){initCv();bgCache={};}});
