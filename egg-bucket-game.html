@@ -461,7 +461,7 @@ function finishSlide(){
   const nextL=level+1;
   let b1moves,b2moves;
   if(nextL<=2){       b1moves=false; b2moves=false; }
-  else if(nextL<=10){ b1moves=false; b2moves=true;  }
+  else if(nextL<=11){ b1moves=false; b2moves=true;  }
   else{
     // Random mix: both still / top only / both move (weighted toward harder)
     const r=Math.random();
