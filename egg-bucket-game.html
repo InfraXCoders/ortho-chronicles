@@ -286,8 +286,8 @@ function update(){
     const inY=egg.y+EGG_R>=tb.y-4 && egg.y-EGG_R<=tb.y+tb.h*.5;
     if(inX && inY && egg.vy>0){ catchBowl(); return; }
 
-    // ── Miss: passed through bowl without catching ──
-    if(!egg.missed && egg.y>tb.y+tb.h+16){
+    // ── Miss: fell past bowl while descending ──
+    if(!egg.missed && egg.vy>0 && egg.y>tb.y+tb.h+16){
       egg.missed=true;
       egg.vx+=(Math.random()-0.5)*3;
       egg.angV=egg.vx*0.12;
@@ -417,13 +417,19 @@ function tap(){
   // Arc ABOVE bowl by OVERSHOOT px so egg crests visibly then drops in
   const OVERSHOOT=90;
   const peakY=tb.y-OVERSHOOT;
-  const peakDy=peakY-egg.y; // always negative (upward)
+  const peakDy=peakY-egg.y;
   const vy=-Math.sqrt(2*G*Math.abs(peakDy));
-  // Time to peak, then fall from peak to bowl
-  const tUp=-vy/G;
-  const tDown=Math.sqrt(2*Math.abs(tb.y-peakY)/G);
+  const tUp=Math.round(-vy/G);
+  const tDown=Math.round(Math.sqrt(2*OVERSHOOT/G));
   const totalT=tUp+tDown;
-  const targetX=tb.x+BOWL_W/2;
+  // Simulate bowl's exact position at landing (accounts for wall bounces)
+  let bx=tb.x, bdir=tb.dir;
+  for(let i=0;i<totalT;i++){
+    bx+=tb.speed*bdir;
+    if(bx+BOWL_W>FL+FW){bx=FL+FW-BOWL_W;bdir=-1;}
+    if(bx<FL){bx=FL;bdir=1;}
+  }
+  const targetX=bx+BOWL_W/2;
   egg.vx=(targetX-egg.x)/totalT;
   egg.vy=vy;
   egg.angV=egg.vx*0.048;
