@@ -110,7 +110,7 @@ function initCv(){
 window.addEventListener('resize',()=>{if(running){initCv();bgCache={};}});
 
 /* ── Game state ───────────────────────────────────────────────────────── */
-let running=false, animId;
+let running=false, animId, dying=false;
 let level=1, lives=3, score=0, hiScore=0, combo=0;
 let milestonesEarned=new Set();
 const MILESTONES=[{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10}];
@@ -211,6 +211,7 @@ function startGame(){
   egg.vx=0; egg.vy=0; egg.angle=0; egg.angV=0;
   egg.offsetX=0; egg.missed=false;
   eggState='sitting'; landingDecel=false;
+  dying=false;
 
   running=true;
   if(animId) cancelAnimationFrame(animId);
@@ -295,7 +296,7 @@ function update(){
     const catchL=tb.x+7;
     const inX=egg.x>=catchL && egg.x<=catchL+catchW;
     const inY=egg.y+egg.r>=tb.y-4 && egg.y-egg.r<=tb.y+tb.h*.5;
-    if(inX && inY && egg.vy<0){ catchBowl(); return; }
+    if(inX && inY && egg.vy<2.5){ catchBowl(); return; }
 
     // ── Miss: egg dipped below target without catching ──
     if(!egg.missed && egg.vy>0 && egg.y>tb.y+tb.h+16){
@@ -375,8 +376,11 @@ function finishSlide(){
 /* ── Miss / death ────────────────────────────────────────────────────── */
 function onMiss(){
   lives--; combo=0; updateHUD();
-  addScoreFx('MISSED','#ff4444',W/2,bowls[tgtIdx].y-40);
+  // Guard: tgtIdx may be 3 after top-bowl catch sequence, use mid-Y as fallback
+  const missY = bowls[tgtIdx] ? bowls[tgtIdx].y-40 : H*0.4;
+  addScoreFx('MISSED','#ff4444',W/2,missY);
   if(lives<=0){
+    dying=true; // prevent further taps immediately
     setTimeout(()=>{
       if(score>hiScore) hiScore=score;
       document.getElementById('goMsg').textContent='Reached Level '+level;
@@ -414,7 +418,7 @@ document.addEventListener('mousedown',()=>{if(running)tap();});
 document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='ArrowUp')&&running){e.preventDefault();tap();}});
 
 function tap(){
-  if(eggState!=='sitting'||slideAnim) return;
+  if(eggState!=='sitting'||slideAnim||dying) return;
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
   // Aim at current bowl center; player must time when bowl aligns
@@ -688,7 +692,7 @@ function drawLeaf(c,lx,ly,angle,bright){
 
 /* ── DRAW EGG ─────────────────────────────────────────────────────────── */
 function drawEgg(sx,sy){
-  const r=egg.r;
+  const r=EGG_R;
   ctx.save();
   ctx.translate(sx,sy);
   ctx.rotate(egg.angle);
