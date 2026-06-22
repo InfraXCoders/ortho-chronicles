@@ -422,7 +422,7 @@ function startSlide(){
 function finishSlide(){
   const nextL=level+1;
   const b1moves=false;             // middle bowl always stationary
-  const b2moves=nextL>=3;          // top bowl moves from level 3
+  const b2moves=nextL>=2;          // top bowl moves from level 2
   const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary
   const b1spd=b1moves?randSpd(baseSpd(nextL)):0;
   const b1x=b1moves?bowls[2].x:FL+FW/2-BOWL_W/2;
