@@ -6,38 +6,34 @@
 <title>Egg Climb — OrthoChronicles</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#1a0f00;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Segoe UI',sans-serif;overflow:hidden;touch-action:none;user-select:none;}
+body{background:#0a0600;display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;touch-action:none;user-select:none;font-family:'Segoe UI',sans-serif;}
 canvas{display:block;touch-action:none;}
 
-#menuScreen,#overlay{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;}
-#menuScreen{background:rgba(15,7,0,.94);}
-#overlay{background:rgba(0,0,0,.8);display:none;}
+#menuScreen,#overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
+#menuScreen{background:rgba(10,6,0,.93);}
+#overlay{background:rgba(0,0,0,.82);display:none;}
 
 .panel{background:linear-gradient(160deg,#3b1f00,#5c3000);border:3px solid #a0622a;border-radius:18px;padding:36px 28px;max-width:320px;width:88%;text-align:center;box-shadow:0 8px 40px #00000088;}
-.panel h1{color:#ffe49a;font-size:2rem;letter-spacing:2px;text-shadow:0 2px 8px #8b5e00;}
-.panel .sub{color:#c49a5a;font-size:.82rem;margin:6px 0 26px;line-height:1.5;}
-
-.modeBtn{display:block;width:100%;margin:9px 0;padding:13px;border-radius:10px;border:2px solid transparent;background:#2a1400;font-size:.95rem;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .18s;}
-.modeBtn.noob{color:#6ee77a;border-color:#3a6e40;}
-.modeBtn.noob:hover,.modeBtn.noob.sel{background:#1a3d1f;border-color:#6ee77a;box-shadow:0 0 14px #6ee77a44;}
+.panel h1{color:#ffe49a;font-size:2rem;letter-spacing:2px;}
+.panel .sub{color:#c49a5a;font-size:.8rem;margin:6px 0 24px;line-height:1.6;}
+.modeBtn{display:block;width:100%;margin:8px 0;padding:12px;border-radius:10px;border:2px solid transparent;background:#2a1400;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px;}
+.modeBtn.noob  {color:#6ee77a;border-color:#3a6e40;}
+.modeBtn.noob.sel  {background:#1a3d1f;border-color:#6ee77a;box-shadow:0 0 12px #6ee77a44;}
 .modeBtn.expert{color:#ffe49a;border-color:#7a6020;}
-.modeBtn.expert:hover,.modeBtn.expert.sel{background:#3d2f00;border-color:#ffe49a;box-shadow:0 0 14px #ffe49a44;}
-.modeBtn.pro{color:#ff8a8a;border-color:#7a3030;}
-.modeBtn.pro:hover,.modeBtn.pro.sel{background:#3d1010;border-color:#ff8a8a;box-shadow:0 0 14px #ff8a8a44;}
+.modeBtn.expert.sel{background:#3d2f00;border-color:#ffe49a;box-shadow:0 0 12px #ffe49a44;}
+.modeBtn.pro   {color:#ff8a8a;border-color:#7a3030;}
+.modeBtn.pro.sel   {background:#3d1010;border-color:#ff8a8a;box-shadow:0 0 12px #ff8a8a44;}
+#startBtn{margin-top:18px;width:100%;padding:14px;background:linear-gradient(135deg,#c47a1a,#a05010);color:#fff8e0;border:2px solid #e8a030;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:1px;}
 
-#startBtn{margin-top:18px;padding:14px 36px;background:linear-gradient(135deg,#c47a1a,#a05010);color:#fff8e0;border:2px solid #e8a030;border-radius:10px;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:1px;width:100%;}
-#startBtn:hover{background:linear-gradient(135deg,#e09020,#c06020);}
-
-#hud{position:fixed;top:0;left:0;right:0;display:none;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(0,0,0,.6);pointer-events:none;}
+#hud{position:fixed;top:0;left:0;right:0;display:none;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(0,0,0,.55);pointer-events:none;z-index:10;}
 #hud span{color:#ffe49a;font-size:.88rem;font-weight:700;text-shadow:0 1px 4px #000;}
 
-.overlayBox{background:linear-gradient(160deg,#3b1f00,#5c3000);border:3px solid #a0622a;border-radius:16px;padding:32px;text-align:center;max-width:290px;}
-.overlayBox h2{font-size:1.55rem;margin-bottom:8px;}
-.overlayBox p{color:#c49a5a;margin-bottom:20px;font-size:.88rem;line-height:1.5;}
-.overlayBox button{padding:12px 28px;background:linear-gradient(135deg,#c47a1a,#a05010);color:#fff8e0;border:2px solid #e8a030;border-radius:8px;font-size:.95rem;font-weight:800;cursor:pointer;margin:5px;}
-.overlayBox button.sec{background:transparent;color:#c49a5a;border:1px solid #5c3000;}
+.overlayBox{background:linear-gradient(160deg,#3b1f00,#5c3000);border:3px solid #a0622a;border-radius:16px;padding:32px;text-align:center;max-width:285px;}
+.overlayBox h2{font-size:1.5rem;margin-bottom:8px;}
+.overlayBox p{color:#c49a5a;margin-bottom:20px;font-size:.87rem;line-height:1.6;}
+.overlayBox button{padding:11px 26px;background:linear-gradient(135deg,#c47a1a,#a05010);color:#fff8e0;border:2px solid #e8a030;border-radius:8px;font-size:.93rem;font-weight:800;cursor:pointer;margin:4px;}
 
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#c47a1a;color:#fff8e0;padding:9px 22px;border-radius:22px;font-weight:800;font-size:.9rem;display:none;pointer-events:none;border:2px solid #e8a030;white-space:nowrap;}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#b06010;color:#fff8e0;padding:8px 20px;border-radius:20px;font-weight:800;font-size:.88rem;display:none;pointer-events:none;border:2px solid #e8a030;white-space:nowrap;z-index:20;}
 </style>
 </head>
 <body>
@@ -46,7 +42,7 @@ canvas{display:block;touch-action:none;}
 <div id="menuScreen">
   <div class="panel">
     <h1>🥚 EGG CLIMB</h1>
-    <p class="sub">Tap to launch the egg into the moving bucket above — keep climbing higher!</p>
+    <p class="sub">Tap to jump into the bowl above.<br>Land perfectly to climb higher!</p>
     <button class="modeBtn noob"   onclick="selMode('noob')">🟢 NOOB — Easy</button>
     <button class="modeBtn expert" onclick="selMode('expert')">🟡 EXPERT — Medium</button>
     <button class="modeBtn pro"    onclick="selMode('pro')">🔴 PRO — Hard</button>
@@ -64,256 +60,247 @@ canvas{display:block;touch-action:none;}
   <div class="overlayBox">
     <h2 id="ovTitle"></h2>
     <p id="ovMsg"></p>
-    <button onclick="goMenu()">Menu</button>
+    <button onclick="goMenu()">☰ Menu</button>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-// ── Config ───────────────────────────────────────────────────────────────────
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
 const MODES = {
-  noob:   {bw:110, speed:1.7, window:0.35, lives:5, label:'NOOB'},
-  expert: {bw:80,  speed:3.0, window:0.22, lives:3, label:'EXPERT'},
-  pro:    {bw:52,  speed:5.0, window:0.13, lives:2, label:'PRO'}
+  noob:   {baseW:100, minW:55, speed:1.6, catchWin:0.36, lives:5,  label:'NOOB'},
+  expert: {baseW:80,  minW:40, speed:3.0, catchWin:0.22, lives:3,  label:'EXPERT'},
+  pro:    {baseW:58,  minW:28, speed:5.0, catchWin:0.13, lives:2,  label:'PRO'}
 };
-const MILESTONES = [{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10}];
-const MAX_LIVES = 10;
-const GRAV = 0.40;
+const MILESTONES=[{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10}];
+const MAX_LIVES=10;
+const G=0.38; // gravity
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let cv, ctx, W, H;
-let mode='expert', cfg;
-let running=false, paused=false;
-let level, lives, combo, milestonesHit;
+// ─── CANVAS ──────────────────────────────────────────────────────────────────
+let cv,ctx,W,H;
+function initCv(){
+  cv=document.getElementById('c');
+  W=Math.min(window.innerWidth,430);
+  H=window.innerHeight;
+  cv.width=W; cv.height=H;
+  ctx=cv.getContext('2d');
+}
+window.addEventListener('resize',()=>{ if(running){ initCv(); rebuildBg(); }});
 
-// Two buckets always visible
-// baseBucket  — where egg currently sits (lower, ~70% down)
-// nextBucket  — moving target above (higher up)
-let baseBucket, nextBucket;
+// ─── GAME STATE ───────────────────────────────────────────────────────────────
+let mode='expert',cfg;
+let running=false,paused=false;
+let level,lives,combo,milestonesHit;
+let animId;
 
-// Egg
+// Camera: scrollY increases as egg climbs (world scrolls down)
+let scrollY=0, targetScrollY=0, scrollSpeed=0;
+
+// Bowl pool — bowls in WORLD coordinates (worldY=0 is the starting floor)
+// Screen Y = worldY - scrollY
+// Visible when screenY is between 0 and H
+let bowls=[];         // [{worldY, x, w, h, speed, dir}]
+let activeBowlIdx=0; // index of bowl egg currently sits in
+let nextBowlIdx=1;   // index of bowl egg must jump to
+
+// Egg (in world coords)
 let egg;
-// eggState: 'sitting' | 'flying' | 'sliding' (riding bucket down after catch)
-let eggState;
-
-// Slide animation: after catch, slide both buckets down
-let slideAnim = null; // {fromY, toY, t, total}
-
-// Clouds / decorative elements scrolling
-let clouds = [];
-let bgCanvas;
+// eggState: 'sitting'|'flying'|'scrolling'
+let eggState='sitting';
 
 // Feedback
-let feedTxt='', feedCol='#fff', feedTimer=0;
+let feedTxt='',feedCol='#fff',feedTimer=0;
+let bgCanvas;
 
-// ── Canvas ────────────────────────────────────────────────────────────────────
-function initCanvas() {
-  cv = document.getElementById('c');
-  W = Math.min(window.innerWidth, 430);
-  H = window.innerHeight;
-  cv.width = W; cv.height = H;
-  ctx = cv.getContext('2d');
+// ─── BOWL GEOMETRY ────────────────────────────────────────────────────────────
+// Each bowl is STEP_H pixels above previous in world coords
+const STEP_H = 160; // world units between bowls
+
+function bowlWidthAt(idx){
+  // Shrinks with height, but clamp at minW
+  const shrink=Math.floor(idx/5)*2;
+  return Math.max(cfg.baseW - shrink, cfg.minW);
 }
-window.addEventListener('resize', ()=>{ if(running){ initCanvas(); buildBg(); } });
-
-// ── Mode ──────────────────────────────────────────────────────────────────────
-function selMode(m) {
-  mode=m;
-  document.querySelectorAll('.modeBtn').forEach(b=>b.classList.remove('sel'));
-  document.querySelector('.modeBtn.'+m).classList.add('sel');
+function bowlSpeedAt(idx){
+  return cfg.speed + idx*0.018;
 }
-selMode('expert');
 
-// ── Start ─────────────────────────────────────────────────────────────────────
-function startGame() {
-  cfg = MODES[mode];
+function spawnBowl(idx){
+  const w=bowlWidthAt(idx);
+  return {
+    worldY: -idx*STEP_H, // negative = higher in world (screen Y decreases)
+    x: Math.random()*(W-w),
+    w, h:22,
+    speed: bowlSpeedAt(idx) * (Math.random()<.5?1:-1),
+    dir:1
+  };
+}
+
+// ─── LAUNCH ───────────────────────────────────────────────────────────────────
+function startGame(){
+  cfg=MODES[mode];
   level=1; lives=cfg.lives; combo=0; milestonesHit=new Set();
+  scrollY=0; targetScrollY=0;
+
   document.getElementById('menuScreen').style.display='none';
   document.getElementById('overlay').style.display='none';
   document.getElementById('hud').style.display='flex';
-  initCanvas();
-  buildBg();
-  spawnClouds();
-  spawnLevel(true);
-  running=true;
+
+  initCv(); rebuildBg();
+
+  // Spawn initial pool of bowls (10 ahead)
+  bowls=[];
+  for(let i=0;i<12;i++) bowls.push(spawnBowl(i));
+  activeBowlIdx=0; nextBowlIdx=1;
+
+  // Egg starts sitting in bowl 0
+  const b0=bowls[0];
+  egg={ worldX:b0.x+b0.w/2, worldY:b0.worldY-14, vx:0, vy:0, r:13 };
+  eggState='sitting';
+
+  running=true; paused=false;
   if(animId) cancelAnimationFrame(animId);
-  animId = requestAnimationFrame(loop);
-}
-let animId;
-
-// ── Spawn level ───────────────────────────────────────────────────────────────
-function bucketW() { return Math.max(cfg.bw - Math.floor((level-1)/8)*2, 36); }
-function bucketSpeed() { return cfg.speed + (level-1)*0.014; }
-
-function spawnLevel(first) {
-  const bw = bucketW();
-  const spd = bucketSpeed();
-
-  const baseY = H * 0.72;
-  const nextY = H * (0.38 - Math.min(level-1, 50)*0.001); // gently rises with levels
-
-  if(first) {
-    // First launch: egg on base bucket on floor
-    baseBucket = { x: W/2 - bw/2, y: baseY, w: bw, h: 30, speed: 0, dir: 1 };
-  }
-  // baseBucket already placed (from previous catch)
-
-  nextBucket = {
-    x: Math.random() * (W - bw),
-    y: nextY,
-    w: bw, h: 30,
-    speed: spd * (Math.random()<.5?1:-1),
-    dir: 1
-  };
-
-  egg = {
-    x: baseBucket.x + baseBucket.w/2,
-    y: baseBucket.y - 13,
-    vx: 0, vy: 0, r: 13,
-    _missed: false
-  };
-
-  eggState = 'sitting';
-  slideAnim = null;
+  animId=requestAnimationFrame(loop);
   updateHUD();
 }
+let selMode_=(m)=>{
+  mode=m;
+  document.querySelectorAll('.modeBtn').forEach(b=>b.classList.remove('sel'));
+  document.querySelector('.modeBtn.'+m).classList.add('sel');
+};
+function selMode(m){ selMode_(m); }
+selMode('expert');
 
-// ── Loop ──────────────────────────────────────────────────────────────────────
-function loop() {
+// ─── GAME LOOP ────────────────────────────────────────────────────────────────
+function loop(){
   if(!running) return;
   update();
   render();
-  animId = requestAnimationFrame(loop);
+  animId=requestAnimationFrame(loop);
 }
 
-function update() {
+function update(){
   if(paused) return;
 
-  // Always move nextBucket
-  nextBucket.x += nextBucket.speed * nextBucket.dir;
-  if(nextBucket.x + nextBucket.w >= W) { nextBucket.x=W-nextBucket.w; nextBucket.dir=-1; }
-  if(nextBucket.x <= 0)                { nextBucket.x=0;               nextBucket.dir= 1; }
+  // Smooth scroll toward target
+  const diff=targetScrollY-scrollY;
+  scrollY += diff*0.08;
 
-  // Scroll clouds
-  clouds.forEach(cl => {
-    cl.x -= cl.speed;
-    if(cl.x + cl.w < 0) cl.x = W + 20;
+  // Move all visible bowls horizontally
+  bowls.forEach(b=>{
+    b.x += b.speed*b.dir;
+    if(b.x+b.w>=W){b.x=W-b.w; b.dir=-1;}
+    if(b.x<=0)     {b.x=0;     b.dir= 1;}
   });
 
-  // Slide animation (after catch, buckets slide down)
-  if(slideAnim) {
-    slideAnim.t++;
-    const p = easeOut(slideAnim.t / slideAnim.total);
-    const dy = (slideAnim.toY - slideAnim.fromY) * p;
-    nextBucket.y = slideAnim.fromY + dy;
-    egg.y = nextBucket.y - egg.r;
-    egg.x = nextBucket.x + nextBucket.w/2;
+  feedTimer=Math.max(0,feedTimer-1);
 
-    if(slideAnim.t >= slideAnim.total) {
-      // Slide done: nextBucket becomes baseBucket
-      baseBucket = { ...nextBucket };
-      slideAnim = null;
-      level++;
-      checkMilestones();
-      spawnLevel(false);
-    }
-    return;
+  const ab=bowls[activeBowlIdx];
+  const nb=bowls[nextBowlIdx];
+
+  if(eggState==='sitting'){
+    // Egg tracks active bowl
+    egg.worldX=ab.x+ab.w/2;
+    egg.worldY=ab.worldY - egg.r;
   }
 
-  if(eggState === 'sitting') {
-    // Egg rides base bucket
-    egg.x = baseBucket.x + baseBucket.w/2;
-    egg.y = baseBucket.y - egg.r;
-  }
-
-  if(eggState === 'flying') {
-    egg.vy += GRAV;
-    egg.x  += egg.vx;
-    egg.y  += egg.vy;
+  if(eggState==='flying'){
+    egg.vy += G;
+    egg.worldX += egg.vx;
+    egg.worldY += egg.vy;
 
     // Wall bounce
-    if(egg.x - egg.r < 0)  { egg.x=egg.r;    egg.vx*=-0.55; }
-    if(egg.x + egg.r > W)  { egg.x=W-egg.r;  egg.vx*=-0.55; }
+    if(egg.worldX-egg.r<0)  {egg.worldX=egg.r;   egg.vx*=-0.5;}
+    if(egg.worldX+egg.r>W)  {egg.worldX=W-egg.r; egg.vx*=-0.5;}
 
-    // Check catch in nextBucket (egg going upward, inside bucket XY)
-    const inX = egg.x >= nextBucket.x - 4 && egg.x <= nextBucket.x + nextBucket.w + 4;
-    const inY = egg.y - egg.r <= nextBucket.y + nextBucket.h &&
-                egg.y + egg.r >= nextBucket.y - 4;
-
-    if(inX && inY && egg.vy < 0) {
-      catchEgg();
-      return;
+    // Catch check — egg inside next bowl while still going up
+    const inX = egg.worldX>=nb.x-2 && egg.worldX<=nb.x+nb.w+2;
+    const topOfBowl = nb.worldY;
+    const inY = egg.worldY-egg.r <= topOfBowl+nb.h && egg.worldY+egg.r >= topOfBowl;
+    if(inX && inY && egg.vy<0){
+      catchBowl(); return;
     }
 
-    // Egg passed above bucket zone and now falling back
-    if(egg.vy > 0 && egg.y > nextBucket.y + nextBucket.h + 15 && !egg._missed) {
-      egg._missed = true;
-      missEgg();
+    // Missed: egg going DOWN and passed below next bowl
+    if(egg.vy>0 && egg.worldY > nb.worldY+nb.h+20 && !egg._missed){
+      egg._missed=true;
+      onMiss();
     }
 
-    // Egg falls back to base bucket — reset for retry
-    if(egg.y >= baseBucket.y - egg.r && egg.vy > 0) {
-      egg.y = baseBucket.y - egg.r;
-      egg.vy = 0; egg.vx = 0;
-      egg._missed = false;
-      if(eggState === 'flying') eggState = 'sitting';
+    // Egg falls back to active bowl level
+    if(egg.vy>0 && egg.worldY >= ab.worldY-egg.r){
+      egg.worldY=ab.worldY-egg.r;
+      egg.vy=0; egg.vx=0; egg._missed=false;
+      if(eggState==='flying') eggState='sitting';
     }
   }
 
-  feedTimer = Math.max(0, feedTimer-1);
+  // Extend bowl pool as needed
+  while(bowls.length < nextBowlIdx+6){
+    bowls.push(spawnBowl(bowls.length));
+  }
 }
 
-function easeOut(t) { return 1-(1-t)*(1-t); }
-
-function catchEgg() {
-  const centre = nextBucket.x + nextBucket.w/2;
-  const offset = Math.abs(egg.x - centre) / (nextBucket.w/2);
-  const perfect = offset <= cfg.window;
+function catchBowl(){
+  const nb=bowls[nextBowlIdx];
+  const centre=nb.x+nb.w/2;
+  const off=Math.abs(egg.worldX-centre)/(nb.w/2);
+  const perfect=off<=cfg.catchWin;
   combo++;
-  if(perfect) showFeed('PERFECT! 🎯','#6ee77a');
-  else         showFeed('GOOD! ✓','#ffe49a');
+  showFeed(perfect?'PERFECT! 🎯':'GOOD! ✓', perfect?'#6ee77a':'#ffe49a');
 
-  eggState = 'sliding';
-  // Slide nextBucket down to baseBucket's position
-  slideAnim = {
-    fromY: nextBucket.y,
-    toY: baseBucket.y,
-    t: 0,
-    total: 38
-  };
+  // Snap egg into bowl
+  egg.vx=0; egg.vy=0;
+  egg.worldX=centre;
+  egg.worldY=nb.worldY-egg.r;
+  eggState='scrolling';
+
+  // Target scroll: bring this bowl to the same screen Y as the active bowl was
+  // activeBowl's screen Y = ab.worldY - scrollY
+  // We want nb.worldY - targetScrollY = ab.worldY - scrollY
+  // => targetScrollY = nb.worldY - (ab.worldY - scrollY)
+  const ab=bowls[activeBowlIdx];
+  const abScreenY=ab.worldY-scrollY;
+  targetScrollY=nb.worldY-abScreenY;
+
+  // After scroll settles, advance
+  setTimeout(()=>{
+    activeBowlIdx=nextBowlIdx;
+    nextBowlIdx++;
+    level++;
+    checkMilestones();
+    eggState='sitting';
+    updateHUD();
+  },480);
 }
 
-function missEgg() {
+function onMiss(){
   lives--;
   combo=0;
   showFeed('MISSED! ✗','#ff8a8a');
   updateHUD();
-  if(lives <= 0) {
-    setTimeout(gameOver, 700);
-  }
+  if(lives<=0) setTimeout(gameOver,700);
 }
 
-function checkMilestones() {
-  for(const m of MILESTONES) {
-    if(level >= m.l && !milestonesHit.has(m.l)) {
+function checkMilestones(){
+  for(const m of MILESTONES){
+    if(level>=m.l && !milestonesHit.has(m.l)){
       milestonesHit.add(m.l);
-      lives = Math.min(lives+m.v, MAX_LIVES);
-      showToast(`+${m.v} ${m.v>1?'Lives':'Life'}! (Lvl ${m.l}) 🎉`);
+      lives=Math.min(lives+m.v,MAX_LIVES);
+      showToast(`+${m.v} ${m.v>1?'Lives':'Life'}! (Level ${m.l}) 🎉`);
       updateHUD();
     }
   }
 }
 
-function gameOver() {
+function gameOver(){
   paused=true;
   document.getElementById('ovTitle').textContent='💔 GAME OVER';
   document.getElementById('ovTitle').style.color='#ff8a8a';
-  document.getElementById('ovMsg').textContent=`You reached Level ${level}\nMode: ${cfg.label}`;
+  document.getElementById('ovMsg').textContent=`You reached Level ${level}!\nMode: ${cfg.label}`;
   document.getElementById('overlay').style.display='flex';
 }
-
-function goMenu() {
+function goMenu(){
   running=false; paused=false;
   cancelAnimationFrame(animId);
   document.getElementById('overlay').style.display='none';
@@ -321,367 +308,303 @@ function goMenu() {
   document.getElementById('menuScreen').style.display='flex';
 }
 
-// ── Input ─────────────────────────────────────────────────────────────────────
-document.addEventListener('touchstart', e=>{
-  if(!running||paused) return;
-  e.preventDefault(); onTap();
-},{passive:false});
-document.addEventListener('mousedown',  ()=>{ if(running&&!paused) onTap(); });
-document.addEventListener('keydown', e=>{
-  if((e.code==='Space'||e.code==='ArrowUp')&&running&&!paused){ e.preventDefault(); onTap(); }
+// ─── INPUT ────────────────────────────────────────────────────────────────────
+document.addEventListener('touchstart',e=>{e.preventDefault(); if(running&&!paused) onTap();},{passive:false});
+document.addEventListener('mousedown',()=>{if(running&&!paused) onTap();});
+document.addEventListener('keydown',e=>{
+  if((e.code==='Space'||e.code==='ArrowUp')&&running&&!paused){e.preventDefault();onTap();}
 });
-
-function onTap() {
+function onTap(){
   if(eggState!=='sitting') return;
   launchEgg();
 }
-
-function launchEgg() {
-  const targetX = nextBucket.x + nextBucket.w/2;
-  const dy = nextBucket.y - egg.y; // negative (target above)
-  const vy = -Math.sqrt(2 * GRAV * Math.abs(dy) * 1.18);
-  const tUp = -vy / GRAV;
-  const vx = (targetX - egg.x) / tUp;
-  egg.vx = vx;
-  egg.vy = vy;
-  egg._missed = false;
-  eggState = 'flying';
+function launchEgg(){
+  const ab=bowls[activeBowlIdx];
+  const nb=bowls[nextBowlIdx];
+  // Aim for centre of next bowl
+  const tx=nb.x+nb.w/2;
+  const dy=nb.worldY-egg.worldY; // negative (above)
+  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.2);
+  const tUp=-vy/G;
+  const vx=(tx-egg.worldX)/tUp;
+  egg.vx=vx; egg.vy=vy;
+  egg._missed=false;
+  eggState='flying';
 }
 
-// ── Background ────────────────────────────────────────────────────────────────
-function buildBg() {
-  bgCanvas = document.createElement('canvas');
-  bgCanvas.width=W; bgCanvas.height=H;
+// ─── BACKGROUND ───────────────────────────────────────────────────────────────
+let bgTileH=80; // height of one brick tile row cycle
+function rebuildBg(){
+  bgCanvas=document.createElement('canvas');
+  bgCanvas.width=W; bgCanvas.height=H+bgTileH*2;
   const bx=bgCanvas.getContext('2d');
 
-  // Sky gradient (night/dusk)
-  const sky=bx.createLinearGradient(0,0,0,H);
-  sky.addColorStop(0,'#0a0418');
-  sky.addColorStop(0.4,'#1a0c2e');
-  sky.addColorStop(0.75,'#2a1000');
-  sky.addColorStop(1,'#1a0800');
-  bx.fillStyle=sky; bx.fillRect(0,0,W,H);
+  // Sky base
+  const sky=bx.createLinearGradient(0,0,0,bgCanvas.height);
+  sky.addColorStop(0,'#08040e');
+  sky.addColorStop(0.3,'#14082a');
+  sky.addColorStop(0.6,'#2a1200');
+  sky.addColorStop(1,'#180a00');
+  bx.fillStyle=sky; bx.fillRect(0,0,W,bgCanvas.height);
 
-  // Stars
-  for(let i=0;i<90;i++){
-    const sx=Math.random()*W, sy=Math.random()*H*0.65;
-    const sr=Math.random()*1.4+0.3;
-    bx.fillStyle=`rgba(255,240,200,${Math.random()*0.8+0.2})`;
-    bx.beginPath(); bx.arc(sx,sy,sr,0,Math.PI*2); bx.fill();
+  // Stars in upper portion
+  for(let i=0;i<100;i++){
+    const sx=Math.random()*W, sy=Math.random()*(bgCanvas.height*0.5);
+    bx.fillStyle=`rgba(255,240,200,${.15+Math.random()*.7})`;
+    bx.beginPath(); bx.arc(sx,sy,.3+Math.random()*1.2,0,Math.PI*2); bx.fill();
   }
 
-  // Moon
-  const mx=W*0.82, my=H*0.1;
-  const mg=bx.createRadialGradient(mx,my,2,mx,my,28);
-  mg.addColorStop(0,'#fff8d0'); mg.addColorStop(1,'#c8a840');
-  bx.fillStyle=mg; bx.beginPath(); bx.arc(mx,my,24,0,Math.PI*2); bx.fill();
-  // Moon glow
-  const mGlow=bx.createRadialGradient(mx,my,20,mx,my,60);
-  mGlow.addColorStop(0,'rgba(255,240,120,.2)'); mGlow.addColorStop(1,'rgba(0,0,0,0)');
-  bx.fillStyle=mGlow; bx.beginPath(); bx.arc(mx,my,60,0,Math.PI*2); bx.fill();
-
-  // Brick wall (lower 55%)
-  const wallTop = H*0.45;
-  const brickW=46, brickH=20, gap=3;
-  for(let row=0; row*(brickH+gap) < H-wallTop+brickH; row++) {
-    const off=(row%2)*(brickW/2);
-    for(let col=-1; col*(brickW+gap) < W+brickW; col++) {
-      const bx2=col*(brickW+gap)+off, by2=wallTop+row*(brickH+gap);
-      const v=(Math.random()*28)|0;
-      bx.fillStyle=`rgb(${78+v},${33+v},${8+v})`;
-      bx.fillRect(bx2,by2,brickW,brickH);
-      bx.fillStyle='rgba(255,180,80,.06)';
-      bx.fillRect(bx2,by2,brickW,2);
-      bx.fillStyle='rgba(0,0,0,.2)';
-      bx.fillRect(bx2,by2+brickH-3,brickW,3);
+  // Brick tiles — seamless vertically
+  const bw=44,bh=18,gap=3;
+  const totalRows=Math.ceil(bgCanvas.height/(bh+gap))+1;
+  for(let row=0;row<totalRows;row++){
+    const off=(row%2)*(bw/2);
+    for(let col=-1;col*(bw+gap)<W+bw;col++){
+      const bx2=col*(bw+gap)+off;
+      const by2=row*(bh+gap);
+      const v=(Math.random()*26)|0;
+      bx.fillStyle=`rgb(${72+v},${30+v},${6+v})`;
+      bx.fillRect(bx2,by2,bw,bh);
+      // Highlight top
+      bx.fillStyle='rgba(255,160,60,.06)';
+      bx.fillRect(bx2,by2,bw,2);
+      // Shadow bottom
+      bx.fillStyle='rgba(0,0,0,.22)';
+      bx.fillRect(bx2,by2+bh-3,bw,3);
     }
   }
 
-  // Wall top edge
-  bx.fillStyle='rgba(200,100,30,.4)';
-  bx.fillRect(0,wallTop,W,3);
-
-  // Torch flames (decorative, static)
-  [W*0.08,W*0.92].forEach(tx=>{
-    const tg=bx.createRadialGradient(tx,H*0.52,0,tx,H*0.52,W*0.22);
-    tg.addColorStop(0,'rgba(255,140,0,.28)');
-    tg.addColorStop(1,'rgba(0,0,0,0)');
-    bx.fillStyle=tg; bx.fillRect(0,0,W,H);
-    // Torch bracket
-    bx.fillStyle='#5a3010'; bx.fillRect(tx-4,H*0.49,8,18);
-    bx.fillStyle='rgba(255,160,30,.9)'; bx.beginPath();
-    bx.ellipse(tx,H*0.48,5,9,0,0,Math.PI*2); bx.fill();
-    bx.fillStyle='rgba(255,220,100,.8)'; bx.beginPath();
-    bx.ellipse(tx,H*0.475,2.5,5,0,0,Math.PI*2); bx.fill();
-  });
-
   // Vignette
-  const vig=bx.createRadialGradient(W/2,H/2,H*0.25,W/2,H/2,H*0.82);
-  vig.addColorStop(0,'rgba(0,0,0,0)'); vig.addColorStop(1,'rgba(0,0,0,.7)');
-  bx.fillStyle=vig; bx.fillRect(0,0,W,H);
-}
+  const vig=bx.createRadialGradient(W/2,bgCanvas.height/2,H*.2,W/2,bgCanvas.height/2,H*.85);
+  vig.addColorStop(0,'rgba(0,0,0,0)'); vig.addColorStop(1,'rgba(0,0,0,.65)');
+  bx.fillStyle=vig; bx.fillRect(0,0,W,bgCanvas.height);
 
-function spawnClouds() {
-  clouds=[];
-  for(let i=0;i<4;i++){
-    clouds.push({
-      x: Math.random()*W,
-      y: H*(0.08+Math.random()*0.25),
-      w: 60+Math.random()*80,
-      h: 18+Math.random()*18,
-      speed: 0.25+Math.random()*0.4,
-      alpha: 0.12+Math.random()*0.14
+  // Torch glows on sides (two per tile height)
+  const torchPositions=[H*0.25, H*0.65];
+  [W*.06, W*.94].forEach(tx=>{
+    torchPositions.forEach(ty=>{
+      const tg=bx.createRadialGradient(tx,ty,0,tx,ty,W*.3);
+      tg.addColorStop(0,'rgba(255,130,10,.22)'); tg.addColorStop(1,'rgba(0,0,0,0)');
+      bx.fillStyle=tg; bx.fillRect(0,0,W,bgCanvas.height);
+      // Torch bracket
+      bx.fillStyle='#5a3010'; bx.fillRect(tx-3,ty-2,7,15);
+      bx.fillStyle='rgba(255,150,20,.95)';
+      bx.beginPath(); bx.ellipse(tx+.5,ty-3,4,8,0,0,Math.PI*2); bx.fill();
+      bx.fillStyle='rgba(255,230,100,.85)';
+      bx.beginPath(); bx.ellipse(tx+.5,ty-4,2,5,0,0,Math.PI*2); bx.fill();
     });
-  }
+  });
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
-function render() {
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(){
   if(!ctx) return;
   ctx.clearRect(0,0,W,H);
 
-  // Bg
-  if(bgCanvas) ctx.drawImage(bgCanvas,0,0);
+  // Scrolling background: brick pattern tiles vertically
+  if(bgCanvas){
+    // Offset by scrollY mod bgTileH to tile seamlessly
+    const bgOff = (scrollY % bgCanvas.height + bgCanvas.height) % bgCanvas.height;
+    ctx.drawImage(bgCanvas, 0, -bgOff);
+    if(bgOff > 0) ctx.drawImage(bgCanvas, 0, -bgOff + bgCanvas.height);
+  }
 
-  // Clouds
-  clouds.forEach(cl=>{
-    ctx.fillStyle=`rgba(200,160,100,${cl.alpha})`;
-    ctx.beginPath();
-    ctx.ellipse(cl.x+cl.w/2, cl.y, cl.w/2, cl.h/2, 0,0,Math.PI*2);
-    ctx.fill();
+  // Draw all visible bowls
+  bowls.forEach((b,i)=>{
+    const sy=b.worldY-scrollY; // screen Y
+    if(sy>H+60 || sy<-60) return; // off screen
+    const isNext=(i===nextBowlIdx);
+    const isActive=(i===activeBowlIdx);
+    drawBowl(b,sy,isNext,isActive);
   });
 
-  // Level height indicator (rope/chain on side)
-  drawHeightIndicator();
+  // Draw egg
+  const eggSY=egg.worldY-scrollY;
+  drawEgg(egg.worldX, eggSY);
 
-  // Ground platform
-  drawGround();
+  // Aim arc
+  if(eggState==='sitting') drawAim();
 
-  // Aim arc when sitting
-  if(eggState==='sitting') drawAimArc();
-
-  // Base bucket (launch platform)
-  drawBucket(baseBucket, false);
-
-  // Next bucket (target)
-  drawBucket(nextBucket, true);
-
-  // Egg
-  drawEgg();
-
-  // Feedback
+  // Feedback text
   if(feedTimer>0){
-    ctx.globalAlpha=Math.min(1,feedTimer/20);
+    const nb=bowls[nextBowlIdx];
+    const nbSY=nb.worldY-scrollY;
+    ctx.globalAlpha=Math.min(1,feedTimer/18);
     ctx.fillStyle=feedCol;
-    ctx.font='bold 22px Segoe UI';
+    ctx.font='bold 21px Segoe UI';
     ctx.textAlign='center';
-    ctx.shadowColor=feedCol;
-    ctx.shadowBlur=10;
-    ctx.fillText(feedTxt, W/2, nextBucket.y - 22 - (feedTimer<30?(30-feedTimer):0));
-    ctx.shadowBlur=0;
-    ctx.globalAlpha=1;
+    ctx.shadowColor=feedCol; ctx.shadowBlur=10;
+    ctx.fillText(feedTxt,W/2,nbSY-24);
+    ctx.shadowBlur=0; ctx.globalAlpha=1;
   }
 }
 
-function drawHeightIndicator() {
-  // Vertical rope on left, shows level progress
-  const x=14;
-  ctx.strokeStyle='rgba(180,120,40,.5)'; ctx.lineWidth=3;
-  ctx.setLineDash([6,10]);
-  ctx.beginPath(); ctx.moveTo(x,H*0.05); ctx.lineTo(x,H*0.85); ctx.stroke();
-  ctx.setLineDash([]);
-  // Knots every 20px
-  const pct=Math.min(level/100,1);
-  const knotY=H*0.85 - pct*(H*0.8);
-  ctx.fillStyle='#e8a030';
-  ctx.beginPath(); ctx.arc(x,knotY,5,0,Math.PI*2); ctx.fill();
-  // Label
-  ctx.fillStyle='rgba(255,200,100,.7)';
-  ctx.font='bold 10px Segoe UI';
-  ctx.textAlign='center';
-  ctx.fillText('LVL',x,H*0.05-8);
-}
+function drawBowl(b, sy, isNext, isActive){
+  const {x,w,h}=b;
+  ctx.save();
 
-function drawGround() {
-  const g=ctx.createLinearGradient(0,H-60,0,H);
-  g.addColorStop(0,'#4a2800'); g.addColorStop(1,'#2a1200');
-  ctx.fillStyle=g; ctx.fillRect(0,H-60,W,60);
-  ctx.fillStyle='rgba(200,100,30,.35)'; ctx.fillRect(0,H-60,W,3);
-  // Cracks
-  ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=1;
-  for(let i=0;i<5;i++){
-    const cx=W*(.1+i*.18);
-    ctx.beginPath(); ctx.moveTo(cx,H-58); ctx.lineTo(cx+7,H-28); ctx.lineTo(cx+2,H); ctx.stroke();
+  // Glow pulse around next target
+  if(isNext){
+    const p=.5+.5*Math.sin(Date.now()*.005);
+    ctx.shadowColor=`rgba(255,210,80,${p*.7})`;
+    ctx.shadowBlur=14;
   }
+
+  // Bowl shape — clay/ceramic, no handles
+  // Elliptical rim at top, curved body
+  const rimRx=w/2, rimRy=h*0.28;
+  const cx=x+w/2;
+
+  // Body: trapezoid-ish with rounded bottom
+  ctx.beginPath();
+  // Left rim
+  ctx.moveTo(x, sy);
+  // Right rim
+  ctx.lineTo(x+w, sy);
+  // Right side curves to bottom centre
+  ctx.quadraticCurveTo(x+w+w*.08, sy+h*.6, cx, sy+h);
+  // Left side mirror
+  ctx.quadraticCurveTo(x-w*.08, sy+h*.6, x, sy);
+  ctx.closePath();
+
+  // Clay gradient
+  const cl=ctx.createLinearGradient(x,sy,x+w,sy+h);
+  cl.addColorStop(0,  '#c87040');
+  cl.addColorStop(.25,'#d4845a');
+  cl.addColorStop(.5, '#b86030');
+  cl.addColorStop(.75,'#a05028');
+  cl.addColorStop(1,  '#7a3818');
+  ctx.fillStyle=cl;
+  ctx.fill();
+
+  // Inner shadow
+  const ins=ctx.createLinearGradient(cx-w*.3,sy,cx+w*.3,sy+h);
+  ins.addColorStop(0,'rgba(0,0,0,.35)');
+  ins.addColorStop(.5,'rgba(0,0,0,.05)');
+  ins.addColorStop(1,'rgba(0,0,0,.3)');
+  ctx.fillStyle=ins;
+  ctx.beginPath();
+  ctx.moveTo(x+w*.12,sy+2);
+  ctx.lineTo(x+w*.88,sy+2);
+  ctx.quadraticCurveTo(x+w+w*.06,sy+h*.55,cx,sy+h-.5);
+  ctx.quadraticCurveTo(x-w*.06,sy+h*.55,x+w*.12,sy+2);
+  ctx.closePath();
+  ctx.fill();
+
+  // Rim ellipse (top opening)
+  ctx.strokeStyle='#e09060';
+  ctx.lineWidth=2.5;
+  ctx.beginPath();
+  ctx.ellipse(cx, sy, rimRx, rimRy, 0,0,Math.PI*2);
+  ctx.stroke();
+
+  // Rim highlight
+  ctx.strokeStyle='rgba(255,200,140,.55)';
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.ellipse(cx, sy-rimRy*.1, rimRx*.85, rimRy*.55, 0, Math.PI*.1, Math.PI*.9);
+  ctx.stroke();
+
+  // Decorative band
+  ctx.strokeStyle='rgba(120,50,10,.6)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.ellipse(cx, sy+h*.42, w*.38, h*.13, 0,0,Math.PI*2);
+  ctx.stroke();
+
+  ctx.shadowBlur=0;
+  ctx.restore();
+
+  // Drop shadow on wall
+  ctx.fillStyle='rgba(0,0,0,.2)';
+  ctx.beginPath();
+  ctx.ellipse(cx, sy+h+4, w*.45, 4, 0,0,Math.PI*2);
+  ctx.fill();
 }
 
-function drawAimArc() {
-  const tx=nextBucket.x+nextBucket.w/2;
-  const dy=nextBucket.y-egg.y;
+function drawEgg(sx,sy){
+  ctx.save(); ctx.translate(sx,sy);
+
+  // Flight glow + trail
+  if(eggState==='flying'){
+    const gw=ctx.createRadialGradient(0,0,4,0,0,30);
+    gw.addColorStop(0,'rgba(255,255,220,.25)'); gw.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,30,0,Math.PI*2); ctx.fill();
+    // Trail dots below
+    [[0,18,.4,6],[0,32,.22,4],[0,48,.1,2.5]].forEach(([tx,ty,a,r])=>{
+      ctx.fillStyle=`rgba(255,245,200,${a})`;
+      ctx.beginPath(); ctx.arc(tx,ty,r,0,Math.PI*2); ctx.fill();
+    });
+  }
+
+  const r=13;
+  ctx.scale(1,1.28); // taller oval
+  const eg=ctx.createRadialGradient(-r*.2,-r*.28,1,0,0,r);
+  eg.addColorStop(0,'#ffffff');
+  eg.addColorStop(.4,'#f8f8f4');
+  eg.addColorStop(.78,'#e0e0d8');
+  eg.addColorStop(1,'#c4c4bc');
+  ctx.fillStyle=eg;
+  ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+
+  // Main highlight
+  ctx.fillStyle='rgba(255,255,255,.85)';
+  ctx.beginPath(); ctx.arc(-r*.24,-r*.3,r*.29,0,Math.PI*2); ctx.fill();
+  // Small secondary highlight
+  ctx.fillStyle='rgba(255,255,255,.45)';
+  ctx.beginPath(); ctx.arc(-r*.08,-r*.52,r*.11,0,Math.PI*2); ctx.fill();
+  // Bottom shading
+  ctx.fillStyle='rgba(0,0,0,.1)';
+  ctx.beginPath(); ctx.arc(r*.08,r*.26,r*.5,0,Math.PI*2); ctx.fill();
+
+  ctx.restore();
+}
+
+function drawAim(){
+  const ab=bowls[activeBowlIdx];
+  const nb=bowls[nextBowlIdx];
+  const tx=nb.x+nb.w/2;
+  const dy=nb.worldY-egg.worldY;
   if(dy>=0) return;
-  const vy=-Math.sqrt(2*GRAV*Math.abs(dy)*1.18);
-  const tUp=-vy/GRAV;
-  const vx=(tx-egg.x)/tUp;
+  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.2);
+  const tUp=-vy/G;
+  const vx=(tx-egg.worldX)/tUp;
 
   ctx.save();
   ctx.setLineDash([5,9]);
-  ctx.strokeStyle='rgba(255,220,80,.2)';
+  ctx.strokeStyle='rgba(255,220,80,.18)';
   ctx.lineWidth=1.5;
   ctx.beginPath();
-  let px=egg.x,py=egg.y,pvx=vx,pvy=vy;
+  let px=egg.worldX, py=egg.worldY-scrollY;
+  let pvx=vx, pvy=vy;
   ctx.moveTo(px,py);
   for(let t=0;t<tUp;t+=2){
-    px+=pvx*2; py+=pvy*2; pvy+=GRAV*2;
+    px+=pvx*2; py+=pvy*2; pvy+=G*2;
     ctx.lineTo(px,py);
-    if(py<0) break;
+    if(py<-20) break;
   }
   ctx.stroke();
   ctx.setLineDash([]); ctx.restore();
 }
 
-function drawBucket(b, isTarget) {
-  const {x,y,w,h}=b;
-  const ox=(w-w*0.82)/2, botW=w*0.82;
-
-  // Glow ring around target bucket
-  if(isTarget){
-    ctx.save();
-    const pulse=0.55+0.45*Math.sin(Date.now()*0.004);
-    ctx.strokeStyle=`rgba(255,200,60,${pulse*0.55})`;
-    ctx.lineWidth=3;
-    ctx.setLineDash([5,6]);
-    ctx.beginPath();
-    ctx.moveTo(x-8,y-8); ctx.lineTo(x+w+8,y-8);
-    ctx.lineTo(x+w+8,y+h+8); ctx.lineTo(x-8,y+h+8);
-    ctx.closePath(); ctx.stroke();
-    ctx.setLineDash([]); ctx.restore();
-  }
-
-  ctx.save(); ctx.translate(x,y);
-
-  // Shadow
-  ctx.fillStyle='rgba(0,0,0,.28)';
-  ctx.beginPath(); ctx.ellipse(w/2,h+5,w/2,5,0,0,Math.PI*2); ctx.fill();
-
-  // Wood body
-  const wg=ctx.createLinearGradient(0,0,w,0);
-  wg.addColorStop(0,  '#4e2600');
-  wg.addColorStop(.12,'#7a4210');
-  wg.addColorStop(.28,'#633208');
-  wg.addColorStop(.5, '#8b5018');
-  wg.addColorStop(.72,'#633208');
-  wg.addColorStop(.88,'#7a4210');
-  wg.addColorStop(1,  '#4e2600');
-  ctx.fillStyle=wg;
-  ctx.beginPath();
-  ctx.moveTo(0,0); ctx.lineTo(w,0);
-  ctx.lineTo(w-ox,h); ctx.lineTo(ox,h);
-  ctx.closePath(); ctx.fill();
-
-  // Grain lines
-  ctx.strokeStyle='rgba(0,0,0,.2)'; ctx.lineWidth=1.2;
-  for(let i=1;i<5;i++){
-    const gx=w*i/5, bx2=ox+(w-2*ox)*i/5;
-    ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(bx2,h); ctx.stroke();
-  }
-
-  // Top rim
-  const rim=ctx.createLinearGradient(0,-5,0,3);
-  rim.addColorStop(0,'#d4b060'); rim.addColorStop(1,'#806030');
-  ctx.fillStyle=rim; ctx.fillRect(-2,-5,w+4,7);
-
-  // Bottom rim
-  ctx.fillStyle='#806030'; ctx.fillRect(ox-1,h-4,botW+2,5);
-
-  // Metal hoops
-  [h*0.3,h*0.65].forEach(hy=>{
-    ctx.strokeStyle='#b09040'; ctx.lineWidth=2.5;
-    ctx.beginPath(); ctx.moveTo(0,hy); ctx.lineTo(w,hy); ctx.stroke();
-    ctx.strokeStyle='rgba(255,240,160,.3)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(0,hy-1); ctx.lineTo(w,hy-1); ctx.stroke();
-  });
-
-  // Handle
-  ctx.strokeStyle='#a08040'; ctx.lineWidth=3;
-  ctx.beginPath(); ctx.arc(w/2,-8,w*0.35,Math.PI,0); ctx.stroke();
-  ctx.strokeStyle='rgba(255,230,120,.35)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.arc(w/2,-8,w*0.35,Math.PI+0.2,-0.2); ctx.stroke();
-
-  // Inside shadow
-  const ins=ctx.createLinearGradient(0,0,0,h);
-  ins.addColorStop(0,'rgba(0,0,0,.5)'); ins.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=ins;
-  ctx.beginPath();
-  ctx.moveTo(2,0); ctx.lineTo(w-2,0); ctx.lineTo(w-ox-1,h); ctx.lineTo(ox+1,h);
-  ctx.closePath(); ctx.fill();
-
-  ctx.restore();
-}
-
-function drawEgg() {
-  const {x,y,r}=egg;
-  ctx.save(); ctx.translate(x,y);
-
-  // Flight glow
-  if(eggState==='flying'){
-    const gw=ctx.createRadialGradient(0,0,r,0,0,r*2.8);
-    gw.addColorStop(0,'rgba(255,255,200,.2)'); gw.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,r*2.8,0,Math.PI*2); ctx.fill();
-    // Trail dots
-    const trail=[{y:r*1.2,a:.5,r:r*.5},{y:r*2.5,a:.3,r:r*.35},{y:r*4,a:.15,r:r*.2}];
-    trail.forEach(t=>{
-      ctx.fillStyle=`rgba(255,240,180,${t.a})`;
-      ctx.beginPath(); ctx.arc(0,t.y,t.r,0,Math.PI*2); ctx.fill();
-    });
-  }
-
-  // Egg oval
-  ctx.scale(1,1.3);
-  const eg=ctx.createRadialGradient(-r*.22,-r*.28,r*.04,0,0,r);
-  eg.addColorStop(0,'#ffffff');
-  eg.addColorStop(0.45,'#f5f5f0');
-  eg.addColorStop(0.8,'#ddddd5');
-  eg.addColorStop(1,'#c0c0b8');
-  ctx.fillStyle=eg;
-  ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
-
-  // Highlight
-  ctx.fillStyle='rgba(255,255,255,.82)';
-  ctx.beginPath(); ctx.arc(-r*.26,-r*.3,r*.3,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.4)';
-  ctx.beginPath(); ctx.arc(-r*.1,-r*.55,r*.12,0,Math.PI*2); ctx.fill();
-
-  // Bottom shadow
-  ctx.fillStyle='rgba(0,0,0,.1)';
-  ctx.beginPath(); ctx.arc(r*.08,r*.28,r*.52,0,Math.PI*2); ctx.fill();
-
-  ctx.restore();
-
-  // Ground shadow when sitting
-  if(eggState==='sitting'){
-    ctx.fillStyle='rgba(0,0,0,.25)';
-    ctx.beginPath(); ctx.ellipse(x,baseBucket.y+baseBucket.h+3,baseBucket.w/3,4,0,0,Math.PI*2); ctx.fill();
-  }
-}
-
-// ── HUD ───────────────────────────────────────────────────────────────────────
+// ─── HUD & HELPERS ────────────────────────────────────────────────────────────
 function updateHUD(){
   document.getElementById('lvlTxt').textContent=`LVL ${level}`;
   document.getElementById('livesTxt').textContent='❤️'.repeat(Math.min(lives,10));
-  document.getElementById('comboTxt').textContent=combo>1?`×${combo} COMBO`:'';
+  document.getElementById('comboTxt').textContent=combo>1?`×${combo}`:'';
 }
-function showFeed(t,c){ feedTxt=t; feedCol=c; feedTimer=60; }
+function showFeed(t,c){feedTxt=t;feedCol=c;feedTimer=62;}
 function showToast(msg){
   const el=document.getElementById('toast');
   el.textContent=msg; el.style.display='block';
   clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none',2800);
 }
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  initCanvas();
+  initCv();
   const bg=ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,'#0a0418'); bg.addColorStop(1,'#1a0800');
+  bg.addColorStop(0,'#08040e'); bg.addColorStop(1,'#180a00');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 });
 </script>
