@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+<title>Egg Drop — OrthoChronicles</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0e1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Segoe UI',sans-serif;overflow:hidden;touch-action:none;}
+#gameCanvas{display:block;max-width:100vw;max-height:100vh;touch-action:none;}
+#ui{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+#ui>*{pointer-events:all;}
+
+/* Menu */
+#menuScreen{background:rgba(10,14,26,.97);border:1px solid #1e3a5f;border-radius:16px;padding:36px 32px;max-width:340px;width:90%;text-align:center;}
+#menuScreen h1{color:#f5c842;font-size:2rem;letter-spacing:2px;text-shadow:0 0 20px #f5c84270;}
+#menuScreen .sub{color:#6b9fd4;font-size:.85rem;margin-top:4px;margin-bottom:28px;}
+.mode-btn{display:block;width:100%;margin:10px 0;padding:14px;border-radius:10px;border:2px solid transparent;background:transparent;font-size:1rem;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;}
+.mode-btn.noob{color:#4ade80;border-color:#4ade80;}
+.mode-btn.noob:hover,.mode-btn.noob.sel{background:#4ade8022;border-color:#4ade80;box-shadow:0 0 12px #4ade8055;}
+.mode-btn.expert{color:#f5c842;border-color:#f5c842;}
+.mode-btn.expert:hover,.mode-btn.expert.sel{background:#f5c84222;border-color:#f5c842;box-shadow:0 0 12px #f5c84255;}
+.mode-btn.pro{color:#f87171;border-color:#f87171;}
+.mode-btn.pro:hover,.mode-btn.pro.sel{background:#f8717122;border-color:#f87171;box-shadow:0 0 12px #f8717155;}
+#startBtn{margin-top:20px;padding:14px 40px;background:#f5c842;color:#0a0e1a;border:none;border-radius:10px;font-size:1.1rem;font-weight:800;cursor:pointer;letter-spacing:1px;}
+#startBtn:hover{background:#ffd95c;}
+
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(0,0,0,.5);pointer-events:none;display:none;}
+#hud span{color:#fff;font-size:.95rem;font-weight:600;}
+#livesDisplay{color:#f87171;}
+#levelDisplay{color:#f5c842;}
+#comboDisplay{color:#4ade80;}
+
+/* Game Over / Level Up overlays */
+#overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;}
+#overlayBox{background:#0d1b2e;border:2px solid #1e3a5f;border-radius:16px;padding:36px;text-align:center;max-width:300px;}
+#overlayBox h2{font-size:1.6rem;margin-bottom:8px;}
+#overlayBox p{color:#94a3b8;margin-bottom:20px;font-size:.9rem;}
+#overlayBox button{padding:12px 32px;background:#f5c842;color:#0a0e1a;border:none;border-radius:8px;font-size:1rem;font-weight:800;cursor:pointer;margin:6px;}
+#overlayBox button.sec{background:transparent;color:#6b9fd4;border:1px solid #1e3a5f;}
+
+/* Life earned toast */
+#lifeToast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#4ade80;color:#0a0e1a;padding:10px 24px;border-radius:24px;font-weight:800;font-size:.95rem;display:none;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="ui">
+  <!-- MENU -->
+  <div id="menuScreen">
+    <h1>🥚 EGG DROP</h1>
+    <p class="sub">Land the egg on the bucket — perfect timing wins!</p>
+    <button class="mode-btn noob" onclick="selectMode('noob')">🟢 NOOB — Easy</button>
+    <button class="mode-btn expert" onclick="selectMode('expert')">🟡 EXPERT — Medium</button>
+    <button class="mode-btn pro" onclick="selectMode('pro')">🔴 PRO — Hard</button>
+    <button id="startBtn" onclick="startGame()">PLAY ▶</button>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <span id="levelDisplay">LVL 1</span>
+    <span id="comboDisplay"></span>
+    <span id="livesDisplay">❤️ 3</span>
+  </div>
+
+  <!-- Overlay (game over / info) -->
+  <div id="overlay">
+    <div id="overlayBox">
+      <h2 id="overlayTitle"></h2>
+      <p id="overlayMsg"></p>
+      <button onclick="continueGame()" id="btnContinue">Continue (use life)</button>
+      <button onclick="goMenu()" class="sec">Menu</button>
+    </div>
+  </div>
+</div>
+
+<div id="lifeToast">+1 Life! 🎉</div>
+
+<script>
+// ─── CONFIG ─────────────────────────────────────────────────────────────────
+const DIFFICULTY = {
+  noob:   { bucketW:110, bucketSpeed:2.2, perfectWindow:0.30, lives:5,  gravity:0.25, label:'NOOB' },
+  expert: { bucketW:80,  bucketSpeed:3.5, perfectWindow:0.20, lives:3,  gravity:0.32, label:'EXPERT' },
+  pro:    { bucketW:55,  bucketSpeed:5.0, perfectWindow:0.12, lives:2,  gravity:0.40, label:'PRO' }
+};
+
+const LIFE_MILESTONES = [
+  {level:25, lives:1},{level:50, lives:2},{level:100, lives:3},
+  {level:500, lives:5},{level:1000, lives:10}
+];
+const MAX_LIVES = 10;
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let mode = 'expert';
+let cfg, canvas, ctx;
+let gameRunning = false, paused = false;
+let level = 1, lives = 3, combo = 0, totalFalls = 0;
+let milestonesEarned = new Set();
+
+// Game objects
+let egg, bucket, platforms, phase;
+// phase: 'falling' | 'landed' | 'rising' | 'next'
+
+let W, H;
+let animId;
+let platformY; // current platform Y from top (decreases as we go higher)
+let scrollOffset = 0; // world scroll
+
+// ─── CANVAS SETUP ────────────────────────────────────────────────────────────
+function resizeCanvas() {
+  canvas = document.getElementById('gameCanvas');
+  W = Math.min(window.innerWidth, 420);
+  H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+  ctx = canvas.getContext('2d');
+}
+
+// ─── MODE SELECTION ──────────────────────────────────────────────────────────
+function selectMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelector('.mode-btn.'+m).classList.add('sel');
+}
+selectMode('expert');
+
+// ─── GAME INIT ───────────────────────────────────────────────────────────────
+function startGame() {
+  cfg = DIFFICULTY[mode];
+  level = 1; lives = cfg.lives; combo = 0; totalFalls = 0;
+  milestonesEarned.clear();
+  scrollOffset = 0;
+
+  document.getElementById('menuScreen').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('hud').style.display = 'flex';
+
+  resizeCanvas();
+  initLevel();
+  gameRunning = true;
+  if(animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+function initLevel() {
+  // Bucket at a fixed horizontal row, moves horizontally
+  const bw = cfg.bucketW + Math.min(level-1, 30) * -0.3; // shrinks a tiny bit
+  const effectiveBW = Math.max(bw, 40);
+
+  // Bucket lane - fixed Y (70% down)
+  const bucketY = H * 0.70;
+
+  bucket = {
+    x: Math.random() * (W - effectiveBW),
+    y: bucketY,
+    w: effectiveBW,
+    h: 28,
+    speed: (cfg.bucketSpeed + (level-1) * 0.015) * (Math.random()<.5 ? 1 : -1),
+    dir: 1
+  };
+
+  // Egg starts at top centre, just above bucket Y
+  egg = {
+    x: W/2,
+    y: 60,
+    vy: 0,
+    vx: 0,
+    r: 14,
+    falling: true,
+    landed: false,
+    bouncing: false,
+    alpha: 1
+  };
+
+  phase = 'falling';
+  combo = 0;
+  updateHUD();
+}
+
+// ─── GAME LOOP ───────────────────────────────────────────────────────────────
+function loop() {
+  if(!gameRunning) return;
+  if(!ctx) ctx = document.getElementById('gameCanvas').getContext('2d');
+  update();
+  draw();
+  animId = requestAnimationFrame(loop);
+}
+
+function update() {
+  if(paused) return;
+
+  // Move bucket
+  bucket.x += bucket.speed * bucket.dir;
+  if(bucket.x + bucket.w >= W) { bucket.x = W - bucket.w; bucket.dir = -1; }
+  if(bucket.x <= 0)            { bucket.x = 0;             bucket.dir =  1; }
+
+  if(phase === 'falling') {
+    egg.vy += cfg.gravity;
+    egg.y  += egg.vy;
+    egg.x  += egg.vx;
+
+    // Check bucket collision
+    if(egg.y + egg.r >= bucket.y &&
+       egg.y + egg.r <= bucket.y + bucket.h + 8 &&
+       egg.x >= bucket.x - 4 && egg.x <= bucket.x + bucket.w + 4 &&
+       egg.vy > 0) {
+      landOnBucket();
+    }
+
+    // Missed — fell past bucket
+    if(egg.y - egg.r > H) {
+      missedBucket();
+    }
+  }
+
+  if(phase === 'rising') {
+    // Animate egg rising to next position after land
+    egg.vy -= 0.5;
+    egg.y += egg.vy;
+    if(egg.y <= 60) {
+      egg.y = 60; egg.vy = 0;
+      phase = 'falling';
+      advanceLevel();
+    }
+  }
+}
+
+function landOnBucket() {
+  // Calculate how centred the egg landed
+  const centre = bucket.x + bucket.w/2;
+  const offset = Math.abs(egg.x - centre) / (bucket.w/2); // 0=perfect, 1=edge
+  const perfect = offset <= cfg.perfectWindow;
+
+  combo++;
+  totalFalls++;
+
+  if(perfect) {
+    combo = Math.min(combo + 1, 10);
+    showFeedback('PERFECT! 🎯', '#4ade80');
+  } else {
+    showFeedback('GOOD! ✓', '#f5c842');
+  }
+
+  // Bounce egg upward
+  egg.vy = -10 - level * 0.04;
+  egg.y = bucket.y - egg.r;
+  phase = 'rising';
+
+  updateHUD();
+}
+
+function missedBucket() {
+  lives--;
+  combo = 0;
+  updateHUD();
+
+  if(lives <= 0) {
+    gameOver();
+    return;
+  }
+  showFeedback('MISSED! ✗', '#f87171');
+  // Reset egg
+  egg.y = 60; egg.vy = 0; egg.vx = 0;
+  phase = 'falling';
+}
+
+function advanceLevel() {
+  level++;
+  checkMilestones();
+
+  // Every 5 levels, move bucket a bit higher (harder)
+  if(level % 5 === 0) {
+    bucket.y = Math.max(H * 0.35, bucket.y - H * 0.035);
+  }
+
+  // Speed up a bit more at higher levels
+  const extra = (level-1) * 0.015;
+  const spd = Math.abs(bucket.speed);
+  bucket.speed = (cfg.bucketSpeed + extra) * (bucket.dir);
+
+  updateHUD();
+}
+
+function checkMilestones() {
+  for(const m of LIFE_MILESTONES) {
+    if(level >= m.level && !milestonesEarned.has(m.level)) {
+      milestonesEarned.add(m.level);
+      const gained = m.lives;
+      lives = Math.min(lives + gained, MAX_LIVES);
+      showLifeToast(`+${gained} ${gained>1?'Lives':'Life'}! (Lvl ${m.level})`);
+      updateHUD();
+    }
+  }
+}
+
+// ─── GAME OVER ───────────────────────────────────────────────────────────────
+function gameOver() {
+  paused = true;
+  document.getElementById('overlayTitle').textContent = '💔 GAME OVER';
+  document.getElementById('overlayTitle').style.color = '#f87171';
+  document.getElementById('overlayMsg').textContent =
+    `You reached Level ${level}!\nDifficulty: ${cfg.label}`;
+  document.getElementById('btnContinue').style.display = 'none';
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function continueGame() {
+  // Use an extra life (not currently implemented for save points, but for future)
+  document.getElementById('overlay').style.display = 'none';
+  paused = false;
+}
+
+function goMenu() {
+  gameRunning = false;
+  cancelAnimationFrame(animId);
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('menuScreen').style.display = 'block';
+}
+
+// ─── DRAW ────────────────────────────────────────────────────────────────────
+let feedbackText = '', feedbackColor = '#fff', feedbackTimer = 0;
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#050810');
+  bg.addColorStop(1, '#0a1628');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars
+  drawStars();
+
+  // Ground line
+  ctx.strokeStyle = '#1e3a5f44';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([6,8]);
+  ctx.beginPath(); ctx.moveTo(0, bucket.y + bucket.h + 40); ctx.lineTo(W, bucket.y + bucket.h + 40);
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // Bucket
+  drawBucket();
+
+  // Egg
+  drawEgg();
+
+  // Feedback text
+  if(feedbackTimer > 0) {
+    feedbackTimer--;
+    ctx.globalAlpha = Math.min(1, feedbackTimer / 20);
+    ctx.fillStyle = feedbackColor;
+    ctx.font = 'bold 22px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(feedbackText, W/2, bucket.y - 30 - (30 - feedbackTimer));
+    ctx.globalAlpha = 1;
+  }
+}
+
+const STARS = Array.from({length:60},()=>({
+  x: Math.random()*420, y: Math.random()*700,
+  r: Math.random()*1.5+0.3, a: Math.random()
+}));
+
+function drawStars() {
+  STARS.forEach(s=>{
+    s.a += (Math.random()-.5)*.02;
+    s.a = Math.max(.1, Math.min(1, s.a));
+    ctx.fillStyle = `rgba(200,220,255,${s.a})`;
+    ctx.beginPath();
+    ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function drawBucket() {
+  const {x, y, w, h} = bucket;
+  // Shadow
+  ctx.fillStyle = 'rgba(0,100,255,.08)';
+  ctx.fillRect(x-4, y+h, w+8, 8);
+
+  // Bucket body
+  ctx.fillStyle = '#1e3a6e';
+  ctx.beginPath();
+  ctx.moveTo(x+6, y);
+  ctx.lineTo(x+w-6, y);
+  ctx.lineTo(x+w, y+h);
+  ctx.lineTo(x, y+h);
+  ctx.closePath();
+  ctx.fill();
+
+  // Bucket rim (top highlight)
+  ctx.fillStyle = '#3b82f6';
+  ctx.fillRect(x, y-3, w, 6);
+
+  // Inner shadow
+  const ig = ctx.createLinearGradient(x, y, x, y+h);
+  ig.addColorStop(0,'rgba(0,0,0,.4)');
+  ig.addColorStop(1,'rgba(0,0,0,.0)');
+  ctx.fillStyle = ig;
+  ctx.beginPath();
+  ctx.moveTo(x+6, y+3);
+  ctx.lineTo(x+w-6, y+3);
+  ctx.lineTo(x+w, y+h);
+  ctx.lineTo(x, y+h);
+  ctx.closePath();
+  ctx.fill();
+
+  // Handle
+  ctx.strokeStyle = '#3b82f6';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.arc(x+w/2, y-10, w/3, Math.PI, 0);
+  ctx.stroke();
+}
+
+function drawEgg() {
+  const {x, y, r} = egg;
+  ctx.save();
+  ctx.translate(x, y);
+
+  // Glow
+  const glow = ctx.createRadialGradient(0,0,r*0.5, 0,0,r*2.2);
+  glow.addColorStop(0,'rgba(245,200,66,.25)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(0,0,r*2.2,0,Math.PI*2); ctx.fill();
+
+  // Egg shape
+  ctx.scale(1, 1.3);
+  const eg = ctx.createRadialGradient(-r*.3,-r*.3,r*.1, 0,0,r);
+  eg.addColorStop(0,'#fff9e6');
+  eg.addColorStop(0.6,'#f5c842');
+  eg.addColorStop(1,'#c9890a');
+  ctx.fillStyle = eg;
+  ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+
+  // Shine
+  ctx.fillStyle = 'rgba(255,255,255,.55)';
+  ctx.beginPath(); ctx.arc(-r*.28,-r*.35,r*.28,0,Math.PI*2); ctx.fill();
+
+  ctx.restore();
+}
+
+// ─── INPUT ───────────────────────────────────────────────────────────────────
+function handleInput() {
+  if(phase !== 'falling') return;
+  // Already falling — input doesn't do anything mid-flight in this mechanic
+  // (timing is about watching and tapping at the right moment — handled by passive fall)
+}
+
+// Touch / click → manual drop (re-launch egg if it resets)
+canvas.addEventListener('touchstart', e=>{ e.preventDefault(); handleTap(); }, {passive:false});
+canvas.addEventListener('mousedown', ()=>handleTap());
+document.addEventListener('keydown', e=>{ if(e.code==='Space'||e.code==='ArrowDown') handleTap(); });
+
+function handleTap() {
+  if(!gameRunning || paused) return;
+  // If egg is waiting at top (not yet falling this launch), give it a push
+  // In our design egg auto-falls, so tap = add lateral nudge toward bucket centre
+  if(phase === 'falling') {
+    const dx = (bucket.x + bucket.w/2) - egg.x;
+    egg.vx += Math.sign(dx) * 0.8;
+    egg.vx = Math.max(-3, Math.min(3, egg.vx));
+  }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function updateHUD() {
+  document.getElementById('levelDisplay').textContent = `LVL ${level}`;
+  document.getElementById('livesDisplay').textContent = '❤️'.repeat(Math.min(lives,10));
+  document.getElementById('comboDisplay').textContent = combo > 1 ? `×${combo} COMBO` : '';
+}
+
+function showFeedback(txt, col) {
+  feedbackText = txt; feedbackColor = col; feedbackTimer = 50;
+}
+
+function showLifeToast(msg) {
+  const t = document.getElementById('lifeToast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.style.display='none', 2500);
+}
+
+// ─── BOOTSTRAP ───────────────────────────────────────────────────────────────
+window.addEventListener('load', ()=>{
+  resizeCanvas();
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
+
+  // Draw idle background
+  const bg = ctx.createLinearGradient(0,0,0,canvas.height);
+  bg.addColorStop(0,'#050810'); bg.addColorStop(1,'#0a1628');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,canvas.width,canvas.height);
+});
+
+window.addEventListener('resize', ()=>{ if(gameRunning) resizeCanvas(); });
+</script>
+</body>
+</html>
