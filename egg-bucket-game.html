@@ -421,16 +421,8 @@ function startSlide(){
 }
 function finishSlide(){
   const nextL=level+1;
-  let b1moves,b2moves;
-  if(nextL<=2){       b1moves=false; b2moves=false; }
-  else if(nextL<=11){ b1moves=false; b2moves=true;  }
-  else{
-    // Random mix: both still / top only / both move (weighted toward harder)
-    const r=Math.random();
-    if(r<0.15){      b1moves=false; b2moves=false; } // 15% — breather
-    else if(r<0.45){ b1moves=false; b2moves=true;  } // 30% — top only
-    else{            b1moves=true;  b2moves=true;  } // 55% — both move
-  }
+  const b1moves=false;             // middle bowl always stationary
+  const b2moves=nextL>=3;          // top bowl moves from level 3
   const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary
   const b1spd=b1moves?randSpd(baseSpd(nextL)):0;
   const b1x=b1moves?bowls[2].x:FL+FW/2-BOWL_W/2;
