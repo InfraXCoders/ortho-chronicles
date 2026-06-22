@@ -430,25 +430,14 @@ function tap(){
   if(eggState!=='sitting'||slideAnim||dying||henAnim) return;
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
-  // Arc ABOVE bowl by OVERSHOOT px so egg crests visibly then drops in
+  // Arc ABOVE bowl — egg goes straight up, bowl must be aligned at landing
   const OVERSHOOT=90;
   const peakY=tb.y-OVERSHOOT;
   const peakDy=peakY-egg.y;
   const vy=-Math.sqrt(2*G*Math.abs(peakDy));
-  const tUp=Math.round(-vy/G);
-  const tDown=Math.round(Math.sqrt(2*OVERSHOOT/G));
-  const totalT=tUp+tDown;
-  // Simulate bowl's exact position at landing (accounts for wall bounces)
-  let bx=tb.x, bdir=tb.dir;
-  for(let i=0;i<totalT;i++){
-    bx+=tb.speed*bdir;
-    if(bx+BOWL_W>FL+FW){bx=FL+FW-BOWL_W;bdir=-1;}
-    if(bx<FL){bx=FL;bdir=1;}
-  }
-  const targetX=bx+BOWL_W/2;
-  egg.vx=(targetX-egg.x)/totalT;
+  egg.vx=0;          // straight up — player must time tap for alignment
   egg.vy=vy;
-  egg.angV=egg.vx*0.048;
+  egg.angV=0.04;     // small aesthetic spin
   egg.missed=false;
   eggState='flying';
 }
