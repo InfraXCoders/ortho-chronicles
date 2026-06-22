@@ -294,8 +294,8 @@ function startGame(){
 
   bowls=[
     mkBowl(YPOS[0], true),
-    mkBowl(YPOS[1], false),
-    mkBowl(YPOS[2], false),
+    mkBowl(YPOS[1], true),   // stationary until level > 10
+    mkBowl(YPOS[2], true),   // stationary until level > 10
   ];
   curIdx=0; tgtIdx=1;
 
@@ -458,9 +458,13 @@ function startSlide(){
   slideAnim={t:0, total:52, bgStart:bgOffset};
 }
 function finishSlide(){
-  const b0={...bowls[1],y:YPOS[0],speed:0};       // new bottom: stationary
-  const b1={...bowls[2],y:YPOS[1],speed:randSpd(baseSpd(level+1))};
-  const b2=mkBowl(YPOS[2],false);
+  const nextL=level+1;
+  const moving=nextL>10;
+  const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary+centered
+  const b1spd=moving?randSpd(baseSpd(nextL)):0;
+  const b1x=moving?bowls[2].x:FL+FW/2-BOWL_W/2;
+  const b1={...bowls[2],y:YPOS[1],speed:b1spd,x:b1x};
+  const b2=mkBowl(YPOS[2],!moving);
   bowls=[b0,b1,b2];
   curIdx=1; tgtIdx=2;
   egg.y=seatY(bowls[1]); egg.x=bowls[1].x+BOWL_W/2;
