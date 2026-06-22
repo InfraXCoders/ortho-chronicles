@@ -287,8 +287,8 @@ function update(){
     egg.angle+=egg.angV;
 
     // Field wall bounce
-    if(egg.x-egg.r<FL){egg.x=FL+egg.r;egg.vx=Math.abs(egg.vx)*0.45;}
-    if(egg.x+egg.r>FL+FW){egg.x=FL+FW-egg.r;egg.vx=-Math.abs(egg.vx)*0.45;}
+    if(egg.x-EGG_R<FL){egg.x=FL+EGG_R;egg.vx=Math.abs(egg.vx)*0.45;}
+    if(egg.x+EGG_R>FL+FW){egg.x=FL+FW-EGG_R;egg.vx=-Math.abs(egg.vx)*0.45;}
 
     // ── Catch detection ──
     // Use opening width (slightly narrower than bowl for skill requirement)
@@ -300,10 +300,26 @@ function update(){
 
     // ── Miss: egg dipped below target without catching ──
     if(!egg.missed && egg.vy>0 && egg.y>tb.y+tb.h+16){
-      egg.missed=true; onMiss();
+      egg.missed=true;
+      // Give dramatic sideways tumble
+      egg.vx+=(Math.random()-0.5)*3;
+      egg.angV=egg.vx*0.12;
+      onMiss();
     }
 
-    // ── Return to current bowl (fell back down) ──
+    if(egg.missed){
+      // Let egg roll/fall off bottom — no snap back
+      if(egg.y>H+60){
+        const cb=bowls[curIdx];
+        egg.x=cb.x+BOWL_W/2; egg.y=seatY(cb);
+        egg.vx=0; egg.vy=0; egg.angV=0; egg.angle=0;
+        egg.missed=false; landingDecel=false;
+        eggState='sitting';
+      }
+      return;
+    }
+
+    // ── Return to current bowl only if not missed (perfect arc missed bowl) ──
     const cb=bowls[curIdx];
     if(egg.vy>0 && egg.y>=seatY(cb)){
       egg.x=cb.x+BOWL_W/2; egg.y=seatY(cb);
@@ -421,13 +437,18 @@ function tap(){
   if(eggState!=='sitting'||slideAnim||dying) return;
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
-  // Aim at current bowl center; player must time when bowl aligns
-  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.08);
+  // Arc ABOVE bowl by OVERSHOOT px so egg crests visibly then drops in
+  const OVERSHOOT=90;
+  const peakY=tb.y-OVERSHOOT;
+  const peakDy=peakY-egg.y; // always negative (upward)
+  const vy=-Math.sqrt(2*G*Math.abs(peakDy));
+  // Time to peak, then fall from peak to bowl
   const tUp=-vy/G;
+  const tDown=Math.sqrt(2*Math.abs(tb.y-peakY)/G);
+  const totalT=tUp+tDown;
   const targetX=tb.x+BOWL_W/2;
-  egg.vx=(targetX-egg.x)/tUp;
+  egg.vx=(targetX-egg.x)/totalT;
   egg.vy=vy;
-  // Angular velocity from horizontal motion (makes egg spin during flight)
   egg.angV=egg.vx*0.048;
   egg.missed=false; landingDecel=false;
   eggState='flying';
