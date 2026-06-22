@@ -587,24 +587,25 @@ function render(){
   // ── Aim arc ──
   if(eggState==='sitting'&&!slideAnim) drawAim();
 
+  // ── Bowl rim BACK arc (behind egg) — top half of ellipse ──
+  bowls.forEach((b,i)=>drawBowlRimArc(b,i===tgtIdx,false));
+
   // ── EGG ──
   if(eggState==='sitting'||eggState==='rolling'){
-    // Sitting/rolling: draw egg clipped above bowl rim → only top half visible
+    // Clip to above bowl rim so only top half of egg is visible
     const cb=bowls[curIdx];
     ctx.save();
     ctx.beginPath();
-    // Clip region: everything above the bowl rim (so bottom half of egg is hidden)
-    ctx.rect(0,0,W,cb.y+2); // +2 px so rim covers the seam
+    ctx.rect(0,0,W,cb.y+1);
     ctx.clip();
     drawEgg(egg.x,egg.y);
     ctx.restore();
   } else {
-    // Flying / approach: full egg visible, rotating
     drawEgg(egg.x,egg.y);
   }
 
-  // ── Bowl rims drawn ON TOP (makes egg appear inside) ──
-  bowls.forEach((b,i)=>drawBowlRim(b,i===tgtIdx));
+  // ── Bowl rim FRONT arc (in front of egg) — bottom half of ellipse ──
+  bowls.forEach((b,i)=>drawBowlRimArc(b,i===tgtIdx,true));
 
   // ── Score FX ──
   ctx.save();
@@ -668,24 +669,29 @@ function drawBowlBody(b,isTarget){
 }
 
 /* ── BOWL RIM (drawn ON TOP of egg) ──────────────────────────────────── */
-function drawBowlRim(b,isTarget){
+function drawBowlRimArc(b,isTarget,front){
+  // front=true  → bottom arc (0..π)  drawn IN FRONT of egg
+  // front=false → top arc   (π..2π) drawn BEHIND egg
   const{x,y,w,h}=b, cx=x+w/2;
+  const s0=front?0:Math.PI, s1=front?Math.PI:Math.PI*2;
   ctx.save();
-  if(isTarget){
+  if(isTarget&&front){
     const p=.45+.55*Math.sin(Date.now()*.008);
     ctx.shadowColor=`rgba(255,208,48,${p*.55})`; ctx.shadowBlur=14;
   }
   // Outer rim — dark aged wood
   ctx.strokeStyle='#6a3410'; ctx.lineWidth=4.5;
-  ctx.beginPath(); ctx.ellipse(cx,y,w/2,h*.22,0,0,Math.PI*2); ctx.stroke();
-  // Inner rim highlight (worn wood gleam)
-  ctx.strokeStyle='rgba(155,88,30,.52)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.ellipse(cx,y-1,w*.44,h*.13,0,Math.PI*.05,Math.PI*.95,true); ctx.stroke();
-  // Gold accent on target bowl
-  if(isTarget){
+  ctx.beginPath(); ctx.ellipse(cx,y,w/2,h*.22,0,s0,s1); ctx.stroke();
+  // Inner rim highlight — only on back arc (gives depth)
+  if(!front){
+    ctx.strokeStyle='rgba(155,88,30,.52)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.ellipse(cx,y-1,w*.44,h*.13,0,Math.PI*.05,Math.PI*.95,true); ctx.stroke();
+  }
+  // Gold accent on target bowl (front arc only so it glows in front)
+  if(isTarget&&front){
     const pa=.45+.55*Math.sin(Date.now()*.009);
     ctx.strokeStyle=`rgba(218,172,48,${pa})`; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.ellipse(cx,y,w*.49,h*.21,0,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(cx,y,w*.49,h*.21,0,s0,s1); ctx.stroke();
   }
   ctx.shadowBlur=0; ctx.restore();
 }
