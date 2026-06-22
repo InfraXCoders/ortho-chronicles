@@ -604,8 +604,17 @@ function render(){
     drawEgg(egg.x,egg.y);
     ctx.restore();
   } else if(!henAnim){
-    if(egg.missed) drawScrambledEgg(egg.x, egg.y, egg.angle);
-    else drawEgg(egg.x,egg.y);
+    if(egg.missed && egg.y > H - 55){
+      // Splat on the floor — squish flat and stay put
+      const splat=Math.min(1,(egg.y-(H-55))/40);
+      ctx.save();
+      ctx.translate(egg.x, H-18);
+      ctx.scale(1+splat*0.8, 1-splat*0.7);
+      drawScrambledEgg(0, 0, egg.angle);
+      ctx.restore();
+    } else {
+      drawEgg(egg.x, egg.y);
+    }
   }
 
   // ── Bowl rim FRONT arc (in front of egg) — bottom half of ellipse ──
