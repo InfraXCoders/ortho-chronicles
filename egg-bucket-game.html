@@ -140,7 +140,8 @@ function spawnBowl(idx){
 // ─── GAME START ───────────────────────────────────────────────────────────────
 function startGame(){
   level=1; lives=LIVES_START; combo=0; milestonesHit=new Set();
-  scrollY=0; targetScrollY=0; curTheme=''; bgCache={};
+  // Place bowl 0 at 72% down the screen on start
+  scrollY=-(H*0.72); targetScrollY=-(H*0.72); curTheme=''; bgCache={};
   particles=[]; friedTimer=0; eggIsFried=false;
   document.getElementById('menuScreen').style.display='none';
   document.getElementById('overlay').style.display='none';
@@ -589,13 +590,14 @@ function render(){
   if(!ctx) return;
   ctx.clearRect(0,0,W,H);
 
-  // Background
+  // Background — draw full screen, slow parallax
   const theme=getTheme(level);
   const bg=getBg(theme);
   const bgH=bg.height;
-  const bgOff=(scrollY*.6)%bgH; // parallax scroll
-  ctx.drawImage(bg,0,-bgOff%bgH);
-  if(bgOff>0) ctx.drawImage(bg,0,-bgOff%bgH+bgH);
+  const raw=scrollY*0.25;
+  const bgOff=((raw%bgH)+bgH)%bgH;
+  ctx.drawImage(bg,0,-bgOff);
+  if(bgOff>bgH-H) ctx.drawImage(bg,0,-bgOff+bgH);
 
   // Particles
   renderParticles();
