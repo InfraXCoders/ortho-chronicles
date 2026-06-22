@@ -246,7 +246,7 @@ function update(){
   // ── Hen intro animation ──
   if(henAnim){
     henAnim.t++;
-    if(henAnim.t>=130){ henAnim=null; eggState='sitting'; }
+    if(henAnim.t>=200){ henAnim=null; eggState='sitting'; }
     return; // freeze game during intro
   }
 
@@ -816,36 +816,35 @@ function eggTrailRGB(){
 }
 
 /* ── Hen intro ───────────────────────────────────────────────────────── */
-function drawHen(hx, hy, t){
+function drawHen(hx, hy, t, flying){
   const c=ctx;
   c.save();
   c.translate(hx, hy);
 
-  // Wing flap: fast after t=70 (takeoff)
-  const flying = t>70;
-  const flapSpeed = flying ? 0.55 : 0.12;
-  const flapAmp  = flying ? 0.9  : 0.18;
-  const wingAngle = Math.sin(t * flapSpeed) * flapAmp;
+  // Wings: slow gentle float when airborne, tiny idle sway when perched
+  const wingAngle = flying
+    ? Math.sin(t * 0.07) * 0.55   // slow soaring float
+    : Math.sin(t * 0.10) * 0.10;  // barely-moving idle
 
   // Body
-  c.save();
-  c.scale(1, 0.78);
+  c.save(); c.scale(1, 0.78);
   const bg=c.createRadialGradient(-4,-4,2,0,0,22);
   bg.addColorStop(0,'#d4621a'); bg.addColorStop(1,'#7a2c05');
   c.fillStyle=bg;
   c.beginPath(); c.ellipse(0,0,22,20,0,0,Math.PI*2); c.fill();
   c.restore();
 
-  // Wing (animated)
+  // Wing — pivots at shoulder point
   c.save();
+  c.translate(-4, 2);
   c.rotate(wingAngle);
   c.beginPath();
-  c.moveTo(-2,-4);
-  c.bezierCurveTo(-22,-2,-28,10,-20,18);
-  c.bezierCurveTo(-12,24,4,16,4,6);
+  c.moveTo(0,0);
+  c.bezierCurveTo(-20,-4,-28,8,-18,20);
+  c.bezierCurveTo(-8,26,10,14,6,4);
   c.closePath();
-  const wg=c.createLinearGradient(-28,0,4,18);
-  wg.addColorStop(0,'#b8450e'); wg.addColorStop(1,'#5a1a02');
+  const wg=c.createLinearGradient(-28,0,6,20);
+  wg.addColorStop(0,'#c8500e'); wg.addColorStop(1,'#5a1a02');
   c.fillStyle=wg; c.fill();
   c.restore();
 
@@ -865,73 +864,71 @@ function drawHen(hx, hy, t){
   hg.addColorStop(0,'#e07030'); hg.addColorStop(1,'#8a2c08');
   c.fillStyle=hg;
   c.beginPath(); c.ellipse(0,0,10,9,0,0,Math.PI*2); c.fill();
-
   // Comb
   c.fillStyle='#e02020';
   [[0,-10,4,5],[4,-9,3.5,5],[-4,-9,3.5,5]].forEach(([cx2,cy2,rx2,ry2])=>{
     c.beginPath(); c.ellipse(cx2,cy2,rx2,ry2,0,0,Math.PI*2); c.fill();
   });
-
   // Wattle
   c.fillStyle='#d01818';
   c.beginPath(); c.ellipse(3,5,3.5,5,0.3,0,Math.PI*2); c.fill();
-
   // Beak
   c.fillStyle='#e8a020';
   c.beginPath(); c.moveTo(8,-2); c.lineTo(16,0); c.lineTo(8,3); c.closePath(); c.fill();
-
   // Eye
   c.fillStyle='#111'; c.beginPath(); c.arc(3,-3,2.2,0,Math.PI*2); c.fill();
   c.fillStyle='#fff'; c.beginPath(); c.arc(4,-4,0.9,0,Math.PI*2); c.fill();
+  c.restore();
 
-  c.restore(); // head
-
-  c.restore(); // main
+  c.restore();
 }
 
 function renderHenIntro(){
   if(!henAnim) return;
   const t=henAnim.t;
   const bowl=bowls[0];
-  const bx=bowl.x+BOWL_W/2;
-  const by=bowl.y;
+  const bx=bowl.x+BOWL_W/2, by=bowl.y;
 
-  // Phase 1 (0-40): hen walks in from left, settles on bowl
-  // Phase 2 (40-70): hen squats, egg appears
-  // Phase 3 (70-130): hen flaps wings and flies up off screen
-  let hx, hy;
+  // Timeline (200 frames total):
+  //  0-50  : hen glides in from left and lands on bowl
+  // 50-130 : hen crouches slowly, egg grows out from underneath
+  // 130-200: hen gently rises upward with floating wings
 
-  if(t<40){
-    const p=t/40;
-    hx = FL + (bx-FL)*easeOut(p);
-    hy = by - 28;
-  } else if(t<70){
-    const p=(t-40)/30;
+  let hx, hy, flying=false;
+
+  if(t < 50){
+    const p=easeOut(t/50);
+    hx = FL - 10 + (bx - FL + 10)*p;
+    hy = by - 30;
+  } else if(t < 130){
+    const p=(t-50)/80;
     hx = bx;
-    hy = by - 28 + p*8; // slight squat
+    hy = by - 30 + p*10; // slow squat
   } else {
-    const p=(t-70)/60;
-    hx = bx + Math.sin(p*4)*12; // wobble
-    hy = by - 28 + 8 - easeOut(p)*(by+60); // fly up
+    flying=true;
+    const p=easeOut((t-130)/70);
+    hx = bx;
+    hy = by - 20 - p*(by + 80); // smooth ascent off top of screen
   }
 
-  // Draw egg appearing at t=50-70
-  if(t>=50 && t<70){
-    const ep=Math.min(1,(t-50)/12);
+  // Egg: grows slowly from t=70 to t=130 (60 frames = 1 second)
+  if(t >= 70 && t < 200){
+    const ep=Math.min(1,(t-70)/60);
+    const ey=by - 2;
     ctx.save();
-    ctx.globalAlpha=ep;
-    // Small egg below hen
-    const ex=bx, ey=by-2;
-    ctx.save(); ctx.translate(ex,ey); ctx.scale(1,1.28);
-    ctx.fillStyle='#fffdf8';
-    ctx.beginPath(); ctx.arc(0,0,EGG_R*ep,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=Math.min(1, ep);
+    ctx.save(); ctx.translate(bx, ey); ctx.scale(1, 1.28);
+    const eg=ctx.createRadialGradient(-EGG_R*.25,-EGG_R*.3,1,0,0,EGG_R*ep);
+    eg.addColorStop(0,'#fffdf8'); eg.addColorStop(1,'#d8caa8');
+    ctx.fillStyle=eg;
+    ctx.beginPath(); ctx.arc(0, 0, EGG_R*ep, 0, Math.PI*2); ctx.fill();
     ctx.restore();
     ctx.restore();
   }
 
-  // Fade hen out at end
-  if(t>110) ctx.globalAlpha=(130-t)/20;
-  drawHen(hx, hy, t);
+  // Fade hen out in last 20 frames
+  if(t > 180) ctx.globalAlpha=(200-t)/20;
+  drawHen(hx, hy, t, flying);
   ctx.globalAlpha=1;
 }
 
