@@ -112,7 +112,7 @@ window.addEventListener('resize',()=>{if(running){initCv();bgCache={};}});
 let running=false, animId, dying=false;
 let level=1, lives=3, score=0, hiScore=0, combo=0;
 let milestonesEarned=new Set();
-const MILESTONES=[{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10}];
+const MILESTONES=[{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10},{l:2000,v:5},{l:5000,v:10}];
 
 // 3 bowls always visible at YPOS[0..2]
 let bowls=[], curIdx=0, tgtIdx=1;
@@ -140,7 +140,8 @@ let squishT=0;        // landing squish countdown
 /* ── Speed helpers ───────────────────────────────────────────────────── */
 const SPD_MULTS=[0.4, 0.55, 0.75, 0.95, 1.2, 1.55, 1.95, 2.4];
 function randSpd(base){ return base*SPD_MULTS[Math.floor(Math.random()*SPD_MULTS.length)]; }
-function baseSpd(l){ return l<=5 ? 0.9 : Math.min(0.9+(l-5)*0.02, 6.5); }
+// Speed grows until L500 (cap 3.5), beyond that stays constant
+function baseSpd(l){ return l<=5 ? 0.9 : Math.min(0.9+(l-5)*0.006, 3.5); }
 
 function mkBowl(y, stat){
   const spd = stat ? 0 : randSpd(baseSpd(level));
@@ -166,10 +167,9 @@ function getTheme(l){
   if(l<400)  return 'rain';
   if(l<500)  return 'space';
   if(l<550)  return 'moon';
-  const pl=['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
-  if(l<1000) return pl[Math.floor((l-550)/50)%8];
-  if(l<1050) return 'sun';
-  return 'universe';
+  // Planets cycle every 50 levels from 550 onwards; sun every 100, universe every 100
+  const cycle=['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','sun','universe'];
+  return cycle[Math.floor((l-550)/50)%cycle.length];
 }
 const THEME_LABELS={
   beigewood:'🪵 Old Woodland',forest:'🌲 Forest',flowers:'🌸 Flower Fields',
@@ -180,9 +180,14 @@ const THEME_LABELS={
   jupiter:'🪐 Jupiter',saturn:'🪐 Saturn',uranus:'🪐 Uranus',neptune:'🔵 Neptune'
 };
 function getEggType(l){
-  if(l>=1000) return 'diamond'; if(l>=200) return 'platinum';
-  if(l>=100)  return 'gold';    if(l>=50)  return 'silver';
-  if(l>=25)   return 'bronze';  return 'white';
+  if(l>=5000) return 'cosmic';
+  if(l>=2000) return 'rainbow';
+  if(l>=1000) return 'diamond';
+  if(l>=200)  return 'platinum';
+  if(l>=100)  return 'gold';
+  if(l>=50)   return 'silver';
+  if(l>=25)   return 'bronze';
+  return 'white';
 }
 
 /* ── Start ───────────────────────────────────────────────────────────── */
@@ -759,6 +764,15 @@ function drawEgg(sx,sy){
 }
 
 function eggColors(){
+  const t=Date.now();
+  if(getEggType(level)==='rainbow'){
+    const h=t/20%360;
+    return [`hsl(${h},100%,92%)`,`hsl(${(h+30)%360},100%,70%)`,`hsl(${(h+60)%360},90%,50%)`,`hsl(${(h+90)%360},80%,30%)`];
+  }
+  if(getEggType(level)==='cosmic'){
+    const h=t/8%360;
+    return [`hsl(${h},100%,96%)`,`hsl(${(h+45)%360},100%,75%)`,`hsl(${(h+90)%360},100%,55%)`,`hsl(${(h+180)%360},100%,35%)`];
+  }
   return ({
     white:   ['#fffdf8','#f5eedd','#d2ccb5','#9a9280'],
     bronze:  ['#faba6e','#d87e2c','#9a5010','#5a2802'],
@@ -769,10 +783,14 @@ function eggColors(){
   })[getEggType(level)]||['#fff','#f0ead0','#c0b898','#888068'];
 }
 function eggGlowColor(){
+  if(getEggType(level)==='rainbow') return `rgba(255,128,255,.70)`;
+  if(getEggType(level)==='cosmic')  return `rgba(200,100,255,.85)`;
   return ({white:'rgba(255,248,205,.26)',bronze:'rgba(215,128,48,.55)',silver:'rgba(198,198,255,.40)',
     gold:'rgba(255,215,0,.56)',platinum:'rgba(198,222,240,.44)',diamond:'rgba(0,244,255,.62)'})[getEggType(level)]||'rgba(255,255,255,.24)';
 }
 function eggTrailRGB(){
+  if(getEggType(level)==='rainbow') return '255,128,255';
+  if(getEggType(level)==='cosmic')  return '180,80,255';
   return ({white:'255,248,205',bronze:'215,128,48',silver:'195,195,228',
     gold:'255,215,0',platinum:'198,224,240',diamond:'0,226,255'})[getEggType(level)]||'255,248,205';
 }
