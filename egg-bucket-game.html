@@ -295,7 +295,7 @@ function update(){
     const catchW=tb.w-14;
     const catchL=tb.x+7;
     const inX=egg.x>=catchL && egg.x<=catchL+catchW;
-    const inY=egg.y+egg.r>=tb.y-4 && egg.y-egg.r<=tb.y+tb.h*.5;
+    const inY=egg.y+EGG_R>=tb.y-4 && egg.y-EGG_R<=tb.y+tb.h*.5;
     if(inX && inY && egg.vy<2.5){ catchBowl(); return; }
 
     // ── Miss: egg dipped below target without catching ──
