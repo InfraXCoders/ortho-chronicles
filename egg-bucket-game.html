@@ -6,23 +6,23 @@
 <title>Egg Climb</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#8B5E2A;overflow:hidden;touch-action:none;user-select:none;font-family:'Segoe UI',sans-serif;}
+body{background:#1a0e04;overflow:hidden;touch-action:none;user-select:none;font-family:'Georgia',serif;}
 canvas{display:block;position:fixed;top:0;left:0;}
-#menu{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:30;}
-#menuBox{background:linear-gradient(160deg,#3a1e08,#5a3010);border:3px solid #c87a30;border-radius:20px;padding:40px 32px;max-width:300px;width:88%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.6);}
-#menuBox h1{color:#f0c060;font-size:2rem;letter-spacing:2px;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.5);}
-#menuBox p{color:#d4a060;font-size:.85rem;margin-bottom:28px;line-height:1.6;}
-#playBtn{width:100%;padding:16px;background:linear-gradient(135deg,#8b4a10,#5a2a08);color:#f8d080;border:3px solid #c87830;border-radius:12px;font-size:1.2rem;font-weight:800;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+#menu{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.65);z-index:30;}
+#menuBox{background:linear-gradient(160deg,#1e0e04,#2e1808);border:2px solid #7a4a18;border-radius:14px;padding:38px 28px;max-width:280px;width:86%;text-align:center;box-shadow:0 8px 48px rgba(0,0,0,.8),inset 0 1px 0 rgba(200,140,60,.15);}
+#menuBox h1{color:#d4a040;font-size:1.9rem;letter-spacing:3px;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.7);}
+#menuBox p{color:#9a7040;font-size:.8rem;margin-bottom:26px;line-height:1.7;}
+#playBtn{width:100%;padding:14px;background:linear-gradient(160deg,#4a2808,#2e1406);color:#d4a040;border:2px solid #7a4a18;border-radius:10px;font-size:1.1rem;font-weight:700;cursor:pointer;letter-spacing:2px;font-family:Georgia,serif;box-shadow:0 4px 18px rgba(0,0,0,.5);}
 #playBtn:active{transform:scale(.97);}
-#hud{position:fixed;top:0;left:0;right:0;display:none;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(0,0,0,.4);z-index:20;}
-#hud span{color:#f8e8a0;font-size:.92rem;font-weight:700;text-shadow:0 1px 4px #000;}
-#themeBar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,240,180,.75);font-size:.72rem;pointer-events:none;z-index:20;text-shadow:0 1px 3px #000;letter-spacing:1px;text-transform:uppercase;}
-#gameover{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.75);z-index:30;}
-#gameoverBox{background:#2a1208;border:2px solid #8b4a10;border-radius:16px;padding:36px 28px;text-align:center;max-width:280px;}
-#gameoverBox h2{color:#ff8040;font-size:1.6rem;margin-bottom:10px;}
-#gameoverBox p{color:#c08050;margin-bottom:22px;font-size:.9rem;}
-#gameoverBox button{padding:12px 30px;background:#6a3010;color:#f8d080;border:2px solid #c87830;border-radius:8px;font-size:1rem;font-weight:800;cursor:pointer;}
-#toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(40,20,5,.9);color:#f8e8a0;padding:9px 22px;border-radius:22px;font-weight:700;font-size:.85rem;display:none;pointer-events:none;z-index:25;white-space:nowrap;border:1px solid rgba(200,120,50,.5);}
+#hud{position:fixed;top:0;left:0;right:0;display:none;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(0,0,0,.55);border-bottom:1px solid rgba(100,60,20,.4);z-index:20;}
+#hud span{color:#c8982c;font-size:.85rem;font-weight:700;text-shadow:0 1px 4px #000;font-family:Georgia,serif;}
+#themeBar{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);color:rgba(200,160,80,.65);font-size:.68rem;pointer-events:none;z-index:20;text-shadow:0 1px 3px #000;letter-spacing:2px;text-transform:uppercase;font-family:Georgia,serif;}
+#gameover{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);z-index:30;}
+#gameoverBox{background:#180e04;border:2px solid #6a3a10;border-radius:14px;padding:34px 26px;text-align:center;max-width:270px;}
+#gameoverBox h2{color:#e06020;font-size:1.5rem;margin-bottom:10px;font-family:Georgia,serif;}
+#gameoverBox p{color:#9a6030;margin-bottom:20px;font-size:.88rem;}
+#gameoverBox button{padding:11px 28px;background:#3a1a08;color:#c8902a;border:2px solid #7a4a18;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:Georgia,serif;}
+#toast{position:fixed;bottom:55px;left:50%;transform:translateX(-50%);background:rgba(20,10,2,.92);color:#d4a040;padding:8px 20px;border-radius:20px;font-weight:700;font-size:.82rem;display:none;pointer-events:none;z-index:25;white-space:nowrap;border:1px solid rgba(160,90,30,.5);}
 </style>
 </head>
 <body>
@@ -31,7 +31,7 @@ canvas{display:block;position:fixed;top:0;left:0;}
 <div id="menu">
   <div id="menuBox">
     <h1>🥚 EGG CLIMB</h1>
-    <p>Tap to toss the egg into the moving bowl.<br>3 bowls visible — climb them all!</p>
+    <p>Tap to toss the egg.<br>Land it inside the moving bowl.<br>Climb higher through endless worlds!</p>
     <button id="playBtn" onclick="startGame()">▶ PLAY</button>
   </div>
 </div>
@@ -54,23 +54,30 @@ canvas{display:block;position:fixed;top:0;left:0;}
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   3-BOWL DESIGN
-   Bowls at fixed Y: YPOS[0]=bottom(launch), YPOS[1]=mid, YPOS[2]=top
-   Egg starts on bottom bowl, aims for mid, then top.
-   Catching mid → aims for top (no scroll, no bg move).
-   Catching top → slide ALL bowls DOWN, new bowl at top, bg scrolls.
+   EGG CLIMB — Realistic physics, egg half-inside bowl,
+   all bowls keep moving (including current one), old wood bg.
+   3 bowls visible; bg scrolls only on top-bowl catch.
    ═══════════════════════════════════════════════════════════════ */
 
 let cv,ctx,W,H;
-const BOWL_W=68, BOWL_H=28, EGG_R=17, G=0.40;
-let YPOS; // set in initCv
+// Bowl & egg sizes
+const BOWL_W=72, BOWL_H=36, EGG_R=17;
+// Gravity — lower = slower, more floaty arc
+const G=0.28;
+// Field margins (narrow play area)
+let FL,FW; // field left, field width
+
+let YPOS; // [bottom, mid, top] fixed Y for bowl RIM
 
 function initCv(){
   cv=document.getElementById('c');
   W=window.innerWidth; H=window.innerHeight;
   cv.width=W; cv.height=H;
   ctx=cv.getContext('2d');
-  YPOS=[Math.round(H*.74), Math.round(H*.47), Math.round(H*.20)];
+  // Narrow play field — 78% of width, centered
+  FW=Math.round(W*0.78);
+  FL=Math.round((W-FW)/2);
+  YPOS=[Math.round(H*.76), Math.round(H*.49), Math.round(H*.22)];
 }
 window.addEventListener('resize',()=>{if(running){initCv();bgCache={};}});
 
@@ -81,14 +88,14 @@ let milestonesEarned=new Set();
 const MILESTONES=[{l:25,v:1},{l:50,v:2},{l:100,v:3},{l:500,v:5},{l:1000,v:10}];
 
 let bowls=[], curIdx=0, tgtIdx=1;
-let egg={x:0,y:0,vx:0,vy:0,r:EGG_R,missed:false};
+let egg={x:0,y:0,vx:0,vy:0,r:EGG_R,missed:false,wobble:0,wobbleV:0};
 let eggState='sitting'; // 'sitting' | 'flying'
 
-// Slide animation (when top bowl caught)
-let slideAnim=null; // {t, total, bgStart}
-
+let slideAnim=null;
 let bgOffset=0, bgCache={}, particles=[], curTheme='';
 let feedTxt='', feedCol='#fff', feedTimer=0;
+// Squish/stretch for landing
+let squishTimer=0;
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 function getTheme(l){
@@ -108,7 +115,7 @@ function getTheme(l){
   return 'universe';
 }
 const THEME_LABELS={
-  wood:'🪵 Woodland',forest:'🌲 Forest',flowers:'🌸 Flower Fields',
+  wood:'🪵 Old Woodland',forest:'🌲 Forest',flowers:'🌸 Flower Fields',
   mountains:'⛰️ Mountains',clouds:'☁️ Above Clouds',fog:'🌫️ Foggy Valley',
   snow:'❄️ Snowfall',rain:'🌧️ Rainstorm',space:'🌌 Space Nebula',
   moon:'🌙 Moon',sun:'☀️ The Sun',universe:'🌌 Universe',
@@ -123,20 +130,31 @@ function getEggType(l){
   if(l>=25)   return 'bronze';
   return 'white';
 }
-function getBowlSpeed(l){
-  if(l<=5) return 1.0;
-  return Math.min(1.0+(l-5)*0.022, 7.0);
+function getBaseSpeed(l){
+  if(l<=5) return 0.85;
+  return Math.min(0.85+(l-5)*0.018, 6.0);
 }
 
-// ── Spawn helpers ─────────────────────────────────────────────────────────────
-function mkBowl(y, stationary){
-  const spd=stationary?0:getBowlSpeed(level);
+// ── Bowl helpers ──────────────────────────────────────────────────────────────
+// Speed variety: each bowl gets its own random multiplier
+const SPEED_MULTS=[0.35, 0.5, 0.7, 0.9, 1.15, 1.45, 1.8, 2.2];
+function randSpeedMult(){ return SPEED_MULTS[Math.floor(Math.random()*SPEED_MULTS.length)]; }
+
+function mkBowl(y, isLaunch){
+  const base=getBaseSpeed(level);
+  const spd=isLaunch ? 0 : base*randSpeedMult();
+  const maxX=FL+FW-BOWL_W;
   return{
-    x: stationary ? W/2-BOWL_W/2 : Math.random()*(W-BOWL_W),
+    x: isLaunch ? FL+FW/2-BOWL_W/2 : FL+Math.random()*(FW-BOWL_W),
     y, w:BOWL_W, h:BOWL_H,
-    speed:spd, dir:Math.random()<.5?1:-1
+    speed:spd, dir:Math.random()<.5?1:-1,
+    isLaunch
   };
 }
+// "Egg sits inside" offset: egg center is AT the bowl rim (y), lower half inside
+const EGG_SINK=4; // pixels egg sinks below rim
+
+function eggSitY(bowl){ return bowl.y+EGG_SINK; }
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 function startGame(){
@@ -144,7 +162,7 @@ function startGame(){
   level=1; lives=3; combo=0;
   milestonesEarned=new Set();
   bgOffset=0; bgCache={}; particles=[]; curTheme='';
-  feedTimer=0; slideAnim=null;
+  feedTimer=0; slideAnim=null; squishTimer=0;
 
   document.getElementById('menu').style.display='none';
   document.getElementById('gameover').style.display='none';
@@ -152,14 +170,14 @@ function startGame(){
 
   bowls=[
     mkBowl(YPOS[0], true),   // bottom – stationary launch
-    mkBowl(YPOS[1], false),  // mid
-    mkBowl(YPOS[2], false),  // top
+    mkBowl(YPOS[1], false),  // mid – moving
+    mkBowl(YPOS[2], false),  // top – moving
   ];
   curIdx=0; tgtIdx=1;
 
-  egg.x=bowls[0].x+BOWL_W/2;
-  egg.y=YPOS[0]-EGG_R;
-  egg.vx=0; egg.vy=0; egg.missed=false;
+  const b0=bowls[0];
+  egg.x=b0.x+BOWL_W/2; egg.y=eggSitY(b0);
+  egg.vx=0; egg.vy=0; egg.missed=false; egg.wobble=0; egg.wobbleV=0;
   eggState='sitting';
 
   running=true;
@@ -175,7 +193,7 @@ function showMenu(){
   document.getElementById('menu').style.display='flex';
 }
 
-// ── Main loop ─────────────────────────────────────────────────────────────────
+// ── Loop ─────────────────────────────────────────────────────────────────────
 function loop(){
   if(!running) return;
   try{ update(); render(); }catch(e){ console.error('loop',e); }
@@ -185,54 +203,69 @@ function loop(){
 // ── Update ────────────────────────────────────────────────────────────────────
 function update(){
   feedTimer=Math.max(0,feedTimer-1);
+  squishTimer=Math.max(0,squishTimer-1);
   updateParticles();
 
-  // ── Slide animation: bowls shift down, bg scrolls ──
+  // ── ALL bowls move (including current one) ──
+  bowls.forEach(b=>{
+    if(b.speed===0) return;
+    b.x+=b.speed*b.dir;
+    const maxX=FL+FW-b.w;
+    if(b.x>=maxX){b.x=maxX;b.dir=-1;}
+    if(b.x<=FL){b.x=FL;b.dir=1;}
+  });
+
+  // ── Slide animation ──
   if(slideAnim){
     slideAnim.t++;
     const p=easeOut(slideAnim.t/slideAnim.total);
-    // bowl[0] slides off bottom, bowl[1]→YPOS[0], bowl[2]→YPOS[1]
-    bowls[0].y=YPOS[0] + p*(H*.22);
-    bowls[1].y=YPOS[1] + p*(YPOS[0]-YPOS[1]);
-    bowls[2].y=YPOS[2] + p*(YPOS[1]-YPOS[2]);
-    // Egg rides on bowl[2] (the caught top bowl, now sliding to mid)
-    egg.y=bowls[2].y - EGG_R;
-    egg.x=bowls[2].x + BOWL_W/2;
-    // Scroll bg
-    bgOffset=slideAnim.bgStart + p*(YPOS[1]-YPOS[2]);
+    bowls[0].y=YPOS[0]+p*(H*.24);
+    bowls[1].y=YPOS[1]+p*(YPOS[0]-YPOS[1]);
+    bowls[2].y=YPOS[2]+p*(YPOS[1]-YPOS[2]);
+    // Egg rides on bowl[2]
+    egg.y=bowls[2].y+EGG_SINK;
+    egg.x=bowls[2].x+BOWL_W/2;
+    bgOffset=slideAnim.bgStart+p*(YPOS[1]-YPOS[2]);
     if(slideAnim.t>=slideAnim.total) finishSlide();
     return;
   }
 
-  // ── Move non-current bowls horizontally ──
-  bowls.forEach((b,i)=>{
-    if(i===curIdx) return;
-    b.x+=b.speed*b.dir;
-    if(b.x+b.w>=W){b.x=W-b.w;b.dir=-1;}
-    if(b.x<=0){b.x=0;b.dir=1;}
-  });
-
+  // ── Egg follows current bowl when sitting ──
   if(eggState==='sitting'){
-    egg.x=bowls[curIdx].x+BOWL_W/2;
-    egg.y=bowls[curIdx].y-EGG_R;
+    const cb=bowls[curIdx];
+    egg.x=cb.x+BOWL_W/2;
+    egg.y=eggSitY(cb);
+    // Wobble decay (after landing)
+    egg.wobble*=0.82;
   }
 
+  // ── Flying physics ──
   if(eggState==='flying'){
     egg.vy+=G;
     egg.x+=egg.vx; egg.y+=egg.vy;
-    if(egg.x-egg.r<0){egg.x=egg.r;egg.vx*=-0.45;}
-    if(egg.x+egg.r>W){egg.x=W-egg.r;egg.vx*=-0.45;}
+
+    // Narrow field wall bounce
+    if(egg.x-egg.r<FL){egg.x=FL+egg.r;egg.vx*=-0.5;}
+    if(egg.x+egg.r>FL+FW){egg.x=FL+FW-egg.r;egg.vx*=-0.5;}
 
     const tb=bowls[tgtIdx];
-    const inX=egg.x>=tb.x-3&&egg.x<=tb.x+tb.w+3;
-    const inY=egg.y-egg.r<=tb.y+tb.h&&egg.y+egg.r>=tb.y-3;
+    // Catch: egg enters bowl from above
+    const inX=egg.x>=tb.x+4&&egg.x<=tb.x+tb.w-4;
+    const inY=egg.y-egg.r<=tb.y+tb.h*.6&&egg.y+egg.r>=tb.y-6;
     if(inX&&inY&&egg.vy<0){catchBowl();return;}
 
-    if(!egg.missed&&egg.vy>0&&egg.y>tb.y+tb.h+8){egg.missed=true;onMiss();}
+    // Miss detection: egg passed below target without catching
+    if(!egg.missed&&egg.vy>0&&egg.y>tb.y+tb.h+12){
+      egg.missed=true; onMiss();
+    }
 
-    if(egg.vy>0&&egg.y>=bowls[curIdx].y-EGG_R){
-      egg.y=bowls[curIdx].y-EGG_R;
-      egg.vy=0;egg.vx=0;egg.missed=false;
+    // Return to current bowl
+    const cb=bowls[curIdx];
+    if(egg.vy>0&&egg.y>=eggSitY(cb)){
+      egg.x=cb.x+BOWL_W/2; egg.y=eggSitY(cb);
+      egg.vy=0; egg.vx=0; egg.missed=false;
+      egg.wobble=3; egg.wobbleV=0;
+      squishTimer=10;
       eggState='sitting';
     }
   }
@@ -244,39 +277,39 @@ function catchBowl(){
   const tb=bowls[tgtIdx];
   const off=Math.abs(egg.x-(tb.x+BOWL_W/2))/(BOWL_W/2);
   combo++;
-  showFeed(off<=0.30?'PERFECT! 🎯':'GOOD! ✓', off<=0.30?'#78f088':'#ffe49a');
-  egg.x=tb.x+BOWL_W/2; egg.y=tb.y-EGG_R;
+  showFeed(off<=0.28?'PERFECT! 🎯':off<=0.55?'GOOD! ✓':'NICE ✓', off<=0.28?'#78f088':off<=0.55?'#ffe49a':'#f8c870');
+
+  egg.x=tb.x+BOWL_W/2; egg.y=eggSitY(tb);
+  egg.vy=0; egg.vx=0; egg.missed=false;
+  egg.wobble=5; squishTimer=12;
   eggState='sitting';
   curIdx=tgtIdx; tgtIdx++;
 
   if(tgtIdx>2){
-    // Caught top bowl → slide everything down
-    slideAnim={t:0, total:44, bgStart:bgOffset};
+    slideAnim={t:0,total:50,bgStart:bgOffset};
   }
-  // else: caught mid bowl, aim for top. Background stays still.
 }
 
 function finishSlide(){
-  // old[1]→bottom(stationary), old[2]→mid, new bowl at top
-  const b0={...bowls[1], y:YPOS[0], speed:0, dir:1};
-  const b1={...bowls[2], y:YPOS[1], speed:getBowlSpeed(level+1)};
-  const b2=mkBowl(YPOS[2], false);
+  const b0={...bowls[1],y:YPOS[0]};
+  const b1={...bowls[2],y:YPOS[1],speed:getBaseSpeed(level+1)*randSpeedMult()};
+  const b2=mkBowl(YPOS[2],false);
+  b0.speed=0; // new bottom is stationary for stability
   bowls=[b0,b1,b2];
   curIdx=1; tgtIdx=2;
-  egg.y=bowls[1].y-EGG_R; egg.x=bowls[1].x+BOWL_W/2;
+  egg.y=eggSitY(bowls[1]); egg.x=bowls[1].x+BOWL_W/2;
   eggState='sitting'; slideAnim=null;
-  level++;
-  checkMilestones(); updateHUD(); themeCheck(false);
+  level++; checkMilestones(); updateHUD(); themeCheck(false);
 }
 
 function onMiss(){
   lives--; combo=0;
-  showFeed('MISSED!','#ff6060'); updateHUD();
+  showFeed('MISSED!','#ff5555'); updateHUD();
   if(lives<=0) setTimeout(()=>{
     document.getElementById('goMsg').textContent='You reached Level '+level+'!';
     document.getElementById('gameover').style.display='flex';
     running=false;
-  },800);
+  },900);
 }
 
 function checkMilestones(){
@@ -289,7 +322,6 @@ function checkMilestones(){
     }
   }
 }
-
 function themeCheck(force){
   const t=getTheme(level);
   if(t!==curTheme||force){
@@ -310,19 +342,22 @@ function tap(){
   if(eggState!=='sitting'||slideAnim) return;
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
-  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.15);
+  // Slower launch: 1.05 factor instead of 1.15 for floatier arc
+  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.05);
   const tUp=-vy/G;
+  // Aim at where bowl center currently is (player must time it)
   egg.vx=(tb.x+BOWL_W/2-egg.x)/tUp;
   egg.vy=vy; egg.missed=false;
+  egg.wobble=0;
   eggState='flying';
 }
 
 // ── Particles ─────────────────────────────────────────────────────────────────
 function spawnParticles(t){
   particles=[];
-  if(t==='snow') for(let i=0;i<55;i++) particles.push({x:Math.random()*W,y:Math.random()*H,r:1.5+Math.random()*2,sy:.7+Math.random()*1.2,sx:(Math.random()-.5)*.4});
-  if(t==='rain') for(let i=0;i<85;i++) particles.push({x:Math.random()*W,y:Math.random()*H,l:10+Math.random()*8,sy:9+Math.random()*5});
-  if(t==='fog')  for(let i=0;i<12;i++) particles.push({x:Math.random()*W,y:Math.random()*H,r:50+Math.random()*80,a:.04+Math.random()*.05,sx:.4+Math.random()*.4});
+  if(t==='snow') for(let i=0;i<55;i++) particles.push({x:Math.random()*W,y:Math.random()*H,r:1.5+Math.random()*2,sy:.6+Math.random()*1.0,sx:(Math.random()-.5)*.35});
+  if(t==='rain') for(let i=0;i<80;i++) particles.push({x:Math.random()*W,y:Math.random()*H,l:10+Math.random()*8,sy:9+Math.random()*5});
+  if(t==='fog')  for(let i=0;i<12;i++) particles.push({x:Math.random()*W,y:Math.random()*H,r:55+Math.random()*80,a:.04+Math.random()*.05,sx:.35+Math.random()*.4});
 }
 function updateParticles(){
   if(curTheme==='snow') particles.forEach(p=>{p.y+=p.sy;p.x+=p.sx;if(p.y>H)p.y=-4;if(p.x>W)p.x=0;if(p.x<0)p.x=W;});
@@ -335,276 +370,363 @@ function makeBg(theme){
   const bc=document.createElement('canvas');
   bc.width=W; bc.height=H*3;
   const bx=bc.getContext('2d');
-  const w=bc.width, h=bc.height;
-  const fill=(a,b)=>{const g=bx.createLinearGradient(0,0,0,h);g.addColorStop(0,a);g.addColorStop(1,b);bx.fillStyle=g;bx.fillRect(0,0,w,h);};
+  const w=bc.width,h=bc.height;
+  const grad=(a,b)=>{const g=bx.createLinearGradient(0,0,0,h);g.addColorStop(0,a);g.addColorStop(1,b);bx.fillStyle=g;bx.fillRect(0,0,w,h);};
 
   if(theme==='wood'){
-    // Bright warm wood planks
-    fill('#e8a855','#c88030');
-    // Plank separators
-    const plankH=48;
+    // OLD, CLASSY WOOD — dark aged timber
+    grad('#2a1606','#180c03');
+
+    const plankH=52;
     for(let y=0;y<h;y+=plankH){
-      // Plank body gradient varies slightly
-      const shade=Math.random()*20-10;
-      bx.fillStyle=`rgba(${shade>0?255:0},${shade>0?Math.round(shade):0},0,${Math.abs(shade)/180})`;
-      bx.fillRect(0,y,w,plankH);
-      // Horizontal grain lines
-      bx.strokeStyle='rgba(100,48,10,.10)';
-      for(let g=1;g<5;g++){
-        bx.lineWidth=g%2===0?0.8:0.5;
-        bx.beginPath();
-        bx.moveTo(0,y+g*9);
-        for(let x=0;x<=w;x+=55){
-          bx.lineTo(x+55,y+g*9+(Math.random()-.5)*2.5);
+      // Slight tonal variation per plank
+      const tone=(Math.random()-.5)*12;
+      if(tone>0){bx.fillStyle=`rgba(180,100,30,${tone/120})`;bx.fillRect(0,y,w,plankH);}
+
+      // Fine grain lines — many thin, dark lines
+      for(let g=0;g<18;g++){
+        const gy=y+g*(plankH/18);
+        const alpha=0.04+Math.random()*0.08;
+        bx.strokeStyle=`rgba(10,4,0,${alpha})`;
+        bx.lineWidth=.6+Math.random()*.5;
+        bx.beginPath(); bx.moveTo(0,gy);
+        for(let x=0;x<=w;x+=30){
+          bx.lineTo(x,gy+(Math.random()-.5)*2);
         }
         bx.stroke();
       }
-      // Knots (random)
-      if(Math.random()<0.35){
-        const kx=Math.random()*w, ky=y+plankH*.5;
-        const kg=bx.createRadialGradient(kx,ky,1,kx,ky,16);
-        kg.addColorStop(0,'rgba(70,28,5,.40)');
-        kg.addColorStop(.5,'rgba(100,45,10,.18)');
-        kg.addColorStop(1,'rgba(0,0,0,0)');
-        bx.fillStyle=kg; bx.fillRect(kx-18,ky-18,36,36);
+
+      // Darker grain streaks (age marks)
+      const nStreaks=2+Math.floor(Math.random()*3);
+      for(let s=0;s<nStreaks;s++){
+        const sy=y+Math.random()*plankH;
+        bx.strokeStyle=`rgba(5,2,0,${.1+Math.random()*.12})`;
+        bx.lineWidth=1+Math.random()*1.5;
+        bx.beginPath(); bx.moveTo(0,sy);
+        for(let x=0;x<=w;x+=40){bx.lineTo(x,sy+(Math.random()-.5)*4);}
+        bx.stroke();
       }
-      // Plank edge (top border)
-      bx.fillStyle='rgba(60,22,4,.28)'; bx.fillRect(0,y,w,2);
+
+      // Knot rings
+      if(Math.random()<0.38){
+        const kx=Math.random()*w, ky=y+plankH*.5;
+        const kr=8+Math.random()*14;
+        for(let ring=3;ring>=0;ring--){
+          const rg=bx.createRadialGradient(kx,ky,ring*2,kx,ky,kr+ring*4);
+          rg.addColorStop(0,`rgba(8,3,0,${.28-ring*.05})`);
+          rg.addColorStop(.6,`rgba(20,8,2,${.12-ring*.02})`);
+          rg.addColorStop(1,'rgba(0,0,0,0)');
+          bx.fillStyle=rg; bx.fillRect(kx-kr-ring*4-4,ky-kr-ring*4-4,(kr+ring*4+4)*2,(kr+ring*4+4)*2);
+        }
+      }
+
+      // Scratch / wear marks
+      if(Math.random()<0.25){
+        const sx1=Math.random()*w, sy1=y+Math.random()*plankH;
+        bx.strokeStyle='rgba(240,160,60,.04)'; bx.lineWidth=.8;
+        bx.beginPath(); bx.moveTo(sx1,sy1); bx.lineTo(sx1+Math.random()*80-40,sy1+Math.random()*8-4); bx.stroke();
+      }
+
+      // Plank edge (top seam)
+      bx.fillStyle='rgba(4,1,0,.45)'; bx.fillRect(0,y,w,2.5);
     }
-    // Vertical plank seams
-    for(let x=0;x<w;x+=Math.floor(w/3+Math.random()*40)){
-      bx.fillStyle='rgba(60,22,4,.22)'; bx.fillRect(x,0,2,h);
+
+    // Vertical seams — irregular spacing
+    let vx=FL-2;
+    while(vx<FL+FW+4){
+      bx.fillStyle='rgba(4,1,0,.35)'; bx.fillRect(vx,0,2,h);
+      vx+=Math.floor(FW/2.8+Math.random()*FW*.25);
     }
+
+    // Dark vignette edges (aged, worn)
+    const vl=bx.createLinearGradient(0,0,w*.22,0); vl.addColorStop(0,'rgba(0,0,0,.55)'); vl.addColorStop(1,'rgba(0,0,0,0)'); bx.fillStyle=vl; bx.fillRect(0,0,w*.22,h);
+    const vr=bx.createLinearGradient(w*.78,0,w,0); vr.addColorStop(0,'rgba(0,0,0,0)'); vr.addColorStop(1,'rgba(0,0,0,.55)'); bx.fillStyle=vr; bx.fillRect(w*.78,0,w*.22,h);
+    const vt=bx.createLinearGradient(0,0,0,h*.08); vt.addColorStop(0,'rgba(0,0,0,.4)'); vt.addColorStop(1,'rgba(0,0,0,0)'); bx.fillStyle=vt; bx.fillRect(0,0,w,h*.08);
+    const vb=bx.createLinearGradient(0,h*.92,0,h); vb.addColorStop(0,'rgba(0,0,0,0)'); vb.addColorStop(1,'rgba(0,0,0,.5)'); bx.fillStyle=vb; bx.fillRect(0,h*.92,w,h*.08);
   }
   else if(theme==='forest'){
-    fill('#082208','#184818');
-    for(let i=0;i<12;i++){const tx=w*i/11,ty=h*.18+Math.random()*h*.18,th=h*.24+Math.random()*h*.1;bx.fillStyle=`hsl(${116+Math.random()*28},${38+Math.random()*18}%,${14+Math.random()*10}%)`;bx.beginPath();bx.moveTo(tx,ty);bx.lineTo(tx-26,ty+th);bx.lineTo(tx+26,ty+th);bx.closePath();bx.fill();bx.fillStyle='#2a1005';bx.fillRect(tx-5,ty+th,10,h*.04);}
-    bx.fillStyle='#101c08';bx.fillRect(0,h*.86,w,h*.14);
+    grad('#071508','#0f2a10');
+    for(let i=0;i<14;i++){const tx=w*i/13,ty=h*.15+Math.random()*h*.2,th=h*.26+Math.random()*h*.12;bx.fillStyle=`hsl(${115+Math.random()*30},${38+Math.random()*18}%,${12+Math.random()*10}%)`;bx.beginPath();bx.moveTo(tx,ty);bx.lineTo(tx-28,ty+th);bx.lineTo(tx+28,ty+th);bx.closePath();bx.fill();bx.fillStyle='#1e0c04';bx.fillRect(tx-5,ty+th,10,h*.045);}
+    bx.fillStyle='#0c1a06';bx.fillRect(0,h*.86,w,h*.14);
   }
   else if(theme==='flowers'){
-    fill('#ffc8e8','#ffb0e0');
-    bClouds(bx,w,h,'rgba(255,255,255,.55)');
-    bx.fillStyle='#60b830';bx.fillRect(0,h*.76,w,h*.24);
-    const fc=['#ff2878','#ff7800','#ffdd00','#c028ff','#ff1040','#28ccff'];
-    for(let i=0;i<110;i++){const fx=Math.random()*w,fy=h*.77+Math.random()*h*.22,c=fc[i%fc.length];bx.fillStyle='#257808';bx.fillRect(fx-1,fy-12,2,14);bx.fillStyle=c;for(let p=0;p<5;p++){const a=p*Math.PI*2/5;bx.beginPath();bx.arc(fx+Math.cos(a)*5,fy-14+Math.sin(a)*5,4.5,0,Math.PI*2);bx.fill();}bx.fillStyle='#ffdd40';bx.beginPath();bx.arc(fx,fy-14,3,0,Math.PI*2);bx.fill();}
+    grad('#ffb8e0','#ffa0d8');
+    bClouds(bx,w,h,'rgba(255,255,255,.52)');
+    bx.fillStyle='#58a828';bx.fillRect(0,h*.76,w,h*.24);
+    const fc=['#ff1870','#ff6800','#ffcc00','#bb20ff','#ff0840','#20ccff'];
+    for(let i=0;i<120;i++){const fx=Math.random()*w,fy=h*.77+Math.random()*h*.22,c=fc[i%fc.length];bx.fillStyle='#206808';bx.fillRect(fx-1,fy-12,2,14);bx.fillStyle=c;for(let p=0;p<5;p++){const a=p*Math.PI*2/5;bx.beginPath();bx.arc(fx+Math.cos(a)*5,fy-14+Math.sin(a)*5,4.5,0,Math.PI*2);bx.fill();}bx.fillStyle='#ffcc30';bx.beginPath();bx.arc(fx,fy-14,3,0,Math.PI*2);bx.fill();}
   }
   else if(theme==='mountains'){
-    fill('#ff6020','#ffa840');
-    [[h*.58,'#4a3020'],[h*.44,'#382810'],[h*.32,'#584430']].forEach(([my,c])=>{bx.fillStyle=c;bx.beginPath();bx.moveTo(0,h);for(let x=0;x<=w;x+=w/6)bx.lineTo(x,my-Math.random()*h*.09);bx.lineTo(w,h);bx.closePath();bx.fill();});
-    bx.fillStyle='rgba(255,255,255,.65)';[[w*.18,h*.3,w*.06,h*.08],[w*.62,h*.22,w*.07,h*.09]].forEach(([px,py,pw,ph])=>{bx.beginPath();bx.moveTo(px,py);bx.lineTo(px+pw,py+ph);bx.lineTo(px-pw,py+ph);bx.closePath();bx.fill();});
+    grad('#ff5018','#ffa030');
+    [[h*.58,'#3e2818'],[h*.42,'#302010'],[h*.30,'#4e3c28']].forEach(([my,c])=>{bx.fillStyle=c;bx.beginPath();bx.moveTo(0,h);for(let x=0;x<=w;x+=w/6)bx.lineTo(x,my-Math.random()*h*.10);bx.lineTo(w,h);bx.closePath();bx.fill();});
+    bx.fillStyle='rgba(255,255,255,.62)';[[w*.18,h*.30,w*.06,h*.08],[w*.64,h*.22,w*.07,h*.09]].forEach(([px,py,pw,ph])=>{bx.beginPath();bx.moveTo(px,py);bx.lineTo(px+pw,py+ph);bx.lineTo(px-pw,py+ph);bx.closePath();bx.fill();});
   }
   else if(theme==='clouds'){
-    fill('#a4d0ec','#d0e8f8');
-    for(let i=0;i<25;i++){const cx=Math.random()*w,cy=Math.random()*h,cw=60+Math.random()*120,ch=24+Math.random()*42;bx.fillStyle=`rgba(255,255,255,${.28+Math.random()*.55})`;bx.beginPath();bx.ellipse(cx,cy,cw/2,ch/2,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx-cw*.18,cy+5,cw*.29,ch*.35,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx+cw*.18,cy+5,cw*.29,ch*.35,0,0,Math.PI*2);bx.fill();}
+    grad('#9cc8e8','#c8e4f6');
+    for(let i=0;i<26;i++){const cx=Math.random()*w,cy=Math.random()*h,cw=58+Math.random()*118,ch=22+Math.random()*40;bx.fillStyle=`rgba(255,255,255,${.26+Math.random()*.52})`;bx.beginPath();bx.ellipse(cx,cy,cw/2,ch/2,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx-cw*.18,cy+5,cw*.28,ch*.34,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx+cw*.18,cy+5,cw*.28,ch*.34,0,0,Math.PI*2);bx.fill();}
   }
   else if(theme==='fog'){
-    fill('#8898a2','#aab8c2');
-    for(let i=0;i<12;i++){const fg=bx.createRadialGradient(w/2,h*i/11,0,w/2,h*i/11,w*.62);fg.addColorStop(0,`rgba(192,206,215,${.09+Math.random()*.07})`);fg.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=fg;bx.fillRect(0,0,w,h);}
+    grad('#88929a','#a0b0b8');
+    for(let i=0;i<12;i++){const fg=bx.createRadialGradient(w/2,h*i/11,0,w/2,h*i/11,w*.6);fg.addColorStop(0,`rgba(188,200,210,${.08+Math.random()*.07})`);fg.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=fg;bx.fillRect(0,0,w,h);}
   }
   else if(theme==='snow'){
-    fill('#bed0e2','#e2f0f8');
-    bx.fillStyle='rgba(255,255,255,.88)';bx.beginPath();bx.moveTo(0,h);bx.quadraticCurveTo(w*.25,h*.82,w*.5,h*.86);bx.quadraticCurveTo(w*.78,h*.90,w,h*.84);bx.lineTo(w,h);bx.closePath();bx.fill();
+    grad('#b8c8d8','#deeaf6');
+    bx.fillStyle='rgba(255,255,255,.86)';bx.beginPath();bx.moveTo(0,h);bx.quadraticCurveTo(w*.25,h*.82,w*.5,h*.86);bx.quadraticCurveTo(w*.78,h*.90,w,h*.84);bx.lineTo(w,h);bx.closePath();bx.fill();
   }
   else if(theme==='rain'){
-    fill('#101c2c','#1e2c3e');
-    bx.fillStyle='rgba(32,40,52,.88)';for(let i=0;i<7;i++){bx.beginPath();bx.ellipse(w*i/6,h*.08,58+Math.random()*35,18,0,0,Math.PI*2);bx.fill();}
+    grad('#0e1a28','#1a2838');
+    bx.fillStyle='rgba(28,36,48,.88)';for(let i=0;i<7;i++){bx.beginPath();bx.ellipse(w*i/6,h*.08,56+Math.random()*34,17,0,0,Math.PI*2);bx.fill();}
   }
   else if(theme==='space'){
-    fill('#020008','#050014');
-    bStars(bx,w,h,150);
-    [['rgba(110,0,180,.12)',w*.3,h*.3],['rgba(0,70,180,.1)',w*.7,h*.6],['rgba(180,0,55,.08)',w*.2,h*.7]].forEach(([c,nx,ny])=>{const g=bx.createRadialGradient(nx,ny,0,nx,ny,w*.55);g.addColorStop(0,c);g.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=g;bx.fillRect(0,0,w,h);});
+    grad('#020006','#040012');
+    bStars(bx,w,h,155);
+    [['rgba(100,0,180,.12)',w*.3,h*.3],['rgba(0,65,175,.1)',w*.7,h*.6],['rgba(175,0,55,.08)',w*.2,h*.7]].forEach(([c,nx,ny])=>{const g=bx.createRadialGradient(nx,ny,0,nx,ny,w*.52);g.addColorStop(0,c);g.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=g;bx.fillRect(0,0,w,h);});
   }
   else if(theme==='moon'){
-    fill('#060c12','#0c1820');
+    grad('#050a10','#0a1418');
     bStars(bx,w,h,120);
-    const eg=bx.createRadialGradient(w*.15,h*.09,0,w*.15,h*.09,36);eg.addColorStop(0,'#1878cc');eg.addColorStop(.4,'#186818');eg.addColorStop(1,'#083888');bx.fillStyle=eg;bx.beginPath();bx.arc(w*.15,h*.09,36,0,Math.PI*2);bx.fill();
-    bx.fillStyle='#909598';bx.fillRect(0,h*.84,w,h*.16);
-    for(let i=0;i<10;i++){bx.strokeStyle='rgba(95,105,110,.38)';bx.lineWidth=2;bx.beginPath();const cr=6+Math.random()*16;bx.arc(Math.random()*w,h*.86+Math.random()*h*.12,cr,0,Math.PI*2);bx.stroke();}
+    const eg=bx.createRadialGradient(w*.15,h*.09,0,w*.15,h*.09,34);eg.addColorStop(0,'#1468bb');eg.addColorStop(.4,'#145e14');eg.addColorStop(1,'#073480');bx.fillStyle=eg;bx.beginPath();bx.arc(w*.15,h*.09,34,0,Math.PI*2);bx.fill();
+    bx.fillStyle='#888c8f';bx.fillRect(0,h*.84,w,h*.16);
+    for(let i=0;i<10;i++){bx.strokeStyle='rgba(90,100,106,.36)';bx.lineWidth=2;bx.beginPath();const cr=6+Math.random()*15;bx.arc(Math.random()*w,h*.86+Math.random()*h*.12,cr,0,Math.PI*2);bx.stroke();}
   }
   else if(theme==='sun'){
-    fill('#ff2000','#ff6400');
-    for(let i=0;i<6;i++){const sg=bx.createRadialGradient(w*.5,h*.08,12,w*.5,h*.08,w*(.3+i*.09));sg.addColorStop(0,`rgba(255,${128-i*18},0,.18)`);sg.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=sg;bx.fillRect(0,0,w,h);}
+    grad('#f01800','#f05a00');
+    for(let i=0;i<6;i++){const sg=bx.createRadialGradient(w*.5,h*.08,10,w*.5,h*.08,w*(.28+i*.09));sg.addColorStop(0,`rgba(255,${120-i*18},0,.17)`);sg.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=sg;bx.fillRect(0,0,w,h);}
   }
   else if(theme==='universe'){
-    fill('#000003','#00000b');
-    bStars(bx,w,h,230);
-    [['rgba(155,75,255,.12)',w*.2,h*.2],['rgba(45,135,255,.1)',w*.76,h*.56],['rgba(255,65,135,.08)',w*.42,h*.8],['rgba(0,185,138,.09)',w*.85,h*.28]].forEach(([c,nx,ny])=>{const g=bx.createRadialGradient(nx,ny,0,nx,ny,88);g.addColorStop(0,c);g.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=g;bx.fillRect(0,0,w,h);});
+    grad('#000002','#00000a');
+    bStars(bx,w,h,235);
+    [['rgba(150,70,255,.12)',w*.2,h*.2],['rgba(40,130,255,.10)',w*.76,h*.56],['rgba(255,60,130,.08)',w*.42,h*.8],['rgba(0,180,135,.09)',w*.85,h*.28]].forEach(([c,nx,ny])=>{const g=bx.createRadialGradient(nx,ny,0,nx,ny,86);g.addColorStop(0,c);g.addColorStop(1,'rgba(0,0,0,0)');bx.fillStyle=g;bx.fillRect(0,0,w,h);});
   }
   else{
-    const pd={mercury:['#181818','#262626'],venus:['#c06818','#de8824'],earth:['#1852b2','#267acc'],mars:['#882000','#be3818'],jupiter:['#c07030','#daa040'],saturn:['#b49040','#d8b055'],uranus:['#36b0c4','#52d4e2'],neptune:['#0c1c54','#1632b0']};
+    const pd={mercury:['#161616','#242424'],venus:['#be6015','#dc8220'],earth:['#164eac','#2270c8'],mars:['#7e1e00','#b83516'],jupiter:['#be6c2c','#d89838'],saturn:['#ae8838','#d2a850'],uranus:['#32a8be','#4ccede'],neptune:['#0a1850','#142eac']};
     const d=pd[theme]||['#111','#222'];
-    fill(d[0],d[1]);
-    if(theme==='jupiter'){['#985020','#cc8030','#985020','#be7228'].forEach((s,i)=>{bx.fillStyle=s;bx.fillRect(0,h*i/4,w,h/4+1);});}
-    if(theme==='saturn'){bx.strokeStyle='rgba(185,160,72,.45)';bx.lineWidth=9;bx.beginPath();bx.moveTo(0,h*.30);bx.bezierCurveTo(w*.28,h*.20,w*.72,h*.20,w,h*.30);bx.stroke();}
-    if(theme==='earth'){bx.fillStyle='rgba(16,65,155,.5)';bx.fillRect(0,h*.62,w,h*.12);bClouds(bx,w,h,'rgba(255,255,255,.38)');}
+    grad(d[0],d[1]);
+    if(theme==='jupiter'){['#92481e','#c67828','#92481e','#b86a22'].forEach((s,i)=>{bx.fillStyle=s;bx.fillRect(0,h*i/4,w,h/4+1);});}
+    if(theme==='saturn'){bx.strokeStyle='rgba(178,154,68,.44)';bx.lineWidth=9;bx.beginPath();bx.moveTo(0,h*.30);bx.bezierCurveTo(w*.28,h*.20,w*.72,h*.20,w,h*.30);bx.stroke();}
+    if(theme==='earth'){bx.fillStyle='rgba(14,60,148,.5)';bx.fillRect(0,h*.62,w,h*.12);bClouds(bx,w,h,'rgba(255,255,255,.36)');}
     bStars(bx,w,h,22);
   }
   return bc;
 }
 
-function bClouds(bx,w,h,col){for(let i=0;i<6;i++){const cx=Math.random()*w,cy=h*(.05+Math.random()*.18),cw=48+Math.random()*82;bx.fillStyle=col;bx.beginPath();bx.ellipse(cx,cy,cw/2,12,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx-cw*.17,cy+5,cw*.28,8,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx+cw*.17,cy+5,cw*.28,8,0,0,Math.PI*2);bx.fill();}}
-function bStars(bx,w,h,n){for(let i=0;i<n;i++){bx.fillStyle=`rgba(255,255,255,${.16+Math.random()*.84})`;bx.beginPath();bx.arc(Math.random()*w,Math.random()*h,.3+Math.random()*1.5,0,Math.PI*2);bx.fill();}}
+function bClouds(bx,w,h,col){for(let i=0;i<6;i++){const cx=Math.random()*w,cy=h*(.04+Math.random()*.18),cw=46+Math.random()*80;bx.fillStyle=col;bx.beginPath();bx.ellipse(cx,cy,cw/2,11,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx-cw*.17,cy+5,cw*.27,8,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx+cw*.17,cy+5,cw*.27,8,0,0,Math.PI*2);bx.fill();}}
+function bStars(bx,w,h,n){for(let i=0;i<n;i++){bx.fillStyle=`rgba(255,255,255,${.14+Math.random()*.86})`;bx.beginPath();bx.arc(Math.random()*w,Math.random()*h,.3+Math.random()*1.4,0,Math.PI*2);bx.fill();}}
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render(){
   if(!ctx) return;
   ctx.clearRect(0,0,W,H);
 
-  // Background — only scrolls during slide animation
+  // Background
   const t=getTheme(level);
   if(!bgCache[t]) bgCache[t]=makeBg(t);
   const bg=bgCache[t];
-  const bh=bg.height; // H*3
+  const bh=bg.height;
   const off=((bgOffset%bh)+bh)%bh;
   ctx.drawImage(bg,0,-off);
   if(off>bh-H) ctx.drawImage(bg,0,-off+bh);
 
-  // Weather particles
+  // Field side vignette (darker edges = narrow field feel)
+  const lv=ctx.createLinearGradient(0,0,FL,0);
+  lv.addColorStop(0,'rgba(0,0,0,.62)'); lv.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=lv; ctx.fillRect(0,0,FL,H);
+  const rv=ctx.createLinearGradient(FL+FW,0,W,0);
+  rv.addColorStop(0,'rgba(0,0,0,0)'); rv.addColorStop(1,'rgba(0,0,0,.62)');
+  ctx.fillStyle=rv; ctx.fillRect(FL+FW,0,W-FL-FW,H);
+
+  // Particles
   renderParticles();
 
-  // 3 bowls
-  bowls.forEach((b,i)=>drawBowl(b, i===tgtIdx, i===curIdx));
+  // Draw bowls and egg (layered: bowl body → egg → bowl rim so egg looks inside)
+  bowls.forEach((b,i)=>drawBowlBody(b, i===tgtIdx));
 
-  // Aim arc (only when sitting and not sliding)
+  // Aim arc
   if(eggState==='sitting'&&!slideAnim) drawAim();
 
-  // EGG — drawn last, always on top
+  // EGG
   drawEgg(egg.x, egg.y);
 
-  // Feedback text
+  // Overlay bowl rims ON TOP of egg (egg appears inside)
+  bowls.forEach((b,i)=>drawBowlRim(b, i===tgtIdx));
+
+  // Feedback
   if(feedTimer>0&&bowls[tgtIdx]){
     ctx.save();
-    ctx.globalAlpha=Math.min(1, feedTimer/15);
-    ctx.font='bold 24px Segoe UI';
+    ctx.globalAlpha=Math.min(1,feedTimer/14);
+    ctx.font='bold 22px Georgia';
     ctx.textAlign='center';
     ctx.fillStyle=feedCol;
     ctx.shadowColor=feedCol; ctx.shadowBlur=14;
-    ctx.fillText(feedTxt, W/2, bowls[tgtIdx].y-34);
+    ctx.fillText(feedTxt, W/2, bowls[tgtIdx].y-38);
     ctx.shadowBlur=0; ctx.restore();
   }
 }
 
 function renderParticles(){
-  if(curTheme==='snow'){ctx.fillStyle='rgba(255,255,255,.9)';particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});}
-  if(curTheme==='rain'){ctx.strokeStyle='rgba(135,182,225,.55)';ctx.lineWidth=1;particles.forEach(p=>{ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-1.5,p.y+p.l);ctx.stroke();});}
-  if(curTheme==='fog'){particles.forEach(p=>{ctx.fillStyle=`rgba(178,190,200,${p.a})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});}
+  if(curTheme==='snow'){ctx.fillStyle='rgba(255,255,255,.88)';particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});}
+  if(curTheme==='rain'){ctx.strokeStyle='rgba(130,178,220,.52)';ctx.lineWidth=1;particles.forEach(p=>{ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-1.5,p.y+p.l);ctx.stroke();});}
+  if(curTheme==='fog'){particles.forEach(p=>{ctx.fillStyle=`rgba(172,186,196,${p.a})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});}
 }
 
-// ── Draw Bowl — dark brown with leaf decorations ───────────────────────────
-function drawBowl(b, isTarget, isCurrent){
-  const {x,y,w,h}=b;
-  const cx=x+w/2;
+// ── BOWL BODY (drawn first, behind egg) ───────────────────────────────────────
+function drawBowlBody(b, isTarget){
+  const{x,y,w,h}=b, cx=x+w/2;
   ctx.save();
-
   if(isTarget){
-    const pulse=.5+.5*Math.sin(Date.now()*.007);
-    ctx.shadowColor=`rgba(255,215,60,${pulse})`;
-    ctx.shadowBlur=22;
+    const pulse=.45+.55*Math.sin(Date.now()*.007);
+    ctx.shadowColor=`rgba(255,210,50,${pulse})`;
+    ctx.shadowBlur=24;
   }
-
-  // Bowl body — very dark brown
+  // Bowl curved body — dark aged wood / ceramic
   ctx.beginPath();
-  ctx.moveTo(x+5,y);
-  ctx.lineTo(x+w-5,y);
-  ctx.quadraticCurveTo(x+w+w*.09, y+h*.68, cx, y+h);
-  ctx.quadraticCurveTo(x-w*.09, y+h*.68, x+5, y);
+  ctx.moveTo(x+6,y);
+  ctx.lineTo(x+w-6,y);
+  ctx.quadraticCurveTo(x+w+w*.10, y+h*.65, cx, y+h);
+  ctx.quadraticCurveTo(x-w*.10, y+h*.65, x+6, y);
   ctx.closePath();
   const bg=ctx.createLinearGradient(x,y,x+w,y+h);
-  bg.addColorStop(0,'#5c2e0a');
-  bg.addColorStop(.28,'#3c1a04');
-  bg.addColorStop(.65,'#281002');
-  bg.addColorStop(1,'#180800');
+  bg.addColorStop(0,'#4e2406');
+  bg.addColorStop(.22,'#321404');
+  bg.addColorStop(.58,'#1e0c02');
+  bg.addColorStop(1,'#100600');
   ctx.fillStyle=bg; ctx.fill();
-
-  // Inner shadow
-  ctx.fillStyle='rgba(0,0,0,.38)';
-  ctx.beginPath(); ctx.ellipse(cx,y+5,w*.35,h*.24,0,0,Math.PI*2); ctx.fill();
-
-  // Rim
-  ctx.strokeStyle='#8b4a18'; ctx.lineWidth=3.2;
-  ctx.beginPath(); ctx.ellipse(cx,y,w/2,h*.22,0,0,Math.PI*2); ctx.stroke();
-  ctx.strokeStyle='rgba(195,115,52,.6)'; ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.ellipse(cx,y-1,w*.44,h*.13,0,Math.PI*.08,Math.PI*.92,true); ctx.stroke();
-
+  // Inner bowl sheen (aged, worn inside)
+  const ig=ctx.createRadialGradient(cx,y+h*.35,2,cx,y+h*.35,w*.42);
+  ig.addColorStop(0,'rgba(80,38,10,.22)');
+  ig.addColorStop(.5,'rgba(10,4,1,.38)');
+  ig.addColorStop(1,'rgba(0,0,0,.55)');
+  ctx.fillStyle=ig;
+  ctx.beginPath();
+  ctx.moveTo(x+6,y);
+  ctx.lineTo(x+w-6,y);
+  ctx.quadraticCurveTo(x+w+w*.10,y+h*.65,cx,y+h);
+  ctx.quadraticCurveTo(x-w*.10,y+h*.65,x+6,y);
+  ctx.closePath();
+  ctx.fill();
   ctx.shadowBlur=0;
-
-  // Leaf decorations on both sides
-  drawLeaf(ctx, x-3, y+h*.38, -0.45, isTarget);
-  drawLeaf(ctx, x+w+3, y+h*.38, Math.PI+0.45, isTarget);
-
+  // Leaf decorations
+  drawLeaf(ctx,x-4,y+h*.42,-0.5,isTarget);
+  drawLeaf(ctx,x+w+4,y+h*.42,Math.PI+0.5,isTarget);
   // Bottom shadow
-  ctx.fillStyle='rgba(0,0,0,.16)';
-  ctx.beginPath(); ctx.ellipse(cx,y+h+5,w*.36,4,0,0,Math.PI*2); ctx.fill();
-
+  ctx.fillStyle='rgba(0,0,0,.20)';
+  ctx.beginPath(); ctx.ellipse(cx,y+h+6,w*.34,4,0,0,Math.PI*2); ctx.fill();
   ctx.restore();
 }
 
-function drawLeaf(c, lx, ly, angle, bright){
-  c.save();
-  c.translate(lx,ly); c.rotate(angle);
-  const col=bright?'#4ea822':'#2e6010';
-  const col2=bright?'#72c835':'#4a8018';
+// ── BOWL RIM (drawn AFTER egg so egg appears inside bowl) ─────────────────────
+function drawBowlRim(b, isTarget){
+  const{x,y,w,h}=b, cx=x+w/2;
+  ctx.save();
+  if(isTarget){
+    const pulse=.45+.55*Math.sin(Date.now()*.007);
+    ctx.shadowColor=`rgba(255,210,50,${pulse*.6})`;
+    ctx.shadowBlur=16;
+  }
+  // Outer rim ring — dark wood
+  ctx.strokeStyle='#6a3610'; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.ellipse(cx,y,w/2,h*.22,0,0,Math.PI*2); ctx.stroke();
+  // Rim inner highlight (worn wood gleam)
+  ctx.strokeStyle='rgba(160,90,35,.55)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.ellipse(cx,y-1,w*.44,h*.14,0,Math.PI*.06,Math.PI*.94,true); ctx.stroke();
+  // Very thin gold accent on target bowl rim
+  if(isTarget){
+    ctx.strokeStyle=`rgba(220,175,50,${.45+.45*Math.sin(Date.now()*.009)})`;
+    ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.ellipse(cx,y,w*.48,h*.20,0,0,Math.PI*2); ctx.stroke();
+  }
+  ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+function drawLeaf(c,lx,ly,angle,bright){
+  c.save(); c.translate(lx,ly); c.rotate(angle);
+  const col=bright?'#3e8818':'#204e08';
+  const col2=bright?'#60aa28':'#386010';
   c.beginPath();
   c.moveTo(0,0);
-  c.bezierCurveTo(-7,-13,-18,-15,-21,-9);
-  c.bezierCurveTo(-19,-2,-8,1,0,0);
+  c.bezierCurveTo(-6,-13,-17,-16,-20,-10);
+  c.bezierCurveTo(-18,-3,-7,1,0,0);
   c.closePath();
-  const lg=c.createLinearGradient(-21,-15,0,0);
+  const lg=c.createLinearGradient(-20,-16,0,0);
   lg.addColorStop(0,col2); lg.addColorStop(1,col);
   c.fillStyle=lg; c.fill();
-  c.strokeStyle='rgba(0,45,0,.38)'; c.lineWidth=.7;
-  c.beginPath(); c.moveTo(0,0); c.lineTo(-19,-10); c.stroke();
+  c.strokeStyle='rgba(0,40,0,.35)'; c.lineWidth=.7;
+  c.beginPath(); c.moveTo(0,0); c.lineTo(-18,-10); c.stroke();
   c.restore();
 }
 
-// ── Draw Egg ─────────────────────────────────────────────────────────────────
+// ── DRAW EGG (realistic) ──────────────────────────────────────────────────────
 function drawEgg(sx,sy){
   const r=egg.r;
   ctx.save();
   ctx.translate(sx,sy);
 
+  // Squish/stretch on landing
+  let scaleX=1, scaleY=1;
+  if(squishTimer>0){
+    const st=squishTimer/12;
+    scaleX=1+st*.15; scaleY=1-st*.12;
+  }
+  // Wobble (side-to-side sway in bowl)
+  const wob=egg.wobble*Math.sin(Date.now()*.015)*0.06;
+
   if(eggState==='flying'){
-    // Trail
+    // Motion trail
     const tc=eggTrailRGB();
-    [[0,24,.5,6.5],[0,42,.28,4.2],[0,62,.13,2.6]].forEach(([tx,ty,a,tr])=>{
+    [[0,28,.48,6.5],[0,48,.26,4.2],[0,70,.11,2.4]].forEach(([tx,ty,a,tr])=>{
       ctx.fillStyle=`rgba(${tc},${a})`;
       ctx.beginPath(); ctx.arc(tx,ty,tr,0,Math.PI*2); ctx.fill();
     });
-    // Glow
-    const gw=ctx.createRadialGradient(0,0,r*.3,0,0,r*2.9);
+    // Glow halo
+    const gw=ctx.createRadialGradient(0,0,r*.25,0,0,r*3.0);
     gw.addColorStop(0,eggGlowColor()); gw.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,r*2.9,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,r*3.0,0,Math.PI*2); ctx.fill();
   } else {
-    // Ambient glow when sitting
-    const gw=ctx.createRadialGradient(0,0,r*.5,0,0,r*2.0);
+    // Soft ambient glow when sitting
+    const gw=ctx.createRadialGradient(0,0,r*.4,0,0,r*1.9);
     gw.addColorStop(0,eggGlowColor()); gw.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,r*2.0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=gw; ctx.beginPath(); ctx.arc(0,0,r*1.9,0,Math.PI*2); ctx.fill();
   }
 
-  // Egg body (scaled oval)
-  ctx.scale(1,1.30);
-  const [c1,c2,c3]=eggColors();
-  const eg=ctx.createRadialGradient(-r*.26,-r*.28,1.5,0,0,r);
-  eg.addColorStop(0,c1); eg.addColorStop(.52,c2); eg.addColorStop(1,c3);
+  // Egg body — realistic oval with subsurface depth
+  ctx.scale(scaleX+wob, scaleY*1.28-wob*.5);
+  const [c1,c2,c3,c4]=eggColors();
+  const eg=ctx.createRadialGradient(-r*.28,-r*.32,1.2,0,r*.08,r*1.02);
+  eg.addColorStop(0,c1);
+  eg.addColorStop(.30,c2);
+  eg.addColorStop(.68,c3);
+  eg.addColorStop(1,c4);
   ctx.fillStyle=eg;
   ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
 
-  // Visible dark outline
-  ctx.strokeStyle='rgba(0,0,0,0.36)'; ctx.lineWidth=2/1.30;
+  // Subtle subsurface scatter (depth beneath shell)
+  const ss=ctx.createRadialGradient(r*.15,r*.2,r*.3,r*.15,r*.2,r*.85);
+  ss.addColorStop(0,'rgba(0,0,0,0)');
+  ss.addColorStop(.6,'rgba(0,0,0,.06)');
+  ss.addColorStop(1,'rgba(0,0,0,.18)');
+  ctx.fillStyle=ss; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+
+  // Outline
+  ctx.strokeStyle='rgba(0,0,0,.32)'; ctx.lineWidth=1.8/1.28;
   ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.stroke();
 
-  // Highlights
-  ctx.fillStyle='rgba(255,255,255,.88)';
-  ctx.beginPath(); ctx.arc(-r*.24,-r*.30,r*.30,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.48)';
-  ctx.beginPath(); ctx.arc(-r*.08,-r*.52,r*.10,0,Math.PI*2); ctx.fill();
+  // Primary highlight (specular)
+  ctx.fillStyle='rgba(255,255,255,.90)';
+  ctx.beginPath(); ctx.arc(-r*.26,-r*.32,r*.28,0,Math.PI*2); ctx.fill();
+  // Secondary highlight
+  ctx.fillStyle='rgba(255,255,255,.52)';
+  ctx.beginPath(); ctx.arc(-r*.09,-r*.54,r*.10,0,Math.PI*2); ctx.fill();
+  // Rim reflection (bottom edge)
+  ctx.fillStyle='rgba(255,255,255,.14)';
+  ctx.beginPath(); ctx.arc(r*.12,r*.52,r*.18,0,Math.PI*2); ctx.fill();
 
   // Diamond sparkles
   if(getEggType(level)==='diamond'){
-    ['rgba(0,255,255,.8)','rgba(255,0,255,.65)','rgba(255,255,0,.72)'].forEach((dc,i)=>{
+    ['rgba(0,255,255,.85)','rgba(255,0,255,.7)','rgba(255,255,0,.75)'].forEach((dc,i)=>{
       const a=i*Math.PI*2/3+Date.now()*.003;
       ctx.fillStyle=dc;
-      ctx.beginPath(); ctx.arc(Math.cos(a)*r*.46,Math.sin(a)*r*.36,3.2,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(Math.cos(a)*r*.45,Math.sin(a)*r*.35,3.2,0,Math.PI*2); ctx.fill();
     });
   }
   ctx.restore();
@@ -612,36 +734,36 @@ function drawEgg(sx,sy){
 
 function eggColors(){
   return ({
-    white:   ['#fffcf6','#f2eedd','#bab8a8'],
-    bronze:  ['#f4ae64','#cd7f32','#8a4e0c'],
-    silver:  ['#f6f6fe','#c4c4ce','#8a8aa6'],
-    gold:    ['#fff8a4','#ffd700','#c88800'],
-    platinum:['#eef3f8','#d2dae8','#9caabb'],
-    diamond: ['#e4fcff','#aaecff','#42b8f2']
-  })[getEggType(level)]||['#fff','#f0f0e8','#c0c0b8'];
+    white:   ['#fffdf8','#f6f0e0','#d4cdb8','#9a9480'],
+    bronze:  ['#fac070','#d88030','#9a5210','#5a2a04'],
+    silver:  ['#f8f8ff','#ccccd8','#9898b0','#606078'],
+    gold:    ['#fffaa8','#ffd700','#c88000','#7a4800'],
+    platinum:['#f2f6fc','#d4dce8','#9aacbe','#606e7e'],
+    diamond: ['#e8fdff','#b0eeff','#46c0f4','#1880c0']
+  })[getEggType(level)]||['#fff','#f0ead0','#c0b898','#888070'];
 }
 function eggGlowColor(){
   return ({
-    white:'rgba(255,250,215,.28)',bronze:'rgba(212,132,52,.55)',
-    silver:'rgba(202,202,255,.4)',gold:'rgba(255,215,0,.56)',
-    platinum:'rgba(202,224,242,.45)',diamond:'rgba(0,242,255,.6)'
-  })[getEggType(level)]||'rgba(255,255,255,.28)';
+    white:'rgba(255,248,210,.26)',bronze:'rgba(215,130,50,.55)',
+    silver:'rgba(200,200,255,.40)',gold:'rgba(255,215,0,.56)',
+    platinum:'rgba(200,222,242,.44)',diamond:'rgba(0,245,255,.62)'
+  })[getEggType(level)]||'rgba(255,255,255,.24)';
 }
 function eggTrailRGB(){
   return ({
-    white:'255,252,215',bronze:'212,132,52',silver:'195,195,228',
-    gold:'255,215,0',platinum:'202,224,242',diamond:'0,225,255'
-  })[getEggType(level)]||'255,252,215';
+    white:'255,248,210',bronze:'215,130,50',silver:'195,195,228',
+    gold:'255,215,0',platinum:'200,224,242',diamond:'0,228,255'
+  })[getEggType(level)]||'255,248,210';
 }
 
 // ── Aim arc ───────────────────────────────────────────────────────────────────
 function drawAim(){
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
-  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.15), tUp=-vy/G, vx=(tb.x+BOWL_W/2-egg.x)/tUp;
-  ctx.save(); ctx.setLineDash([5,10]); ctx.strokeStyle='rgba(255,238,100,.20)'; ctx.lineWidth=1.5;
+  const vy=-Math.sqrt(2*G*Math.abs(dy)*1.05), tUp=-vy/G, vx=(tb.x+BOWL_W/2-egg.x)/tUp;
+  ctx.save(); ctx.setLineDash([5,11]); ctx.strokeStyle='rgba(255,235,100,.18)'; ctx.lineWidth=1.4;
   ctx.beginPath();
-  let px=egg.x, py=egg.y, pvx=vx, pvy=vy;
+  let px=egg.x,py=egg.y,pvx=vx,pvy=vy;
   ctx.moveTo(px,py);
   for(let t=0;t<tUp;t+=2){px+=pvx*2;py+=pvy*2;pvy+=G*2;ctx.lineTo(px,py);if(py<0)break;}
   ctx.stroke(); ctx.setLineDash([]); ctx.restore();
@@ -653,7 +775,7 @@ function updateHUD(){
   document.getElementById('livesTxt').textContent='❤️'.repeat(Math.min(lives,10));
   document.getElementById('comboTxt').textContent=combo>1?'×'+combo:'';
 }
-function showFeed(t,c){feedTxt=t;feedCol=c;feedTimer=70;}
+function showFeed(t,c){feedTxt=t;feedCol=c;feedTimer=68;}
 function showToast(m){
   const el=document.getElementById('toast');
   el.textContent=m; el.style.display='block';
@@ -663,12 +785,15 @@ function showToast(m){
 // ── Boot ─────────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   initCv();
-  // Wood background preview on menu
+  // Dark old wood on menu
   const g=ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0,'#e8a855'); g.addColorStop(1,'#c07828');
+  g.addColorStop(0,'#2a1606'); g.addColorStop(1,'#140a02');
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  ctx.fillStyle='rgba(60,22,4,.26)';
-  for(let y=48;y<H;y+=48) ctx.fillRect(0,y-1,W,2);
+  // Plank lines
+  for(let y=52;y<H;y+=52){ctx.fillStyle='rgba(3,1,0,.45)';ctx.fillRect(0,y-1,W,2.5);}
+  // Grain
+  ctx.strokeStyle='rgba(8,3,0,.12)'; ctx.lineWidth=.6;
+  for(let y=6;y<H;y+=9){ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<=W;x+=35)ctx.lineTo(x,y+(Math.random()-.5)*2);ctx.stroke();}
 });
 </script>
 </body>
