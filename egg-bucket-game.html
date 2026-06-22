@@ -615,7 +615,8 @@ function render(){
     drawEgg(egg.x,egg.y);
     ctx.restore();
   } else if(!henAnim){
-    drawEgg(egg.x,egg.y);
+    if(egg.missed) drawScrambledEgg(egg.x, egg.y, egg.angle);
+    else drawEgg(egg.x,egg.y);
   }
 
   // ── Bowl rim FRONT arc (in front of egg) — bottom half of ellipse ──
@@ -716,6 +717,61 @@ function drawLeaf(c,lx,ly,angle,bright){
   c.beginPath(); c.moveTo(0,0); c.bezierCurveTo(-6,-14,-17,-17,-20,-11); c.bezierCurveTo(-18,-4,-7,1,0,0); c.closePath();
   const lg=c.createLinearGradient(-20,-17,0,0); lg.addColorStop(0,b); lg.addColorStop(1,a); c.fillStyle=lg; c.fill();
   c.strokeStyle='rgba(0,38,0,.32)'; c.lineWidth=.7; c.beginPath(); c.moveTo(0,0); c.lineTo(-18,-10); c.stroke();
+  c.restore();
+}
+
+/* ── SCRAMBLED EGG (on miss) ──────────────────────────────────────────── */
+function drawScrambledEgg(sx, sy, angle){
+  const c=ctx, r=EGG_R;
+  c.save();
+  c.translate(sx, sy);
+  c.rotate(angle);
+
+  // White splat — irregular blob
+  c.save(); c.scale(1.4, 1.0);
+  const wg=c.createRadialGradient(0,0,1,0,0,r*1.6);
+  wg.addColorStop(0,'#fffef0'); wg.addColorStop(0.7,'#f5f0d0'); wg.addColorStop(1,'rgba(245,240,200,0)');
+  c.fillStyle=wg;
+  c.beginPath();
+  // Irregular splat shape
+  const pts=[[r*1.5,0],[r*1.2,-r*0.9],[0,-r*1.4],[-r*1.1,-r*0.8],
+             [-r*1.6,0.2],[-r*0.9,r*1.1],[0,r*1.5],[r*1.0,r*1.0]];
+  c.moveTo(pts[0][0],pts[0][1]);
+  for(let i=0;i<pts.length;i++){
+    const n=pts[(i+1)%pts.length];
+    const mx=(pts[i][0]+n[0])/2, my=(pts[i][1]+n[1])/2;
+    c.quadraticCurveTo(pts[i][0],pts[i][1],mx,my);
+  }
+  c.closePath(); c.fill();
+  c.restore();
+
+  // Shell fragments (two curved shards)
+  [[-0.3, -r*0.3, '#e8e0c0','#c8c0a0'],
+   [ 0.4,  r*0.2, '#ede5c5','#cdc5a5']].forEach(([rot,ty,c1,c2])=>{
+    c.save(); c.translate(0, ty); c.rotate(rot);
+    const sg=c.createLinearGradient(-r*0.7,-r*0.5,r*0.7,r*0.5);
+    sg.addColorStop(0,c1); sg.addColorStop(1,c2);
+    c.fillStyle=sg;
+    c.beginPath();
+    c.moveTo(-r*0.7, 0);
+    c.bezierCurveTo(-r*0.4,-r*0.9, r*0.4,-r*0.9, r*0.7, 0);
+    c.bezierCurveTo( r*0.3, r*0.15,-r*0.3, r*0.15,-r*0.7, 0);
+    c.closePath(); c.fill();
+    // Crack line on shard
+    c.strokeStyle='rgba(160,140,90,.5)'; c.lineWidth=0.8;
+    c.beginPath(); c.moveTo(-r*0.2,-r*0.5); c.lineTo(r*0.1,-r*0.2); c.lineTo(-r*0.05,0); c.stroke();
+    c.restore();
+  });
+
+  // Yolk — bright orange circle
+  const yg=c.createRadialGradient(-r*0.15,-r*0.15,r*0.05,0,0,r*0.62);
+  yg.addColorStop(0,'#ffe84a'); yg.addColorStop(0.6,'#f5a800'); yg.addColorStop(1,'#d07000');
+  c.fillStyle=yg;
+  c.beginPath(); c.arc(0, 0, r*0.62, 0, Math.PI*2); c.fill();
+  // Yolk highlight
+  c.fillStyle='rgba(255,255,180,.55)';
+  c.beginPath(); c.arc(-r*0.18,-r*0.22, r*0.22, 0, Math.PI*2); c.fill();
+
   c.restore();
 }
 
