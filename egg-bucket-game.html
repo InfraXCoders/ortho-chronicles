@@ -95,7 +95,6 @@ canvas{display:block;position:fixed;top:0;left:0;}
 let cv, ctx, W, H;
 const BOWL_W=72, BOWL_H=34, EGG_R=16;
 const G=0.26;          // slow gravity → big arcs
-const LAND_DIST=52;    // px above bowl when approach-deceleration starts
 let FL, FW;            // field left, field width (narrow)
 let YPOS;              // [bottom, mid, top] fixed Y for bowl rims
 
@@ -129,7 +128,6 @@ let egg={
 };
 // States: 'sitting' | 'flying' | 'approach' | 'rolling'
 let eggState='sitting';
-let landingDecel=false;  // whether approach-decel is active
 
 /* ── Slide animation ─────────────────────────────────────────────────── */
 let slideAnim=null;   // {t, total, bgStart}
@@ -210,7 +208,7 @@ function startGame(){
   egg.x=bowls[0].x+BOWL_W/2; egg.y=seatY(bowls[0]);
   egg.vx=0; egg.vy=0; egg.angle=0; egg.angV=0;
   egg.offsetX=0; egg.missed=false;
-  eggState='sitting'; landingDecel=false;
+  eggState='sitting';
   dying=false;
 
   running=true;
@@ -271,18 +269,8 @@ function update(){
 
   else if(eggState==='flying'){
     const tb=bowls[tgtIdx];
-    const distToRim=tb.y-egg.y; // positive = egg is above bowl rim
 
-    // Decel on the DESCENT: egg has peaked and is falling toward bowl
-    if(!landingDecel && egg.vy>0 && distToRim>0 && distToRim<LAND_DIST+30){
-      landingDecel=true;
-    }
-    if(landingDecel && egg.vy>0){
-      egg.vy*=0.88;   // slow the fall for smooth settling
-      egg.vx*=0.92;   // also settle horizontally
-      egg.angV*=0.82;
-    }
-
+    // Pure physics — no deceleration
     egg.vy+=G;
     egg.x+=egg.vx; egg.y+=egg.vy;
     egg.angle+=egg.angV;
@@ -291,41 +279,30 @@ function update(){
     if(egg.x-EGG_R<FL){egg.x=FL+EGG_R;egg.vx=Math.abs(egg.vx)*0.45;}
     if(egg.x+EGG_R>FL+FW){egg.x=FL+FW-EGG_R;egg.vx=-Math.abs(egg.vx)*0.45;}
 
-    // ── Catch detection ──
+    // ── Catch: egg falling into bowl ──
     const catchW=tb.w-14;
     const catchL=tb.x+7;
     const inX=egg.x>=catchL && egg.x<=catchL+catchW;
     const inY=egg.y+EGG_R>=tb.y-4 && egg.y-EGG_R<=tb.y+tb.h*.5;
     if(inX && inY && egg.vy>0){ catchBowl(); return; }
 
-    // ── Miss: egg dipped below target without catching ──
-    if(!egg.missed && egg.vy>0 && egg.y>tb.y+tb.h+16){
+    // ── Miss: passed through bowl without catching ──
+    if(!egg.missed && egg.y>tb.y+tb.h+16){
       egg.missed=true;
-      // Give dramatic sideways tumble
       egg.vx+=(Math.random()-0.5)*3;
       egg.angV=egg.vx*0.12;
       onMiss();
     }
 
     if(egg.missed){
-      // Let egg roll/fall off bottom — no snap back
       if(egg.y>H+60){
         const cb=bowls[curIdx];
         egg.x=cb.x+BOWL_W/2; egg.y=seatY(cb);
         egg.vx=0; egg.vy=0; egg.angV=0; egg.angle=0;
-        egg.missed=false; landingDecel=false;
+        egg.missed=false;
         eggState='sitting';
       }
       return;
-    }
-
-    // ── Return to current bowl only if not missed (perfect arc missed bowl) ──
-    const cb=bowls[curIdx];
-    if(egg.vy>0 && egg.y>=seatY(cb)){
-      egg.x=cb.x+BOWL_W/2; egg.y=seatY(cb);
-      egg.vx=0; egg.vy=0; egg.angV=0;
-      egg.missed=false; landingDecel=false;
-      squishT=10; eggState='sitting';
     }
   }
 
@@ -367,7 +344,7 @@ function catchBowl(){
 
   egg.x=cx; egg.y=seatY(tb);
   egg.offsetX=egg.x-(tb.x+BOWL_W/2)+( egg.vx*2); // inertia into roll
-  egg.vx=0; egg.vy=0; landingDecel=false;
+  egg.vx=0; egg.vy=0;
   squishT=14; eggState='rolling';
   curIdx=tgtIdx; tgtIdx++;
   updateHUD();
@@ -450,7 +427,7 @@ function tap(){
   egg.vx=(targetX-egg.x)/totalT;
   egg.vy=vy;
   egg.angV=egg.vx*0.048;
-  egg.missed=false; landingDecel=false;
+  egg.missed=false;
   eggState='flying';
 }
 
