@@ -194,6 +194,91 @@ function getEggType(l){
 }
 
 /* ── Start ───────────────────────────────────────────────────────────── */
+/* ── AUDIO ────────────────────────────────────────────────────────────── */
+let _ac=null,_mgain=null,_mTimer=null;
+function _getAC(){
+  if(!_ac) _ac=new(window.AudioContext||window.webkitAudioContext)();
+  if(_ac.state==='suspended') _ac.resume();
+  return _ac;
+}
+function _getMG(){
+  if(!_mgain){_mgain=_getAC().createGain();_mgain.gain.value=0.36;_mgain.connect(_getAC().destination);}
+  return _mgain;
+}
+function _n(freq,t0,dur,type,vol,dst){
+  const a=_getAC(),o=a.createOscillator(),g=a.createGain();
+  o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,t0);
+  g.gain.linearRampToValueAtTime(vol,t0+0.018);
+  g.gain.setValueAtTime(vol,t0+Math.max(dur-0.05,0.01));
+  g.gain.linearRampToValueAtTime(0,t0+dur);
+  o.connect(g); g.connect(dst||a.destination);
+  o.start(t0); o.stop(t0+dur+0.01);
+}
+// Melody: cheerful pentatonic loop, 16 beats @ 120bpm = 8s
+const _B=60/120;
+const _HZ={C4:261.63,D4:293.66,E4:329.63,G4:392,A4:440,
+           C5:523.25,D5:587.33,E5:659.25,G5:784,A5:880,C6:1046.5};
+const _MEL=[
+  [_HZ.E5,0,.5],[_HZ.G5,.5,.5],[_HZ.A5,1,1],[_HZ.G5,2,.5],[_HZ.E5,2.5,.5],
+  [_HZ.D5,3,.5],[_HZ.E5,3.5,.5],
+  [_HZ.G5,4,.5],[_HZ.A5,4.5,.5],[_HZ.C6,5,1],[_HZ.A5,6,.5],[_HZ.G5,6.5,.5],
+  [_HZ.E5,7,1],
+  [_HZ.E5,8,.5],[_HZ.G5,8.5,.5],[_HZ.A5,9,1],[_HZ.G5,10,.5],[_HZ.E5,10.5,.5],
+  [_HZ.D5,11,.5],[_HZ.E5,11.5,.5],
+  [_HZ.G5,12,.5],[_HZ.E5,12.5,.5],[_HZ.D5,13,.5],[_HZ.C5,13.5,.5],
+  [_HZ.C5,14,2],
+];
+const _BASS=[
+  [_HZ.C4,0,1.8],[_HZ.G4,2,1.8],[_HZ.C4,4,1.8],[_HZ.A4,6,1.8],
+  [_HZ.C4,8,1.8],[_HZ.G4,10,1.8],[_HZ.C4,12,1.8],[_HZ.G4,14,1.8],
+];
+function _schedMusic(){
+  const now=_getAC().currentTime, mg=_getMG();
+  _MEL.forEach(([f,b,d])=>_n(f,now+b*_B,d*_B*.88,'triangle',.16,mg));
+  _BASS.forEach(([f,b,d])=>_n(f/2,now+b*_B,d*_B*.75,'sine',.08,mg));
+  _mTimer=setTimeout(_schedMusic,16*_B*1000-100);
+}
+function startMusic(){if(!_mTimer) _schedMusic();}
+function stopMusic(){if(_mTimer){clearTimeout(_mTimer);_mTimer=null;}}
+
+function sfxTap(){
+  const a=_getAC(),o=a.createOscillator(),g=a.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(500,a.currentTime);
+  o.frequency.exponentialRampToValueAtTime(950,a.currentTime+0.07);
+  g.gain.setValueAtTime(0.22,a.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+0.13);
+  o.connect(g); g.connect(a.destination);
+  o.start(); o.stop(a.currentTime+0.14);
+}
+function sfxLand(){
+  const a=_getAC();
+  [[240,.8],[160,.5],[100,.3]].forEach(([f,v])=>{
+    const o=a.createOscillator(),g=a.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(f,a.currentTime);
+    o.frequency.exponentialRampToValueAtTime(f*.42,a.currentTime+0.22);
+    g.gain.setValueAtTime(v*.48,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+0.28);
+    o.connect(g); g.connect(a.destination);
+    o.start(); o.stop(a.currentTime+0.3);
+  });
+}
+function sfxMiss(){
+  const a=_getAC();
+  [[440,0],[300,.12],[180,.24]].forEach(([f,t])=>{
+    const o=a.createOscillator(),g=a.createGain();
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(f,a.currentTime+t);
+    o.frequency.exponentialRampToValueAtTime(f*.45,a.currentTime+t+.12);
+    g.gain.setValueAtTime(.17,a.currentTime+t);
+    g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+t+.15);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime+t); o.stop(a.currentTime+t+.17);
+  });
+}
+
 function startGame(){
   initCv();
   if(score>hiScore) hiScore=score;
@@ -205,6 +290,7 @@ function startGame(){
   document.getElementById('menu').style.display='none';
   document.getElementById('gameover').style.display='none';
   document.getElementById('hud').style.display='flex';
+  stopMusic(); startMusic();
 
   bowls=[
     mkBowl(YPOS[0], true),
@@ -343,6 +429,7 @@ function easeOut(t){return 1-(1-t)*(1-t)*(1-t);}
 
 /* ── Catch ───────────────────────────────────────────────────────────── */
 function catchBowl(){
+  sfxLand();
   const tb=bowls[tgtIdx];
   const cx=tb.x+BOWL_W/2;
   const off=Math.abs(egg.x-cx)/(BOWL_W/2-7);  // 0=center,1=edge
@@ -384,6 +471,7 @@ function finishSlide(){
 
 /* ── Miss / death ────────────────────────────────────────────────────── */
 function onMiss(){
+  sfxMiss();
   lives--; combo=0; updateHUD();
   // Guard: tgtIdx may be 3 after top-bowl catch sequence, use mid-Y as fallback
   const missY = bowls[tgtIdx] ? bowls[tgtIdx].y-40 : H*0.4;
@@ -391,6 +479,7 @@ function onMiss(){
   if(lives<=0){
     dying=true; // prevent further taps immediately
     setTimeout(()=>{
+      stopMusic();
       if(score>hiScore) hiScore=score;
       document.getElementById('goMsg').textContent='Reached Level '+level;
       document.getElementById('goScore').textContent='Score: '+score+(hiScore>0?' · Best: '+hiScore:'');
@@ -440,6 +529,7 @@ function tap(){
   egg.angV=0.04;     // small aesthetic spin
   egg.missed=false;
   eggState='flying';
+  sfxTap();
 }
 
 /* ── Score FX ────────────────────────────────────────────────────────── */
