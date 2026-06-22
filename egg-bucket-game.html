@@ -459,12 +459,13 @@ function startSlide(){
 }
 function finishSlide(){
   const nextL=level+1;
-  const moving=nextL>10;
-  const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary+centered
-  const b1spd=moving?randSpd(baseSpd(nextL)):0;
-  const b1x=moving?bowls[2].x:FL+FW/2-BOWL_W/2;
+  const b1moves=nextL>10;          // middle bowl moves from L11
+  const b2moves=nextL>=3;          // top bowl moves from L3
+  const b0={...bowls[1],y:YPOS[0],speed:0,x:FL+FW/2-BOWL_W/2}; // always stationary
+  const b1spd=b1moves?randSpd(baseSpd(nextL)):0;
+  const b1x=b1moves?bowls[2].x:FL+FW/2-BOWL_W/2;
   const b1={...bowls[2],y:YPOS[1],speed:b1spd,x:b1x};
-  const b2=mkBowl(YPOS[2],!moving);
+  const b2=mkBowl(YPOS[2],!b2moves);
   bowls=[b0,b1,b2];
   curIdx=1; tgtIdx=2;
   egg.y=seatY(bowls[1]); egg.x=bowls[1].x+BOWL_W/2;
