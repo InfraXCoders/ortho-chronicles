@@ -104,7 +104,14 @@
   .region-divider h3{font-family:'Playfair Display',serif;font-size:1.15rem;white-space:nowrap;}
   .region-divider hr{flex:1;border:none;border-top:2px solid var(--br);}
 
-  @media(max-width:600px){.ex-grid{grid-template-columns:1fr;}.pt-hero{padding:80px 16px 40px;}.pt-hero-stats{gap:20px;}}
+  .lang-bar{background:#F0FDFA;border-bottom:1px solid var(--br);padding:8px 20px;display:flex;align-items:center;gap:10px;justify-content:flex-end;max-width:100%;}
+  .lang-bar span{font-size:.78rem;color:var(--mu);font-weight:600;margin-right:4px;}
+  .lang-btn{padding:5px 14px;border:2px solid var(--br);border-radius:20px;background:#fff;color:var(--mu);font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap;}
+  .lang-btn:hover{border-color:var(--G);color:var(--N);}
+  .lang-btn.active{background:var(--N);border-color:var(--N);color:#fff;}
+  .acc-body[lang="hi"],.acc-body[lang="pa"]{font-size:.86rem;line-height:1.75;}
+
+  @media(max-width:600px){.ex-grid{grid-template-columns:1fr;}.pt-hero{padding:80px 16px 40px;}.pt-hero-stats{gap:20px;}.lang-bar{justify-content:flex-start;}}
   @media(max-width:900px){.ex-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}}
   </style>
 </head>
@@ -148,6 +155,13 @@
 
 <div class="pt-disclaimer">
   <p><strong>Medical notice:</strong> These exercises are for educational purposes only. Always consult a qualified physiotherapist or physician before starting a rehabilitation programme — especially following surgery, fracture, or with neurological symptoms such as radiating pain or weakness.</p>
+</div>
+
+<div class="lang-bar">
+  <span>Read in:</span>
+  <button class="lang-btn active" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+  <button class="lang-btn" onclick="setLang('pa')">ਪੰਜਾਬੀ</button>
 </div>
 
 <div class="mf-section">
@@ -203,6 +217,7 @@
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 OrthoChronicles.info &nbsp;|&nbsp; Managed by Dr. Pawanpreet Singh &nbsp;|&nbsp; All rights reserved.</p>
+      <p><a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms.html">Terms &amp; Medical Disclaimer</a></p>
       <p class="disclaimer">Content is for educational purposes only. Consult a qualified physician or physiotherapist before starting any exercise programme.</p>
     </div>
   </div>
@@ -470,21 +485,21 @@ function buildCard(ex){
     <div class="ex-acc">
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(this)">
-          <span>📋 How to Perform</span><i class="fas fa-chevron-down acc-arrow"></i>
+          <span>📋 ${currentLang==='hi'?'कैसे करें':currentLang==='pa'?'ਕਿਵੇਂ ਕਰੀਏ':'How to Perform'}</span><i class="fas fa-chevron-down acc-arrow"></i>
         </button>
-        <div class="acc-body"><ol>${ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>
+        <div class="acc-body"><ol>${getLangData(ex,'steps').map(s=>`<li>${s}</li>`).join('')}</ol></div>
       </div>
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(this)">
-          <span>💡 Clinical Tips</span><i class="fas fa-chevron-down acc-arrow"></i>
+          <span>💡 ${currentLang==='hi'?'नैदानिक सुझाव':currentLang==='pa'?'ਕਲੀਨਿਕਲ ਸੁਝਾਅ':'Clinical Tips'}</span><i class="fas fa-chevron-down acc-arrow"></i>
         </button>
-        <div class="acc-body"><ul>${ex.tips.map(t=>`<li class="tip-li">✓ ${t}</li>`).join('')}</ul></div>
+        <div class="acc-body"><ul>${getLangData(ex,'tips').map(t=>`<li class="tip-li">✓ ${t}</li>`).join('')}</ul></div>
       </div>
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(this)">
-          <span>⚠️ Common Errors</span><i class="fas fa-chevron-down acc-arrow"></i>
+          <span>⚠️ ${currentLang==='hi'?'सामान्य गलतियाँ':currentLang==='pa'?'ਆਮ ਗਲਤੀਆਂ':'Common Errors'}</span><i class="fas fa-chevron-down acc-arrow"></i>
         </button>
-        <div class="acc-body"><ul>${ex.err.map(e=>`<li class="err-li">✗ ${e}</li>`).join('')}</ul></div>
+        <div class="acc-body"><ul>${getLangData(ex,'err').map(e=>`<li class="err-li">✗ ${e}</li>`).join('')}</ul></div>
       </div>
     </div>
   </div>`;
