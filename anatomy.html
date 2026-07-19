@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>3D Human Anatomy Explorer — Skeleton, Muscles, Vessels &amp; Nerves | OrthoChronicles</title>
+<meta name="description" content="Interactive 3D human anatomy atlas — rotate and zoom the skeleton, click any bone for detailed anatomy and marked landmarks, and toggle muscles, arteries, veins, nerves and lymphatics. Built for orthopedic surgeons, residents and medical students by Dr. Maninder Singh, GMCH Amritsar." />
+<link rel="canonical" href="https://www.orthochronicles.info/anatomy.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="3D Human Anatomy Explorer | OrthoChronicles" />
+<meta property="og:description" content="Rotate a 3D skeleton, click bones for detailed anatomy and landmarks, toggle muscles, arteries, veins, nerves and lymphatics." />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#0F1D3A; --navy2:#16264a; --navy3:#1e3157;
+  --gold:#B8963E; --gold2:#d8b45c;
+  --teal:#2DD4BF; --ink:#0b1424;
+  --txt:#E8EDF6; --mut:#93A4C0; --line:rgba(255,255,255,.10);
+  --bone:#EFE7D6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--ink); color:var(--txt);
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+
+/* ---------- Top bar ---------- */
+#topbar{
+  position:fixed; top:0; left:0; right:0; height:58px; z-index:40;
+  display:flex; align-items:center; gap:14px; padding:0 14px;
+  background:linear-gradient(180deg,rgba(15,29,58,.97),rgba(15,29,58,.88));
+  border-bottom:1px solid var(--line); backdrop-filter:blur(10px);
+}
+#topbar .brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+#topbar .brand img{height:30px;width:auto;display:block;}
+#topbar .brand span{font-weight:800;font-size:.95rem;letter-spacing:.2px;white-space:nowrap;}
+#topbar .brand span i{color:var(--gold);}
+.tb-spacer{flex:1;}
+.tb-btn{
+  background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--txt);
+  padding:8px 12px; border-radius:9px; font-size:.82rem; font-weight:600;
+  cursor:pointer; display:inline-flex; align-items:center; gap:7px; white-space:nowrap;
+  transition:.18s;
+}
+.tb-btn:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.25);}
+.tb-btn.home{background:var(--gold);border-color:var(--gold);color:#1a1204;}
+.tb-btn.home:hover{background:var(--gold2);}
+
+/* ---------- Layout ---------- */
+#stage{position:fixed;inset:58px 0 0 0;}
+#viewport{position:absolute;top:0;left:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none;}
+#viewport.grabbing{cursor:grabbing;}
+#viewport.pickable{cursor:pointer;}
+
+/* ---------- Left rail : layers ---------- */
+#rail{
+  position:absolute; top:14px; left:14px; z-index:20; width:212px;
+  background:rgba(11,20,36,.86); border:1px solid var(--line); border-radius:14px;
+  backdrop-filter:blur(12px); overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);
+}
+.rail-h{
+  padding:11px 13px; font-size:.66rem; letter-spacing:1.4px; text-transform:uppercase;
+  color:var(--gold2); font-weight:800; border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:7px;
+}
+.layer{
+  display:flex; align-items:center; gap:10px; padding:9px 13px; cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.05); transition:.15s; user-select:none;
+}
+.layer:last-child{border-bottom:0;}
+.layer:hover{background:rgba(255,255,255,.06);}
+.layer .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;box-shadow:0 0 9px currentColor;}
+.layer .nm{flex:1;font-size:.83rem;font-weight:600;}
+.layer .sw{
+  width:32px;height:18px;border-radius:20px;background:rgba(255,255,255,.14);
+  position:relative;flex-shrink:0;transition:.2s;
+}
+.layer .sw::after{
+  content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+  background:#7d8ba3;transition:.2s;
+}
+.layer.on .sw{background:rgba(45,212,191,.35);}
+.layer.on .sw::after{left:16px;background:var(--teal);}
+.layer.on .nm{color:#fff;}
+.layer:not(.on) .nm{color:var(--mut);}
+.layer:not(.on) .dot{opacity:.3;box-shadow:none;}
+
+.rail-sub{padding:10px 13px;border-top:1px solid var(--line);}
+.rail-sub label{display:block;font-size:.66rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);margin-bottom:7px;font-weight:700;}
+#opacity{width:100%;accent-color:var(--teal);}
+
+/* ---------- Right : details ---------- */
+#panel{
+  position:absolute; top:14px; right:14px; bottom:14px; width:370px; z-index:25;
+  background:rgba(11,20,36,.93); border:1px solid var(--line); border-radius:16px;
+  backdrop-filter:blur(14px); display:flex; flex-direction:column; overflow:hidden;
+  box-shadow:0 22px 60px rgba(0,0,0,.55);
+  transform:translateX(calc(100% + 20px)); transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+#panel.open{transform:translateX(0);}
+.pn-head{padding:15px 16px 12px;border-bottom:1px solid var(--line);position:relative;flex-shrink:0;}
+.pn-close{
+  position:absolute;top:12px;right:12px;background:rgba(255,255,255,.08);border:0;color:var(--txt);
+  width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:.8rem;transition:.15s;
+}
+.pn-close:hover{background:rgba(255,80,80,.3);}
+.pn-tag{
+  display:inline-block;font-size:.6rem;letter-spacing:1.3px;text-transform:uppercase;
+  font-weight:800;padding:4px 9px;border-radius:20px;margin-bottom:8px;
+  background:rgba(184,150,62,.18);color:var(--gold2);border:1px solid rgba(184,150,62,.35);
+}
+.pn-title{font-family:'Playfair Display',Georgia,serif;font-size:1.42rem;line-height:1.2;margin-bottom:3px;padding-right:34px;}
+.pn-latin{font-size:.79rem;color:var(--mut);font-style:italic;}
+.pn-tabs{display:flex;gap:3px;padding:9px 12px 0;border-bottom:1px solid var(--line);flex-shrink:0;overflow-x:auto;}
+.pn-tab{
+  background:0;border:0;color:var(--mut);font-size:.76rem;font-weight:700;padding:8px 11px;
+  cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;font-family:inherit;
+}
+.pn-tab:hover{color:var(--txt);}
+.pn-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.pn-body{flex:1;overflow-y:auto;padding:15px 16px 22px;}
+.pn-body::-webkit-scrollbar{width:7px;}
+.pn-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:4px;}
+.pn-pane{display:none;}
+.pn-pane.active{display:block;animation:fade .22s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.pn-body p{font-size:.87rem;line-height:1.72;color:#D3DCEC;margin-bottom:12px;}
+.pn-body h4{
+  font-size:.68rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold2);
+  margin:16px 0 8px;font-weight:800;
+}
+.pn-body h4:first-child{margin-top:0;}
+.pn-body ul{list-style:none;margin-bottom:12px;}
+.pn-body ul li{
+  font-size:.85rem;line-height:1.6;color:#D3DCEC;padding:5px 0 5px 17px;position:relative;
+}
+.pn-body ul li::before{content:'';position:absolute;left:2px;top:13px;width:5px;height:5px;border-radius:50%;background:var(--teal);}
+.lm{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 10px;margin-bottom:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:9px;
+  cursor:pointer;transition:.16s;
+}
+.lm:hover{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.4);transform:translateX(2px);}
+.lm-n{
+  width:21px;height:21px;border-radius:50%;background:var(--teal);color:#04201c;
+  font-size:.66rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.lm-t{font-size:.83rem;font-weight:700;margin-bottom:2px;}
+.lm-d{font-size:.76rem;color:var(--mut);line-height:1.5;}
+.clin{
+  background:rgba(255,90,90,.09);border:1px solid rgba(255,90,90,.28);
+  border-left:3px solid #ff6b6b;border-radius:9px;padding:11px 13px;margin-bottom:11px;
+}
+.clin strong{color:#ff9a9a;display:block;margin-bottom:4px;font-size:.79rem;}
+.clin span{font-size:.83rem;line-height:1.65;color:#D3DCEC;}
+
+/* ---------- Search ---------- */
+#searchWrap{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:22;width:min(370px,52vw);}
+#search{
+  width:100%;padding:11px 15px 11px 38px;border-radius:11px;
+  background:rgba(11,20,36,.9);border:1px solid var(--line);color:var(--txt);
+  font-size:.85rem;font-family:inherit;backdrop-filter:blur(10px);outline:0;
+}
+#search:focus{border-color:rgba(45,212,191,.55);}
+#searchWrap .si{position:absolute;left:14px;top:12px;color:var(--mut);font-size:.85rem;pointer-events:none;}
+#results{
+  margin-top:6px;background:rgba(11,20,36,.96);border:1px solid var(--line);border-radius:11px;
+  max-height:46vh;overflow-y:auto;display:none;backdrop-filter:blur(12px);
+}
+#results.show{display:block;}
+.res{padding:9px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);font-size:.83rem;transition:.14s;}
+.res:last-child{border-bottom:0;}
+.res:hover{background:rgba(45,212,191,.14);}
+.res small{display:block;color:var(--mut);font-size:.71rem;margin-top:1px;}
+
+/* ---------- Landmark labels ---------- */
+#labels{position:absolute;inset:0;pointer-events:none;z-index:15;overflow:hidden;}
+.lab{
+  position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+  transition:opacity .18s;
+}
+.lab .pin{
+  width:9px;height:9px;border-radius:50%;background:var(--teal);
+  box-shadow:0 0 0 3px rgba(45,212,191,.28),0 0 12px var(--teal);flex-shrink:0;
+}
+.lab .txt{
+  background:rgba(9,17,31,.93);border:1px solid rgba(45,212,191,.45);
+  padding:3px 8px;border-radius:6px;font-size:.7rem;font-weight:700;color:#CFFAF3;
+}
+.lab.hot .pin{background:#ffd166;box-shadow:0 0 0 4px rgba(255,209,102,.3),0 0 16px #ffd166;}
+.lab.hot .txt{border-color:rgba(255,209,102,.6);color:#ffe9b8;}
+
+/* ---------- Hint / status ---------- */
+#hint{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:18;
+  background:rgba(11,20,36,.86);border:1px solid var(--line);border-radius:11px;
+  padding:9px 16px;font-size:.75rem;color:var(--mut);backdrop-filter:blur(10px);
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+}
+#hint b{color:var(--txt);font-weight:700;}
+#hint kbd{
+  background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:5px;
+  padding:1px 6px;font-size:.7rem;font-family:inherit;
+}
+
+/* ---------- Loader ---------- */
+#loader{
+  position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;background:var(--ink);
+  transition:opacity .5s;
+}
+#loader.gone{opacity:0;pointer-events:none;}
+.spin{
+  width:44px;height:44px;border:3px solid rgba(255,255,255,.12);
+  border-top-color:var(--gold);border-radius:50%;animation:sp .9s linear infinite;
+}
+@keyframes sp{to{transform:rotate(360deg);}}
+#loader p{font-size:.85rem;color:var(--mut);letter-spacing:.4px;}
+#fallback{max-width:440px;text-align:center;padding:24px;display:none;}
+#fallback h3{font-family:'Playfair Display',serif;margin-bottom:10px;}
+#fallback p{margin-bottom:14px;line-height:1.7;}
+
+/* ---------- Mobile ---------- */
+#mobToggle{display:none;}
+@media(max-width:900px){
+  #searchWrap{width:min(340px,86vw);top:10px;}
+  #rail{top:auto;bottom:12px;left:12px;right:12px;width:auto;display:flex;overflow-x:auto;border-radius:12px;}
+  .rail-h,.rail-sub{display:none;}
+  .layer{flex-direction:column;gap:5px;padding:9px 12px;border-bottom:0;border-right:1px solid rgba(255,255,255,.06);min-width:74px;}
+  .layer .sw{display:none;}
+  .layer .nm{font-size:.66rem;text-align:center;}
+  #panel{
+    top:auto;left:0;right:0;bottom:0;width:auto;height:64vh;border-radius:18px 18px 0 0;
+    transform:translateY(calc(100% + 20px));
+  }
+  #panel.open{transform:translateY(0);}
+  #hint{display:none;}
+}
+@media(max-width:520px){
+  #topbar .brand span{display:none;}
+  .tb-btn span{display:none;}
+  .tb-btn{padding:8px 10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<div id="topbar">
+  <a href="index.html" class="brand">
+    <img src="assets/logo.png" alt="OrthoChronicles" onerror="this.style.display='none'" />
+    <span><i class="fas fa-cube"></i> 3D Anatomy Explorer</span>
+  </a>
+  <div class="tb-spacer"></div>
+  <button class="tb-btn" id="btnReset" title="Reset camera"><i class="fas fa-rotate-left"></i><span>Reset</span></button>
+  <button class="tb-btn" id="btnSpin" title="Auto-rotate"><i class="fas fa-arrows-spin"></i><span>Spin</span></button>
+  <button class="tb-btn" id="btnLabels" title="Toggle labels"><i class="fas fa-tags"></i><span>Labels</span></button>
+  <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i><span>Site Home</span></a>
+</div>
+
+<!-- ================= STAGE ================= -->
+<div id="stage">
+  <canvas id="viewport"></canvas>
+  <div id="labels"></div>
+
+  <!-- search -->
+  <div id="searchWrap">
+    <i class="fas fa-magnifying-glass si"></i>
+    <input id="search" type="text" placeholder="Search a bone, muscle, artery, nerve…" autocomplete="off" />
+    <div id="results"></div>
+  </div>
+
+  <!-- layer rail -->
+  <div id="rail">
+    <div class="rail-h"><i class="fas fa-layer-group"></i> Body Systems</div>
+    <div id="layerList"></div>
+    <div class="rail-sub">
+      <label>Overlay opacity</label>
+      <input type="range" id="opacity" min="15" max="100" value="72" />
+    </div>
+  </div>
+
+  <!-- detail panel -->
+  <div id="panel">
+    <div class="pn-head">
+      <button class="pn-close" id="pnClose"><i class="fas fa-times"></i></button>
+      <span class="pn-tag" id="pnTag">Bone</span>
+      <h2 class="pn-title" id="pnTitle">—</h2>
+      <div class="pn-latin" id="pnLatin"></div>
+    </div>
+    <div class="pn-tabs" id="pnTabs"></div>
+    <div class="pn-body" id="pnBody"></div>
+  </div>
+
+  <div id="hint">
+    <span><b>Drag</b> rotate</span>
+    <span><b>Scroll</b> zoom</span>
+    <span><b>Right-drag</b> pan</span>
+    <span><b>Click</b> a structure for details</span>
+  </div>
+
+  <div id="loader">
+    <div class="spin" id="spinner"></div>
+    <p id="loadTxt">Building anatomical model…</p>
+    <div id="fallback">
+      <h3>3D view unavailable</h3>
+      <p>Your browser or device could not start WebGL, which this explorer needs. Try a recent version of Chrome, Edge, Firefox or Safari on a device with hardware acceleration enabled.</p>
+      <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i> Back to site</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   ORTHOCHRONICLES · 3D ANATOMY EXPLORER
+   Coordinate system: Y-up, origin on the floor between the feet.
+   Units ≈ centimetres. Model height ≈ 178.
+   ══════════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+if(!window.THREE){ showFallback('Could not load the 3D library.'); return; }
+
+/* ───────────────────────── Layer registry ───────────────────────── */
+const LAYERS = [
+  {id:'skeleton',   name:'Skeleton',   color:'#EFE7D6', icon:'bone',        on:true },
+  {id:'muscles',    name:'Muscles',    color:'#C1454B', icon:'dumbbell',    on:false},
+  {id:'arteries',   name:'Arteries',   color:'#E0323C', icon:'heart-pulse', on:false},
+  {id:'veins',      name:'Veins',      color:'#3D6BC9', icon:'water',       on:false},
+  {id:'nerves',     name:'Nerves',     color:'#E8C33A', icon:'bolt',        on:false},
+  {id:'lymphatics', name:'Lymphatics', color:'#4FBF7B', icon:'circle-nodes',on:false}
+];
+
+/* ───────────────────────── Renderer / scene ─────────────────────── */
+const canvas = document.getElementById('viewport');
+let renderer;
+try{
+  renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+}catch(e){ showFallback('WebGL could not start.'); return; }
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b1424);
+scene.fog = new THREE.Fog(0x0b1424, 320, 640);
+
+const camera = new THREE.PerspectiveCamera(42, 1, 1, 2000);
+
+/* lighting — clinical, neutral, with cool rim */
+scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x1a2338, 0.85));
+const key = new THREE.DirectionalLight(0xffffff, 0.95); key.position.set(90,180,140); scene.add(key);
+const fill= new THREE.DirectionalLight(0xa8c4ff, 0.42); fill.position.set(-120,90,60); scene.add(fill);
+const rim = new THREE.DirectionalLight(0x8fe6d8, 0.40); rim.position.set(-40,120,-170); scene.add(rim);
+
+/* subtle ground */
+const grid = new THREE.GridHelper(520, 26, 0x1d3157, 0x14223c);
+grid.material.opacity = .35; grid.material.transparent = true;
+scene.add(grid);
+
+/* ───────────────────────── Materials ────────────────────────────── */
+const boneMat = () => new THREE.MeshStandardMaterial({
+  color:0xEFE7D6, roughness:.62, metalness:.04, flatShading:false
+});
+const softMat = (hex,op) => new THREE.MeshStandardMaterial({
+  color:hex, roughness:.45, metalness:.03,
+  transparent:true, opacity:op, depthWrite:false, side:THREE.DoubleSide
+});
+
+/* ───────────────────────── Geometry helpers ─────────────────────── */
+const V = (x,y,z)=>new THREE.Vector3(x,y,z);
+
+/** Tapered shaft between two points (long bones, vessels, nerves). */
+function shaft(a,b,r1,r2,mat,seg){
+  const A=V(...a), B=V(...b), d=new THREE.Vector3().subVectors(B,A), len=d.length();
+  const g=new THREE.CylinderGeometry(r2,r1,len,seg||12,1,false);
+  const m=new THREE.Mesh(g,mat);
+  m.position.copy(A).addScaledVector(d,.5);
+  m.quaternion.setFromUnitVectors(V(0,1,0), d.clone().normalize());
+  return m;
+}
+/** Ball (joint surface, node, epiphysis). */
+function ball(p,r,mat,sx,sy,sz){
+  const m=new THREE.Mesh(new THREE.SphereGeometry(r,18,14),mat);
+  m.position.set(...p); m.scale.set(sx||1,sy||1,sz||1); return m;
+}
+/** Box with optional rotation (flat bones, vertebral bodies). */
+function slab(p,s,mat,rot){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(s[0],s[1],s[2]),mat);
+  m.position.set(...p); if(rot) m.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
+  return m;
+}
+/** Smooth tube through points — used for ribs, vessels, nerves, muscles. */
+function tube(pts,r,mat,closed,rad){
+  const curve=new THREE.CatmullRomCurve3(pts.map(p=>V(...p)),!!closed);
+  const g=new THREE.TubeGeometry(curve, Math.max(20,pts.length*10), r, rad||10, !!closed);
+  return new THREE.Mesh(g,mat);
+}
+
+/* ───────────────────────── Registry ─────────────────────────────── */
+const STRUCTURES = {};      // id -> data
+const pickTargets = [];     // meshes eligible for raycasting
+const layerGroups = {};     // id -> THREE.Group
+
+LAYERS.forEach(L=>{
+  const g=new THREE.Group(); g.visible=L.on; scene.add(g); layerGroups[L.id]=g;
+});
+
+/**
+ * Register a structure: tags every descendant mesh so raycasting can
+ * resolve back to the owning anatomical entity.
+ */
+function register(obj, data){
+  STRUCTURES[data.id]=data;
+  data.object=obj;
+  obj.traverse(o=>{
+    if(o.isMesh){
+      o.userData.sid=data.id;
+      if(!data.focus) data.focus=o.position.clone();
+      pickTargets.push(o);
+    }
+  });
+  layerGroups[data.layer].add(obj);
+  return obj;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   1 · SKELETON
+   ══════════════════════════════════════════════════════════════════ */
+function buildSkeleton(){
+  const M = boneMat();
+
+  /* ---------- SKULL ---------- */
+  (function(){
+    const g=new THREE.Group();
+    g.add(ball([0,171,1],9.6,M,1,1.06,1.12));                   // cranial vault
+    g.add(ball([0,164.5,6],5.2,M,1.05,.72,.78));                // face / maxilla
+    const mand=ball([0,159.6,5.2],4.9,M,1.06,.52,.82); g.add(mand); // mandible
+    g.add(slab([-3.4,166.5,8.4],[2.2,2.0,1.2],M));              // orbits
+    g.add(slab([ 3.4,166.5,8.4],[2.2,2.0,1.2],M));
+    register(g,{
+      id:'skull', layer:'skeleton', tag:'Bone · Axial Skeleton',
+      name:'Skull (Cranium & Mandible)', latin:'Cranium et Mandibula',
+      focus:V(0,168,3),
+      overview:'The skull comprises 22 bones — 8 cranial bones enclosing and protecting the brain, and 14 facial bones. All are united by immobile fibrous sutures except the mandible, which articulates at the temporomandibular joint, the only truly mobile joint of the skull. The cranial base is perforated by foramina transmitting the cranial nerves and the vessels supplying the brain.',
+      landmarks:[
+        {n:'Vertex',              p:[0,180.5,1],   d:'The highest point of the skull in the anatomical position — the reference point for measuring standing height.'},
+        {n:'Glabella',            p:[0,170.5,9.6], d:'Smooth prominence between the eyebrows above the nasal root; a standard craniometric landmark.'},
+        {n:'External occipital protuberance', p:[0,168,-9.5], d:'Midline bump on the occiput (the "inion"); attachment for ligamentum nuchae and trapezius.'},
+        {n:'Mastoid process',     p:[-7.6,162,-3], d:'Bony prominence behind the ear — insertion of sternocleidomastoid; pneumatised, so middle-ear infection can spread into it (mastoiditis).'},
+        {n:'Zygomatic arch',      p:[-7.4,166,4],  d:'The cheekbone bridge; a common site of facial fracture and the origin of masseter.'},
+        {n:'Mandibular angle',    p:[-5.2,157.6,2],d:'Junction of body and ramus of the mandible — the second most fractured mandibular site.'},
+        {n:'Temporomandibular joint', p:[-6.8,163.6,1.4], d:'Synovial joint with an intra-articular disc, allowing both hinge and gliding movement for chewing and speech.'}
+      ],
+      articulations:['Atlanto-occipital joint (with C1) — nodding "yes"','Temporomandibular joint (mandible) — the only mobile skull joint'],
+      attachments:['Temporalis — temporal fossa','Masseter — zygomatic arch to mandibular angle','Sternocleidomastoid — mastoid process','Trapezius — superior nuchal line'],
+      clinical:[
+        {t:'Head injury assessment', d:'Any skull fracture implies significant force. Basilar skull fracture signs — "raccoon eyes", Battle sign, CSF rhinorrhoea/otorrhoea — mandate urgent CT and neurosurgical review.'},
+        {t:'Cervical spine caution', d:'In trauma, a head injury is a cervical spine injury until proven otherwise: immobilise and image before clearing the neck.'}
+      ]
+    });
+  })();
+
+  /* ---------- VERTEBRAL COLUMN ---------- */
+  (function(){
+    // Region builder: stacks bodies + spinous processes along a gentle curve.
+    function region(id,count,yStart,yStep,zCurve,bodyR,name,latin,data){
+      const g=new THREE.Group();
+      for(let i=0;i<count;i++){
+        const y=yStart+i*yStep;
+        const t=i/(count-1||1);
+        const z=zCurve(t);
+        g.add(slab([0,y,z],[bodyR*2,yStep*0.62,bodyR*1.7],M));            // body
+        g.add(slab([0,y,z-bodyR*1.55],[bodyR*0.75,yStep*0.5,bodyR*1.3],M)); // spinous process
+        g.add(slab([-bodyR*1.05,y,z-bodyR*0.75],[bodyR*0.7,yStep*0.44,bodyR*0.7],M)); // L facet
+        g.add(slab([ bodyR*1.05,y,z-bodyR*0.75],[bodyR*0.7,yStep*0.44,bodyR*0.7],M)); // R facet
+      }
+      register(g,Object.assign({id:id,layer:'skeleton',name:name,latin:latin},data));
+      return g;
+    }
+
+    region('cervical',7,151,2.1,t=>-1.6+2.6*Math.sin(Math.PI*t),2.3,
+      'Cervical Spine (C1–C7)','Vertebrae cervicales',{
+      tag:'Bone · Vertebral Column', focus:V(0,158,-1),
+      overview:'Seven cervical vertebrae form the most mobile region of the spine, carrying the head and housing the vertebral arteries within the transverse foramina (C6–C1). C1 (atlas) has no body and cradles the skull; C2 (axis) carries the odontoid peg around which the head rotates. The normal cervical lordosis is a gentle forward curve, straightened in muscle spasm.',
+      landmarks:[
+        {n:'C1 — Atlas',           p:[0,165,-1.2], d:'Ring-shaped, bodyless vertebra articulating with the occipital condyles; provides ~50% of neck flexion-extension ("yes" joint).'},
+        {n:'C2 — Axis / odontoid', p:[0,162.4,-.6],d:'The dens (odontoid peg) is the pivot for ~50% of neck rotation ("no" joint). Type II odontoid fracture is the classic elderly neck injury.'},
+        {n:'C7 — Vertebra prominens', p:[0,151,-4.4], d:'The most prominent spinous process at the neck base — the surface landmark for counting vertebral levels.'},
+        {n:'Transverse foramen',   p:[-2.6,157,-1], d:'Canal transmitting the vertebral artery from C6 upward — vulnerable in cervical fractures and manipulation injuries.'},
+        {n:'Uncovertebral joints', p:[2.4,155,0],   d:'Small lateral joints unique to the cervical spine; osteophytes here narrow the intervertebral foramen and cause radiculopathy.'}
+      ],
+      articulations:['Atlanto-occipital (skull)','Atlanto-axial (rotation)','C2–C7 facet joints and intervertebral discs'],
+      attachments:['Sternocleidomastoid, scalenes, levator scapulae','Trapezius via ligamentum nuchae','Longus colli — anterior stabiliser'],
+      clinical:[
+        {t:'Cervical myelopathy', d:'Cord compression presents insidiously as clumsy hands, buttoning difficulty and unsteady gait — it is progressive and surgical. Any adult with these signs needs an MRI, not physiotherapy alone.'},
+        {t:'Whiplash', d:'Most whiplash resolves with early movement and reassurance; collars and rest prolong recovery. Validated rules (Canadian C-Spine, NEXUS) determine who needs imaging.'}
+      ]
+    });
+
+    region('thoracic',12,124.5,2.35,t=>-3.2-2.4*Math.sin(Math.PI*t),2.9,
+      'Thoracic Spine (T1–T12)','Vertebrae thoracicae',{
+      tag:'Bone · Vertebral Column', focus:V(0,138,-4),
+      overview:'Twelve thoracic vertebrae articulate with the ribs at costovertebral and costotransverse joints, forming the posterior wall of the thoracic cage. Their long, downward-sloping spinous processes overlap like roof tiles. The region is naturally kyphotic and comparatively rigid, which makes the thoracolumbar junction (T11–L2) a mechanical stress point and the commonest site of spinal fractures.',
+      landmarks:[
+        {n:'T1 vertebra',        p:[0,150,-3.6], d:'The transition to the cervical spine; T1 nerve root contributes to the brachial plexus and hand intrinsic function.'},
+        {n:'Costal facets',      p:[3.0,138,-4], d:'Paired demifacets on the vertebral bodies and transverse processes where each rib head articulates.'},
+        {n:'Spine of scapula level (T3)', p:[0,145,-5.4], d:'Surface landmark: the scapular spine lies opposite the T3 spinous process.'},
+        {n:'Inferior scapular angle (T7)', p:[0,133,-6.2], d:'Classic surface marker for the T7 level — used to count ribs and place chest drains safely.'},
+        {n:'Thoracolumbar junction (T12)', p:[0,126,-3.4], d:'The hinge between a rigid kyphotic and a mobile lordotic spine — over half of all vertebral fractures occur at T12–L1.'}
+      ],
+      articulations:['Costovertebral and costotransverse joints (ribs)','Intervertebral discs and facet joints'],
+      attachments:['Erector spinae group','Rhomboids and trapezius (via spinous processes)','Diaphragm crura (T12–L2)'],
+      clinical:[
+        {t:'Burst fracture & TLICS', d:'At the thoracolumbar junction, management follows the TLICS score (fracture morphology + posterior ligamentous complex + neurology). A score ≥5 generally means surgical stabilisation.'},
+        {t:'Osteoporotic wedge fracture', d:'Silent vertebral collapse causes progressive kyphosis and height loss. Losing more than 4 cm of height warrants a lateral spine X-ray and a DEXA scan.'}
+      ]
+    });
+
+    region('lumbar',5,102,3.4,t=>-2.0+3.0*Math.sin(Math.PI*t),3.7,
+      'Lumbar Spine (L1–L5)','Vertebrae lumbales',{
+      tag:'Bone · Vertebral Column', focus:V(0,110,-1),
+      overview:'Five massive lumbar vertebrae carry the greatest compressive load in the spine. Their large kidney-shaped bodies, sagittally oriented facet joints and strong lordosis permit flexion and extension while limiting rotation. The spinal cord ends at about L1–L2 as the conus medullaris; below this the canal contains only the cauda equina nerve roots — which is why lumbar punctures are performed below L2.',
+      landmarks:[
+        {n:'L1 — conus medullaris',   p:[0,122,-1.6], d:'The spinal cord terminates here in adults. Below this level the canal holds the cauda equina, permitting safe lumbar puncture at L3–L4 or L4–L5.'},
+        {n:'L3 transverse process',   p:[4.6,110,-1], d:'The longest lumbar transverse process; psoas major and quadratus lumborum attach here.'},
+        {n:'L4–L5 disc',              p:[0,104,-.7],  d:'With L5–S1, the most frequently herniated disc — producing L5 or S1 sciatica down the leg.'},
+        {n:'Iliac crest plane (L4)',  p:[0,101,-1],   d:"Tuffier's line: a line joining the iliac crests crosses the L4 spinous process — the bedside landmark for lumbar puncture and spinal anaesthesia."},
+        {n:'Pars interarticularis',   p:[3.0,106,-3.4],d:'The bony bridge between superior and inferior facets; a stress fracture here (spondylolysis) is the classic cause of back pain in young athletes.'}
+      ],
+      articulations:['L5–S1 lumbosacral junction','Facet joints (sagittally oriented — limit rotation)','Intervertebral discs'],
+      attachments:['Psoas major (all lumbar bodies and TPs)','Quadratus lumborum','Erector spinae and multifidus'],
+      clinical:[
+        {t:'Cauda equina syndrome', d:'Saddle anaesthesia, urinary retention or bowel incontinence with back pain is a surgical emergency — decompression within 24–48 hours determines lifelong bladder function. Never send such a patient home to "try physiotherapy".'},
+        {t:'MRI caution', d:'Disc bulges appear on MRI in 30–50% of completely pain-free adults. Image findings must match the clinical syndrome before they justify surgery.'}
+      ]
+    });
+
+    // Sacrum + coccyx
+    (function(){
+      const g=new THREE.Group();
+      g.add(slab([0,96,-2.2],[9.6,5.0,4.4],M,[0.22,0,0]));
+      g.add(slab([0,91.5,-1.2],[8.2,4.4,4.0],M,[0.24,0,0]));
+      g.add(slab([0,87.4,-0.2],[6.6,4.0,3.6],M,[0.26,0,0]));
+      g.add(slab([0,84.0,0.7],[4.6,3.4,3.0],M,[0.28,0,0]));
+      g.add(ball([0,81.4,1.5],1.7,M,1,1.3,.8));   // coccyx
+      register(g,{
+        id:'sacrum', layer:'skeleton', tag:'Bone · Pelvic Girdle',
+        name:'Sacrum & Coccyx', latin:'Os sacrum et Os coccygis',
+        focus:V(0,90,0),
+        overview:'The sacrum is a triangular bone of five fused vertebrae forming the keystone of the pelvic ring. It transmits the entire weight of the upper body through the sacroiliac joints to the pelvis and lower limbs. Four pairs of sacral foramina transmit the sacral nerve roots that form the sciatic and pudendal nerves. The coccyx is a small vestigial tail of 3–5 fused segments.',
+        landmarks:[
+          {n:'Sacral promontory',   p:[0,99,1.6],  d:'The prominent anterior lip of S1 — the key obstetric landmark for measuring the pelvic inlet.'},
+          {n:'Sacroiliac joint',    p:[5.4,95,-1], d:'A strong, minimally mobile joint transmitting body weight; a common and often overlooked source of low back and buttock pain.'},
+          {n:'Sacral hiatus',       p:[0,84.5,-1], d:'The inferior opening of the sacral canal — used for caudal epidural anaesthesia, especially in children.'},
+          {n:'S1 foramen',          p:[2.6,95,1.2],d:'Transmits the S1 nerve root, the workhorse of ankle plantarflexion and the ankle jerk reflex.'},
+          {n:'Coccyx',              p:[0,81.4,1.5],d:'Attachment for the pelvic floor and anococcygeal ligament; injury causes coccydynia — pain on sitting.'}
+        ],
+        articulations:['Sacroiliac joints (bilateral)','L5–S1 lumbosacral junction','Sacrococcygeal joint'],
+        attachments:['Piriformis (anterior sacrum)','Gluteus maximus','Erector spinae aponeurosis','Sacrotuberous and sacrospinous ligaments'],
+        clinical:[
+          {t:'Sacral insufficiency fracture', d:'In osteoporosis, sacral fractures occur with little or no trauma and are frequently missed on plain films — MRI or CT is diagnostic in the elderly patient with unexplained buttock pain.'},
+          {t:'Pelvic ring stability', d:'The posterior sacroiliac complex is the true stabiliser of the pelvis; disruption here makes the ring unstable and is life-threatening in high-energy trauma.'}
+        ]
+      });
+    })();
+  })();
+
+  /* ---------- THORACIC CAGE ---------- */
+  (function(){
+    const g=new THREE.Group();
+    // sternum
+    g.add(slab([0,148,7.4],[4.2,3.0,1.4],M,[0.12,0,0]));       // manubrium
+    g.add(slab([0,141,8.0],[3.6,10.5,1.3],M,[0.06,0,0]));      // body
+    g.add(ball([0,134.6,8.0],1.3,M,1.1,.8,.5));                // xiphoid
+    // 12 rib pairs
+    for(let i=0;i<12;i++){
+      const y=149-i*2.35, spread=1+ i*0.055 - (i>7?(i-7)*0.16:0);
+      const w=10.5*spread, depth=8.4*spread;
+      [1,-1].forEach(s=>{
+        const front = i<7 ? [s*2.2,y-3.2,7.4] : (i<10? [s*5.0,y-2.6,5.6] : [s*7.2,y-1.0,2.4]);
+        g.add(tube([
+          [s*1.6,y,-4.2],[s*(w*.55),y-0.4,-3.2],[s*w,y-1.4,1.0],
+          [s*(w*.85),y-2.6,depth*.62], front
+        ],0.52,M,false,7));
+      });
+    }
+    register(g,{
+      id:'ribcage', layer:'skeleton', tag:'Bone · Thoracic Cage',
+      name:'Thoracic Cage (Ribs & Sternum)', latin:'Cavea thoracis',
+      focus:V(0,142,4),
+      overview:'Twelve pairs of ribs, the sternum and the thoracic vertebrae form a mobile bony cage that protects the heart and lungs and drives ventilation. Ribs 1–7 are "true" ribs joining the sternum by their own costal cartilage; 8–10 are "false" ribs sharing a cartilage; 11 and 12 are "floating" ribs with no anterior attachment. Rib elevation in inspiration works by "bucket-handle" and "pump-handle" mechanics.',
+      landmarks:[
+        {n:'Sternal angle (of Louis)', p:[0,146.6,8.2], d:'Palpable ridge where manubrium meets body — marks the 2nd costal cartilage, the T4/T5 disc, the aortic arch and the tracheal bifurcation. The single most useful landmark in the chest.'},
+        {n:'Suprasternal notch',   p:[0,150.6,7.2], d:'The jugular notch at the top of the manubrium — surface marker for the trachea and a reference for central line placement.'},
+        {n:'Xiphoid process',      p:[0,134.6,8.0], d:'Cartilaginous tip of the sternum; the landmark for hand position in chest compressions and for the subxiphoid pericardial window.'},
+        {n:'Costal margin',        p:[7.6,132,5.4], d:'The lower border of the cage formed by cartilages 7–10 — the surface boundary between thorax and abdomen.'},
+        {n:'Safe triangle (axilla)', p:[11.5,138,1.5], d:'Bordered by latissimus dorsi, pectoralis major and the 5th intercostal space — the recommended site for chest drain insertion.'},
+        {n:'First rib',            p:[5.6,149.5,2.0],d:'Short, flat and deeply placed; grooves for the subclavian vessels. A fractured first rib signals very high-energy trauma.'}
+      ],
+      articulations:['Costovertebral & costotransverse joints (posteriorly)','Sternocostal joints (anteriorly)','Sternoclavicular joint'],
+      attachments:['Intercostal muscles','Diaphragm (costal margin)','Pectoralis major/minor, serratus anterior','Rectus abdominis (costal cartilages 5–7)'],
+      clinical:[
+        {t:'Flail chest', d:'Three or more consecutive ribs fractured in two places produce a paradoxically moving segment. The threat is the underlying pulmonary contusion — treatment centres on analgesia, physiotherapy and ventilatory support.'},
+        {t:'Neurovascular bundle', d:'Each intercostal vein, artery and nerve runs in the groove at the *lower* border of the rib — so needles and drains are always passed over the *upper* border of the rib below to avoid them.'}
+      ]
+    });
+  })();
+
+  /* ---------- SHOULDER GIRDLE + UPPER LIMB (mirrored) ---------- */
+  [1,-1].forEach(s=>{
+    const side = s>0?'Right':'Left', sfx = s>0?'_r':'_l';
+
+    /* Clavicle */
+    register(tube([[s*1.6,150.2,6.6],[s*7,151.2,4.2],[s*12.5,150.2,0.8],[s*16.2,148.6,-1.6]],0.85,M,false,9),{
+      id:'clavicle'+sfx, layer:'skeleton', tag:'Bone · Shoulder Girdle',
+      name:side+' Clavicle', latin:'Clavicula', focus:V(s*9,150,2),
+      overview:'The clavicle is the only bony strut connecting the upper limb to the axial skeleton, holding the shoulder laterally so the arm can swing free of the trunk. Its S-shape and subcutaneous position make it the most commonly fractured bone in the body, and it is the first bone to ossify and the last to fuse (around age 25).',
+      landmarks:[
+        {n:'Sternoclavicular joint', p:[s*1.6,150.2,6.6], d:'The only true joint between upper limb and axial skeleton — a saddle joint with an intra-articular disc; posterior dislocation is rare but can compress the great vessels and trachea.'},
+        {n:'Mid-shaft',              p:[s*8.6,151,3.4],   d:'Junction of the medial and lateral curves — the weakest point and the site of ~80% of clavicle fractures.'},
+        {n:'Conoid tubercle',        p:[s*13.6,149.6,-1], d:'Attachment of the conoid part of the coracoclavicular ligament, the key vertical stabiliser of the AC joint.'},
+        {n:'Acromioclavicular joint',p:[s*16.2,148.6,-1.6],d:'Plane synovial joint at the shoulder tip; injured in "shoulder separation" from a fall onto the point of the shoulder.'}
+      ],
+      articulations:['Sternoclavicular joint (medially)','Acromioclavicular joint (laterally)'],
+      attachments:['Pectoralis major, deltoid (anterior)','Trapezius (posterior)','Sternocleidomastoid (superomedial)','Subclavius (inferior groove)'],
+      clinical:[
+        {t:'When to fix a clavicle', d:'Most mid-shaft fractures heal in a sling. Plate fixation is considered for shortening over 2 cm, marked comminution, skin tenting, open fracture or in throwing athletes — it roughly halves non-union risk in displaced fractures.'},
+        {t:'What lies beneath', d:'The subclavian vessels and brachial plexus run directly under the middle third; a displaced fragment mandates careful distal neurovascular examination.'}
+      ]
+    });
+
+    /* Scapula */
+    (function(){
+      const g=new THREE.Group();
+      g.add(slab([s*12.6,140,-6.6],[9.5,15.5,0.85],M,[0,s*0.30,s*0.10]));   // blade
+      g.add(slab([s*12.4,145.6,-6.0],[10.5,1.5,2.2],M,[0,s*0.30,0]));       // spine
+      g.add(slab([s*16.6,147.6,-3.0],[4.6,1.5,3.2],M,[0,s*0.22,0]));        // acromion
+      g.add(ball([s*16.0,144.2,-1.0],2.0,M,.85,1.25,.85));                  // glenoid
+      g.add(shaft([s*13.4,145.4,2.2],[s*15.6,145.0,-0.6],0.85,0.85,M));     // coracoid
+      register(g,{
+        id:'scapula'+sfx, layer:'skeleton', tag:'Bone · Shoulder Girdle',
+        name:side+' Scapula', latin:'Scapula', focus:V(s*13,143,-4),
+        overview:'A flat triangular bone suspended on the posterior chest wall entirely by muscle — it has no direct joint with the ribs. This muscular suspension gives it huge mobility: scapulothoracic motion supplies roughly one-third of total shoulder elevation (the 2:1 scapulohumeral rhythm). It provides the glenoid socket and the origin of the rotator cuff.',
+        landmarks:[
+          {n:'Acromion',        p:[s*17.6,148.2,-3.0], d:'The bony point of the shoulder; articulates with the clavicle and forms the roof of the subacromial space. Its shape (Bigliani type III hooked) is associated with cuff impingement.'},
+          {n:'Coracoid process',p:[s*13.4,145.4,2.4],  d:'The "lighthouse of the shoulder" — anterior guide to the brachial plexus and axillary vessels. Origin of short head of biceps and coracobrachialis; insertion of pectoralis minor.'},
+          {n:'Glenoid fossa',   p:[s*16.2,144.2,-1.0], d:'Shallow socket covering only about a third of the humeral head — great mobility at the cost of stability, deepened by the fibrocartilaginous labrum.'},
+          {n:'Spine of scapula',p:[s*12.4,145.8,-7.0], d:'Palpable ridge dividing supraspinatus above from infraspinatus below; lies at the T3 level.'},
+          {n:'Inferior angle',  p:[s*10.6,132.4,-6.4], d:'The lowest point of the scapula, at the T7 level — used clinically to count ribs.'},
+          {n:'Suprascapular notch',p:[s*13.6,146.6,-3.6],d:'Transmits the suprascapular nerve; entrapment here causes supraspinatus and infraspinatus wasting with poorly localised shoulder pain.'}
+        ],
+        articulations:['Glenohumeral joint (with humerus)','Acromioclavicular joint','Scapulothoracic articulation (functional, not a true joint)'],
+        attachments:['Rotator cuff: supraspinatus, infraspinatus, teres minor, subscapularis','Deltoid (spine and acromion)','Trapezius, rhomboids, levator scapulae, serratus anterior','Long head of biceps (supraglenoid tubercle); long head of triceps (infraglenoid)'],
+        clinical:[
+          {t:'Winging of the scapula', d:'Serratus anterior palsy from long thoracic nerve injury causes medial winging — the scapula lifts off the chest wall when pushing against a wall. Trapezius palsy (spinal accessory nerve) gives lateral winging.'},
+          {t:'Scapular fracture', d:'Rare and requiring high energy: look hard for associated rib fractures, pneumothorax and pulmonary contusion, which cause more morbidity than the scapular fracture itself.'}
+        ]
+      });
+    })();
+
+    /* Humerus */
+    (function(){
+      const g=new THREE.Group();
+      g.add(ball([s*17.4,144.0,-0.6],2.9,M,1,1,1));                        // head
+      g.add(shaft([s*17.8,142.0,-0.2],[s*19.4,112.0,0.2],1.55,1.35,M));    // shaft
+      g.add(ball([s*19.6,143.0,1.4],1.5,M,1,1,1));                         // greater tubercle
+      g.add(ball([s*17.4,110.6,0.2],2.35,M,1.35,.85,1));                   // distal condyle
+      register(g,{
+        id:'humerus'+sfx, layer:'skeleton', tag:'Bone · Upper Limb',
+        name:side+' Humerus', latin:'Humerus', focus:V(s*18,128,0),
+        overview:'The longest bone of the upper limb, spanning shoulder to elbow. Proximally its near-spherical head sits in the shallow glenoid, giving the shoulder its exceptional range at the price of stability. Distally the trochlea and capitellum form the elbow. The radial nerve spirals around the posterior shaft in the radial groove — an anatomical relationship that dominates the clinical management of humeral fractures.',
+        landmarks:[
+          {n:'Humeral head',        p:[s*17.4,144.6,-1.2], d:'Retroverted about 30°, covered in hyaline cartilage; its blood supply comes largely from the anterior circumflex humeral artery, at risk in fracture-dislocations.'},
+          {n:'Greater tubercle',    p:[s*20.2,143.2,1.6],  d:'Insertion of supraspinatus, infraspinatus and teres minor. Isolated fracture here effectively behaves like a rotator cuff tear.'},
+          {n:'Lesser tubercle',     p:[s*16.0,142.8,2.2],  d:'Insertion of subscapularis; the bicipital groove between the tubercles carries the long head of biceps tendon.'},
+          {n:'Surgical neck',       p:[s*18.0,139.0,0.2],  d:'The narrow region below the tubercles — a common fracture site in the elderly, endangering the axillary nerve and posterior circumflex humeral artery.'},
+          {n:'Deltoid tuberosity',  p:[s*19.2,128.0,1.2],  d:'Rough V-shaped area at mid-shaft where deltoid inserts, midway down the lateral shaft.'},
+          {n:'Radial (spiral) groove', p:[s*18.4,124.0,-1.6], d:'The radial nerve runs here against bare bone — mid-shaft fractures cause wrist drop in roughly 10–15% of cases.'},
+          {n:'Medial epicondyle',   p:[s*15.4,110.6,0.4],  d:'The ulnar nerve passes behind it in the cubital tunnel — the "funny bone". Common flexor origin of the forearm.'},
+          {n:'Lateral epicondyle',  p:[s*21.6,110.6,0.4],  d:'Common extensor origin — the site of pain in lateral epicondylitis ("tennis elbow").'}
+        ],
+        articulations:['Glenohumeral joint (proximally)','Elbow: humero-ulnar and humero-radial joints (distally)'],
+        attachments:['Rotator cuff onto the tubercles','Deltoid (tuberosity), pectoralis major, latissimus dorsi, teres major (bicipital groove region)','Common flexor origin (medial epicondyle) and common extensor origin (lateral epicondyle)'],
+        clinical:[
+          {t:'Radial nerve palsy', d:'Wrist drop after a mid-shaft humeral fracture is usually a neurapraxia that recovers over 3–4 months. Most are observed with a cock-up splint; exploration is reserved for palsy appearing *after* manipulation or for open injuries.'},
+          {t:'Supracondylar fracture in children', d:'A paediatric emergency. Assess the radial pulse and hand perfusion immediately — a pale, pulseless hand demands urgent reduction. Untreated ischaemia leads to Volkmann contracture.'},
+          {t:'Axillary nerve', d:'After shoulder dislocation or surgical neck fracture, always test sensation over the "regimental badge" area of the lateral shoulder and deltoid contraction.'}
+        ]
+      });
+    })();
+
+    /* Radius & Ulna */
+    register((function(){
+      const g=new THREE.Group();
+      g.add(ball([s*21.4,109.6,0.4],1.15,M,1,.75,1));                       // radial head
+      g.add(shaft([s*21.4,108.6,0.6],[s*22.4,86.4,1.2],1.05,1.35,M));       // radial shaft
+      return g;
+    })(),{
+      id:'radius'+sfx, layer:'skeleton', tag:'Bone · Upper Limb',
+      name:side+' Radius', latin:'Radius', focus:V(s*22,98,1),
+      overview:'The lateral (thumb-side) forearm bone. It is narrow proximally and broad distally — the reverse of the ulna. The radius carries the hand: it rotates around the fixed ulna in pronation and supination, and roughly 80% of axial load across the wrist passes through the distal radius, which is why it is the most commonly fractured bone in adults.',
+      landmarks:[
+        {n:'Radial head',       p:[s*21.4,109.8,0.4], d:'Disc-shaped, held by the annular ligament; rotates in the radial notch of the ulna. Fracture here is the commonest elbow fracture in adults.'},
+        {n:'Radial tuberosity', p:[s*21.0,106.4,1.4], d:'Insertion of the biceps tendon — the anatomical basis of biceps as the powerful supinator of the forearm.'},
+        {n:'Radial styloid',    p:[s*23.2,85.6,1.6],  d:'Distal lateral prominence, normally sitting about 1 cm more distal than the ulnar styloid — loss of this relationship indicates radial shortening after fracture.'},
+        {n:"Lister's tubercle", p:[s*22.0,86.2,-0.4], d:'Dorsal ridge acting as a pulley for extensor pollicis longus (which may rupture after distal radius fracture); a key landmark for wrist arthroscopy portals.'},
+        {n:'Distal articular surface', p:[s*22.6,85.2,1.2], d:'Normally shows ~11° volar tilt and ~22° radial inclination — the reduction targets when fixing a Colles fracture.'}
+      ],
+      articulations:['Proximal and distal radio-ulnar joints (rotation)','Radiocapitellar joint (elbow)','Radiocarpal joint (wrist)'],
+      attachments:['Biceps brachii (radial tuberosity)','Supinator, pronator teres, pronator quadratus','Brachioradialis (distal radial styloid)'],
+      clinical:[
+        {t:'Distal radius fracture', d:'Check an X-ray at one week: comminuted fractures often re-displace in plaster. Restoring volar tilt and radial length — usually with a volar locking plate when unstable — protects long-term grip and rotation.'},
+        {t:'Essex-Lopresti injury', d:'Radial head fracture with interosseous membrane disruption and distal radio-ulnar joint injury. Excising the radial head in this setting causes catastrophic proximal radial migration — always examine the wrist in a radial head fracture.'}
+      ]
+    });
+
+    register((function(){
+      const g=new THREE.Group();
+      g.add(ball([s*18.6,111.6,-1.8],1.5,M,1,1.1,1.2));                     // olecranon
+      g.add(shaft([s*18.8,110.2,-0.6],[s*17.8,86.0,0.8],1.35,0.95,M));      // shaft
+      return g;
+    })(),{
+      id:'ulna'+sfx, layer:'skeleton', tag:'Bone · Upper Limb',
+      name:side+' Ulna', latin:'Ulna', focus:V(s*18,98,0),
+      overview:'The medial forearm bone and the stable strut of the forearm. Broad proximally, where the trochlear notch grips the humeral trochlea to form the hinge of the elbow, and narrow distally, where it plays little part in the wrist joint. The ulna stays fixed while the radius rotates around it during pronation and supination.',
+      landmarks:[
+        {n:'Olecranon',       p:[s*18.6,112.4,-2.4], d:'The subcutaneous point of the elbow and insertion of triceps. A displaced fracture disables active elbow extension and needs tension-band fixation.'},
+        {n:'Trochlear notch', p:[s*19.0,110.4,0.6],  d:'The C-shaped articular surface that grips the humeral trochlea, giving the elbow its stability as a hinge.'},
+        {n:'Coronoid process',p:[s*19.0,109.2,1.6],  d:'Anterior buttress preventing posterior dislocation. Coronoid + radial head fracture + dislocation forms the "terrible triad" of the elbow.'},
+        {n:'Ulnar styloid',   p:[s*17.4,85.4,0.6],   d:'Distal medial prominence and anchor of the triangular fibrocartilage complex (TFCC), the main stabiliser of the distal radio-ulnar joint.'},
+        {n:'Subcutaneous border', p:[s*18.2,98,-1.6],d:'Palpable along its whole length — the surgical approach and the reference for judging rotation during plating.'}
+      ],
+      articulations:['Humero-ulnar joint (elbow hinge)','Proximal and distal radio-ulnar joints'],
+      attachments:['Triceps brachii (olecranon)','Brachialis (coronoid)','Flexor and extensor carpi ulnaris','Pronator quadratus'],
+      clinical:[
+        {t:'Monteggia fracture-dislocation', d:'Ulnar shaft fracture with radial head dislocation. The dislocation is missed in up to a third of cases — always image the joint above and below any forearm fracture.'},
+        {t:'Nightstick fracture', d:'Isolated ulnar shaft fracture from a direct blow while shielding the head. Minimally displaced injuries can be braced; displacement over 50% or angulation over 10° needs plating.'}
+      ]
+    });
+
+    /* Hand */
+    (function(){
+      const g=new THREE.Group();
+      for(let i=0;i<8;i++) g.add(ball([s*(20.2+(i%4)*1.05), 83.6-(Math.floor(i/4)*1.5), 0.9],0.62,M)); // carpus
+      for(let i=0;i<5;i++){
+        const off=(i-2)*1.55, lean=(i-2)*0.05;
+        g.add(shaft([s*(21.4+off),82.2,1.0],[s*(21.9+off*1.25),76.0,1.4+lean],0.42,0.38,M,8));
+        g.add(shaft([s*(21.9+off*1.25),75.8,1.4],[s*(22.2+off*1.4),71.6,1.6],0.34,0.28,M,8));
+        if(i>0) g.add(shaft([s*(22.2+off*1.4),71.4,1.6],[s*(22.4+off*1.5),68.8,1.7],0.26,0.22,M,8));
+      }
+      register(g,{
+        id:'hand'+sfx, layer:'skeleton', tag:'Bone · Upper Limb',
+        name:side+' Hand & Wrist', latin:'Ossa manus', focus:V(s*22,77,1),
+        overview:'Twenty-seven bones per hand: 8 carpals in two rows, 5 metacarpals and 14 phalanges. This dense articulation, driven by 34 muscles, produces the precision and power grips unique to the human hand. The carpal tunnel — floored by the carpal arch and roofed by the flexor retinaculum — transmits the median nerve and nine flexor tendons.',
+        landmarks:[
+          {n:'Scaphoid',            p:[s*22.4,83.6,1.6], d:'The most fractured carpal bone, injured by a fall on the outstretched hand. Its retrograde blood supply means proximal pole fractures risk avascular necrosis — tenderness in the anatomical snuffbox warrants a scaphoid series and often repeat imaging or MRI.'},
+          {n:'Lunate',              p:[s*21.2,83.4,1.2], d:'The keystone of the proximal carpal row; the commonest carpal to dislocate and the site of Kienböck disease (avascular necrosis).'},
+          {n:'Hook of hamate',      p:[s*20.4,82.2,2.0], d:'Palpable in the hypothenar eminence; fractured by racquet and club sports and closely related to the ulnar nerve in Guyon canal.'},
+          {n:'Carpal tunnel',       p:[s*21.6,82.6,2.4], d:'Contains the median nerve and nine flexor tendons. Compression here causes carpal tunnel syndrome — night tingling in the thumb, index and middle fingers.'},
+          {n:'Anatomical snuffbox', p:[s*23.0,84.2,1.8], d:'Bounded by the EPL tendon and the APL/EPB tendons, floored by the scaphoid; the radial artery crosses here.'},
+          {n:'First carpometacarpal joint', p:[s*23.4,82.0,2.2], d:'The saddle joint that gives the thumb its opposition — and the joint most commonly affected by disabling osteoarthritis in the hand.'}
+        ],
+        articulations:['Radiocarpal (wrist) joint','Intercarpal and carpometacarpal joints','Metacarpophalangeal and interphalangeal joints'],
+        attachments:['Flexor and extensor tendon insertions','Thenar and hypothenar intrinsic muscles','Interossei and lumbricals'],
+        clinical:[
+          {t:'Scaphoid fracture', d:'A normal initial X-ray does not exclude it. Snuffbox tenderness is treated in a scaphoid cast with re-imaging at 10–14 days or early MRI — missed fractures progress to non-union and wrist arthritis.'},
+          {t:'Carpal tunnel syndrome', d:'Night tingling responds to splints and injection; thenar wasting and weakness mean the nerve is failing and warrant surgical release without delay.'}
+        ]
+      });
+    })();
+  });
+
+  /* ---------- PELVIS ---------- */
+  (function(){
+    const g=new THREE.Group();
+    [1,-1].forEach(s=>{
+      g.add(slab([s*7.6,97.5,-0.5],[2.0,11.5,10.5],M,[0,0,s*0.30]));  // ilium wing
+      g.add(ball([s*8.8,89.6,0.6],3.0,M,.75,1,1.05));                 // acetabulum region
+      g.add(shaft([s*7.0,86.4,2.2],[s*1.6,84.4,4.6],1.2,1.0,M));      // superior pubic ramus
+      g.add(shaft([s*7.2,84.0,0.4],[s*2.0,82.6,3.6],1.1,0.9,M));      // ischiopubic ramus
+      g.add(ball([s*6.8,82.6,-1.6],1.8,M,1,.9,1.1));                  // ischial tuberosity
+    });
+    g.add(slab([0,84.0,4.4],[3.0,3.0,1.8],M));                        // pubic symphysis
+    register(g,{
+      id:'pelvis', layer:'skeleton', tag:'Bone · Pelvic Girdle',
+      name:'Pelvis (Hip Bones)', latin:'Os coxae', focus:V(0,90,1),
+      overview:'Each hip bone is formed by the fusion of ilium, ischium and pubis at the triradiate cartilage of the acetabulum (fusing around puberty). With the sacrum they form a closed ring that transfers the body weight from spine to lower limbs, protects the pelvic viscera, and — through its shape differences between sexes — determines the birth canal.',
+      landmarks:[
+        {n:'Iliac crest',                  p:[7.9,103.2,-0.5], d:'The palpable upper border of the ilium, at the L4 level. Its posterior part is the standard donor site for autologous bone graft.'},
+        {n:'Anterior superior iliac spine (ASIS)', p:[8.4,99.6,4.4], d:'Prominent anterior point — origin of sartorius and the inguinal ligament; the reference for measuring true leg length.'},
+        {n:'Posterior superior iliac spine (PSIS)',p:[6.2,99.0,-5.6],d:'Marked by the dimples of Venus; overlies the S2 level and the sacroiliac joint.'},
+        {n:'Acetabulum',                   p:[9.2,89.6,1.2],  d:'The cup receiving the femoral head, deepened by a fibrocartilaginous labrum. Fracture patterns here follow the two-column (anterior/posterior) concept.'},
+        {n:'Ischial tuberosity',           p:[6.8,82.2,-1.8], d:'The "sit bone" — origin of the hamstrings and the weight-bearing point when seated. Avulsion here is a classic adolescent sprinting injury.'},
+        {n:'Greater sciatic notch',        p:[6.6,90.6,-4.4], d:'Transmits the sciatic nerve, superior gluteal vessels and piriformis; a key surgical landmark in the posterior approach to the hip.'},
+        {n:'Pubic symphysis',              p:[0,84.0,4.8],    d:'A midline fibrocartilaginous joint; widening beyond 2.5 cm indicates an unstable "open-book" pelvic injury.'}
+      ],
+      articulations:['Sacroiliac joints (posteriorly)','Pubic symphysis (anteriorly)','Hip joints (with femoral heads)'],
+      attachments:['Gluteal group (outer ilium)','Iliacus (inner ilium)','Hamstrings (ischial tuberosity)','Adductor group (pubis)','Rectus femoris (anterior inferior iliac spine)','Abdominal wall muscles (iliac crest)'],
+      clinical:[
+        {t:'Unstable pelvic fracture', d:'High-energy injury with haemodynamic instability: apply a pelvic binder at the level of the greater trochanters, resuscitate, and stabilise the ring — damage control before definitive fixation. Mortality is driven by bleeding from the posterior venous plexus.'},
+        {t:'Bone graft harvest', d:'The anterior and posterior iliac crests remain the gold-standard autograft sources for non-union surgery, supplying osteogenic cells, growth factors and structural scaffold.'}
+      ]
+    });
+  })();
+
+  /* ---------- LOWER LIMB (mirrored) ---------- */
+  [1,-1].forEach(s=>{
+    const side=s>0?'Right':'Left', sfx=s>0?'_r':'_l';
+
+    /* Femur */
+    (function(){
+      const g=new THREE.Group();
+      g.add(ball([s*8.9,89.9,0.8],3.05,M));                                   // head
+      g.add(shaft([s*8.9,89.9,0.8],[s*12.6,86.2,0.4],1.5,1.7,M));             // neck
+      g.add(ball([s*13.6,88.0,0.0],2.0,M,1,1.25,1.05));                       // greater trochanter
+      g.add(ball([s*10.4,83.8,-1.4],1.25,M));                                 // lesser trochanter
+      g.add(shaft([s*12.2,85.6,0.4],[s*8.2,49.6,0.2],1.95,2.15,M));           // shaft
+      g.add(ball([s*6.2,48.4,0.2],2.6,M,1,.95,1.15));                         // medial condyle
+      g.add(ball([s*10.6,48.4,0.2],2.5,M,1,.95,1.15));                        // lateral condyle
+      register(g,{
+        id:'femur'+sfx, layer:'skeleton', tag:'Bone · Lower Limb',
+        name:side+' Femur', latin:'Os femoris', focus:V(s*10,70,0),
+        overview:'The longest, heaviest and strongest bone in the body, comprising about a quarter of standing height. Its head sits deep in the acetabulum; the shaft is angled medially (the neck-shaft angle averages 125°) so the knees sit under the body\'s centre of gravity. The femoral head\'s blood supply — mainly retrograde, from the medial circumflex femoral artery — governs the entire management of hip fractures.',
+        landmarks:[
+          {n:'Femoral head',      p:[s*8.9,90.6,1.2], d:'Two-thirds of a sphere, covered in cartilage except at the fovea where the ligamentum teres attaches. Blood supply is retrograde — displaced neck fractures threaten it directly.'},
+          {n:'Femoral neck',      p:[s*11.0,88.2,0.6],d:'The commonest fragility fracture site in the elderly. Neck-shaft angle averages 125°; anteversion averages 15°.'},
+          {n:'Greater trochanter',p:[s*14.2,88.6,0.0],d:'Palpable lateral prominence and insertion of the hip abductors (gluteus medius and minimus) — the key to a level pelvis when walking.'},
+          {n:'Lesser trochanter', p:[s*10.0,83.4,-1.8],d:'Posteromedial prominence; insertion of iliopsoas, the chief hip flexor.'},
+          {n:'Linea aspera',      p:[s*9.6,68,-2.2],  d:'Rough posterior ridge along the shaft — attachment for adductors, vastus muscles and the short head of biceps femoris; a landmark for rotational alignment during nailing.'},
+          {n:'Medial condyle',    p:[s*5.6,48.2,0.2], d:'Larger than the lateral; carries the adductor tubercle for adductor magnus and the origin of the medial collateral ligament.'},
+          {n:'Lateral condyle',   p:[s*11.2,48.2,0.2],d:'Origin of the lateral collateral ligament and popliteus; forms the lateral wall of the intercondylar notch where the cruciate ligaments run.'},
+          {n:'Intercondylar notch',p:[s*8.4,48.4,-1.6],d:'Houses the ACL and PCL. A narrow notch is a recognised risk factor for ACL rupture.'}
+        ],
+        articulations:['Hip joint (acetabulum)','Knee joint (tibia and patella)'],
+        attachments:['Iliopsoas (lesser trochanter)','Gluteus medius and minimus (greater trochanter)','Quadriceps (vastus origins along the shaft)','Adductor group (linea aspera)','Gastrocnemius heads (posterior condyles)'],
+        clinical:[
+          {t:'Neck of femur fracture', d:'In the elderly with a displaced fracture, the head\'s blood supply is unreliable — replacement (hemiarthroplasty or THR) outperforms fixation. Surgery within 48 hours, plus osteoporosis treatment on discharge, reduces mortality.'},
+          {t:'Femoral shaft fracture', d:'Can lose 1–1.5 litres of blood into the thigh. Closed intramedullary nailing within 24 hours in a stable patient gives union rates above 95% and lowers pulmonary complications.'},
+          {t:'Avascular necrosis', d:'Steroids, alcohol, sickle cell disease and trauma are the leading causes. Once the head collapses (Ficat III), joint replacement outperforms every head-preserving procedure.'}
+        ]
+      });
+    })();
+
+    /* Patella */
+    register(ball([s*8.4,49.2,3.4],1.95,M,1.25,1.35,.55),{
+      id:'patella'+sfx, layer:'skeleton', tag:'Bone · Lower Limb',
+      name:side+' Patella', latin:'Patella', focus:V(s*8.4,49.2,4),
+      overview:'The largest sesamoid bone in the body, embedded within the quadriceps tendon. It increases the moment arm of the extensor mechanism by 30–50%, making knee extension dramatically more efficient, and protects the front of the knee. Its posterior surface carries the thickest articular cartilage in the body — up to 6 mm.',
+      landmarks:[
+        {n:'Base (superior pole)', p:[s*8.4,51.4,3.6], d:'Receives the quadriceps tendon insertion.'},
+        {n:'Apex (inferior pole)', p:[s*8.4,47.0,3.6], d:'Origin of the patellar tendon running to the tibial tuberosity; the site of "jumper\'s knee" (patellar tendinopathy).'},
+        {n:'Median ridge',         p:[s*8.4,49.2,2.6], d:'Divides medial and lateral facets and tracks in the femoral trochlear groove.'},
+        {n:'Medial patellofemoral ligament', p:[s*6.4,49.8,3.2], d:'The principal restraint to lateral patellar dislocation — almost always torn when the patella dislocates.'}
+      ],
+      articulations:['Patellofemoral joint (trochlear groove of femur)'],
+      attachments:['Quadriceps tendon (base)','Patellar tendon (apex)','Medial and lateral retinacula'],
+      clinical:[
+        {t:'Patella fracture', d:'Inability to perform a straight-leg raise indicates a disrupted extensor mechanism and mandates surgery. Tension-band wiring converts quadriceps pull into compression, so early movement actively aids healing.'},
+        {t:'Patellar dislocation', d:'Almost always lateral, most often in adolescent girls and in those with trochlear dysplasia or patella alta. First-time dislocations are usually managed conservatively with bracing and vastus medialis rehabilitation.'}
+      ]
+    });
+
+    /* Tibia */
+    (function(){
+      const g=new THREE.Group();
+      g.add(slab([s*8.2,46.8,0.2],[6.6,1.9,5.4],M));                        // plateau
+      g.add(shaft([s*8.2,45.8,0.2],[s*7.8,10.2,0.6],2.0,1.35,M));           // shaft
+      g.add(ball([s*7.0,9.6,0.6],1.35,M,1,1.4,1));                          // medial malleolus
+      register(g,{
+        id:'tibia'+sfx, layer:'skeleton', tag:'Bone · Lower Limb',
+        name:side+' Tibia', latin:'Tibia', focus:V(s*8,29,0),
+        overview:'The shin bone and the weight-bearing bone of the leg — the second longest bone in the body. It carries essentially all the load from knee to ankle, with the fibula serving mainly as a muscle attachment and lateral ankle strut. Its anteromedial surface lies directly under the skin, which explains both its accessibility and its notoriety: open fractures and slow healing are common.',
+        landmarks:[
+          {n:'Medial tibial plateau',  p:[s*6.0,47.2,0.2], d:'Concave and larger, matching the medial femoral condyle — the compartment most often destroyed in varus knee arthritis.'},
+          {n:'Lateral tibial plateau', p:[s*10.4,47.2,0.2],d:'Convex and higher; depressed fractures here result from valgus impaction ("bumper" injuries).'},
+          {n:'Tibial tuberosity',      p:[s*8.2,43.6,2.8], d:'Insertion of the patellar tendon. Traction apophysitis here in adolescents is Osgood-Schlatter disease.'},
+          {n:'Tibial spines',          p:[s*8.2,48.0,0.0], d:'Intercondylar eminence giving attachment to the cruciate ligaments; avulsion here is the paediatric equivalent of an ACL tear.'},
+          {n:"Gerdy's tubercle",       p:[s*10.8,44.6,2.2],d:'Insertion of the iliotibial band on the anterolateral tibia — a standard landmark for lateral knee approaches.'},
+          {n:'Subcutaneous border',    p:[s*8.4,28,2.0],   d:'The palpable shin. Minimal soft-tissue cover here means fractures are frequently open and skin necrosis is a real risk.'},
+          {n:'Medial malleolus',       p:[s*6.6,9.4,0.6],  d:'The medial buttress of the ankle mortise and anchor of the deltoid ligament.'},
+          {n:'Plafond',                p:[s*7.8,10.4,0.6], d:'The distal articular surface (tibial ceiling) of the ankle joint — high-energy axial injuries here are pilon fractures.'}
+        ],
+        articulations:['Knee joint (femoral condyles, menisci interposed)','Superior and inferior tibiofibular joints','Ankle (talocrural) joint'],
+        attachments:['Patellar tendon (tibial tuberosity)','Pes anserinus: sartorius, gracilis, semitendinosus (anteromedial)','Iliotibial band (Gerdy tubercle)','Tibialis anterior and posterior; soleus'],
+        clinical:[
+          {t:'Tibial shaft fracture', d:'The slowest-healing common long bone (12–24 weeks) because of poor blood supply and thin soft-tissue cover. Smoking cessation is genuinely part of the treatment plan — nicotine can double healing time or cause non-union.'},
+          {t:'Compartment syndrome', d:'Most commonly follows tibial fracture. Pain out of proportion to the injury and severe pain on passive toe extension are the earliest signs — pulses are present until very late. Diagnosis is clinical; treatment is immediate fasciotomy.'},
+          {t:'Tibial plateau fracture', d:'Restoring articular congruity and mechanical axis prevents early post-traumatic arthritis. CT is essential for planning; the soft-tissue envelope often dictates the timing of surgery.'}
+        ]
+      });
+    })();
+
+    /* Fibula */
+    register((function(){
+      const g=new THREE.Group();
+      g.add(ball([s*11.6,45.8,-0.4],1.15,M));                               // head
+      g.add(shaft([s*11.6,44.8,-0.4],[s*11.4,9.6,0.0],0.85,1.05,M));        // shaft
+      g.add(ball([s*11.5,8.8,0.0],1.25,M,1,1.5,1));                         // lateral malleolus
+      return g;
+    })(),{
+      id:'fibula'+sfx, layer:'skeleton', tag:'Bone · Lower Limb',
+      name:side+' Fibula', latin:'Fibula', focus:V(s*11.5,28,0),
+      overview:'A slender lateral strut carrying only about 10–15% of the load through the leg. Its principal roles are muscle attachment and, distally, forming the lateral wall of the ankle mortise — a function so important that fibular length and rotation must be restored precisely in ankle fractures. Its expendable shaft makes it the standard donor for vascularised bone grafts.',
+      landmarks:[
+        {n:'Fibular head',        p:[s*11.9,46.2,-0.4], d:'Attachment of the lateral collateral ligament and biceps femoris. The common peroneal nerve winds around the neck just below — the most frequently injured nerve in the lower limb.'},
+        {n:'Neck of fibula',      p:[s*11.7,44.4,-0.6], d:'The common peroneal nerve is subcutaneous here: tight plaster, prolonged leg crossing or a poorly padded table can cause foot drop.'},
+        {n:'Lateral malleolus',   p:[s*11.6,8.6,0.0],   d:'Extends about 1 cm more distal than the medial malleolus and forms the lateral wall of the mortise; the commonest ankle fracture site (Weber classification).'},
+        {n:'Interosseous border', p:[s*10.8,28,0.2],    d:'Attachment of the interosseous membrane, which binds tibia and fibula and transfers load between them.'}
+      ],
+      articulations:['Superior and inferior tibiofibular joints','Ankle joint (lateral malleolus with talus)'],
+      attachments:['Biceps femoris and LCL (head)','Peroneus longus and brevis','Extensor digitorum longus, extensor hallucis longus','Soleus and flexor hallucis longus (posterior)'],
+      clinical:[
+        {t:'Weber classification', d:'Fracture level relative to the syndesmosis predicts stability: Weber A (below) is usually stable; B (at) is variable; C (above) implies syndesmotic disruption and generally needs fixation.'},
+        {t:'Maisonneuve fracture', d:'A proximal fibular fracture with a medial-sided ankle injury and syndesmotic rupture. Always palpate the whole fibula in an ankle injury — the proximal fracture is easily missed.'},
+        {t:'Free fibular graft', d:'Up to ~25 cm of mid-shaft fibula can be harvested as a vascularised graft for reconstructing large bone defects, preserving 6 cm distally to protect ankle stability.'}
+      ]
+    });
+
+    /* Foot */
+    (function(){
+      const g=new THREE.Group();
+      g.add(ball([s*8.2,5.2,-3.4],2.3,M,1,1,1.35));                          // calcaneus
+      g.add(ball([s*8.4,8.2,0.2],1.7,M,1.05,.85,1.15));                      // talus
+      g.add(ball([s*8.4,5.4,2.2],1.35,M,1.15,.8,1));                         // navicular/cuboid mass
+      for(let i=0;i<5;i++){
+        const off=(i-2)*1.45;
+        g.add(shaft([s*(8.2+off*0.85),4.4,3.6],[s*(8.0+off*1.15),3.0,8.4],0.46,0.40,M,8));
+        g.add(shaft([s*(8.0+off*1.15),2.9,8.6],[s*(7.9+off*1.2),2.3,11.0],0.32,0.26,M,8));
+      }
+      register(g,{
+        id:'foot'+sfx, layer:'skeleton', tag:'Bone · Lower Limb',
+        name:side+' Foot & Ankle', latin:'Ossa pedis', focus:V(s*8.2,5,2),
+        overview:'Twenty-six bones arranged into three functional arches — two longitudinal and one transverse — supported by the plantar fascia, the spring ligament and the intrinsic muscles. This architecture makes the foot a shock absorber at heel strike and a rigid lever at toe-off, absorbing several times body weight with every stride.',
+        landmarks:[
+          {n:'Calcaneus',            p:[s*8.2,5.0,-4.4], d:'The largest tarsal bone and the heel\'s weight-bearing platform. Fractures follow axial loading (a fall from height) — always examine the spine too, as associated lumbar fractures are common.'},
+          {n:'Talus',                p:[s*8.4,8.6,0.4],  d:'Transmits the entire body weight to the foot yet has no muscular attachments at all. Its retrograde blood supply makes avascular necrosis after talar neck fracture a genuine risk.'},
+          {n:'Navicular tuberosity', p:[s*6.8,5.2,2.4],  d:'Palpable medial prominence and insertion of tibialis posterior, the chief dynamic supporter of the medial arch.'},
+          {n:'Base of 5th metatarsal',p:[s*11.4,3.8,3.6],d:'Peroneus brevis inserts here. Distinguish an avulsion fracture (heals well) from a Jones fracture at the metaphyseal-diaphyseal junction, which is prone to non-union.'},
+          {n:'Sustentaculum tali',   p:[s*6.6,5.8,-1.0], d:'A medial calcaneal shelf supporting the talus, traversed by the flexor hallucis longus tendon; a constant fragment in calcaneal fracture fixation.'},
+          {n:'Plantar fascia origin',p:[s*8.2,3.2,-4.0], d:'The medial calcaneal tuberosity — the site of pain in plantar fasciitis, classically worst with the first steps in the morning.'},
+          {n:'Ankle mortise',        p:[s*8.4,9.4,0.2],  d:'The talus gripped between medial and lateral malleoli. Even 1 mm of talar shift reduces contact area by around 40% and leads to arthritis — anatomical reduction is non-negotiable.'}
+        ],
+        articulations:['Ankle (talocrural) joint','Subtalar joint (inversion/eversion)','Midtarsal, tarsometatarsal, MTP and IP joints'],
+        attachments:['Achilles tendon (calcaneal tuberosity)','Tibialis posterior and anterior','Peroneal tendons','Plantar fascia and intrinsic foot muscles'],
+        clinical:[
+          {t:'Plantar fasciitis', d:'Load-related degeneration of the fascia, not inflammation. Around 90% settle within a year with calf and fascia stretching, heel cups and load management. The heel spur seen on X-ray is a bystander, not the cause.'},
+          {t:'Achilles tendon rupture', d:'A sudden "kick to the back of the leg" with a palpable gap and a positive Thompson test. Both operative and non-operative functional rehabilitation give good results; early functional bracing matters more than the choice itself.'},
+          {t:'Diabetic foot', d:'Neuropathy plus vascular disease means ulcers form painlessly and infection spreads silently. Every diabetic foot needs regular inspection, protective footwear and prompt treatment of any break in the skin.'}
+        ]
+      });
+    })();
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   2 · SOFT-TISSUE LAYERS
+   ══════════════════════════════════════════════════════════════════ */
+function buildSoftTissue(){
+  const OP = 0.72;
+
+  /* ---------- MUSCLES ---------- */
+  const mus = c=>softMat(c,OP);
+  const MUS = [
+    {id:'deltoid', name:'Deltoid', latin:'Musculus deltoideus', r:3.2, mirror:true,
+     pts:s=>[[s*13.5,148,-3],[s*19.5,146,0],[s*20.5,140,1],[s*19.6,131,1.4]],
+     o:'A thick triangular cap over the shoulder, in three functional parts: anterior (flexion), middle (abduction) and posterior (extension). The middle fibres are multipennate — built for power — and take over abduction from supraspinatus after the first 15°.',
+     detail:{Origin:'Lateral clavicle, acromion and spine of scapula',Insertion:'Deltoid tuberosity of the humerus',Nerve:'Axillary nerve (C5, C6)',Action:'Abduction of the arm; anterior fibres flex and medially rotate, posterior fibres extend and laterally rotate'},
+     clin:'The axillary nerve is at risk in shoulder dislocation and surgical neck fractures — always test sensation over the "regimental badge" area and deltoid power. In cuff-deficient shoulders, a reverse replacement lets deltoid alone elevate the arm.'},
+    {id:'biceps', name:'Biceps Brachii', latin:'Musculus biceps brachii', r:2.2, mirror:true,
+     pts:s=>[[s*16,144,2],[s*18.6,130,2.6],[s*19.8,116,2.4],[s*21,107,1.6]],
+     o:'Two-headed flexor of the front of the arm. The long head arises inside the shoulder joint from the supraglenoid tubercle and runs in the bicipital groove; the short head arises from the coracoid. It is the most powerful supinator of the forearm.',
+     detail:{Origin:'Long head — supraglenoid tubercle; short head — coracoid process',Insertion:'Radial tuberosity and bicipital aponeurosis',Nerve:'Musculocutaneous nerve (C5, C6)',Action:'Elbow flexion and — most powerfully — forearm supination'},
+     clin:'Rupture of the long head produces the classic "Popeye" deformity; in older patients this is usually treated non-operatively with little functional loss. Distal biceps rupture, by contrast, causes major supination weakness and is usually repaired.'},
+    {id:'triceps', name:'Triceps Brachii', latin:'Musculus triceps brachii', r:2.4, mirror:true,
+     pts:s=>[[s*16.5,144,-3],[s*18.5,130,-2.6],[s*19.4,118,-2.2],[s*18.8,112,-2]],
+     o:'The sole extensor of the elbow, with three heads. The long head crosses the shoulder from the infraglenoid tubercle; the medial and lateral heads arise from the humeral shaft either side of the radial groove.',
+     detail:{Origin:'Long head — infraglenoid tubercle; lateral and medial heads — posterior humerus',Insertion:'Olecranon process of the ulna',Nerve:'Radial nerve (C6–C8)',Action:'Elbow extension; the long head also extends and adducts the shoulder'},
+     clin:'Triceps function is essential for crutch walking and for pushing up from a chair — a key consideration in rehabilitation planning after upper limb injury or in tetraplegia.'},
+    {id:'pectoralis', name:'Pectoralis Major', latin:'Musculus pectoralis major', r:3.4, mirror:true,
+     pts:s=>[[s*1.5,146,7],[s*6,142,7.5],[s*11,140,5.5],[s*16,142,2]],
+     o:'The broad fan of the anterior chest wall, with clavicular, sternocostal and abdominal heads whose fibres twist 180° before inserting — which is why it can both flex and extend the shoulder depending on starting position.',
+     detail:{Origin:'Medial clavicle, sternum, upper six costal cartilages',Insertion:'Lateral lip of the bicipital groove of the humerus',Nerve:'Medial and lateral pectoral nerves (C5–T1)',Action:'Adduction, medial rotation and flexion of the arm; accessory muscle of respiration'},
+     clin:'Rupture occurs typically in weight-trainers during bench press, producing a sudden tearing sensation, bruising and loss of the anterior axillary fold. Surgical repair is recommended in active individuals.'},
+    {id:'latissimus', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:3.4, mirror:true,
+     pts:s=>[[s*3,105,-6],[s*8,120,-6.5],[s*12,134,-5],[s*16,142,0]],
+     o:'The largest muscle of the back, sweeping from the lower spine and iliac crest up to the humerus — the "climbing muscle" that pulls the body up toward a fixed arm.',
+     detail:{Origin:'Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower ribs',Insertion:'Floor of the bicipital groove of the humerus',Nerve:'Thoracodorsal nerve (C6–C8)',Action:'Extension, adduction and medial rotation of the arm'},
+     clin:'Its reliable pedicle makes the latissimus dorsi flap a workhorse in reconstructive surgery — for breast reconstruction and for covering large soft-tissue defects, including around the shoulder and chest wall.'},
+    {id:'trapezius', name:'Trapezius', latin:'Musculus trapezius', r:2.9, mirror:true,
+     pts:s=>[[s*0.6,166,-6],[s*5,155,-6.5],[s*10,149,-6],[s*14,147,-5]],
+     o:'A large diamond-shaped superficial back muscle in three functional parts: upper fibres elevate the scapula, middle fibres retract it, lower fibres depress it and rotate the glenoid upward during arm elevation.',
+     detail:{Origin:'External occipital protuberance, ligamentum nuchae, spinous processes C7–T12',Insertion:'Lateral clavicle, acromion, spine of scapula',Nerve:'Spinal accessory nerve (CN XI), with proprioception from C3–C4',Action:'Elevation, retraction, depression and upward rotation of the scapula'},
+     clin:'Injury to the spinal accessory nerve — classically during posterior triangle lymph node biopsy — causes trapezius palsy with shoulder droop, lateral scapular winging and difficulty elevating the arm above shoulder height.'},
+    {id:'gluteusmax', name:'Gluteus Maximus', latin:'Musculus gluteus maximus', r:4.0, mirror:true,
+     pts:s=>[[s*4,99,-6],[s*8,93,-7],[s*11,86,-6],[s*12.5,79,-3.5]],
+     o:'The bulkiest muscle in the body, and the principal extensor of the hip. It works hardest in powerful actions — rising from a chair, climbing stairs, sprinting — rather than in level walking.',
+     detail:{Origin:'Posterior ilium, sacrum, coccyx, sacrotuberous ligament',Insertion:'Iliotibial tract and gluteal tuberosity of the femur',Nerve:'Inferior gluteal nerve (L5, S1, S2)',Action:'Hip extension and lateral rotation; through the IT band it stabilises the extended knee'},
+     clin:'The upper outer quadrant of the buttock is the safe zone for intramuscular injection — injecting elsewhere risks the sciatic nerve, a classic and avoidable cause of foot drop.'},
+    {id:'gluteusmed', name:'Gluteus Medius', latin:'Musculus gluteus medius', r:2.6, mirror:true,
+     pts:s=>[[s*7,101,-3],[s*10.5,96,-2],[s*13,91,-1],[s*13.8,88,0]],
+     o:'The key abductor of the hip. Its real job is not lifting the leg sideways but stabilising the pelvis in single-leg stance — every step you take depends on it.',
+     detail:{Origin:'Outer surface of the ilium between the anterior and posterior gluteal lines',Insertion:'Lateral facet of the greater trochanter',Nerve:'Superior gluteal nerve (L4, L5, S1)',Action:'Hip abduction; anterior fibres medially rotate; stabilises the pelvis in stance'},
+     clin:'Weakness (or superior gluteal nerve injury) produces a positive Trendelenburg sign — the pelvis drops on the *unsupported* side — and the resulting lurching gait. Protecting this muscle and its nerve is central to the surgical approach chosen for hip replacement.'},
+    {id:'quadriceps', name:'Quadriceps Femoris', latin:'Musculus quadriceps femoris', r:3.6, mirror:true,
+     pts:s=>[[s*9,88,3],[s*9.4,75,3.6],[s*9,62,3.4],[s*8.5,52,3.4]],
+     o:'The great extensor group of the thigh: rectus femoris (which also flexes the hip, crossing two joints) plus the three vasti — lateralis, medialis and intermedius. All converge into the quadriceps tendon, the patella and the patellar tendon.',
+     detail:{Origin:'Rectus femoris — anterior inferior iliac spine; vasti — femoral shaft',Insertion:'Tibial tuberosity via the patella and patellar tendon',Nerve:'Femoral nerve (L2, L3, L4)',Action:'Knee extension; rectus femoris also flexes the hip'},
+     clin:'Quadriceps strength is the single best predictor of function after knee injury or replacement — and vastus medialis obliquus wastes within days of a knee injury. Rehabilitation begins with static quadriceps work on day one.'},
+    {id:'hamstrings', name:'Hamstrings', latin:'Musculi ischiocrurales', r:3.2, mirror:true,
+     pts:s=>[[s*6.8,82,-2.5],[s*8,72,-3.2],[s*8.6,60,-3],[s*9,50,-2]],
+     o:'Three muscles — biceps femoris, semitendinosus and semimembranosus — spanning hip and knee. They extend the hip and flex the knee, and act as important dynamic protectors of the ACL by resisting anterior tibial translation.',
+     detail:{Origin:'Ischial tuberosity (short head of biceps femoris from the linea aspera)',Insertion:'Head of the fibula (biceps femoris); medial tibia (semitendinosus, semimembranosus)',Nerve:'Sciatic nerve — tibial division (short head of biceps: common peroneal division)',Action:'Hip extension and knee flexion'},
+     clin:'Hamstring strains are the commonest injury in sprinting sports, with high recurrence when rehabilitation is rushed. Eccentric strengthening (Nordic curls) is the best-evidenced prevention. The semitendinosus and gracilis tendons are the standard autograft for ACL reconstruction.'},
+    {id:'gastroc', name:'Gastrocnemius & Soleus', latin:'Triceps surae', r:3.0, mirror:true,
+     pts:s=>[[s*8.4,48,-3],[s*8.6,38,-4],[s*8.4,26,-3.4],[s*8.3,14,-2.6]],
+     o:'The calf complex: the two-headed gastrocnemius crossing both knee and ankle, and the deeper, broader soleus crossing only the ankle. Together they form the Achilles tendon — the strongest tendon in the body, transmitting forces up to ten times body weight.',
+     detail:{Origin:'Gastrocnemius — femoral condyles; soleus — posterior tibia and fibula',Insertion:'Calcaneal tuberosity via the Achilles tendon',Nerve:'Tibial nerve (S1, S2)',Action:'Ankle plantarflexion; gastrocnemius also assists knee flexion'},
+     clin:'The soleus is the "peripheral heart", pumping venous blood back from the leg — immobility here is a key factor in deep vein thrombosis. The Achilles has a relatively avascular zone 2–6 cm above its insertion, which is where degeneration and rupture typically occur.'},
+    {id:'tibant', name:'Tibialis Anterior', latin:'Musculus tibialis anterior', r:1.7, mirror:true,
+     pts:s=>[[s*9.6,45,2.6],[s*9.4,34,3.2],[s*8.8,22,3.4],[s*8,12,3.6]],
+     o:'The strongest dorsiflexor of the ankle, running down the front of the shin and crossing to the medial side of the foot. It lifts the foot in swing phase and controls its lowering after heel strike.',
+     detail:{Origin:'Lateral condyle and upper lateral surface of the tibia, interosseous membrane',Insertion:'Medial cuneiform and base of the first metatarsal',Nerve:'Deep peroneal nerve (L4, L5)',Action:'Dorsiflexion and inversion of the foot'},
+     clin:'Loss of this muscle — usually through common peroneal nerve palsy at the fibular neck — causes foot drop and a high-stepping gait. It is also the key muscle of the anterior compartment, the compartment most often affected by compartment syndrome after tibial fracture.'},
+    {id:'rectusabd', name:'Rectus Abdominis', latin:'Musculus rectus abdominis', r:2.3, mirror:true,
+     pts:s=>[[s*2.4,135,7.6],[s*2.6,126,8.2],[s*2.6,116,8.4],[s*2.4,105,7.6]],
+     o:'The paired "six-pack" strap muscle running from ribs to pubis inside the rectus sheath, divided by three or more tendinous intersections. Part of the anterior core that controls lumbar posture.',
+     detail:{Origin:'Pubic crest and pubic symphysis',Insertion:'Xiphoid process and costal cartilages 5–7',Nerve:'Thoracoabdominal nerves (T7–T12)',Action:'Trunk flexion; increases intra-abdominal pressure; stabilises the pelvis'},
+     clin:'Core strength genuinely matters in low back pain — but training the deep stabilisers (transversus abdominis, multifidus) alongside rectus abdominis gives better outcomes than sit-ups alone. Diastasis recti after pregnancy responds to graded core rehabilitation.'},
+    {id:'scm', name:'Sternocleidomastoid', latin:'Musculus sternocleidomastoideus', r:1.5, mirror:true,
+     pts:s=>[[s*2,150.5,6.5],[s*4.5,156,4],[s*6.4,160,0.5],[s*7.4,162.4,-2.4]],
+     o:'The prominent oblique strap of the neck with two heads (sternal and clavicular), dividing the neck into anterior and posterior triangles — the fundamental surgical map of the neck.',
+     detail:{Origin:'Manubrium sterni and medial third of the clavicle',Insertion:'Mastoid process and superior nuchal line',Nerve:'Spinal accessory nerve (CN XI); sensory from C2–C3',Action:'Unilaterally — tilts head to same side, rotates face to opposite side; bilaterally — flexes the neck'},
+     clin:'Congenital muscular torticollis presents as a firm lump in the muscle in an infant with a persistently tilted head; most resolve with stretching if started early. In adults, the muscle guides the anterior approach to the cervical spine.'}
+  ];
+  MUS.forEach(m=>{
+    const sides = m.mirror?[1,-1]:[1];
+    sides.forEach(s=>{
+      const sfx = m.mirror?(s>0?'_r':'_l'):'';
+      const sideName = m.mirror?((s>0?'Right ':'Left ')):'';
+      const obj = tube(m.pts(s), m.r, mus(0xC1454B), false, 9);
+      register(obj,{
+        id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
+        name:sideName+m.name, latin:m.latin, focus:V(...m.pts(s)[1]),
+        overview:m.o, detail:m.detail,
+        clinical:[{t:'Clinical relevance', d:m.clin}]
+      });
+    });
+  });
+
+  /* ---------- ARTERIES ---------- */
+  const art = ()=>softMat(0xE0323C,0.9);
+  const ART = [
+    {id:'aorta', name:'Aorta (Arch, Thoracic & Abdominal)', latin:'Aorta', r:1.15, mirror:false,
+     pts:()=>[[0,141,2.6],[1.6,147,1.4],[0.4,149,-1.2],[-0.8,143,-2.4],[-0.6,128,-2.6],[-0.5,112,-2.4],[-0.3,102,-2.2]],
+     o:'The great arterial trunk of the body. It leaves the left ventricle, arches over the left main bronchus (at the sternal angle / T4), descends through the thorax and abdomen, and bifurcates into the common iliac arteries at the level of L4.',
+     detail:{Origin:'Left ventricle of the heart',Branches:'Coronary arteries; brachiocephalic trunk, left common carotid and left subclavian from the arch; intercostals; coeliac, superior and inferior mesenteric, renal arteries',Termination:'Bifurcates into right and left common iliac arteries at L4',Surface:'The arch lies at the level of the sternal angle (T4/T5)'},
+     clin:'The aortic bifurcation at L4 sits at the level of the iliac crests — a critical relationship in anterior lumbar spine surgery. Traumatic aortic injury classically occurs at the isthmus just distal to the left subclavian, where the relatively mobile arch meets the fixed descending aorta.'},
+    {id:'carotid', name:'Common Carotid Artery', latin:'Arteria carotis communis', r:0.5, mirror:true,
+     pts:s=>[[s*1.6,148,1],[s*3,154,1.4],[s*4,160,2],[s*4.6,164,2.6]],
+     o:'The main arterial supply to the head and neck, ascending in the carotid sheath alongside the internal jugular vein and vagus nerve, and dividing at the upper border of the thyroid cartilage (C4) into internal and external carotid arteries.',
+     detail:{Origin:'Right — brachiocephalic trunk; left — directly from the aortic arch',Course:'Ascends within the carotid sheath with the internal jugular vein and vagus nerve',Termination:'Divides at C4 into internal and external carotid arteries',Surface:'Pulse palpable anterior to sternocleidomastoid at the level of the thyroid cartilage'},
+     clin:'The carotid pulse is the primary check for circulation in adult resuscitation. Atherosclerotic plaque at the bifurcation is a leading cause of embolic stroke, and blunt cervical injury can cause carotid dissection — consider it in neck trauma with delayed neurological signs.'},
+    {id:'subclav_art', name:'Subclavian, Axillary & Brachial Artery', latin:'A. subclavia / axillaris / brachialis', r:0.46, mirror:true,
+     pts:s=>[[s*1.8,148.5,1.4],[s*8,149,1.6],[s*14,146,1.4],[s*17.5,138,1.8],[s*18.6,126,2],[s*19.8,113,1.8],[s*20.6,108,1.4]],
+     o:'The continuous arterial highway of the upper limb, renamed as it passes each landmark: subclavian (to the first rib), axillary (to the lower border of teres major), then brachial down the arm to the cubital fossa.',
+     detail:{Course:'Subclavian → axillary (at the outer border of the first rib) → brachial (at teres major)',Relations:'Travels with the cords of the brachial plexus in the axilla; lies medial to the biceps tendon in the cubital fossa',Termination:'Divides into radial and ulnar arteries in the cubital fossa',Surface:'Brachial pulse — medial to the biceps tendon; the standard site for blood pressure measurement'},
+     clin:'The brachial artery is at risk in supracondylar humeral fractures in children — a pale, pulseless hand demands immediate reduction. Compression of the subclavian vessels between the clavicle and first rib produces thoracic outlet syndrome.'},
+    {id:'radial_art', name:'Radial & Ulnar Arteries', latin:'A. radialis et A. ulnaris', r:0.3, mirror:true,
+     pts:s=>[[s*20.6,107.5,1.4],[s*21.6,98,1.8],[s*22.4,88,2],[s*22.6,83,2.2]],
+     o:'The paired arteries of the forearm arising from the brachial artery in the cubital fossa. They anastomose in the hand through the superficial and deep palmar arches, giving the hand a rich dual blood supply.',
+     detail:{Origin:'Brachial artery bifurcation in the cubital fossa',Course:'Radial — lateral forearm, crossing the anatomical snuffbox; Ulnar — medial forearm, passing through Guyon canal with the ulnar nerve',Termination:'Superficial (mainly ulnar) and deep (mainly radial) palmar arches',Surface:'Radial pulse — lateral to the flexor carpi radialis tendon at the wrist'},
+     clin:'Allen test confirms a patent dual supply before radial artery harvest (for coronary bypass) or arterial line placement. The radial artery is also the standard access route for coronary angiography.'},
+    {id:'femoral_art', name:'Femoral & Popliteal Artery', latin:'A. femoralis et A. poplitea', r:0.55, mirror:true,
+     pts:s=>[[s*5,88,4.4],[s*7,80,3.6],[s*8.4,68,1.6],[s*8.6,56,-1.6],[s*8.4,48,-3],[s*8.4,42,-3]],
+     o:'The main artery of the lower limb. It enters the thigh under the inguinal ligament at the mid-inguinal point, passes down the adductor canal, and becomes the popliteal artery as it passes through the adductor hiatus into the back of the knee.',
+     detail:{Origin:'Continuation of the external iliac artery beneath the inguinal ligament',Course:'Femoral triangle → adductor canal → adductor hiatus → popliteal fossa',Termination:'Divides into anterior and posterior tibial arteries below the knee',Surface:'Femoral pulse at the mid-inguinal point, midway between the ASIS and the pubic symphysis'},
+     clin:'The femoral artery is the standard access route for cardiac catheterisation and angiography. The popliteal artery is tethered at the adductor hiatus and the soleal arch, making it highly vulnerable in knee dislocation — a documented pulse check and often CT angiography are mandatory in any dislocated knee.'},
+    {id:'tibial_art', name:'Anterior & Posterior Tibial Arteries', latin:'A. tibialis anterior et posterior', r:0.32, mirror:true,
+     pts:s=>[[s*8.4,42,-2.6],[s*8.6,32,-1.4],[s*8.2,20,0.6],[s*7.6,11,1.6],[s*8,6,3.4]],
+     o:'The terminal branches of the popliteal artery supplying the leg and foot. The anterior tibial artery pierces the interosseous membrane into the anterior compartment and becomes dorsalis pedis; the posterior tibial artery runs behind the medial malleolus into the sole.',
+     detail:{Origin:'Popliteal artery bifurcation at the lower border of popliteus',Course:'Anterior tibial — anterior compartment with the deep peroneal nerve; Posterior tibial — deep posterior compartment with the tibial nerve',Termination:'Dorsalis pedis (dorsum of the foot); medial and lateral plantar arteries (sole)',Surface:'Dorsalis pedis — lateral to the extensor hallucis longus tendon; Posterior tibial — behind the medial malleolus'},
+     clin:'These two pulses are the routine assessment of distal perfusion in leg trauma, in the diabetic foot and in peripheral vascular disease. Absent pulses after a tibial fracture demand urgent vascular assessment — but remember that compartment syndrome can be present with entirely normal pulses.'}
+  ];
+  ART.forEach(a=>buildVessels(a,'arteries','Artery · Cardiovascular',art));
+
+  /* ---------- VEINS ---------- */
+  const vei = ()=>softMat(0x3D6BC9,0.85);
+  const VEI = [
+    {id:'venacava', name:'Superior & Inferior Vena Cava', latin:'Vena cava superior et inferior', r:1.2, mirror:false,
+     pts:()=>[[1.4,150,2.6],[1.6,144,2],[1.4,138,0.6],[1.6,126,-0.6],[1.8,112,-1],[1.6,100,-1.2]],
+     o:'The two great venous trunks returning all systemic blood to the right atrium. The SVC drains the head, neck and upper limbs; the IVC — the largest vein in the body — drains everything below the diaphragm and ascends to the right of the vertebral bodies.',
+     detail:{Formation:'SVC — from the right and left brachiocephalic veins; IVC — from the common iliac veins at L5',Course:'IVC ascends to the right of the aorta, piercing the diaphragm at T8',Termination:'Both drain into the right atrium',Tributaries:'Azygos system, hepatic, renal, gonadal and lumbar veins'},
+     clin:'IVC filters may be considered when there is a proximal DVT and anticoagulation is contraindicated — a scenario that arises regularly in major orthopaedic trauma. SVC obstruction causes facial swelling and distended neck veins.'},
+    {id:'jugular', name:'Internal Jugular Vein', latin:'Vena jugularis interna', r:0.55, mirror:true,
+     pts:s=>[[s*2,149,3],[s*3.4,155,3],[s*4.6,160,3],[s*5.4,164,2.6]],
+     o:'The principal venous drainage of the brain, face and neck. It begins at the jugular foramen as a continuation of the sigmoid sinus and runs within the carotid sheath, lateral to the common carotid artery.',
+     detail:{Origin:'Continuation of the sigmoid sinus at the jugular foramen',Course:'Within the carotid sheath, lateral to the carotid artery and vagus nerve',Termination:'Joins the subclavian vein to form the brachiocephalic vein',Surface:'Runs between the two heads of sternocleidomastoid'},
+     clin:'The standard site for central venous catheterisation — the right side is preferred as it offers a straighter path to the heart. Jugular venous pressure, assessed at 45°, is a bedside index of right heart filling and fluid status.'},
+    {id:'cephalic', name:'Cephalic & Basilic Veins', latin:'Vena cephalica et basilica', r:0.35, mirror:true,
+     pts:s=>[[s*15.5,146,3],[s*18,136,3.4],[s*19.6,122,3.2],[s*21,110,2.4],[s*22,92,2.6]],
+     o:'The main superficial veins of the upper limb, running in the subcutaneous tissue: the cephalic on the lateral (radial) side and the basilic medially. They are connected at the elbow by the median cubital vein.',
+     detail:{Course:'Cephalic — lateral arm, then through the deltopectoral groove; Basilic — medial arm, piercing the deep fascia to become the axillary vein',Connection:'Median cubital vein crosses the cubital fossa',Termination:'Cephalic → axillary vein; Basilic → axillary vein',Surface:'Median cubital vein is the standard venepuncture site'},
+     clin:'The median cubital vein is the workhorse of blood sampling and IV access — but it lies directly over the brachial artery and median nerve, separated only by the bicipital aponeurosis ("the grace of God" fascia). The cephalic vein is used for arteriovenous fistula formation in dialysis.'},
+    {id:'femoral_v', name:'Femoral & Popliteal Veins', latin:'Vena femoralis et poplitea', r:0.6, mirror:true,
+     pts:s=>[[s*4,88,3.6],[s*6.4,80,3],[s*8,68,1],[s*8.4,56,-2.2],[s*8.2,46,-3.4]],
+     o:'The deep venous drainage of the lower limb, accompanying the corresponding arteries. These are the veins in which the clinically important deep vein thromboses form, and from which pulmonary emboli originate.',
+     detail:{Formation:'Popliteal vein from the tibial veins; becomes femoral vein at the adductor hiatus',Course:'Femoral vein lies medial to the artery in the femoral triangle',Termination:'Becomes the external iliac vein at the inguinal ligament',Valves:'Numerous one-way valves direct flow proximally, assisted by the calf muscle pump'},
+     clin:'Proximal DVT (popliteal and above) carries the highest risk of pulmonary embolism. After major lower-limb orthopaedic surgery, mechanical and chemical prophylaxis plus early mobilisation are standard — the calf muscle pump is the body\'s own protection, and immobility disables it.'},
+    {id:'saphenous', name:'Great Saphenous Vein', latin:'Vena saphena magna', r:0.36, mirror:true,
+     pts:s=>[[s*6.6,7.6,1.6],[s*6.2,20,2.6],[s*6.6,36,3.4],[s*6,52,4],[s*5,70,4.6],[s*4,86,4.6]],
+     o:'The longest vein in the body, running from the medial side of the foot, in front of the medial malleolus, up the medial leg and thigh to drain into the femoral vein at the saphenous opening in the groin.',
+     detail:{Origin:'Medial end of the dorsal venous arch of the foot',Course:'Anterior to the medial malleolus, up the medial leg and thigh',Termination:'Femoral vein at the saphenofemoral junction (about 4 cm below and lateral to the pubic tubercle)',Relations:'Accompanied by the saphenous nerve below the knee'},
+     clin:'Its constant position anterior to the medial malleolus makes it the classic site for emergency venous cutdown in shock. It is also the standard conduit for coronary artery bypass grafting, and the vein most often treated in varicose vein surgery. The nearby saphenous nerve is at risk during harvest and in medial ankle approaches.'}
+  ];
+  VEI.forEach(v=>buildVessels(v,'veins','Vein · Cardiovascular',vei));
+
+  /* ---------- NERVES ---------- */
+  const ner = ()=>softMat(0xE8C33A,0.92);
+  const NER = [
+    {id:'brachplex', name:'Brachial Plexus', latin:'Plexus brachialis', r:0.5, mirror:true,
+     pts:s=>[[s*2.6,155,-1],[s*6,152,0],[s*10,149,1],[s*14,145,1.6],[s*17,140,2]],
+     o:'The nerve network supplying the entire upper limb, formed from the C5–T1 ventral rami. Its organisation — roots, trunks, divisions, cords, branches — passes between the scalene muscles, over the first rib and under the clavicle into the axilla.',
+     detail:{Roots:'Ventral rami of C5, C6, C7, C8 and T1',Organisation:'Roots → trunks (upper, middle, lower) → divisions → cords (lateral, posterior, medial) → terminal branches',Terminal:'Musculocutaneous, axillary, radial, median and ulnar nerves',Relations:'Passes between anterior and middle scalene, over the first rib, posterior to the clavicle'},
+     clin:'Erb palsy (C5–C6, upper trunk) produces the "waiter\'s tip" posture and follows shoulder dystocia or a fall onto the shoulder. Klumpke palsy (C8–T1) affects the hand intrinsics and may include Horner syndrome. In trauma, the presence of Horner syndrome or winged scapula suggests a poor-prognosis root avulsion rather than a distal lesion.'},
+    {id:'median', name:'Median Nerve', latin:'Nervus medianus', r:0.32, mirror:true,
+     pts:s=>[[s*17,140,2.4],[s*18.4,128,2.8],[s*19.6,116,2.8],[s*20.6,104,2.6],[s*21.4,88,2.8],[s*21.6,82,2.6]],
+     o:'The "labourer\'s nerve" — the principal nerve of forearm flexion and precision grip. It arises from the lateral and medial cords, runs down the arm without branching, and passes through the carpal tunnel into the hand.',
+     detail:{Roots:'C6–T1, from the lateral and medial cords',Motor:'Most forearm flexors and pronators; thenar muscles and the lateral two lumbricals',Sensory:'Palmar aspect of the thumb, index, middle and half the ring finger',Course:'Medial to the brachial artery in the arm; between the heads of pronator teres; through the carpal tunnel'},
+     clin:'Carpal tunnel syndrome is the commonest entrapment neuropathy: night tingling in the radial three and a half digits, later thenar wasting and loss of thumb opposition. Splints and injection help early symptoms; weakness or wasting means the nerve is dying and warrants release. High lesions produce the "hand of benediction" on attempted fist closure.'},
+    {id:'ulnar', name:'Ulnar Nerve', latin:'Nervus ulnaris', r:0.3, mirror:true,
+     pts:s=>[[s*16.4,140,0],[s*17.2,128,0.4],[s*17.6,116,-0.6],[s*18,104,1.4],[s*18.2,88,2],[s*18.4,82,2.2]],
+     o:'The nerve of fine finger control, arising from the medial cord. It passes behind the medial epicondyle in the cubital tunnel — the "funny bone" — then along the medial forearm into Guyon canal at the wrist.',
+     detail:{Roots:'C8–T1, from the medial cord',Motor:'Flexor carpi ulnaris, medial half of flexor digitorum profundus, and almost all intrinsic hand muscles',Sensory:'Little finger and the medial half of the ring finger, both surfaces',Course:'Behind the medial epicondyle (cubital tunnel), then Guyon canal at the wrist'},
+     clin:'Cubital tunnel syndrome is the second commonest entrapment neuropathy. Damage causes clawing of the ring and little fingers and a positive Froment sign (thumb IP flexion when pinching). The "ulnar paradox": a higher lesion causes *less* clawing because the profundus to those fingers is also paralysed.'},
+    {id:'radial', name:'Radial Nerve', latin:'Nervus radialis', r:0.32, mirror:true,
+     pts:s=>[[s*16.8,140,-1.6],[s*18,130,-2],[s*19,122,-1.2],[s*20.4,112,0.6],[s*21.6,102,1.6],[s*22.4,90,1.4]],
+     o:'The great extensor nerve of the upper limb and the largest branch of the brachial plexus, from the posterior cord. It spirals around the back of the humerus in the radial groove before winding forward to the front of the lateral epicondyle.',
+     detail:{Roots:'C5–T1, from the posterior cord',Motor:'Triceps; brachioradialis; all wrist and finger extensors; supinator',Sensory:'Posterior arm and forearm; dorsum of the lateral hand and first web space',Course:'Radial (spiral) groove of the humerus → anterior to lateral epicondyle → divides into superficial and posterior interosseous branches'},
+     clin:'Wrist drop after a mid-shaft humeral fracture occurs in roughly 10–15% of cases; most are neurapraxias that recover in 3–4 months with a cock-up splint. "Saturday night palsy" follows prolonged compression of the nerve against the humerus. Test the first web space sensation and thumb extension.'},
+    {id:'sciatic', name:'Sciatic Nerve', latin:'Nervus ischiadicus', r:0.62, mirror:true,
+     pts:s=>[[s*5,94,-4],[s*7.4,88,-4.4],[s*8.4,78,-4],[s*8.8,64,-3.6],[s*9,52,-3.2],[s*9,46,-3]],
+     o:'The largest nerve in the body — as thick as a thumb at its origin. Formed from the L4–S3 roots of the sacral plexus, it leaves the pelvis through the greater sciatic foramen below piriformis and descends through the posterior thigh, dividing above the knee.',
+     detail:{Roots:'L4, L5, S1, S2, S3',Course:'Greater sciatic foramen (below piriformis) → midway between the ischial tuberosity and greater trochanter → posterior thigh',Divisions:'Tibial and common peroneal nerves, usually at the upper popliteal fossa',Supplies:'All hamstrings, and everything below the knee via its two divisions'},
+     clin:'True sciatica is most often caused by lumbar disc herniation at L4-L5 or L5-S1 rather than by the nerve trunk itself. The nerve is at risk in posterior hip dislocation, acetabular fracture and hip surgery — and in badly sited gluteal injections, which is why only the upper outer quadrant is used.'},
+    {id:'femoral_n', name:'Femoral Nerve', latin:'Nervus femoralis', r:0.42, mirror:true,
+     pts:s=>[[s*4,96,2.6],[s*5.4,90,4],[s*7,84,4.6],[s*8.4,76,4.4],[s*9,68,4]],
+     o:'The largest branch of the lumbar plexus and the motor nerve of knee extension. It emerges lateral to psoas, passes under the inguinal ligament lateral to the femoral artery, and immediately divides into multiple branches.',
+     detail:{Roots:'L2, L3, L4 (posterior divisions)',Motor:'Iliacus, sartorius, pectineus and the entire quadriceps femoris',Sensory:'Anterior thigh; and via the saphenous nerve, the medial leg and foot',Course:'Under the inguinal ligament, lateral to the femoral artery (mnemonic NAVY: Nerve, Artery, Vein, Y-fronts — lateral to medial)'},
+     clin:'Femoral nerve block gives excellent analgesia for femoral shaft and hip fractures, reducing opioid requirements substantially — but it weakens the quadriceps, so falls precautions are essential afterwards. Injury causes loss of knee extension and an absent knee jerk.'},
+    {id:'peroneal', name:'Common Peroneal & Tibial Nerves', latin:'N. fibularis communis et N. tibialis', r:0.36, mirror:true,
+     pts:s=>[[s*9,46,-3],[s*10.6,44,-2],[s*11,40,-0.6],[s*10,30,0.4],[s*8.6,18,1.4],[s*7.6,10,2]],
+     o:'The two terminal divisions of the sciatic nerve. The common peroneal winds around the neck of the fibula to supply the anterior and lateral compartments; the tibial nerve continues down the back of the leg into the sole of the foot.',
+     detail:{'Common peroneal':'Winds around the fibular neck; divides into superficial (evertors, lateral leg sensation) and deep (dorsiflexors, first web space) branches',Tibial:'Deep posterior compartment; passes behind the medial malleolus in the tarsal tunnel to become the plantar nerves',Motor:'Peroneal — dorsiflexion and eversion; Tibial — plantarflexion, inversion and the foot intrinsics',Sensory:'Peroneal — dorsum of the foot; Tibial — sole of the foot'},
+     clin:'The common peroneal nerve is the most frequently injured nerve in the lower limb because it lies subcutaneously against the fibular neck. Tight plaster, prolonged leg crossing, a poorly padded operating table or fibular neck fracture all cause foot drop — pad the fibular neck in every leg cast and on every table.'}
+  ];
+  NER.forEach(n=>buildVessels(n,'nerves','Nerve · Peripheral Nervous System',ner));
+
+  /* ---------- LYMPHATICS ---------- */
+  const lym = ()=>softMat(0x4FBF7B,0.85);
+  const LYM = [
+    {id:'thoracicduct', name:'Thoracic Duct & Cisterna Chyli', latin:'Ductus thoracicus', r:0.4, mirror:false, nodes:[],
+     pts:()=>[[0.6,104,-2.6],[0.4,116,-2.8],[0.2,130,-2.6],[-0.6,142,-1.8],[-1.6,149,0.4],[-2.2,150.4,1.6]],
+     o:'The principal lymphatic channel of the body, draining lymph from everywhere except the right upper quadrant. It begins as the cisterna chyli at L1–L2, ascends through the thorax, and empties into the junction of the left internal jugular and left subclavian veins.',
+     detail:{Origin:'Cisterna chyli at L1–L2, anterior to the vertebral bodies',Course:'Through the aortic hiatus, ascends in the posterior mediastinum, crosses to the left at T5',Termination:'Left venous angle (junction of left internal jugular and left subclavian veins)',Drainage:'The whole body except the right head/neck, right upper limb and right thorax'},
+     clin:'Injury during thoracic or cervical spine surgery causes a chylous leak or chylothorax — a milky drain output that requires dietary modification (medium-chain triglycerides) or ligation. The left supraclavicular (Virchow) node draining here can be the first sign of abdominal malignancy.'},
+    {id:'axillary_ln', name:'Axillary Lymph Nodes', latin:'Nodi lymphoidei axillares', r:0.7, mirror:true,
+     pts:s=>[[s*12,146,1],[s*14,143,1.4],[s*15.6,140,1.6],[s*16.4,136,1.6]],
+     o:'A group of 20–40 nodes in the axilla, arranged in five groups (anterior, posterior, lateral, central and apical). They receive lymph from the upper limb, the chest wall and — critically — about 75% of the breast.',
+     detail:{Groups:'Anterior (pectoral), posterior (subscapular), lateral (humeral), central and apical',Afferents:'Upper limb, chest wall, most of the breast',Efferents:'Subclavian lymph trunk → thoracic duct (left) or right lymphatic duct',Levels:'Surgically classified relative to pectoralis minor — I (lateral), II (behind), III (medial)'},
+     clin:'Axillary node status is the single most important prognostic factor in breast cancer. Extensive dissection risks lymphoedema of the arm and injury to the long thoracic nerve (winged scapula) and thoracodorsal nerve — which is why sentinel node biopsy has largely replaced routine clearance.'},
+    {id:'inguinal_ln', name:'Inguinal Lymph Nodes', latin:'Nodi lymphoidei inguinales', r:0.65, mirror:true,
+     pts:s=>[[s*3.4,88,5],[s*5.6,87,5],[s*7.4,85.4,4.6],[s*6,82,4.4]],
+     o:'Superficial and deep groups in the femoral triangle. The superficial nodes lie along the inguinal ligament and the great saphenous vein; the deep nodes lie medial to the femoral vein, including the node of Cloquet in the femoral canal.',
+     detail:{Superficial:'Horizontal group along the inguinal ligament; vertical group along the great saphenous vein',Deep:'Medial to the femoral vein, including the node of Cloquet',Afferents:'Lower limb, lower abdominal wall, perineum, external genitalia, anal canal below the pectinate line',Efferents:'External iliac nodes → para-aortic nodes → thoracic duct'},
+     clin:'Enlarged inguinal nodes are common and often reactive to trivial foot or leg infection — always examine the whole limb and perineum before escalating. Groin dissection carries a high risk of lymphoedema and wound complications.'},
+    {id:'cervical_ln', name:'Cervical Lymph Nodes', latin:'Nodi lymphoidei cervicales', r:0.6, mirror:true,
+     pts:s=>[[s*3.4,151,2.4],[s*4.6,156,2.4],[s*5.6,160,2],[s*6,163.4,0.4]],
+     o:'A deep chain along the internal jugular vein plus superficial groups, draining the head, neck and — via the thoracic duct territory — more distant sites. They are divided into six surgical levels used universally in head and neck oncology.',
+     detail:{Levels:'I submental/submandibular · II upper jugular · III mid jugular · IV lower jugular · V posterior triangle · VI anterior compartment',Afferents:'Scalp, face, oral cavity, pharynx, larynx, thyroid',Efferents:'Jugular lymph trunk → thoracic duct or right lymphatic duct',Relations:'Deep chain lies along the internal jugular vein within the carotid sheath'},
+     clin:"Virchow's node — an enlarged left supraclavicular node (level IV) — classically signals gastric or other intra-abdominal malignancy, because the thoracic duct drains here. Persistent, hard, fixed cervical nodes in an adult require investigation for malignancy, not a course of antibiotics."},
+    {id:'paraaortic_ln', name:'Para-aortic & Iliac Nodes', latin:'Nodi lymphoidei lumbales et iliaci', r:0.62, mirror:true,
+     pts:s=>[[s*1.8,102,-2],[s*2.4,108,-2.2],[s*2.6,116,-2.4],[s*3,94,-1.4]],
+     o:'The nodal chains lying alongside the aorta and iliac vessels in the retroperitoneum. They receive lymph from the pelvis, gonads, kidneys and lower limbs and funnel it into the cisterna chyli.',
+     detail:{Location:'Alongside the abdominal aorta and IVC (para-aortic); along the common, external and internal iliac vessels',Afferents:'Pelvic viscera, gonads (directly, via their embryological descent), kidneys, lower limbs via iliac chain',Efferents:'Lumbar lymph trunks → cisterna chyli → thoracic duct'},
+     clin:'Testicular tumours metastasise to the para-aortic nodes — not the inguinal nodes — because the testis develops in the abdomen and drags its lymphatics with it. This is why a testicular mass warrants abdominal imaging rather than a groin examination alone.'}
+  ];
+  LYM.forEach(l=>{
+    const sides = l.mirror?[1,-1]:[1];
+    sides.forEach(s=>{
+      const sfx = l.mirror?(s>0?'_r':'_l'):'';
+      const sideName = l.mirror?(s>0?'Right ':'Left '):'';
+      const g=new THREE.Group();
+      const pts=l.pts(s);
+      g.add(tube(pts, l.r*0.35, lym(), false, 7));
+      pts.forEach(p=>g.add(ball(p, l.r, lym())));
+      register(g,{
+        id:l.id+sfx, layer:'lymphatics', tag:'Lymphatics · Immune System',
+        name:sideName+l.name, latin:l.latin, focus:V(...pts[1]),
+        overview:l.o, detail:l.detail,
+        clinical:[{t:'Clinical relevance', d:l.clin}]
+      });
+    });
+  });
+
+  function buildVessels(d, layer, tag, matFn){
+    const sides = d.mirror?[1,-1]:[1];
+    sides.forEach(s=>{
+      const sfx = d.mirror?(s>0?'_r':'_l'):'';
+      const sideName = d.mirror?(s>0?'Right ':'Left '):'';
+      const pts=d.pts(s);
+      register(tube(pts, d.r, matFn(), false, 9),{
+        id:d.id+sfx, layer:layer, tag:tag,
+        name:sideName+d.name, latin:d.latin, focus:V(...pts[Math.floor(pts.length/2)]),
+        overview:d.o, detail:d.detail,
+        clinical:[{t:'Clinical relevance', d:d.clin}]
+      });
+    });
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   3 · BUILD
+   ══════════════════════════════════════════════════════════════════ */
+try{
+  buildSkeleton();
+  buildSoftTissue();
+}catch(err){
+  console.error(err); showFallback('Model build failed.'); return;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   4 · CAMERA CONTROLS (custom orbit / zoom / pan)
+   ══════════════════════════════════════════════════════════════════ */
+const target = V(0,96,0);
+let sph = {r:290, theta:0.32, phi:1.30};   // spherical camera position
+let want = {r:290, theta:0.32, phi:1.30, t:target.clone()};
+let autoSpin=false;
+
+function applyCamera(){
+  sph.r     += (want.r-sph.r)*0.14;
+  sph.theta += (want.theta-sph.theta)*0.16;
+  sph.phi   += (want.phi-sph.phi)*0.16;
+  target.lerp(want.t, 0.14);
+  camera.position.set(
+    target.x + sph.r*Math.sin(sph.phi)*Math.sin(sph.theta),
+    target.y + sph.r*Math.cos(sph.phi),
+    target.z + sph.r*Math.sin(sph.phi)*Math.cos(sph.theta)
+  );
+  camera.lookAt(target);
+}
+
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{
+  try{ canvas.setPointerCapture(e.pointerId); }catch(_){}
+  drag={x:e.clientX,y:e.clientY,btn:e.button,moved:0};
+  canvas.classList.add('grabbing'); autoSpin=false; syncSpinBtn();
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!drag){ hoverTest(e); return; }
+  const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  drag.moved += Math.abs(dx)+Math.abs(dy);
+  if(drag.btn===2 || e.shiftKey){                       // pan
+    const scale = sph.r*0.0016;
+    const right = V(Math.cos(sph.theta),0,-Math.sin(sph.theta));
+    want.t.addScaledVector(right, -dx*scale);
+    want.t.y += dy*scale;
+  }else{                                                // orbit
+    want.theta -= dx*0.0062;
+    want.phi    = Math.max(0.18, Math.min(2.95, want.phi - dy*0.0058));
+  }
+  drag.x=e.clientX; drag.y=e.clientY;
+});
+canvas.addEventListener('pointerup',e=>{
+  const wasClick = drag && drag.moved<6;
+  canvas.classList.remove('grabbing');
+  if(wasClick) clickTest(e);
+  drag=null;
+});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  want.r = Math.max(55, Math.min(620, want.r * (1 + Math.sign(e.deltaY)*0.11)));
+},{passive:false});
+
+// pinch zoom
+let pinch=null;
+canvas.addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+  }
+},{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  if(e.touches.length===2 && pinch){
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    want.r = Math.max(55, Math.min(620, want.r * (pinch/d)));
+    pinch=d;
+  }
+},{passive:true});
+canvas.addEventListener('touchend',()=>{pinch=null;});
+
+/* ══════════════════════════════════════════════════════════════════
+   5 · PICKING
+   ══════════════════════════════════════════════════════════════════ */
+const ray = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+let selectedId=null, hoverId=null;
+const EM_SEL = new THREE.Color(0x2DD4BF), EM_HOV = new THREE.Color(0x1b6f66);
+
+function pointerNDC(e){
+  const r=canvas.getBoundingClientRect();
+  ndc.x = ((e.clientX-r.left)/r.width)*2-1;
+  ndc.y = -((e.clientY-r.top)/r.height)*2+1;
+}
+function pick(e){
+  pointerNDC(e);
+  ray.setFromCamera(ndc,camera);
+  const live = pickTargets.filter(m=>{
+    const d=STRUCTURES[m.userData.sid];
+    return d && layerGroups[d.layer].visible;
+  });
+  const hits = ray.intersectObjects(live,false);
+  return hits.length? hits[0].object.userData.sid : null;
+}
+function hoverTest(e){
+  const id=pick(e);
+  if(id===hoverId) return;
+  if(hoverId && hoverId!==selectedId) paint(hoverId,null);
+  hoverId=id;
+  if(hoverId && hoverId!==selectedId) paint(hoverId,EM_HOV);
+  canvas.classList.toggle('pickable', !!id);
+}
+function clickTest(e){
+  const id=pick(e);
+  if(id) select(id); else deselect();
+}
+function paint(id,color){
+  const d=STRUCTURES[id]; if(!d) return;
+  d.object.traverse(o=>{
+    if(o.isMesh && o.material && o.material.emissive){
+      o.material.emissive.set(color||0x000000);
+      o.material.emissiveIntensity = color?0.75:0;
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   6 · UI — panel, landmarks, layers, search
+   ══════════════════════════════════════════════════════════════════ */
+const panel=document.getElementById('panel'),
+      pnTag=document.getElementById('pnTag'),
+      pnTitle=document.getElementById('pnTitle'),
+      pnLatin=document.getElementById('pnLatin'),
+      pnTabs=document.getElementById('pnTabs'),
+      pnBody=document.getElementById('pnBody'),
+      labelHost=document.getElementById('labels');
+
+let activeLabels=[], showLabels=true;
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function select(id){
+  const d=STRUCTURES[id]; if(!d) return;
+  if(selectedId && selectedId!==id) paint(selectedId,null);
+  selectedId=id; paint(id,EM_SEL);
+
+  pnTag.textContent = d.tag||'Structure';
+  pnTitle.textContent = d.name;
+  pnLatin.textContent = d.latin||'';
+  panel.classList.add('open');
+
+  // ---- tabs
+  const tabs=[{k:'overview',l:'Overview'}];
+  if(d.landmarks&&d.landmarks.length) tabs.push({k:'landmarks',l:'Landmarks ('+d.landmarks.length+')'});
+  if(d.detail)        tabs.push({k:'detail',l:'Anatomy'});
+  if(d.articulations||d.attachments) tabs.push({k:'relations',l:'Relations'});
+  if(d.clinical&&d.clinical.length)  tabs.push({k:'clinical',l:'Clinical'});
+
+  pnTabs.innerHTML = tabs.map((t,i)=>
+    `<button class="pn-tab${i===0?' active':''}" data-k="${t.k}">${t.l}</button>`).join('');
+
+  // ---- panes
+  let html='';
+  html+=`<div class="pn-pane active" data-k="overview"><p>${esc(d.overview||'')}</p></div>`;
+
+  if(d.landmarks&&d.landmarks.length){
+    html+=`<div class="pn-pane" data-k="landmarks">
+      <h4>Anatomical landmarks — click to locate on the model</h4>`+
+      d.landmarks.map((l,i)=>
+        `<div class="lm" data-lm="${i}">
+           <div class="lm-n">${i+1}</div>
+           <div><div class="lm-t">${esc(l.n)}</div><div class="lm-d">${esc(l.d)}</div></div>
+         </div>`).join('')+`</div>`;
+  }
+  if(d.detail){
+    html+=`<div class="pn-pane" data-k="detail">`+
+      Object.keys(d.detail).map(k=>`<h4>${esc(k)}</h4><p>${esc(d.detail[k])}</p>`).join('')+`</div>`;
+  }
+  if(d.articulations||d.attachments){
+    html+=`<div class="pn-pane" data-k="relations">`;
+    if(d.articulations) html+=`<h4>Articulations</h4><ul>`+d.articulations.map(a=>`<li>${esc(a)}</li>`).join('')+`</ul>`;
+    if(d.attachments)  html+=`<h4>Muscle &amp; ligament attachments</h4><ul>`+d.attachments.map(a=>`<li>${esc(a)}</li>`).join('')+`</ul>`;
+    html+=`</div>`;
+  }
+  if(d.clinical&&d.clinical.length){
+    html+=`<div class="pn-pane" data-k="clinical">`+
+      d.clinical.map(c=>`<div class="clin"><strong>${esc(c.t)}</strong><span>${esc(c.d)}</span></div>`).join('')+
+      `</div>`;
+  }
+  pnBody.innerHTML=html;
+  pnBody.scrollTop=0;
+
+  buildLabels(d);
+  focusOn(d.focus, id.indexOf('skull')===0?150:200);
+}
+
+function deselect(){
+  if(selectedId) paint(selectedId,null);
+  selectedId=null;
+  panel.classList.remove('open');
+  clearLabels();
+}
+
+pnTabs.addEventListener('click',e=>{
+  const b=e.target.closest('.pn-tab'); if(!b) return;
+  pnTabs.querySelectorAll('.pn-tab').forEach(x=>x.classList.toggle('active',x===b));
+  pnBody.querySelectorAll('.pn-pane').forEach(p=>p.classList.toggle('active',p.dataset.k===b.dataset.k));
+  pnBody.scrollTop=0;
+});
+pnBody.addEventListener('click',e=>{
+  const row=e.target.closest('.lm'); if(!row) return;
+  const L=activeLabels[+row.dataset.lm]; if(!L) return;
+  activeLabels.forEach(x=>x.el.classList.remove('hot'));
+  L.el.classList.add('hot');
+  focusOn(L.pos, 120);
+});
+document.getElementById('pnClose').onclick=deselect;
+
+/* ---- landmark labels ---- */
+function clearLabels(){ labelHost.innerHTML=''; activeLabels=[]; }
+function buildLabels(d){
+  clearLabels();
+  if(!d.landmarks) return;
+  d.landmarks.forEach((l,i)=>{
+    const el=document.createElement('div');
+    el.className='lab';
+    el.innerHTML=`<span class="pin"></span><span class="txt">${i+1}. ${esc(l.n)}</span>`;
+    labelHost.appendChild(el);
+    activeLabels.push({el, pos:V(...l.p)});
+  });
+}
+const _p=new THREE.Vector3();
+function updateLabels(){
+  if(!activeLabels.length) return;
+  const w=canvas.clientWidth, h=canvas.clientHeight;
+  activeLabels.forEach(L=>{
+    _p.copy(L.pos).project(camera);
+    const vis = showLabels && _p.z<1;
+    L.el.style.opacity = vis?'1':'0';
+    if(!vis) return;
+    L.el.style.left = ((_p.x*0.5+0.5)*w)+'px';
+    L.el.style.top  = ((-_p.y*0.5+0.5)*h)+'px';
+  });
+}
+
+/* ---- camera focus ---- */
+function focusOn(v,dist){
+  if(!v) return;
+  want.t.copy(v);
+  want.r = dist||180;
+}
+
+/* ---- layer rail ---- */
+const layerList=document.getElementById('layerList');
+layerList.innerHTML = LAYERS.map(L=>
+  `<div class="layer${L.on?' on':''}" data-id="${L.id}">
+     <span class="dot" style="background:${L.color};color:${L.color}"></span>
+     <span class="nm">${L.name}</span><span class="sw"></span>
+   </div>`).join('');
+layerList.addEventListener('click',e=>{
+  const row=e.target.closest('.layer'); if(!row) return;
+  const id=row.dataset.id, g=layerGroups[id];
+  g.visible=!g.visible;
+  row.classList.toggle('on',g.visible);
+  if(!g.visible && selectedId && STRUCTURES[selectedId].layer===id) deselect();
+});
+
+document.getElementById('opacity').addEventListener('input',e=>{
+  const o=+e.target.value/100;
+  ['muscles','arteries','veins','nerves','lymphatics'].forEach(k=>{
+    layerGroups[k].traverse(m=>{ if(m.isMesh&&m.material.transparent) m.material.opacity=o; });
+  });
+});
+
+/* ---- search ---- */
+const searchEl=document.getElementById('search'), resEl=document.getElementById('results');
+/* Index covers both whole structures and every individual landmark, so a
+   search for "scaphoid" or "greater trochanter" finds the point on the model. */
+const INDEX = [];
+Object.keys(STRUCTURES).forEach(id=>{
+  const d = STRUCTURES[id];
+  INDEX.push({
+    id, lm:null, name:d.name, sub:d.tag, layer:d.layer,
+    hay:(d.name+' '+(d.latin||'')+' '+(d.tag||'')).toLowerCase()
+  });
+  (d.landmarks||[]).forEach((l,i)=>{
+    INDEX.push({
+      id, lm:i, name:l.n, sub:'Landmark · '+d.name, layer:d.layer,
+      hay:(l.n+' '+d.name).toLowerCase()
+    });
+  });
+});
+searchEl.addEventListener('input',()=>{
+  const q=searchEl.value.trim().toLowerCase();
+  if(q.length<2){ resEl.classList.remove('show'); return; }
+  // rank: name-start matches first, then whole-structure entries
+  const hits=INDEX.filter(x=>x.hay.indexOf(q)>-1).sort((a,b)=>{
+    const as=a.name.toLowerCase().indexOf(q)===0?0:1, bs=b.name.toLowerCase().indexOf(q)===0?0:1;
+    return as-bs || (a.lm===null?0:1)-(b.lm===null?0:1);
+  }).slice(0,14);
+  if(!hits.length){ resEl.innerHTML='<div class="res">No structure found</div>'; resEl.classList.add('show'); return; }
+  resEl.innerHTML=hits.map(h=>
+    `<div class="res" data-id="${h.id}"${h.lm===null?'':` data-lm="${h.lm}"`}>${esc(h.name)}<small>${esc(h.sub)}</small></div>`
+  ).join('');
+  resEl.classList.add('show');
+});
+resEl.addEventListener('click',e=>{
+  const r=e.target.closest('.res'); if(!r||!r.dataset.id) return;
+  const id=r.dataset.id, d=STRUCTURES[id];
+  if(!layerGroups[d.layer].visible){          // auto-enable that layer
+    layerGroups[d.layer].visible=true;
+    const row=layerList.querySelector(`[data-id="${d.layer}"]`);
+    if(row) row.classList.add('on');
+  }
+  select(id);
+  if(r.dataset.lm!==undefined) focusLandmark(+r.dataset.lm);
+  resEl.classList.remove('show'); searchEl.value='';
+});
+
+/** Highlight one landmark of the current selection and fly the camera to it. */
+function focusLandmark(i){
+  const L=activeLabels[i]; if(!L) return;
+  activeLabels.forEach(x=>x.el.classList.remove('hot'));
+  L.el.classList.add('hot');
+  focusOn(L.pos,120);
+  // reveal it in the panel too
+  const tab=[...pnTabs.querySelectorAll('.pn-tab')].find(t=>t.dataset.k==='landmarks');
+  if(tab) tab.click();
+  const row=pnBody.querySelector(`.lm[data-lm="${i}"]`);
+  if(row) row.scrollIntoView({block:'nearest'});
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#searchWrap')) resEl.classList.remove('show');
+});
+
+/* ---- top bar ---- */
+document.getElementById('btnReset').onclick=()=>{
+  want.r=290; want.theta=0.32; want.phi=1.30; want.t.set(0,96,0);
+  deselect();
+};
+const spinBtn=document.getElementById('btnSpin');
+function syncSpinBtn(){ spinBtn.style.background = autoSpin?'rgba(45,212,191,.28)':''; }
+spinBtn.onclick=()=>{ autoSpin=!autoSpin; syncSpinBtn(); };
+const labBtn=document.getElementById('btnLabels');
+labBtn.onclick=()=>{
+  showLabels=!showLabels;
+  labBtn.style.background = showLabels?'':'rgba(255,255,255,.03)';
+  labBtn.style.opacity = showLabels?'1':'.55';
+};
+
+/* keyboard */
+window.addEventListener('keydown',e=>{
+  if(e.target===searchEl) { if(e.key==='Escape') searchEl.blur(); return; }
+  if(e.key==='Escape') deselect();
+  if(e.key==='r'||e.key==='R') document.getElementById('btnReset').click();
+  if(e.key==='/'){ e.preventDefault(); searchEl.focus(); }
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   7 · LOOP
+   ══════════════════════════════════════════════════════════════════ */
+function resize(){
+  const w=canvas.clientWidth||window.innerWidth, h=canvas.clientHeight||window.innerHeight;
+  if(canvas.width!==w*renderer.getPixelRatio()||canvas.height!==h*renderer.getPixelRatio()){
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+}
+function tick(){
+  requestAnimationFrame(tick);
+  if(autoSpin) want.theta += 0.0034;
+  resize(); applyCamera(); updateLabels();
+  renderer.render(scene,camera);
+}
+tick();
+
+/* Optional debug handle (?debug=1) — used for diagnostics and automated checks.
+   Also renders on demand, which is useful when rAF is throttled in a hidden tab. */
+if(/debug=1/.test(location.search + location.hash)){
+  window.__anatomy = {
+    scene, camera, renderer, STRUCTURES, layerGroups,
+    select, deselect, focusOn,
+    count:()=>Object.keys(STRUCTURES).length,
+    frame:(n)=>{ for(let i=0;i<(n||1);i++){ resize(); applyCamera(); updateLabels(); renderer.render(scene,camera);} }
+  };
+}
+
+/* reveal */
+setTimeout(()=>{
+  const l=document.getElementById('loader');
+  l.classList.add('gone'); setTimeout(()=>l.style.display='none',600);
+},450);
+
+function showFallback(msg){
+  const sp=document.getElementById('spinner'), tx=document.getElementById('loadTxt'), fb=document.getElementById('fallback');
+  if(sp) sp.style.display='none';
+  if(tx) tx.style.display='none';
+  if(fb) fb.style.display='block';
+  console.error('Anatomy explorer:',msg);
+}
+})();
+</script>
+</body>
+</html>
