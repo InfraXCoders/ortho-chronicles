@@ -1,0 +1,17 @@
+{
+  "_comment": "Drop .glb files in this folder and list them under 'models' to replace the explorer's procedural geometry. See README.md. While 'models' is empty the explorer uses its built-in procedural skeleton.",
+
+  "attribution": {
+    "source": "",
+    "license": "",
+    "url": ""
+  },
+
+  "transform": {
+    "scale": 1.0,
+    "offset": [0, 0, 0],
+    "rotation": [0, 0, 0]
+  },
+
+  "models": {}
+}

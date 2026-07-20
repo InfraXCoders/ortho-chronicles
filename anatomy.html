@@ -211,6 +211,18 @@ a{color:inherit;}
   padding:1px 6px;font-size:.7rem;font-family:inherit;
 }
 
+/* ---------- Model attribution (shown only when real models load) ---------- */
+#attrib{
+  position:absolute; left:14px; bottom:14px; z-index:19;
+  background:rgba(11,20,36,.86); border:1px solid var(--line); border-radius:9px;
+  padding:7px 12px; font-size:.71rem; color:var(--mut); backdrop-filter:blur(10px);
+  max-width:44vw;
+}
+#attrib i{color:var(--gold2); margin-right:5px;}
+#attrib a{color:var(--teal); text-decoration:none;}
+#attrib a:hover{text-decoration:underline;}
+@media(max-width:900px){ #attrib{display:none;} }
+
 /* ---------- Loader ---------- */
 #loader{
   position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;
@@ -319,6 +331,10 @@ a{color:inherit;}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Optional: enables scan-derived GLB models. If this fails to load the
+     explorer silently keeps its procedural geometry. -->
+<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"
+        onerror="window.__noGLTF=true"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════════
    ORTHOCHRONICLES · 3D ANATOMY EXPLORER
@@ -559,6 +575,10 @@ const cartMat = (function(){
   });
 })();
 
+/* One shared cortical-bone material, reused by the procedural builders and by
+   any scan-derived meshes loaded later, so both look like the same skeleton. */
+const M_BONE = boneMat();
+
 /* Suture lines and nutrient foramina */
 const sutureMat = new THREE.MeshStandardMaterial({color:0xD6CBB4, roughness:0.96, metalness:0.01});
 const foramenMat= new THREE.MeshStandardMaterial({color:0x6B6152, roughness:0.95, metalness:0.02});
@@ -594,7 +614,7 @@ function register(obj, data){
    1 · SKELETON
    ══════════════════════════════════════════════════════════════════ */
 function buildSkeleton(){
-  const M = boneMat();
+  const M = M_BONE;
 
   /* ---------- SKULL ---------- */
   (function(){
@@ -2267,6 +2287,96 @@ function tick(){
   renderer.render(scene,camera);
 }
 tick();
+
+/* ══════════════════════════════════════════════════════════════════
+   8 · HIGH-DETAIL MODEL LOADER  (optional, opt-in)
+
+   The explorer ships with procedural geometry so it always works. To use
+   scan-derived meshes instead, drop .glb files into /models and list them
+   in models/manifest.json — see models/README.md. Each listed structure
+   has its procedural geometry swapped for the real mesh, keeping the same
+   id, landmarks, panel content and picking behaviour.
+
+   Anything missing, malformed or unreachable falls back silently.
+   ══════════════════════════════════════════════════════════════════ */
+const MODELS_BASE = 'models/';
+let modelsLoaded = 0;
+
+function loadHighDetailModels(){
+  fetch(MODELS_BASE+'manifest.json', {cache:'no-cache'})
+    .then(r => r.ok ? r.json() : null)
+    .then(man => {
+      if(!man || !man.models || !Object.keys(man.models).length) return;   // nothing configured
+      if(window.__noGLTF || !THREE.GLTFLoader){
+        console.warn('[anatomy] GLTFLoader unavailable — keeping procedural geometry.');
+        return;
+      }
+      showAttribution(man.attribution);
+      const loader = new THREE.GLTFLoader();
+      const glob = man.transform || {};
+      Object.keys(man.models).forEach(id=>{
+        const d = STRUCTURES[id];
+        if(!d){ console.warn('[anatomy] manifest lists unknown structure:', id); return; }
+        const entry = man.models[id];
+        loader.load(MODELS_BASE + entry.file,
+          gltf => { try{ swapInModel(d, gltf.scene, entry, glob); }catch(e){ console.warn('[anatomy] swap failed', id, e); } },
+          undefined,
+          err  => console.warn('[anatomy] could not load', entry.file, err));
+      });
+    })
+    .catch(()=>{ /* no manifest — procedural geometry stands */ });
+}
+
+/** Replace a structure's procedural meshes with a loaded model, preserving picking. */
+function swapInModel(d, root, entry, glob){
+  // Drop the procedural meshes out of the raycast list, then discard them
+  d.object.traverse(o=>{
+    if(o.isMesh){
+      const i = pickTargets.indexOf(o);
+      if(i>-1) pickTargets.splice(i,1);
+      if(o.geometry) o.geometry.dispose();
+    }
+  });
+  while(d.object.children.length) d.object.remove(d.object.children[0]);
+
+  const sc  = (entry.scale!=null?entry.scale:1) * (glob.scale!=null?glob.scale:1);
+  const off = entry.offset  || [0,0,0];
+  const gof = glob.offset   || [0,0,0];
+  const rot = entry.rotation|| glob.rotation || [0,0,0];
+  root.scale.setScalar(sc);
+  root.position.set(off[0]+gof[0], off[1]+gof[1], off[2]+gof[2]);
+  root.rotation.set(rot[0], rot[1], rot[2]);
+
+  // Unify appearance and restore pickability under the same structure id
+  root.traverse(o=>{
+    if(o.isMesh){
+      if(entry.keepMaterial !== true) o.material = M_BONE;
+      o.userData.sid = d.id;
+      pickTargets.push(o);
+    }
+  });
+  d.object.add(root);
+  d.highDetail = true;
+  modelsLoaded++;
+}
+
+/** CC BY-SA and most anatomy datasets require visible attribution. */
+function showAttribution(a){
+  if(!a) return;
+  let el = document.getElementById('attrib');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'attrib';
+    document.getElementById('stage').appendChild(el);
+  }
+  const src = a.url
+    ? '<a href="'+a.url+'" target="_blank" rel="noopener">'+esc(a.source||'Model source')+'</a>'
+    : esc(a.source||'Model source');
+  el.innerHTML = '<i class="fas fa-cube"></i> Models: '+src+
+                 (a.license? ' · '+esc(a.license) : '');
+}
+
+loadHighDetailModels();
 
 /* Optional debug handle (?debug=1) — used for diagnostics and automated checks.
    Also renders on demand, which is useful when rAF is throttled in a hidden tab. */
