@@ -211,6 +211,19 @@ a{color:inherit;}
   padding:1px 6px;font-size:.7rem;font-family:inherit;
 }
 
+/* ---------- Loading status while meshes stream in ---------- */
+#loadstat{
+  position:absolute; top:76px; left:50%; transform:translateX(-50%); z-index:23;
+  display:none; align-items:center; gap:9px;
+  background:rgba(11,20,36,.92); border:1px solid var(--line); border-radius:20px;
+  padding:7px 15px; font-size:.76rem; color:var(--txt); backdrop-filter:blur(10px);
+  box-shadow:0 8px 26px rgba(0,0,0,.45);
+}
+.ls-spin{
+  width:12px;height:12px;border:2px solid rgba(255,255,255,.18);
+  border-top-color:var(--teal);border-radius:50%;animation:sp .8s linear infinite;display:block;
+}
+
 /* ---------- Model attribution (shown only when real models load) ---------- */
 #attrib{
   position:absolute; left:14px; bottom:14px; z-index:19;
@@ -1438,17 +1451,17 @@ function buildSoftTissue(){
      o:'The sole extensor of the elbow, with three heads. The long head crosses the shoulder from the infraglenoid tubercle; the medial and lateral heads arise from the humeral shaft either side of the radial groove.',
      detail:{Origin:'Long head — infraglenoid tubercle; lateral and medial heads — posterior humerus',Insertion:'Olecranon process of the ulna',Nerve:'Radial nerve (C6–C8)',Action:'Elbow extension; the long head also extends and adducts the shoulder'},
      clin:'Triceps function is essential for crutch walking and for pushing up from a chair — a key consideration in rehabilitation planning after upper limb injury or in tetraplegia.'},
-    {id:'pectoralis', name:'Pectoralis Major', latin:'Musculus pectoralis major', r:3.4, mirror:true,
+    {id:'pectoralis', shape:'sheet', name:'Pectoralis Major', latin:'Musculus pectoralis major', r:3.4, mirror:true,
      pts:s=>[[s*1.5,146,7],[s*6,142,7.5],[s*11,140,5.5],[s*16,142,2]],
      o:'The broad fan of the anterior chest wall, with clavicular, sternocostal and abdominal heads whose fibres twist 180° before inserting — which is why it can both flex and extend the shoulder depending on starting position.',
      detail:{Origin:'Medial clavicle, sternum, upper six costal cartilages',Insertion:'Lateral lip of the bicipital groove of the humerus',Nerve:'Medial and lateral pectoral nerves (C5–T1)',Action:'Adduction, medial rotation and flexion of the arm; accessory muscle of respiration'},
      clin:'Rupture occurs typically in weight-trainers during bench press, producing a sudden tearing sensation, bruising and loss of the anterior axillary fold. Surgical repair is recommended in active individuals.'},
-    {id:'latissimus', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:3.4, mirror:true,
+    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:3.4, mirror:true,
      pts:s=>[[s*3,105,-6],[s*8,120,-6.5],[s*12,134,-5],[s*16,142,0]],
      o:'The largest muscle of the back, sweeping from the lower spine and iliac crest up to the humerus — the "climbing muscle" that pulls the body up toward a fixed arm.',
      detail:{Origin:'Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower ribs',Insertion:'Floor of the bicipital groove of the humerus',Nerve:'Thoracodorsal nerve (C6–C8)',Action:'Extension, adduction and medial rotation of the arm'},
      clin:'Its reliable pedicle makes the latissimus dorsi flap a workhorse in reconstructive surgery — for breast reconstruction and for covering large soft-tissue defects, including around the shoulder and chest wall.'},
-    {id:'trapezius', name:'Trapezius', latin:'Musculus trapezius', r:2.9, mirror:true,
+    {id:'trapezius', shape:'sheet', name:'Trapezius', latin:'Musculus trapezius', r:2.9, mirror:true,
      pts:s=>[[s*0.6,166,-6],[s*5,155,-6.5],[s*10,149,-6],[s*14,147,-5]],
      o:'A large diamond-shaped superficial back muscle in three functional parts: upper fibres elevate the scapula, middle fibres retract it, lower fibres depress it and rotate the glenoid upward during arm elevation.',
      detail:{Origin:'External occipital protuberance, ligamentum nuchae, spinous processes C7–T12',Insertion:'Lateral clavicle, acromion, spine of scapula',Nerve:'Spinal accessory nerve (CN XI), with proprioception from C3–C4',Action:'Elevation, retraction, depression and upward rotation of the scapula'},
@@ -1483,7 +1496,7 @@ function buildSoftTissue(){
      o:'The strongest dorsiflexor of the ankle, running down the front of the shin and crossing to the medial side of the foot. It lifts the foot in swing phase and controls its lowering after heel strike.',
      detail:{Origin:'Lateral condyle and upper lateral surface of the tibia, interosseous membrane',Insertion:'Medial cuneiform and base of the first metatarsal',Nerve:'Deep peroneal nerve (L4, L5)',Action:'Dorsiflexion and inversion of the foot'},
      clin:'Loss of this muscle — usually through common peroneal nerve palsy at the fibular neck — causes foot drop and a high-stepping gait. It is also the key muscle of the anterior compartment, the compartment most often affected by compartment syndrome after tibial fracture.'},
-    {id:'rectusabd', name:'Rectus Abdominis', latin:'Musculus rectus abdominis', r:2.3, mirror:true,
+    {id:'rectusabd', shape:'sheet', name:'Rectus Abdominis', latin:'Musculus rectus abdominis', r:2.3, mirror:true,
      pts:s=>[[s*2.4,135,7.6],[s*2.6,126,8.2],[s*2.6,116,8.4],[s*2.4,105,7.6]],
      o:'The paired "six-pack" strap muscle running from ribs to pubis inside the rectus sheath, divided by three or more tendinous intersections. Part of the anterior core that controls lumbar posture.',
      detail:{Origin:'Pubic crest and pubic symphysis',Insertion:'Xiphoid process and costal cartilages 5–7',Nerve:'Thoracoabdominal nerves (T7–T12)',Action:'Trunk flexion; increases intra-abdominal pressure; stabilises the pelvis'},
@@ -1536,7 +1549,7 @@ function buildSoftTissue(){
      detail:{Origin:'Lateral epicondyle (common extensor origin), radius, ulna and interosseous membrane',Insertion:'Metacarpal bases and the extensor expansions of the digits',Nerve:'Radial nerve and its posterior interosseous branch (C7, C8)',Action:'Wrist and finger extension; forearm supination'},
      clin:'Lateral epicondylitis ("tennis elbow") is a degenerative tendinopathy of the extensor carpi radialis brevis origin, not inflammation — which is why eccentric loading beats repeated steroid injection. The posterior interosseous nerve can be entrapped as it passes through supinator.'},
     /* ---- Trunk & girdle ---- */
-    {id:'serratus', name:'Serratus Anterior', latin:'Musculus serratus anterior', r:2.0, mirror:true,
+    {id:'serratus', shape:'sheet', name:'Serratus Anterior', latin:'Musculus serratus anterior', r:2.0, mirror:true,
      pts:s=>[[s*10.6,140.0,4.6],[s*12.6,138.0,0.6],[s*12.4,137.0,-3.4],[s*11.0,136.0,-6.0]],
      o:'A fan of digitations from the upper ribs to the medial border of the scapula, holding the scapula against the chest wall and rotating it upward — the "boxer\'s muscle" of protraction.',
      detail:{Origin:'Outer surfaces of ribs 1–8',Insertion:'Medial border of the scapula (costal surface)',Nerve:'Long thoracic nerve (C5, C6, C7)',Action:'Protraction and upward rotation of the scapula; holds it to the thorax'},
@@ -1551,7 +1564,7 @@ function buildSoftTissue(){
      o:'Psoas major (from the lumbar vertebrae) joins iliacus (from the iliac fossa) to form the iliopsoas, the most powerful hip flexor, inserting on the lesser trochanter.',
      detail:{Origin:'Psoas — bodies and transverse processes of T12–L5; Iliacus — iliac fossa',Insertion:'Lesser trochanter of the femur',Nerve:'Psoas — L1–L3 ventral rami; Iliacus — femoral nerve (L2, L3)',Action:'Hip flexion; with the femur fixed, flexes the trunk; stabilises the lumbar spine'},
      clin:'A psoas abscess (from spinal TB or Crohn disease) causes a flexed, externally rotated hip and a positive psoas stretch test. Snapping of the iliopsoas tendon over the pelvic brim is a common cause of anterior hip pain, and the tendon is a recognised source of groin pain after hip replacement.'},
-    {id:'tfl', name:'Tensor Fasciae Latae & Iliotibial Band', latin:'M. tensor fasciae latae / Tractus iliotibialis', r:1.4, mirror:true,
+    {id:'tfl', shape:'sheet', name:'Tensor Fasciae Latae & Iliotibial Band', latin:'M. tensor fasciae latae / Tractus iliotibialis', r:1.4, mirror:true,
      pts:s=>[[s*9.0,99.6,3.2],[s*11.4,92.0,2.4],[s*12.0,76.0,1.8],[s*11.6,60.0,1.8],[s*10.9,45.0,2.2]],
      o:'A small muscle at the front of the hip continuing into the iliotibial band — a thick fascial strap running down the lateral thigh to Gerdy tubercle on the tibia, bracing the extended knee.',
      detail:{Origin:'Anterior iliac crest and ASIS',Insertion:'Iliotibial tract → Gerdy tubercle of the tibia',Nerve:'Superior gluteal nerve (L4, L5, S1)',Action:'Hip flexion, abduction and internal rotation; lateral knee stabilisation'},
@@ -1587,7 +1600,7 @@ function buildSoftTissue(){
      o:'A small triangular muscle deep to pectoralis major, running from the third to fifth ribs up to the coracoid process. It is the surgical key to the axilla, dividing the axillary artery and the axillary nodes into three levels.',
      detail:{Origin:'Anterior surfaces of ribs 3–5',Insertion:'Coracoid process of the scapula',Nerve:'Medial pectoral nerve (C8, T1)',Action:'Protracts and depresses the scapula; assists forced inspiration'},
      clin:'It divides the axillary artery into its three parts and the axillary lymph nodes into levels I–III, the framework used in breast cancer surgery. A tight pectoralis minor tilts the scapula anteriorly, contributing to shoulder impingement, and can compress the neurovascular bundle in pectoralis minor (thoracic outlet) syndrome.'},
-    {id:'rhomboids', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:1.4, mirror:true,
+    {id:'rhomboids', shape:'sheet', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:1.4, mirror:true,
      pts:s=>[[s*1.6,143.0,-6.0],[s*5.0,141.0,-6.5],[s*8.0,138.0,-6.5],[s*10.4,135.0,-6.0]],
      o:'Two parallel straps running obliquely from the lower cervical and upper thoracic spinous processes down to the medial border of the scapula, retracting and downwardly rotating it.',
      detail:{Origin:'Rhomboid minor — C7–T1 spinous processes; major — T2–T5 spinous processes',Insertion:'Medial border of the scapula, from the spine to the inferior angle',Nerve:'Dorsal scapular nerve (C5)',Action:'Retraction, elevation and downward rotation of the scapula'},
@@ -1632,7 +1645,7 @@ function buildSoftTissue(){
      o:'The largest muscle mass of the posterior neck, part of the transversospinalis group, spanning about five segments from transverse processes to spinous processes and the occiput.',
      detail:{Origin:'Transverse processes of the lower cervical and thoracic vertebrae',Insertion:'Spinous processes 4–6 segments above; semispinalis capitis onto the occipital bone',Nerve:'Posterior rami of the spinal nerves',Action:'Extension and contralateral rotation of the head and vertebral column'},
      clin:'The greater occipital nerve pierces semispinalis capitis before supplying the back of the scalp — entrapment here is a recognised cause of occipital neuralgia. Preserving the semispinalis attachment to C2 during posterior cervical surgery measurably reduces post-operative kyphosis and axial neck pain.'},
-    {id:'extoblique', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:1.8, mirror:true,
+    {id:'extoblique', shape:'sheet', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:1.8, mirror:true,
      pts:s=>[[s*9.0,133.0,3.0],[s*10.6,124.0,4.2],[s*9.0,113.0,5.0],[s*5.0,105.0,5.6]],
      o:'The largest and most superficial of the flat abdominal muscles, its fibres running downward and forward — "hands in pockets" — from the lower ribs to the iliac crest and linea alba.',
      detail:{Origin:'External surfaces of ribs 5–12',Insertion:'Iliac crest, pubic tubercle and linea alba via its aponeurosis',Nerve:'Thoracoabdominal nerves (T7–T11), subcostal and iliohypogastric nerves',Action:'Compresses the abdomen; flexes and contralaterally rotates the trunk'},
@@ -1642,7 +1655,7 @@ function buildSoftTissue(){
      o:'A small muscle running beneath the clavicle from the first rib to the clavicular groove, acting as a cushion between the clavicle and the underlying neurovascular bundle.',
      detail:{Origin:'First rib at the costochondral junction',Insertion:'Subclavian groove on the inferior surface of the clavicle',Nerve:'Nerve to subclavius (C5, C6)',Action:'Depresses and stabilises the clavicle at the sternoclavicular joint'},
      clin:'It is the anatomical buffer protecting the subclavian vessels and brachial plexus from a fractured clavicle — but hypertrophy or a fibrous band here contributes to costoclavicular thoracic outlet compression, classically in swimmers and rowers.'},
-    {id:'serratusposterior', name:'Serratus Posterior', latin:'Musculi serrati posteriores', r:1.0, mirror:true,
+    {id:'serratusposterior', shape:'sheet', name:'Serratus Posterior', latin:'Musculi serrati posteriores', r:1.0, mirror:true,
      pts:s=>[[s*2.0,145.0,-6.0],[s*6.0,142.0,-5.6],[s*9.0,139.0,-4.6]],
      o:'Two thin respiratory sheets deep to the rhomboids and latissimus — serratus posterior superior elevating the upper ribs, inferior depressing the lower ribs.',
      detail:{Origin:'Spinous processes C7–T3 (superior) and T11–L2 (inferior)',Insertion:'Upper borders of ribs 2–5 (superior) and lower borders of ribs 9–12 (inferior)',Nerve:'Intercostal nerves',Action:'Accessory muscles of respiration — elevate and depress the ribs'},
@@ -1658,7 +1671,16 @@ function buildSoftTissue(){
     sides.forEach(s=>{
       const sfx = m.mirror?(s>0?'_l':'_r'):'';
       const sideName = m.mirror?((s>0?'Left ':'Right ')):'';
-      const obj = tube(m.pts(s), m.r, mus(0xC1454B), false, 9);
+      /* Muscles are not pipes. Fusiform bellies swell in the middle and taper
+         into their tendons; flat muscles (latissimus, the obliques, trapezius)
+         are broad thin ribbons. Only used where BodyParts3D has no mesh. */
+      const sheet = m.shape==='sheet';
+      const obj = sweepMesh(m.pts(s), {
+        r  : t => m.r*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
+        fx : () => sheet ? 2.40 : 1.15,
+        fy : () => sheet ? 0.22 : 0.86,
+        seg: 34, radial: 16
+      }, mus(0xC1454B));
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
         name:sideName+m.name, latin:m.latin, focus:V(...m.pts(s)[1]),
@@ -2037,8 +2059,14 @@ function buildSoftTissue(){
       const sideName = l.mirror?(s>0?'Left ':'Right '):'';
       const g=new THREE.Group();
       const pts=l.pts(s);
-      g.add(tube(pts, l.r*0.35, lym(), false, 7));
-      pts.forEach(p=>g.add(ball(p, l.r, lym())));
+      // Fine collecting vessel, studded with bean-shaped nodes
+      g.add(sweepMesh(pts, {r:t=>l.r*0.26*(1-0.18*t), seg:26, radial:8}, lym()));
+      pts.forEach((p,i)=>{
+        const n=ball(p, l.r, lym());
+        n.scale.set(1.30, 0.82, 0.70);
+        n.rotation.set(0, i*0.6, 0.35);
+        g.add(n);
+      });
       register(g,{
         id:l.id+sfx, layer:'lymphatics', tag:'Lymphatics · Immune System',
         name:sideName+l.name, latin:l.latin, focus:V(...pts[1]),
@@ -2054,7 +2082,13 @@ function buildSoftTissue(){
       const sfx = d.mirror?(s>0?'_l':'_r'):'';
       const sideName = d.mirror?(s>0?'Left ':'Right '):'';
       const pts=d.pts(s);
-      register(tube(pts, d.r, matFn(), false, 9),{
+      /* Vessels and nerves narrow as they give off branches, and are ovoid
+         rather than perfectly round — a uniform cylinder reads as plumbing. */
+      register(sweepMesh(pts, {
+        r  : t => d.r*(1 - 0.42*t),
+        fx : () => 1.12, fy : () => 0.88,
+        seg: 36, radial: 12
+      }, matFn()),{
         id:d.id+sfx, layer:layer, tag:tag,
         name:sideName+d.name, latin:d.latin, focus:V(...pts[Math.floor(pts.length/2)]),
         overview:d.o, detail:d.detail,
@@ -2463,14 +2497,36 @@ function loadLayerModels(layer){
   const list = MANIFEST.byLayer[layer];
   if(!list || !list.length) return;
   layerModelsRequested[layer] = true;
+  /* The crude procedural stand-in must never be shown while its real mesh is
+     on the way — otherwise switching a layer on flashes dozens of plain tubes
+     until the files arrive. Hide them now; each reappears as its mesh lands. */
+  list.forEach(id=>{ const d=STRUCTURES[id]; if(d) d.object.visible=false; });
+  pending += list.length; showLoading();
   list.forEach(id=>{
     const d = STRUCTURES[id], entry = MANIFEST.man.models[id];
+    const done = ()=>{ pending--; showLoading(); };
     MANIFEST.loader.load(MODELS_BASE + entry.file,
       gltf => { try{ swapInModel(d, gltf.scene, entry, MANIFEST.glob); }
-                catch(e){ console.warn('[anatomy] swap failed', id, e); } },
+                catch(e){ console.warn('[anatomy] swap failed', id, e); }
+                d.object.visible=true; done(); },
       undefined,
-      err  => console.warn('[anatomy] could not load', entry.file, err));
+      err  => { console.warn('[anatomy] could not load', entry.file, err);
+                d.object.visible=true;   // fall back to the procedural shape
+                done(); });
   });
+}
+
+let pending = 0;
+function showLoading(){
+  let el=document.getElementById('loadstat');
+  if(!el){
+    el=document.createElement('div'); el.id='loadstat';
+    document.getElementById('stage').appendChild(el);
+  }
+  if(pending>0){
+    el.style.display='flex';
+    el.innerHTML='<span class="ls-spin"></span> Loading anatomy · '+pending+' left';
+  } else el.style.display='none';
 }
 
 function loadHighDetailModels(){
