@@ -865,7 +865,7 @@ function buildSkeleton(){
 
   /* ---------- SHOULDER GIRDLE + UPPER LIMB (mirrored) ---------- */
   [1,-1].forEach(s=>{
-    const side = s>0?'Right':'Left', sfx = s>0?'_r':'_l';
+    const side = s>0?'Left':'Right', sfx = s>0?'_l':'_r';
 
     /* Clavicle */
     register(tube([[s*1.6,150.2,6.6],[s*7,151.2,4.2],[s*12.5,150.2,0.8],[s*16.2,148.6,-1.6]],0.85,M,false,9),{
@@ -1181,7 +1181,7 @@ function buildSkeleton(){
 
   /* ---------- LOWER LIMB (mirrored) ---------- */
   [1,-1].forEach(s=>{
-    const side=s>0?'Right':'Left', sfx=s>0?'_r':'_l';
+    const side=s>0?'Left':'Right', sfx=s>0?'_l':'_r';
 
     /* Femur */
     (function(){
@@ -1580,8 +1580,8 @@ function buildSoftTissue(){
   MUS.forEach(m=>{
     const sides = m.mirror?[1,-1]:[1];
     sides.forEach(s=>{
-      const sfx = m.mirror?(s>0?'_r':'_l'):'';
-      const sideName = m.mirror?((s>0?'Right ':'Left ')):'';
+      const sfx = m.mirror?(s>0?'_l':'_r'):'';
+      const sideName = m.mirror?((s>0?'Left ':'Right ')):'';
       const obj = tube(m.pts(s), m.r, mus(0xC1454B), false, 9);
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
@@ -1882,8 +1882,8 @@ function buildSoftTissue(){
   LYM.forEach(l=>{
     const sides = l.mirror?[1,-1]:[1];
     sides.forEach(s=>{
-      const sfx = l.mirror?(s>0?'_r':'_l'):'';
-      const sideName = l.mirror?(s>0?'Right ':'Left '):'';
+      const sfx = l.mirror?(s>0?'_l':'_r'):'';
+      const sideName = l.mirror?(s>0?'Left ':'Right '):'';
       const g=new THREE.Group();
       const pts=l.pts(s);
       g.add(tube(pts, l.r*0.35, lym(), false, 7));
@@ -1900,8 +1900,8 @@ function buildSoftTissue(){
   function buildVessels(d, layer, tag, matFn){
     const sides = d.mirror?[1,-1]:[1];
     sides.forEach(s=>{
-      const sfx = d.mirror?(s>0?'_r':'_l'):'';
-      const sideName = d.mirror?(s>0?'Right ':'Left '):'';
+      const sfx = d.mirror?(s>0?'_l':'_r'):'';
+      const sideName = d.mirror?(s>0?'Left ':'Right '):'';
       const pts=d.pts(s);
       register(tube(pts, d.r, matFn(), false, 9),{
         id:d.id+sfx, layer:layer, tag:tag,

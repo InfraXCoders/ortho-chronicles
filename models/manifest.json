@@ -1,17 +1,187 @@
 {
-  "_comment": "Drop .glb files in this folder and list them under 'models' to replace the explorer's procedural geometry. See README.md. While 'models' is empty the explorer uses its built-in procedural skeleton.",
-
   "attribution": {
-    "source": "",
-    "license": "",
-    "url": ""
+    "source": "BodyParts3D © DBCLS · via Z-Anatomy",
+    "license": "CC BY-SA 2.1 JP / CC BY-SA 4.0",
+    "url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html"
   },
-
   "transform": {
-    "scale": 1.0,
-    "offset": [0, 0, 0],
-    "rotation": [0, 0, 0]
+    "scale": 0.1043,
+    "offset": [
+      0,
+      7.3,
+      -10.4
+    ],
+    "rotation": [
+      -1.5707963,
+      0,
+      0
+    ]
   },
-
-  "models": {}
+  "models": {
+    "calcaneus_l": {
+      "file": "calcaneus_l.glb"
+    },
+    "calcaneus_r": {
+      "file": "calcaneus_r.glb"
+    },
+    "capitate_l": {
+      "file": "capitate_l.glb"
+    },
+    "capitate_r": {
+      "file": "capitate_r.glb"
+    },
+    "cervical": {
+      "file": "cervical.glb"
+    },
+    "clavicle_l": {
+      "file": "clavicle_l.glb"
+    },
+    "clavicle_r": {
+      "file": "clavicle_r.glb"
+    },
+    "cuboid_l": {
+      "file": "cuboid_l.glb"
+    },
+    "cuboid_r": {
+      "file": "cuboid_r.glb"
+    },
+    "cuneiforms_l": {
+      "file": "cuneiforms_l.glb"
+    },
+    "cuneiforms_r": {
+      "file": "cuneiforms_r.glb"
+    },
+    "femur_l": {
+      "file": "femur_l.glb"
+    },
+    "femur_r": {
+      "file": "femur_r.glb"
+    },
+    "fibula_l": {
+      "file": "fibula_l.glb"
+    },
+    "fibula_r": {
+      "file": "fibula_r.glb"
+    },
+    "foot_l": {
+      "file": "foot_l.glb"
+    },
+    "foot_r": {
+      "file": "foot_r.glb"
+    },
+    "hamate_l": {
+      "file": "hamate_l.glb"
+    },
+    "hamate_r": {
+      "file": "hamate_r.glb"
+    },
+    "hand_l": {
+      "file": "hand_l.glb"
+    },
+    "hand_r": {
+      "file": "hand_r.glb"
+    },
+    "humerus_l": {
+      "file": "humerus_l.glb"
+    },
+    "humerus_r": {
+      "file": "humerus_r.glb"
+    },
+    "lumbar": {
+      "file": "lumbar.glb"
+    },
+    "lunate_l": {
+      "file": "lunate_l.glb"
+    },
+    "lunate_r": {
+      "file": "lunate_r.glb"
+    },
+    "navicular_l": {
+      "file": "navicular_l.glb"
+    },
+    "navicular_r": {
+      "file": "navicular_r.glb"
+    },
+    "patella_l": {
+      "file": "patella_l.glb"
+    },
+    "patella_r": {
+      "file": "patella_r.glb"
+    },
+    "pelvis": {
+      "file": "pelvis.glb"
+    },
+    "pisiform_l": {
+      "file": "pisiform_l.glb"
+    },
+    "pisiform_r": {
+      "file": "pisiform_r.glb"
+    },
+    "radius_l": {
+      "file": "radius_l.glb"
+    },
+    "radius_r": {
+      "file": "radius_r.glb"
+    },
+    "ribcage": {
+      "file": "ribcage.glb"
+    },
+    "sacrum": {
+      "file": "sacrum.glb"
+    },
+    "scaphoid_l": {
+      "file": "scaphoid_l.glb"
+    },
+    "scaphoid_r": {
+      "file": "scaphoid_r.glb"
+    },
+    "scapula_l": {
+      "file": "scapula_l.glb"
+    },
+    "scapula_r": {
+      "file": "scapula_r.glb"
+    },
+    "skull": {
+      "file": "skull.glb"
+    },
+    "talus_l": {
+      "file": "talus_l.glb"
+    },
+    "talus_r": {
+      "file": "talus_r.glb"
+    },
+    "thoracic": {
+      "file": "thoracic.glb"
+    },
+    "tibia_l": {
+      "file": "tibia_l.glb"
+    },
+    "tibia_r": {
+      "file": "tibia_r.glb"
+    },
+    "trapezium_l": {
+      "file": "trapezium_l.glb"
+    },
+    "trapezium_r": {
+      "file": "trapezium_r.glb"
+    },
+    "trapezoid_l": {
+      "file": "trapezoid_l.glb"
+    },
+    "trapezoid_r": {
+      "file": "trapezoid_r.glb"
+    },
+    "triquetrum_l": {
+      "file": "triquetrum_l.glb"
+    },
+    "triquetrum_r": {
+      "file": "triquetrum_r.glb"
+    },
+    "ulna_l": {
+      "file": "ulna_l.glb"
+    },
+    "ulna_r": {
+      "file": "ulna_r.glb"
+    }
+  }
 }

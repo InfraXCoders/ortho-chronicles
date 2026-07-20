@@ -52,7 +52,8 @@ origin to the explorer's coordinate system.
 
 - **Y is up**, origin on the floor between the feet
 - Units are **centimetres**; the model is about **178** tall
-- **+X is the subject's right**, **+Z is anterior**
+- **+Z is anterior** (the model faces the default camera)
+- **-X is the subject's RIGHT** — a person facing you has their right on your left
 
 Useful reference heights: hip joint centre ≈ **90**, glenoid ≈ **144**,
 knee joint ≈ **48**, ankle ≈ **9**.
@@ -125,3 +126,25 @@ triangles per bone). Before shipping:
 
 The explorer's procedural surface maps (vascular striations, porosity) are
 applied to loaded meshes too, unless you set `keepMaterial: true`.
+
+---
+
+## What is currently installed
+
+This folder ships a **complete real skeleton** (55 structures, ~181k triangles,
+~3 MB) converted from **BodyParts3D**, the segmented-scan dataset that
+Z-Anatomy is itself built on.
+
+- Source: BodyParts3D © DBCLS — <https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html>
+- Licence: **CC BY-SA 2.1 JP** (Z-Anatomy's derived atlas is CC BY-SA 4.0)
+- Attribution is rendered on screen by the explorer whenever these load.
+
+Meshes were converted OBJ → GLB and decimated with vertex clustering to fit a
+per-structure triangle budget. Positions are unmodified BodyParts3D
+coordinates; the manifest's `transform` maps them into the explorer's frame
+(scale 0.1043, rotate −90° about X, offset [0, 7.30, −10.40]).
+
+**Note on the excluded parts.** BodyParts3D's inner-ear and kidney meshes carry
+**non-commercial (NC)** licences and are deliberately *not* included, because
+this site carries advertising. Skeletal meshes are CC BY-SA with no NC clause,
+so they are fine for commercial use with attribution.
