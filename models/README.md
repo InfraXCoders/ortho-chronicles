@@ -131,9 +131,33 @@ applied to loaded meshes too, unless you set `keepMaterial: true`.
 
 ## What is currently installed
 
-This folder ships a **complete real skeleton** (55 structures, ~181k triangles,
-~3 MB) converted from **BodyParts3D**, the segmented-scan dataset that
-Z-Anatomy is itself built on.
+This folder ships **150 real anatomical structures** (~347k triangles, ~6.3 MB)
+converted from **BodyParts3D**, the segmented-scan dataset that Z-Anatomy is
+itself built on:
+
+| System | Real meshes | Notes |
+|---|---|---|
+| Skeleton | 55 | complete, incl. individually named carpals and tarsals |
+| Muscles | 56 | rotator cuff, limb and trunk groups |
+| Arteries | 23 | aorta and the major named branches |
+| Veins | 16 | cavae, azygos, deep and superficial limb veins |
+| Nerves | 0 | **not in the dataset** — remain procedural |
+| Lymphatics | 0 | **not in the dataset** — remain procedural |
+
+BodyParts3D contains only *cranial* nerves, so the peripheral nerves the
+explorer cares about (sciatic, median, ulnar, brachial plexus…) have no
+scan-derived equivalent and keep their procedural paths. It has no lymphatic
+vessels or nodes at all. A handful of soft-tissue structures are also absent
+and stay procedural: latissimus dorsi, rectus abdominis, external carotid
+artery, fibular (peroneal) artery and external jugular vein.
+
+**Left-side meshes are mirrored.** BodyParts3D ships only the right-side
+original and refers to the left by a mirrored `…M` id that the archive omits.
+The build reflects the right mesh across the sagittal plane (x = 0) and
+reverses the triangle winding so normals still face outward.
+
+**Loading is lazy, by layer.** Only the skeleton is fetched at startup; a
+layer's meshes download the first time you switch that layer on.
 
 - Source: BodyParts3D © DBCLS — <https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html>
 - Licence: **CC BY-SA 2.1 JP** (Z-Anatomy's derived atlas is CC BY-SA 4.0)

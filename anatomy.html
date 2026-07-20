@@ -2176,6 +2176,7 @@ layerList.addEventListener('click',e=>{
   const id=row.dataset.id, g=layerGroups[id];
   g.visible=!g.visible;
   row.classList.toggle('on',g.visible);
+  if(g.visible) loadLayerModels(id);          // fetch this layer's meshes on first use
   if(!g.visible && selectedId && STRUCTURES[selectedId].layer===id) deselect();
 });
 
@@ -2225,6 +2226,7 @@ resEl.addEventListener('click',e=>{
     layerGroups[d.layer].visible=true;
     const row=layerList.querySelector(`[data-id="${d.layer}"]`);
     if(row) row.classList.add('on');
+    loadLayerModels(d.layer);
   }
   select(id);
   if(r.dataset.lm!==undefined) focusLandmark(+r.dataset.lm);
@@ -2301,6 +2303,24 @@ tick();
    ══════════════════════════════════════════════════════════════════ */
 const MODELS_BASE = 'models/';
 let modelsLoaded = 0;
+let MANIFEST = null;              // {man, loader, glob, byLayer}
+const layerModelsRequested = {};  // layer id -> true once fetching has begun
+
+/** Fetch and swap in every model belonging to one layer, once. */
+function loadLayerModels(layer){
+  if(!MANIFEST || layerModelsRequested[layer]) return;
+  const list = MANIFEST.byLayer[layer];
+  if(!list || !list.length) return;
+  layerModelsRequested[layer] = true;
+  list.forEach(id=>{
+    const d = STRUCTURES[id], entry = MANIFEST.man.models[id];
+    MANIFEST.loader.load(MODELS_BASE + entry.file,
+      gltf => { try{ swapInModel(d, gltf.scene, entry, MANIFEST.glob); }
+                catch(e){ console.warn('[anatomy] swap failed', id, e); } },
+      undefined,
+      err  => console.warn('[anatomy] could not load', entry.file, err));
+  });
+}
 
 function loadHighDetailModels(){
   fetch(MODELS_BASE+'manifest.json', {cache:'no-cache'})
@@ -2314,14 +2334,19 @@ function loadHighDetailModels(){
       showAttribution(man.attribution);
       const loader = new THREE.GLTFLoader();
       const glob = man.transform || {};
+
+      // Bucket the manifest by the layer each structure belongs to, so a layer's
+      // meshes are only fetched when the user actually switches that layer on.
+      MANIFEST = {man, loader, glob, byLayer:{}};
       Object.keys(man.models).forEach(id=>{
         const d = STRUCTURES[id];
         if(!d){ console.warn('[anatomy] manifest lists unknown structure:', id); return; }
-        const entry = man.models[id];
-        loader.load(MODELS_BASE + entry.file,
-          gltf => { try{ swapInModel(d, gltf.scene, entry, glob); }catch(e){ console.warn('[anatomy] swap failed', id, e); } },
-          undefined,
-          err  => console.warn('[anatomy] could not load', entry.file, err));
+        (MANIFEST.byLayer[d.layer] = MANIFEST.byLayer[d.layer] || []).push(id);
+      });
+
+      // Load whatever is visible at startup (the skeleton); defer the rest.
+      Object.keys(MANIFEST.byLayer).forEach(l=>{
+        if(layerGroups[l] && layerGroups[l].visible) loadLayerModels(l);
       });
     })
     .catch(()=>{ /* no manifest — procedural geometry stands */ });

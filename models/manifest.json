@@ -1,6 +1,6 @@
 {
   "attribution": {
-    "source": "BodyParts3D © DBCLS · via Z-Anatomy",
+    "source": "BodyParts3D © DBCLS (skeleton, muscles, vessels)",
     "license": "CC BY-SA 2.1 JP / CC BY-SA 4.0",
     "url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html"
   },
@@ -182,6 +182,291 @@
     },
     "ulna_r": {
       "file": "ulna_r.glb"
+    },
+    "adductors_l": {
+      "file": "adductors_l.glb"
+    },
+    "adductors_r": {
+      "file": "adductors_r.glb"
+    },
+    "aorta": {
+      "file": "aorta.glb"
+    },
+    "azygos": {
+      "file": "azygos.glb"
+    },
+    "biceps_l": {
+      "file": "biceps_l.glb"
+    },
+    "biceps_r": {
+      "file": "biceps_r.glb"
+    },
+    "brachiocephalic_v_l": {
+      "file": "brachiocephalic_v_l.glb"
+    },
+    "brachiocephalic_v_r": {
+      "file": "brachiocephalic_v_r.glb"
+    },
+    "brachioradialis_l": {
+      "file": "brachioradialis_l.glb"
+    },
+    "brachioradialis_r": {
+      "file": "brachioradialis_r.glb"
+    },
+    "calfpump_l": {
+      "file": "calfpump_l.glb"
+    },
+    "calfpump_r": {
+      "file": "calfpump_r.glb"
+    },
+    "carotid_l": {
+      "file": "carotid_l.glb"
+    },
+    "carotid_r": {
+      "file": "carotid_r.glb"
+    },
+    "cephalic_l": {
+      "file": "cephalic_l.glb"
+    },
+    "cephalic_r": {
+      "file": "cephalic_r.glb"
+    },
+    "circumflex_hum_l": {
+      "file": "circumflex_hum_l.glb"
+    },
+    "circumflex_hum_r": {
+      "file": "circumflex_hum_r.glb"
+    },
+    "deltoid_l": {
+      "file": "deltoid_l.glb"
+    },
+    "deltoid_r": {
+      "file": "deltoid_r.glb"
+    },
+    "dorsalis_pedis_l": {
+      "file": "dorsalis_pedis_l.glb"
+    },
+    "dorsalis_pedis_r": {
+      "file": "dorsalis_pedis_r.glb"
+    },
+    "erectorspinae_l": {
+      "file": "erectorspinae_l.glb"
+    },
+    "erectorspinae_r": {
+      "file": "erectorspinae_r.glb"
+    },
+    "extensorgroup_l": {
+      "file": "extensorgroup_l.glb"
+    },
+    "extensorgroup_r": {
+      "file": "extensorgroup_r.glb"
+    },
+    "femoral_art_l": {
+      "file": "femoral_art_l.glb"
+    },
+    "femoral_art_r": {
+      "file": "femoral_art_r.glb"
+    },
+    "femoral_v_l": {
+      "file": "femoral_v_l.glb"
+    },
+    "femoral_v_r": {
+      "file": "femoral_v_r.glb"
+    },
+    "flexorgroup_l": {
+      "file": "flexorgroup_l.glb"
+    },
+    "flexorgroup_r": {
+      "file": "flexorgroup_r.glb"
+    },
+    "gastroc_l": {
+      "file": "gastroc_l.glb"
+    },
+    "gastroc_r": {
+      "file": "gastroc_r.glb"
+    },
+    "gluteusmax_l": {
+      "file": "gluteusmax_l.glb"
+    },
+    "gluteusmax_r": {
+      "file": "gluteusmax_r.glb"
+    },
+    "gluteusmed_l": {
+      "file": "gluteusmed_l.glb"
+    },
+    "gluteusmed_r": {
+      "file": "gluteusmed_r.glb"
+    },
+    "hamstrings_l": {
+      "file": "hamstrings_l.glb"
+    },
+    "hamstrings_r": {
+      "file": "hamstrings_r.glb"
+    },
+    "infraspinatus_l": {
+      "file": "infraspinatus_l.glb"
+    },
+    "infraspinatus_r": {
+      "file": "infraspinatus_r.glb"
+    },
+    "internal_iliac_l": {
+      "file": "internal_iliac_l.glb"
+    },
+    "internal_iliac_r": {
+      "file": "internal_iliac_r.glb"
+    },
+    "jugular_l": {
+      "file": "jugular_l.glb"
+    },
+    "jugular_r": {
+      "file": "jugular_r.glb"
+    },
+    "pectoralis_l": {
+      "file": "pectoralis_l.glb"
+    },
+    "pectoralis_r": {
+      "file": "pectoralis_r.glb"
+    },
+    "peroneals_l": {
+      "file": "peroneals_l.glb"
+    },
+    "peroneals_r": {
+      "file": "peroneals_r.glb"
+    },
+    "profunda_brachii_l": {
+      "file": "profunda_brachii_l.glb"
+    },
+    "profunda_brachii_r": {
+      "file": "profunda_brachii_r.glb"
+    },
+    "profunda_femoris_l": {
+      "file": "profunda_femoris_l.glb"
+    },
+    "profunda_femoris_r": {
+      "file": "profunda_femoris_r.glb"
+    },
+    "psoas_l": {
+      "file": "psoas_l.glb"
+    },
+    "psoas_r": {
+      "file": "psoas_r.glb"
+    },
+    "quadriceps_l": {
+      "file": "quadriceps_l.glb"
+    },
+    "quadriceps_r": {
+      "file": "quadriceps_r.glb"
+    },
+    "radial_art_l": {
+      "file": "radial_art_l.glb"
+    },
+    "radial_art_r": {
+      "file": "radial_art_r.glb"
+    },
+    "saphenous_l": {
+      "file": "saphenous_l.glb"
+    },
+    "saphenous_r": {
+      "file": "saphenous_r.glb"
+    },
+    "sartorius_l": {
+      "file": "sartorius_l.glb"
+    },
+    "sartorius_r": {
+      "file": "sartorius_r.glb"
+    },
+    "scm_l": {
+      "file": "scm_l.glb"
+    },
+    "scm_r": {
+      "file": "scm_r.glb"
+    },
+    "serratus_l": {
+      "file": "serratus_l.glb"
+    },
+    "serratus_r": {
+      "file": "serratus_r.glb"
+    },
+    "small_saphenous_l": {
+      "file": "small_saphenous_l.glb"
+    },
+    "small_saphenous_r": {
+      "file": "small_saphenous_r.glb"
+    },
+    "subclav_art_l": {
+      "file": "subclav_art_l.glb"
+    },
+    "subclav_art_r": {
+      "file": "subclav_art_r.glb"
+    },
+    "subscapularis_l": {
+      "file": "subscapularis_l.glb"
+    },
+    "subscapularis_r": {
+      "file": "subscapularis_r.glb"
+    },
+    "supraspinatus_l": {
+      "file": "supraspinatus_l.glb"
+    },
+    "supraspinatus_r": {
+      "file": "supraspinatus_r.glb"
+    },
+    "teresmajor_l": {
+      "file": "teresmajor_l.glb"
+    },
+    "teresmajor_r": {
+      "file": "teresmajor_r.glb"
+    },
+    "teresminor_l": {
+      "file": "teresminor_l.glb"
+    },
+    "teresminor_r": {
+      "file": "teresminor_r.glb"
+    },
+    "tfl_l": {
+      "file": "tfl_l.glb"
+    },
+    "tfl_r": {
+      "file": "tfl_r.glb"
+    },
+    "tibant_l": {
+      "file": "tibant_l.glb"
+    },
+    "tibant_r": {
+      "file": "tibant_r.glb"
+    },
+    "tibial_art_l": {
+      "file": "tibial_art_l.glb"
+    },
+    "tibial_art_r": {
+      "file": "tibial_art_r.glb"
+    },
+    "tibpost_l": {
+      "file": "tibpost_l.glb"
+    },
+    "tibpost_r": {
+      "file": "tibpost_r.glb"
+    },
+    "trapezius_l": {
+      "file": "trapezius_l.glb"
+    },
+    "trapezius_r": {
+      "file": "trapezius_r.glb"
+    },
+    "triceps_l": {
+      "file": "triceps_l.glb"
+    },
+    "triceps_r": {
+      "file": "triceps_r.glb"
+    },
+    "venacava": {
+      "file": "venacava.glb"
+    },
+    "vertebral_art_l": {
+      "file": "vertebral_art_l.glb"
+    },
+    "vertebral_art_r": {
+      "file": "vertebral_art_r.glb"
     }
   }
 }
