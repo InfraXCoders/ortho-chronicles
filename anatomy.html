@@ -366,10 +366,58 @@ const grid = new THREE.GridHelper(520, 26, 0x1d3157, 0x14223c);
 grid.material.opacity = .35; grid.material.transparent = true;
 scene.add(grid);
 
+/* ══════════════════════════════════════════════════════════════════
+   SURFACE MICRO-DETAIL
+   Cortical bone is never smooth. Its surface carries the openings of
+   Volkmann and Haversian canals (fine porosity), longitudinal vascular
+   striations, and coarse rugosity wherever tendon meets bone. We bake
+   this into tiled bump + roughness maps rather than into geometry, so
+   the detail costs pixels instead of triangles.
+   ══════════════════════════════════════════════════════════════════ */
+function _h(x,y,s){ const n=Math.sin(x*127.1+y*311.7+s*74.7)*43758.5453; return n-Math.floor(n); }
+function _vn(x,y,s){
+  const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi;
+  const u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  return _h(xi,yi,s)*(1-u)*(1-v) + _h(xi+1,yi,s)*u*(1-v)
+       + _h(xi,yi+1,s)*(1-u)*v   + _h(xi+1,yi+1,s)*u*v;
+}
+/* Normalised so the result genuinely spans 0..1 — without dividing by the
+   summed amplitude the octaves can never reach the pore threshold. */
+function _fbm(x,y,s,oct){
+  let a=0,amp=0.5,f=1,norm=0;
+  for(let i=0;i<(oct||4);i++){ a+=amp*_vn(x*f,y*f,s); norm+=amp; f*=2; amp*=0.5; }
+  return a/norm;
+}
+/** Tiling grayscale map: vascular grain + porosity + scattered canal openings. */
+function makeBoneMap(N,grainScale,poreScale,poreCut){
+  const cv=document.createElement('canvas'); cv.width=cv.height=N;
+  const c2=cv.getContext('2d');
+  const img=c2.createImageData(N,N), d=img.data;
+  for(let y=0;y<N;y++) for(let x=0;x<N;x++){
+    const i=(y*N+x)*4;
+    // Striations run along the bone's long axis, so the grain is stretched in v
+    const grain=_fbm(x*grainScale, y*grainScale*0.22, 1.7, 4);
+    const pore =_fbm(x*poreScale,  y*poreScale,       9.3, 3);
+    let v = 148 + (grain-0.5)*150 + (pore-0.5)*70;
+    if(pore>poreCut) v -= (pore-poreCut)*900;      // canal openings read as dark pits
+    d[i]=d[i+1]=d[i+2]=Math.max(0,Math.min(255,v)); d[i+3]=255;
+  }
+  c2.putImageData(img,0,0);
+  const t=new THREE.CanvasTexture(cv);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+const BONE_MAP = makeBoneMap(384, 0.05, 0.40, 0.72);   // cortical bone
+const CART_MAP = makeBoneMap(256, 0.03, 0.16, 0.99);   // cartilage — far smoother
+
 /* ───────────────────────── Materials ────────────────────────────── */
-const boneMat = () => new THREE.MeshStandardMaterial({
-  color:0xEFE7D6, roughness:.62, metalness:.04, flatShading:false
-});
+const boneMat = () => {
+  const t=BONE_MAP.clone(); t.needsUpdate=true; t.repeat.set(2.2,7);
+  return new THREE.MeshStandardMaterial({
+    color:0xEFE7D6, roughness:0.74, metalness:0.03,
+    bumpMap:t, bumpScale:0.13, roughnessMap:t
+  });
+};
 const softMat = (hex,op) => new THREE.MeshStandardMaterial({
   color:hex, roughness:.45, metalness:.03,
   transparent:true, opacity:op, depthWrite:false, side:THREE.DoubleSide
@@ -427,22 +475,30 @@ function sweep(points, opt){
   const fx = opt.fx || (()=>1);
   const fy = opt.fy || (()=>1);
   const tw = opt.twist || (()=>0);
-  const pos=[], idx=[];
+  const rug = opt.rug || 0;          // surface rugosity (muscle attachment roughness)
+  const seed= opt.seed || 3.1;
+  // Rings carry R+1 vertices so the UV seam closes cleanly and bump maps tile
+  const pos=[], idx=[], uvs=[];
   for(let i=0;i<=S;i++){
     const t=i/S, P=curve.getPointAt(t), N=fr.normals[i], B=fr.binormals[i];
     const rad=rf(t), ex=fx(t), ey=fy(t), rot=tw(t);
-    for(let j=0;j<R;j++){
-      const a=j/R*Math.PI*2 + rot;
-      const cx=Math.cos(a)*rad*ex, cy=Math.sin(a)*rad*ey;
+    for(let j=0;j<=R;j++){
+      const jj=j%R;                                   // wrap so the seam matches exactly
+      const a=jj/R*Math.PI*2 + rot;
+      const rr = rug ? rad*(1 + rug*(_vn(i*0.85, jj*0.85, seed)-0.5)) : rad;
+      const cx=Math.cos(a)*rr*ex, cy=Math.sin(a)*rr*ey;
       pos.push(P.x+N.x*cx+B.x*cy, P.y+N.y*cx+B.y*cy, P.z+N.z*cx+B.z*cy);
+      uvs.push(j/R, i/S);
     }
   }
+  const W=R+1;
   for(let i=0;i<S;i++) for(let j=0;j<R;j++){
-    const a=i*R+j, b=i*R+(j+1)%R, c=(i+1)*R+(j+1)%R, d=(i+1)*R+j;
+    const a=i*W+j, b=i*W+j+1, c=(i+1)*W+j+1, d=(i+1)*W+j;
     idx.push(a,b,d, b,c,d);
   }
   const g=new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
+  g.setAttribute('uv',       new THREE.Float32BufferAttribute(uvs,2));
   g.setIndex(idx); g.computeVertexNormals();
   return g;
 }
@@ -494,10 +550,18 @@ function epiphysis(p, r, mat, sc, rot){
   return m;
 }
 
-/* Cartilage / disc material for joint surfaces */
-const cartMat = new THREE.MeshStandardMaterial({
-  color:0xDCEBF2, roughness:0.30, metalness:0.02, transparent:true, opacity:0.92
-});
+/* Cartilage / disc material — glassy, with only the faintest surface texture */
+const cartMat = (function(){
+  const t=CART_MAP.clone(); t.needsUpdate=true; t.repeat.set(2,2);
+  return new THREE.MeshStandardMaterial({
+    color:0xDCEBF2, roughness:0.26, metalness:0.02,
+    transparent:true, opacity:0.92, bumpMap:t, bumpScale:0.012
+  });
+})();
+
+/* Suture lines and nutrient foramina */
+const sutureMat = new THREE.MeshStandardMaterial({color:0xD6CBB4, roughness:0.96, metalness:0.01});
+const foramenMat= new THREE.MeshStandardMaterial({color:0x6B6152, roughness:0.95, metalness:0.02});
 
 /* ───────────────────────── Registry ─────────────────────────────── */
 const STRUCTURES = {};      // id -> data
@@ -549,6 +613,14 @@ function buildSkeleton(){
       g.add(sweepMesh([[s*4.6,166.6,7.6],[s*6.6,166.2,4.6],[s*7.4,165.6,1.0],[s*7.2,165.0,-0.8]],
         {r:()=>0.62, fy:()=>1.45, seg:22, radial:10}, M));
     });
+    // Cranial sutures — serrated fibrous joints traced across the vault surface.
+    // Coronal (frontal↔parietal), sagittal (parietal↔parietal), lambdoid (parietal↔occipital)
+    g.add(sweepMesh([[-8.79,173.99,2.0],[-5.85,179.07,2.0],[0,181.41,2.0],[5.85,179.07,2.0],[8.79,173.99,2.0]],
+      {r:()=>0.20, seg:40, radial:6, rug:0.55, seed:11.3}, sutureMat));
+    g.add(sweepMesh([[0,181.41,2.0],[0,181.50,0.0],[0,180.90,-3.25],[0,179.15,-6.46]],
+      {r:()=>0.19, seg:26, radial:6, rug:0.55, seed:13.7}, sutureMat));
+    g.add(sweepMesh([[-6.9,173.0,-6.6],[-4.4,177.2,-6.5],[0,179.15,-6.46],[4.4,177.2,-6.5],[6.9,173.0,-6.6]],
+      {r:()=>0.19, seg:36, radial:6, rug:0.55, seed:17.1}, sutureMat));
     // Maxilla, nasal aperture and upper dental arch
     g.add(epiphysis([0,164.0,6.0], 4.3, M, [1.10,0.80,0.86]));
     g.add(epiphysis([0,166.8,8.2], 1.25, M, [0.85,1.25,0.75]));      // nasal bones
@@ -846,8 +918,12 @@ function buildSkeleton(){
       // Shaft — cylindrical proximally, flattening and widening distally
       g.add(sweepMesh([[s*17.9,141.4,-0.2],[s*19.0,130.0,0.4],[s*19.4,120.0,0.5],[s*19.7,112.6,0.3]],
         {r:t=>1.42-0.28*Math.sin(t*Math.PI)+0.42*Math.pow(t,3.2),
-         fx:t=>1+0.30*t, fy:t=>0.92-0.10*t, seg:40, radial:16}, M));
-      g.add(epiphysis([s*20.5,128.4,1.0], 1.05, M, [0.50,1.55,0.70]));   // deltoid tuberosity
+         fx:t=>1+0.30*t, fy:t=>0.92-0.10*t, seg:40, radial:16, rug:0.028, seed:6.1}, M));
+      // Deltoid tuberosity — a raised, rugose V where deltoid inserts
+      g.add(sweepMesh([[s*20.3,131.0,0.6],[s*20.6,128.4,1.1],[s*20.2,125.8,0.8]],
+        {r:()=>0.72, fx:()=>0.55, seg:12, radial:10, rug:0.34, seed:8.3}, M));
+      // Nutrient foramen of the humerus, directed distally toward the elbow
+      g.add(epiphysis([s*18.6,126.0,1.6], 0.18, foramenMat, [1,1.6,0.7]));
       // Distal condyle: trochlea (medial spool) + capitellum (lateral ball)
       g.add(epiphysis([s*18.1,110.8,0.4], 1.38, cartMat, [1.15,0.95,1.05]));
       g.add(epiphysis([s*20.6,110.9,0.6], 1.15, cartMat, [1.00,0.95,1.00]));
@@ -1100,9 +1176,14 @@ function buildSkeleton(){
       g.add(epiphysis([s*10.3,83.9,-1.5],1.20, M, [0.95,1.05,0.90]));  // lesser trochanter
       // Shaft — bowed with an anterior convexity, thickest at mid-diaphysis
       g.add(sweepMesh([[s*12.4,85.2,0.3],[s*10.9,72.0,1.4],[s*9.4,60.0,1.1],[s*8.4,50.4,0.2]],
-        {r:t=>1.70+0.66*Math.pow(Math.abs(t-0.46)*2,2.8), fy:()=>0.94, seg:44, radial:16}, M));
+        {r:t=>1.70+0.66*Math.pow(Math.abs(t-0.46)*2,2.8), fy:()=>0.94, seg:44, radial:16,
+         rug:0.030, seed:2.4}, M));
+      // Linea aspera — a coarsely rugose crest, roughened by adductor and vastus insertion
       g.add(sweepMesh([[s*11.7,80.0,-0.9],[s*10.2,68.0,-1.0],[s*9.2,57.0,-1.3]],
-        {r:()=>0.40, fx:()=>0.55, seg:16, radial:8}, M));               // linea aspera
+        {r:()=>0.40, fx:()=>0.55, seg:20, radial:10, rug:0.30, seed:5.7}, M));
+      // Nutrient foramen — directed away from the growing end ("to the elbow I go,
+      // from the knee I flee"), so the femoral canal points proximally
+      g.add(epiphysis([s*10.3,69.4,-1.8], 0.20, foramenMat, [1,1.7,0.7]));
       // Distal condyles, intercondylar notch between, trochlear groove in front
       g.add(epiphysis([s*6.3,48.4,0.0], 2.62, M, [0.95,1.00,1.20]));
       g.add(epiphysis([s*10.7,48.4,0.0],2.48, M, [0.95,1.00,1.18]));
@@ -1172,7 +1253,12 @@ function buildSkeleton(){
       g.add(epiphysis([s*8.3,43.6,2.9], 1.05, M, [1.10,1.30,0.70]));   // tibial tuberosity
       // Shaft — triangular in section with a sharp subcutaneous anterior border
       g.add(sweepMesh([[s*8.3,45.6,0.4],[s*8.4,34.0,1.0],[s*8.0,20.0,1.0],[s*7.8,10.8,0.7]],
-        {r:t=>1.82-0.72*Math.pow(t,0.9), fy:()=>0.92, twist:t=>0.35*t, seg:40, radial:14}, M));
+        {r:t=>1.82-0.72*Math.pow(t,0.9), fy:()=>0.92, twist:t=>0.35*t, seg:40, radial:14,
+         rug:0.026, seed:4.9}, M));
+      // Soleal line — the oblique rugose ridge on the posterior tibia
+      g.add(sweepMesh([[s*9.6,41.6,-1.6],[s*8.6,38.4,-1.8],[s*7.8,35.6,-1.6]],
+        {r:()=>0.42, fx:()=>0.50, seg:12, radial:9, rug:0.30, seed:7.2}, M));
+      g.add(epiphysis([s*8.6,37.2,-1.9], 0.18, foramenMat, [1,1.6,0.7])); // nutrient foramen
       // Distal plafond and medial malleolus
       g.add(epiphysis([s*7.9,10.2,0.7], 1.72, M, [1.05,0.85,1.05]));
       g.add(epiphysis([s*7.9,9.5,0.7],  1.52, cartMat, [1.00,0.30,1.00]));
