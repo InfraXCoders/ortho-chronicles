@@ -135,14 +135,14 @@ This folder ships **150 real anatomical structures** (~347k triangles, ~6.3 MB)
 converted from **BodyParts3D**, the segmented-scan dataset that Z-Anatomy is
 itself built on:
 
-| System | Real meshes | Notes |
-|---|---|---|
-| Skeleton | 55 | complete, incl. individually named carpals and tarsals |
-| Muscles | 56 | rotator cuff, limb and trunk groups |
-| Arteries | 23 | aorta and the major named branches |
-| Veins | 16 | cavae, azygos, deep and superficial limb veins |
-| Nerves | 0 | **not in the dataset** — remain procedural |
-| Lymphatics | 0 | **not in the dataset** — remain procedural |
+| System | Real meshes | Procedural | Notes |
+|---|---|---|---|
+| Skeleton | 55 | 0 | complete, incl. individually named carpals and tarsals |
+| Muscles | 86 | 4 | cuff, deep hip rotators, compartments, axial groups |
+| Arteries | 23 | 4 | aorta and the major named branches |
+| Veins | 16 | 2 | cavae, azygos, deep and superficial limb veins |
+| Nerves | 0 | 59 | **not in the dataset** — see below |
+| Lymphatics | 0 | 25 | **not in the dataset** — see below |
 
 BodyParts3D contains only *cranial* nerves, so the peripheral nerves the
 explorer cares about (sciatic, median, ulnar, brachial plexus…) have no

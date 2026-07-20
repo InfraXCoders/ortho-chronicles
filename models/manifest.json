@@ -467,6 +467,96 @@
     },
     "vertebral_art_r": {
       "file": "vertebral_art_r.glb"
+    },
+    "achilles_l": {
+      "file": "achilles_l.glb"
+    },
+    "achilles_r": {
+      "file": "achilles_r.glb"
+    },
+    "antextensors_l": {
+      "file": "antextensors_l.glb"
+    },
+    "antextensors_r": {
+      "file": "antextensors_r.glb"
+    },
+    "deepflexors_l": {
+      "file": "deepflexors_l.glb"
+    },
+    "deepflexors_r": {
+      "file": "deepflexors_r.glb"
+    },
+    "extoblique_l": {
+      "file": "extoblique_l.glb"
+    },
+    "extoblique_r": {
+      "file": "extoblique_r.glb"
+    },
+    "hiprotators_l": {
+      "file": "hiprotators_l.glb"
+    },
+    "hiprotators_r": {
+      "file": "hiprotators_r.glb"
+    },
+    "infrahyoid_l": {
+      "file": "infrahyoid_l.glb"
+    },
+    "infrahyoid_r": {
+      "file": "infrahyoid_r.glb"
+    },
+    "pectminor_l": {
+      "file": "pectminor_l.glb"
+    },
+    "pectminor_r": {
+      "file": "pectminor_r.glb"
+    },
+    "plantaris_l": {
+      "file": "plantaris_l.glb"
+    },
+    "plantaris_r": {
+      "file": "plantaris_r.glb"
+    },
+    "popliteus_l": {
+      "file": "popliteus_l.glb"
+    },
+    "popliteus_r": {
+      "file": "popliteus_r.glb"
+    },
+    "rhomboids_l": {
+      "file": "rhomboids_l.glb"
+    },
+    "rhomboids_r": {
+      "file": "rhomboids_r.glb"
+    },
+    "scalenes_l": {
+      "file": "scalenes_l.glb"
+    },
+    "scalenes_r": {
+      "file": "scalenes_r.glb"
+    },
+    "semispinalis_l": {
+      "file": "semispinalis_l.glb"
+    },
+    "semispinalis_r": {
+      "file": "semispinalis_r.glb"
+    },
+    "serratusposterior_l": {
+      "file": "serratusposterior_l.glb"
+    },
+    "serratusposterior_r": {
+      "file": "serratusposterior_r.glb"
+    },
+    "splenius_l": {
+      "file": "splenius_l.glb"
+    },
+    "splenius_r": {
+      "file": "splenius_r.glb"
+    },
+    "subclavius_l": {
+      "file": "subclavius_l.glb"
+    },
+    "subclavius_r": {
+      "file": "subclavius_r.glb"
     }
   }
 }
