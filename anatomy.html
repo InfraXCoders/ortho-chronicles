@@ -443,7 +443,7 @@ const CART_MAP = makeBoneMap(256, 0.03, 0.16, 0.99);   // cartilage — far smoo
 const boneMat = () => {
   const t=BONE_MAP.clone(); t.needsUpdate=true; t.repeat.set(2.2,7);
   return new THREE.MeshStandardMaterial({
-    color:0xEFE7D6, roughness:0.74, metalness:0.03,
+    color:0xF3E3BE, roughness:0.74, metalness:0.03,
     bumpMap:t, bumpScale:0.13, roughnessMap:t
   });
 };
