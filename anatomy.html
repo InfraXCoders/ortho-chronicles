@@ -467,6 +467,49 @@ const softMat = (hex,op) => new THREE.MeshStandardMaterial({
   transparent:true, opacity:op, depthWrite:false, side:THREE.DoubleSide
 });
 
+/**
+ * Muscle material. Flat red plastic is the giveaway of a cheap anatomy model,
+ * so this adds a faint wet sheen (clearcoat, as fascia has) plus tissue
+ * mottling. The scan-derived meshes carry no UV coordinates, so a texture map
+ * cannot be used — the mottling is computed from world position in the shader.
+ */
+function muscleMat(){
+  const m = new THREE.MeshPhysicalMaterial({
+    color:0xB23A42, roughness:0.56, metalness:0.0,
+    clearcoat:0.40, clearcoatRoughness:0.55,
+    transparent:true, opacity:0.82, depthWrite:false, side:THREE.DoubleSide
+  });
+  m.onBeforeCompile = sh=>{
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;')
+      .replace('#include <begin_vertex>',
+               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+varying vec3 vMPos;
+float mh(vec3 p){return fract(sin(dot(p,vec3(12.9898,78.233,37.719)))*43758.5453);}
+float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+ return mix(mix(mix(mh(i),mh(i+vec3(1,0,0)),f.x),mix(mh(i+vec3(0,1,0)),mh(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(mh(i+vec3(0,0,1)),mh(i+vec3(1,0,1)),f.x),mix(mh(i+vec3(0,1,1)),mh(i+vec3(1,1,1)),f.x),f.y),f.z);}`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+{ float t = mn(vMPos*1.5)*0.58 + mn(vMPos*6.5)*0.42;
+  diffuseColor.rgb *= 0.80 + 0.38*t; }`);
+  };
+  return m;
+}
+
+/** Deterministic per-muscle tint, so the layer reads as many muscles not one mass. */
+function tintMuscle(mat,id){
+  let h=0; for(let i=0;i<id.length;i++) h=(h*31+id.charCodeAt(i))>>>0;
+  const c={}; mat.color.getHSL(c);
+  const f=(shift)=>(((h>>shift)%1000)/1000)-0.5;
+  mat.color.setHSL(
+    (c.h + f(0)*0.030 + 1)%1,
+    Math.min(0.86, Math.max(0.34, c.s + f(9)*0.20)),
+    Math.min(0.50, Math.max(0.23, c.l + f(18)*0.13))
+  );
+}
+
 /* ───────────────────────── Geometry helpers ─────────────────────── */
 const V = (x,y,z)=>new THREE.Vector3(x,y,z);
 
@@ -521,10 +564,23 @@ function sweep(points, opt){
   const tw = opt.twist || (()=>0);
   const rug = opt.rug || 0;          // surface rugosity (muscle attachment roughness)
   const seed= opt.seed || 3.1;
+  /* opt.plane pins the cross-section to a fixed reference direction instead of
+     the Frenet frame. Frenet normals rotate as a curve bends, which made flat
+     sheet muscles twist and balloon off the body wall; with a plane the
+     thickness always points the same way. */
+  const plane = opt.plane || null;
+  const _T=new THREE.Vector3(), _N=new THREE.Vector3(), _B=new THREE.Vector3();
   // Rings carry R+1 vertices so the UV seam closes cleanly and bump maps tile
   const pos=[], idx=[], uvs=[];
   for(let i=0;i<=S;i++){
-    const t=i/S, P=curve.getPointAt(t), N=fr.normals[i], B=fr.binormals[i];
+    const t=i/S, P=curve.getPointAt(t);
+    let N=fr.normals[i], B=fr.binormals[i];
+    if(plane){
+      curve.getTangentAt(t,_T);
+      _N.copy(plane).addScaledVector(_T, -plane.dot(_T)).normalize();  // thickness
+      _B.crossVectors(_T,_N).normalize();                              // width
+      N=_N; B=_B;
+    }
     const rad=rf(t), ex=fx(t), ey=fy(t), rot=tw(t);
     for(let j=0;j<=R;j++){
       const jj=j%R;                                   // wrap so the seam matches exactly
@@ -643,7 +699,13 @@ function register(obj, data){
 
 /** Lazily give a structure a private clone of its base material. */
 function ownMaterial(d, base){
-  if(!d._mat){ d._mat = base.clone(); d._matBase = base; }
+  if(!d._mat){
+    d._mat = base.clone();
+    // Material.copy() does not carry the shader hook across in r128
+    if(base.onBeforeCompile) d._mat.onBeforeCompile = base.onBeforeCompile;
+    if(d.layer==='muscles') tintMuscle(d._mat, d.id);
+    d._matBase = base;
+  }
   return d._mat;
 }
 
@@ -1458,7 +1520,7 @@ function buildSoftTissue(){
   const OP = 0.72;
 
   /* ---------- MUSCLES ---------- */
-  const mus = c=>softMat(c,OP);
+  const mus = ()=>muscleMat();   // colour is tinted per structure in ownMaterial
   const MUS = [
     {id:'deltoid', name:'Deltoid', latin:'Musculus deltoideus', r:3.2, mirror:true,
      pts:s=>[[s*13.5,148,-3],[s*19.5,146,0],[s*20.5,140,1],[s*19.6,131,1.4]],
@@ -1480,8 +1542,10 @@ function buildSoftTissue(){
      o:'The broad fan of the anterior chest wall, with clavicular, sternocostal and abdominal heads whose fibres twist 180° before inserting — which is why it can both flex and extend the shoulder depending on starting position.',
      detail:{Origin:'Medial clavicle, sternum, upper six costal cartilages',Insertion:'Lateral lip of the bicipital groove of the humerus',Nerve:'Medial and lateral pectoral nerves (C5–T1)',Action:'Adduction, medial rotation and flexion of the arm; accessory muscle of respiration'},
      clin:'Rupture occurs typically in weight-trainers during bench press, producing a sudden tearing sensation, bruising and loss of the anterior axillary fold. Surgical repair is recommended in active individuals.'},
-    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:3.4, mirror:true,
-     pts:s=>[[s*3,105,-6],[s*8,120,-6.5],[s*12,134,-5],[s*16,142,0]],
+    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:2.3, mirror:true,
+     // Hugs the posterior chest wall, then converges sharply to the bicipital
+     // groove — keeping z shallow stops the sheet ballooning off the back.
+     pts:s=>[[s*2.6,101,-5.6],[s*6.4,114,-6.2],[s*9.8,127,-6.0],[s*13.2,137,-4.4],[s*16.2,141.5,-0.8]],
      o:'The largest muscle of the back, sweeping from the lower spine and iliac crest up to the humerus — the "climbing muscle" that pulls the body up toward a fixed arm.',
      detail:{Origin:'Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower ribs',Insertion:'Floor of the bicipital groove of the humerus',Nerve:'Thoracodorsal nerve (C6–C8)',Action:'Extension, adduction and medial rotation of the arm'},
      clin:'Its reliable pedicle makes the latissimus dorsi flap a workhorse in reconstructive surgery — for breast reconstruction and for covering large soft-tissue defects, including around the shoulder and chest wall.'},
@@ -1520,11 +1584,11 @@ function buildSoftTissue(){
      o:'The strongest dorsiflexor of the ankle, running down the front of the shin and crossing to the medial side of the foot. It lifts the foot in swing phase and controls its lowering after heel strike.',
      detail:{Origin:'Lateral condyle and upper lateral surface of the tibia, interosseous membrane',Insertion:'Medial cuneiform and base of the first metatarsal',Nerve:'Deep peroneal nerve (L4, L5)',Action:'Dorsiflexion and inversion of the foot'},
      clin:'Loss of this muscle — usually through common peroneal nerve palsy at the fibular neck — causes foot drop and a high-stepping gait. It is also the key muscle of the anterior compartment, the compartment most often affected by compartment syndrome after tibial fracture.'},
-    {id:'rectusabd', shape:'sheet', name:'Rectus Abdominis', latin:'Musculus rectus abdominis', r:2.3, mirror:true,
+    {id:'rectusabd', shape:'sheet', name:'Anterior Abdominal Wall', latin:'Musculi abdominis', r:2.3, mirror:true,
      pts:s=>[[s*2.4,135,7.6],[s*2.6,126,8.2],[s*2.6,116,8.4],[s*2.4,105,7.6]],
-     o:'The paired "six-pack" strap muscle running from ribs to pubis inside the rectus sheath, divided by three or more tendinous intersections. Part of the anterior core that controls lumbar posture.',
-     detail:{Origin:'Pubic crest and pubic symphysis',Insertion:'Xiphoid process and costal cartilages 5–7',Nerve:'Thoracoabdominal nerves (T7–T12)',Action:'Trunk flexion; increases intra-abdominal pressure; stabilises the pelvis'},
-     clin:'Core strength genuinely matters in low back pain — but training the deep stabilisers (transversus abdominis, multifidus) alongside rectus abdominis gives better outcomes than sit-ups alone. Diastasis recti after pregnancy responds to graded core rehabilitation.'},
+     o:'The layered muscular wall of the abdomen: rectus abdominis running vertically from ribs to pubis inside the rectus sheath, wrapped by external oblique, internal oblique and transversus abdominis. Together they flex and rotate the trunk and generate the intra-abdominal pressure that braces the lumbar spine.',
+     detail:{Origin:'Lower ribs and costal cartilages, thoracolumbar fascia, iliac crest, inguinal ligament',Insertion:'Linea alba, pubic crest and symphysis',Nerve:'Thoracoabdominal nerves (T7–T12), iliohypogastric and ilioinguinal (L1)',Action:'Trunk flexion and rotation; raises intra-abdominal pressure; supports the viscera'},
+     clin:'Core strength genuinely matters in low back pain, but training the deep layer — transversus abdominis with multifidus — outperforms sit-ups alone. The aponeuroses of these muscles form the rectus sheath and inguinal canal, the anatomy behind hernia repair, and the layers are the target of the TAP block. Diastasis recti after pregnancy responds to graded core rehabilitation.'},
     {id:'scm', name:'Sternocleidomastoid', latin:'Musculus sternocleidomastoideus', r:1.5, mirror:true,
      pts:s=>[[s*2,150.5,6.5],[s*4.5,156,4],[s*6.4,160,0.5],[s*7.4,162.4,-2.4]],
      o:'The prominent oblique strap of the neck with two heads (sternal and clavicular), dividing the neck into anterior and posterior triangles — the fundamental surgical map of the neck.',
@@ -1688,7 +1752,38 @@ function buildSoftTissue(){
      pts:s=>[[s*1.6,150.0,5.6],[s*2.0,155.0,5.6],[s*2.2,159.0,5.0]],
      o:'Four flat strap muscles below the hyoid — sternohyoid, sternothyroid, thyrohyoid and omohyoid — that depress the hyoid and larynx during swallowing and speech.',
      detail:{Origin:'Manubrium, clavicle and scapula (omohyoid)',Insertion:'Hyoid bone and thyroid cartilage',Nerve:'Ansa cervicalis (C1–C3); thyrohyoid by C1 via the hypoglossal nerve',Action:'Depress the hyoid and larynx after swallowing; stabilise the hyoid for suprahyoid action'},
-     clin:'They are split in the midline and retracted laterally in the anterior approach to the cervical spine — the internervous plane that makes that exposure so clean. The omohyoid crosses the field at about C6 and is often divided.'}
+     clin:'They are split in the midline and retracted laterally in the anterior approach to the cervical spine — the internervous plane that makes that exposure so clean. The omohyoid crosses the field at about C6 and is often divided.'},
+    /* ---- Deep segmental and postural muscles ---- */
+    {id:'levatorscap', name:'Levator Scapulae', latin:'Musculus levator scapulae', r:1.0, mirror:true,
+     pts:s=>[[s*3.4,159.0,-3.4],[s*5.6,154.0,-4.4],[s*8.0,149.0,-5.4],[s*9.6,145.4,-6.0]],
+     o:'A strap running from the upper cervical transverse processes down to the superior angle of the scapula, elevating the scapula and, with the rhomboids, rotating the glenoid downward.',
+     detail:{Origin:'Transverse processes of C1–C4',Insertion:'Superior angle and upper medial border of the scapula',Nerve:'Dorsal scapular nerve (C5) and direct branches from C3–C4',Action:'Elevates the scapula; downwardly rotates the glenoid; side-bends the neck'},
+     clin:'One of the most common sites of myofascial pain in desk workers, felt as a sharp ache at the top inner corner of the shoulder blade with a stiff neck. Because it also downwardly rotates the glenoid, a tight levator scapulae works directly against the upward rotation needed to raise the arm overhead.'},
+    {id:'suboccipital', name:'Suboccipital Muscles', latin:'Musculi suboccipitales', r:0.9, mirror:true,
+     pts:s=>[[s*1.4,164.0,-5.0],[s*3.0,165.6,-5.2],[s*4.6,166.4,-4.4]],
+     o:'Four small deep muscles — rectus capitis posterior major and minor, obliquus capitis superior and inferior — connecting the occiput, atlas and axis. They bound the suboccipital triangle and are exceptionally rich in muscle spindles, making them key proprioceptive sensors for head position.',
+     detail:{Origin:'Spinous process of C2 and posterior arch of C1',Insertion:'Inferior nuchal line of the occiput and transverse process of C1',Nerve:'Suboccipital nerve (dorsal ramus of C1)',Contents_of_triangle:'Vertebral artery and the suboccipital nerve'},
+     clin:'The vertebral artery runs across the floor of the suboccipital triangle, which is why upper cervical manipulation carries a dissection risk. These muscles connect to the dura by a myodural bridge, and their spasm is strongly implicated in cervicogenic headache.'},
+    {id:'deepneckflex', name:'Deep Cervical Flexors', latin:'Musculi longus colli et capitis', r:1.0, mirror:true,
+     pts:s=>[[s*1.6,148.0,0.6],[s*2.2,153.0,1.2],[s*2.4,158.0,1.4],[s*2.2,162.0,1.0]],
+     o:'Longus colli and longus capitis lie directly on the front of the cervical vertebral bodies, with rectus capitis anterior and lateralis at the top. They are the deep stabilisers of the cervical spine, holding the lordosis against the pull of the heavier superficial muscles.',
+     detail:{Origin:'Anterior bodies and transverse processes of C1–T3',Insertion:'Anterior arch of the atlas, basilar occiput, cervical transverse processes',Nerve:'Ventral rami of C1–C6',Action:'Cranio-cervical flexion; segmental stabilisation of the cervical spine'},
+     clin:'These are the muscles exposed and retracted in the anterior cervical approach, and they lie immediately in front of the vertebral bodies used as the ACDF landmark. Weakness here, with dominance of the superficial flexors, is a well-documented feature of chronic neck pain and whiplash — deep flexor retraining is the evidence-based rehabilitation.'},
+    {id:'deeprotators', name:'Multifidus & Rotatores', latin:'Musculi multifidi et rotatores', r:1.0, mirror:true,
+     pts:s=>[[s*1.8,100.0,-3.4],[s*2.2,114.0,-4.4],[s*2.4,128.0,-4.8],[s*2.2,142.0,-4.6]],
+     o:'The deepest layer of the transversospinalis group, spanning only one to four segments from transverse process to spinous process. They generate little gross movement; their role is fine segmental control, and they are dense with proprioceptors.',
+     detail:{Origin:'Transverse processes, sacrum and posterior ilium',Insertion:'Spinous processes one to four segments above',Nerve:'Medial branches of the posterior rami',Action:'Segmental stabilisation; small rotation and extension of individual vertebrae'},
+     clin:'Multifidus atrophies rapidly and selectively after a back injury and does not recover spontaneously — which is why targeted motor-control retraining, not general exercise, is the evidence-based treatment. The medial branch that supplies it also innervates the facet joint, the anatomical basis of medial branch blocks and radiofrequency denervation.'},
+    {id:'pelvicfloor', name:'Pelvic Floor (Levator Ani)', latin:'Musculi diaphragmatis pelvis', r:1.3, mirror:true,
+     pts:s=>[[s*1.6,83.4,-2.6],[s*3.4,82.6,-0.6],[s*4.2,82.4,1.8],[s*2.6,82.8,3.6]],
+     o:'The muscular hammock slung across the pelvic outlet — pubococcygeus, iliococcygeus and puborectalis, with coccygeus behind. It supports the pelvic viscera, maintains continence and resists rises in intra-abdominal pressure.',
+     detail:{Origin:'Pubis, tendinous arch of the obturator fascia, ischial spine',Insertion:'Perineal body, anococcygeal ligament, coccyx',Nerve:'Nerve to levator ani (S3–S5) and branches of the pudendal nerve',Action:'Supports pelvic viscera; continence; raises the pelvic floor'},
+     clin:'Its S2–S4 innervation is exactly the territory lost in cauda equina syndrome, which is why sphincter tone and saddle sensation are the decisive examination findings. Obstetric injury here is the leading cause of pelvic organ prolapse and stress incontinence, and the floor works as a functional unit with transversus abdominis and multifidus in core stability.'},
+    {id:'transvthoracis', name:'Transversus Thoracis', latin:'Musculus transversus thoracis', r:0.9, mirror:true,
+     pts:s=>[[s*1.4,137.0,6.0],[s*3.4,140.0,5.6],[s*5.2,143.5,4.8]],
+     o:'A thin fan on the inner surface of the anterior chest wall, radiating from the back of the sternum to the costal cartilages, deep to the internal thoracic vessels.',
+     detail:{Origin:'Posterior surface of the lower sternum and xiphoid',Insertion:'Inner surfaces of costal cartilages 2–6',Nerve:'Intercostal nerves',Action:'Depresses the ribs in forced expiration'},
+     clin:'It forms the plane immediately deep to the internal thoracic artery, and the transversus thoracis plane block that targets that plane is now used for analgesia after sternotomy and in anterior rib fractures.'}
   ];
   MUS.forEach(m=>{
     const sides = m.mirror?[1,-1]:[1];
@@ -1700,11 +1795,14 @@ function buildSoftTissue(){
          are broad thin ribbons. Only used where BodyParts3D has no mesh. */
       const sheet = m.shape==='sheet';
       const obj = sweepMesh(m.pts(s), {
+        // Sheets are pinned to a plane so thickness stays perpendicular to the
+        // body wall; bellies keep the Frenet frame and swell in the middle.
+        plane: sheet ? V(...(m.plane||[0,0,1])) : null,
         r  : t => m.r*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
-        fx : () => sheet ? 2.40 : 1.15,
-        fy : () => sheet ? 0.22 : 0.86,
+        fx : () => sheet ? 0.20 : 1.15,     // thickness
+        fy : () => sheet ? 2.40 : 0.86,     // width
         seg: 34, radial: 16
-      }, mus(0xC1454B));
+      }, mus());
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
         name:sideName+m.name, latin:m.latin, focus:V(...m.pts(s)[1]),

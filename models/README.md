@@ -138,7 +138,7 @@ itself built on:
 | System | Real meshes | Procedural | Notes |
 |---|---|---|---|
 | Skeleton | 55 | 0 | complete, incl. individually named carpals and tarsals |
-| Muscles | 86 | 4 | cuff, deep hip rotators, compartments, axial groups |
+| Muscles | 100 | 2 | cuff, hip rotators, compartments, axial and deep segmental groups |
 | Arteries | 23 | 4 | aorta and the major named branches |
 | Veins | 16 | 2 | cavae, azygos, deep and superficial limb veins |
 | Nerves | 0 | 59 | **not in the dataset** — see below |
@@ -148,8 +148,10 @@ BodyParts3D contains only *cranial* nerves, so the peripheral nerves the
 explorer cares about (sciatic, median, ulnar, brachial plexus…) have no
 scan-derived equivalent and keep their procedural paths. It has no lymphatic
 vessels or nodes at all. A handful of soft-tissue structures are also absent
-and stay procedural: latissimus dorsi, rectus abdominis, external carotid
-artery, fibular (peroneal) artery and external jugular vein.
+and stay procedural: latissimus dorsi, external carotid artery, fibular
+(peroneal) artery and external jugular vein. There is no discrete rectus
+abdominis mesh either — the dataset carries the anterior abdominal wall as a
+single muscle mass, so that structure is named and described as the wall.
 
 **Left-side meshes are mirrored.** BodyParts3D ships only the right-side
 original and refers to the left by a mirrored `…M` id that the archive omits.

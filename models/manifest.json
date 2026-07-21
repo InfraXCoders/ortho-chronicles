@@ -557,6 +557,48 @@
     },
     "subclavius_r": {
       "file": "subclavius_r.glb"
+    },
+    "deepneckflex_l": {
+      "file": "deepneckflex_l.glb"
+    },
+    "deepneckflex_r": {
+      "file": "deepneckflex_r.glb"
+    },
+    "deeprotators_l": {
+      "file": "deeprotators_l.glb"
+    },
+    "deeprotators_r": {
+      "file": "deeprotators_r.glb"
+    },
+    "levatorscap_l": {
+      "file": "levatorscap_l.glb"
+    },
+    "levatorscap_r": {
+      "file": "levatorscap_r.glb"
+    },
+    "pelvicfloor_l": {
+      "file": "pelvicfloor_l.glb"
+    },
+    "pelvicfloor_r": {
+      "file": "pelvicfloor_r.glb"
+    },
+    "rectusabd_l": {
+      "file": "rectusabd_l.glb"
+    },
+    "rectusabd_r": {
+      "file": "rectusabd_r.glb"
+    },
+    "suboccipital_l": {
+      "file": "suboccipital_l.glb"
+    },
+    "suboccipital_r": {
+      "file": "suboccipital_r.glb"
+    },
+    "transvthoracis_l": {
+      "file": "transvthoracis_l.glb"
+    },
+    "transvthoracis_r": {
+      "file": "transvthoracis_r.glb"
     }
   }
 }
