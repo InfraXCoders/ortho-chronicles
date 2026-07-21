@@ -631,11 +631,20 @@ function register(obj, data){
     if(o.isMesh){
       o.userData.sid=data.id;
       if(!data.focus) data.focus=o.position.clone();
+      // Every structure needs its own material instance, otherwise highlighting
+      // one bone would tint the whole skeleton — they all share M_BONE.
+      o.material = ownMaterial(data, o.material);
       pickTargets.push(o);
     }
   });
   layerGroups[data.layer].add(obj);
   return obj;
+}
+
+/** Lazily give a structure a private clone of its base material. */
+function ownMaterial(d, base){
+  if(!d._mat){ d._mat = base.clone(); d._matBase = base; }
+  return d._mat;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -2203,7 +2212,6 @@ canvas.addEventListener('touchend',()=>{pinch=null;});
 const ray = new THREE.Raycaster();
 const ndc = new THREE.Vector2();
 let selectedId=null, hoverId=null;
-const EM_SEL = new THREE.Color(0x2DD4BF), EM_HOV = new THREE.Color(0x1b6f66);
 
 function pointerNDC(e){
   const r=canvas.getBoundingClientRect();
@@ -2220,12 +2228,12 @@ function pick(e){
   const hits = ray.intersectObjects(live,false);
   return hits.length? hits[0].object.userData.sid : null;
 }
+/* Hovering a structure only changes the cursor — deliberately no colour
+   change, which washed the bone out instead of reading as a highlight. */
 function hoverTest(e){
   const id=pick(e);
   if(id===hoverId) return;
-  if(hoverId && hoverId!==selectedId) paint(hoverId,null);
   hoverId=id;
-  if(hoverId && hoverId!==selectedId) paint(hoverId,EM_HOV);
   canvas.classList.toggle('pickable', !!id);
 }
 function clickTest(e){
@@ -2241,12 +2249,21 @@ function clickTest(e){
   const id=pick(e);
   if(id) select(id); else deselect();
 }
-function paint(id,color){
+/**
+ * Selection highlight. Rather than tinting toward a fixed colour — which
+ * bleached the light-brown bone to near white — the structure glows in its
+ * own hue, so a bone reads as brighter bone and a muscle as brighter muscle.
+ */
+function paint(id,on){
   const d=STRUCTURES[id]; if(!d) return;
   d.object.traverse(o=>{
-    if(o.isMesh && o.material && o.material.emissive){
-      o.material.emissive.set(color||0x000000);
-      o.material.emissiveIntensity = color?0.75:0;
+    if(!o.isMesh || !o.material || !o.material.emissive) return;
+    if(on){
+      o.material.emissive.copy(o.material.color).multiplyScalar(0.55);
+      o.material.emissiveIntensity = 0.5;
+    }else{
+      o.material.emissive.setHex(0x000000);
+      o.material.emissiveIntensity = 0;
     }
   });
 }
@@ -2268,8 +2285,8 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 
 function select(id){
   const d=STRUCTURES[id]; if(!d) return;
-  if(selectedId && selectedId!==id) paint(selectedId,null);
-  selectedId=id; paint(id,EM_SEL);
+  if(selectedId && selectedId!==id) paint(selectedId,false);
+  selectedId=id; paint(id,true);
 
   pnTag.textContent = d.tag||'Structure';
   pnTitle.textContent = d.name;
@@ -2322,7 +2339,7 @@ function select(id){
 }
 
 function deselect(){
-  if(selectedId) paint(selectedId,null);
+  if(selectedId) paint(selectedId,false);
   selectedId=null;
   panel.classList.remove('open');
   clearLabels();
@@ -2662,7 +2679,8 @@ function swapInModel(d, root, entry, glob){
   // Unify appearance and restore pickability under the same structure id
   root.traverse(o=>{
     if(o.isMesh){
-      if(entry.keepMaterial !== true) o.material = M_BONE;
+      // Private clone, not the shared M_BONE — see ownMaterial()
+      if(entry.keepMaterial !== true) o.material = ownMaterial(d, M_BONE);
       o.userData.sid = d.id;
       pickTargets.push(o);
     }
