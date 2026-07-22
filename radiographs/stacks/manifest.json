@@ -1,0 +1,50 @@
+{
+ "knee": {
+  "dir": "knee",
+  "slices": [
+   "knee_01.jpg",
+   "knee_02.jpg",
+   "knee_03.jpg",
+   "knee_04.jpg",
+   "knee_05.jpg",
+   "knee_06.jpg",
+   "knee_07.jpg",
+   "knee_08.jpg",
+   "knee_09.jpg",
+   "knee_10.jpg",
+   "knee_11.jpg",
+   "knee_12.jpg",
+   "knee_13.jpg",
+   "knee_14.jpg",
+   "knee_15.jpg",
+   "knee_16.jpg",
+   "knee_17.jpg",
+   "knee_18.jpg",
+   "knee_19.jpg",
+   "knee_20.jpg"
+  ],
+  "count": 20,
+  "licence": "CC BY-SA 3.0",
+  "author": "Nevit Dilmen (talk)",
+  "source": "https://commons.wikimedia.org/wiki/Category:Magnetic_resonance_imaging"
+ },
+ "lumbar": {
+  "dir": "lumbar",
+  "slices": [
+   "lumbar_01.jpg",
+   "lumbar_02.jpg",
+   "lumbar_03.jpg",
+   "lumbar_05.jpg",
+   "lumbar_06.jpg",
+   "lumbar_07.jpg",
+   "lumbar_08.jpg",
+   "lumbar_09.jpg",
+   "lumbar_10.jpg",
+   "lumbar_11.jpg",
+   "lumbar_12.jpg"
+  ],
+  "count": 11,
+  "licence": "CC0",
+  "author": "Stillwaterising"
+ }
+}

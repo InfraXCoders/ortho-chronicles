@@ -158,6 +158,22 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 .filmcred a:hover{text-decoration:underline;}
 .nofilm{color:var(--mut);font-size:.85rem;text-align:center;padding:40px 20px;max-width:420px;line-height:1.7;}
 
+/* ---------- slice stack viewer ---------- */
+#stackview{background:#05090f;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  max-width:520px;box-shadow:0 14px 40px rgba(0,0,0,.55);}
+.stackimg{background:#000;display:flex;align-items:center;justify-content:center;cursor:ns-resize;
+  min-height:240px;}
+.stackimg img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:none;}
+.stackctl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line);}
+.sbtn{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--txt);
+  width:30px;height:30px;border-radius:8px;cursor:pointer;flex-shrink:0;font-size:.78rem;
+  display:flex;align-items:center;justify-content:center;transition:.15s;}
+.sbtn:hover{background:rgba(45,212,191,.25);border-color:rgba(45,212,191,.5);}
+#sRange{flex:1;accent-color:var(--teal);cursor:pointer;}
+.scount{font-size:.76rem;color:var(--teal);font-weight:700;white-space:nowrap;min-width:52px;text-align:right;}
+.stackhint{padding:0 12px 9px;font-size:.7rem;color:var(--mut);}
+.stackhint i{margin-right:5px;}
+
 /* ---------- disclaimer ---------- */
 #note{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
   font-size:.68rem;color:var(--mut);background:rgba(11,20,36,.85);border:1px solid var(--line);
@@ -293,6 +309,29 @@ const FILMS = {
   ct_lumbar_sag  :{f:'ct_lumbar_sag.png',  t:'CT lumbar spine — sagittal reformat, bone window', by:'Ptrump16', lic:'CC BY-SA 3.0'},
   ct_thorax_3d   :{f:'ct_thorax_3d.jpg',   t:'CT thorax — 3D volume rendering, annotated', by:'Mikael Häggström', lic:'CC0'},
   xr_hip_occult  :{f:'xr_hip_occult.jpg',  t:'Occult hip fracture — labelled', by:'Mikael Häggström', lic:'CC0'}
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   SLICE STACKS
+   Scroll-through cross-sectional series, the way a workstation shows them.
+   Both stacks are openly licensed and self-hosted.
+   ══════════════════════════════════════════════════════════════════ */
+const STACKS = {
+  knee:{
+    dir:'knee', by:'Nevit Dilmen', lic:'CC BY-SA 3.0',
+    caption:'Knee MRI — multi-sequence panel, 20 slices',
+    slices:['knee_01.jpg','knee_02.jpg','knee_03.jpg','knee_04.jpg','knee_05.jpg','knee_06.jpg',
+            'knee_07.jpg','knee_08.jpg','knee_09.jpg','knee_10.jpg','knee_11.jpg','knee_12.jpg',
+            'knee_13.jpg','knee_14.jpg','knee_15.jpg','knee_16.jpg','knee_17.jpg','knee_18.jpg',
+            'knee_19.jpg','knee_20.jpg']
+  },
+  lumbar:{
+    dir:'lumbar', by:'Stillwaterising', lic:'CC0',
+    caption:'Lumbar spine — sagittal T2 TSE, 11 slices',
+    slices:['lumbar_01.jpg','lumbar_02.jpg','lumbar_03.jpg','lumbar_05.jpg','lumbar_06.jpg',
+            'lumbar_07.jpg','lumbar_08.jpg','lumbar_09.jpg','lumbar_10.jpg','lumbar_11.jpg',
+            'lumbar_12.jpg']
+  }
 };
 
 const REGIONS = [
@@ -834,6 +873,78 @@ const REGIONS = [
   ]
 },
 
+/* ─────────────── SLICE ATLAS: KNEE ─────────────── */
+{
+  id:'stack_knee', icon:'fa-layer-group', group:'Slice atlas',
+  name:'Knee MRI — Scroll Atlas',
+  sub:'Twenty sequential slices — scroll with the wheel, the slider or the arrow keys',
+  stack:'knee',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'HOW TO READ A STACK');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Scroll, do not stare', d:'A single slice is almost meaningless. Structures are identified by following them in and out of plane across several slices — that is how a vessel is distinguished from a lymph node, and a normal nutrient canal from a fracture line.'},
+    {n:'Find the midline first', d:'On sagittal knee images, locate the slice showing the intercondylar notch with the PCL as a dark curved band. That anchors everything: work medially and laterally from there.'},
+    {n:'The ACL is oblique', d:'The anterior cruciate is not fully seen on any single sagittal slice because it runs obliquely. Judging it needs either an oblique-sagittal acquisition or careful correlation across adjacent slices and the coronal plane.'},
+    {n:'Menisci: the bow tie', d:'On peripheral sagittal slices the normal meniscus appears as a continuous dark "bow tie". Two bow ties should be seen on the lateral side. Loss of the bow tie, or a fragment in the notch, indicates a bucket-handle tear.'},
+    {n:'Check every structure in two planes', d:'Nothing should be called abnormal on one plane alone. A meniscal tear seen sagittally is confirmed coronally; a cruciate judged sagittally is checked on the coronal and axial images.'}
+  ],
+  meas:[
+    {n:'Slice thickness (knee MRI)', v:'3–4 mm', how:'With a small interslice gap', why:'Thicker slices average out small meniscal and chondral lesions'},
+    {n:'Field of view', v:'14–16 cm', how:'Dedicated knee coil', why:'Too large a FOV loses the resolution needed for cartilage'},
+    {n:'Standard knee protocol', v:'3 planes', how:'Sagittal PD fat-sat + T1, coronal PD/T2 fat-sat, axial PD fat-sat', why:'Sagittal for cruciates and menisci, coronal for collaterals and menisci, axial for patellofemoral cartilage'},
+    {n:'Two-slice-touch rule', v:'Meniscal tear', how:'Abnormal meniscal signal contacting the surface on ≥2 consecutive slices', why:'Raises specificity for a true tear over degenerative signal'},
+    {n:'Normal meniscus signal', v:'Uniformly low', how:'Dark on every sequence', why:'Internal signal not reaching a surface is degeneration, not a tear'}
+  ],
+  pitfalls:[
+    {t:'The transverse meniscal ligament mimics a tear', d:'The ligament passing between the anterior horns crosses the meniscus and creates an apparent cleft on sagittal images. Follow it across slices — a normal ligament is continuous from one meniscus to the other.'},
+    {t:'Magic angle in the popliteus tendon', d:'Where a tendon lies at about 55° to the field it shows bright signal on short-TE sequences and mimics a tear. Confirm on T2, where the artefact vanishes.'},
+    {t:'Degenerative signal is not a tear', d:'Intrameniscal signal that does not reach an articular surface is degeneration. Calling it a tear leads to arthroscopy that does not help the patient.'}
+  ],
+  pearls:[
+    {t:'Build the habit on a normal study', d:'Scrolling a normal series repeatedly is what builds the pattern recognition that makes an abnormal one obvious. That is exactly what this stack is for.'}
+  ]
+},
+
+/* ─────────────── SLICE ATLAS: LUMBAR ─────────────── */
+{
+  id:'stack_lumbar', icon:'fa-layer-group', group:'Slice atlas',
+  name:'Lumbar Spine MRI — Scroll Atlas',
+  sub:'Eleven sagittal T2 slices from midline outward — scroll to follow the canal and foramina',
+  stack:'lumbar',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'HOW TO READ A STACK');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Start midline', d:'The mid-sagittal slice shows the conus medullaris, the CSF column and the discs in profile. Establish the level of the conus and count the vertebrae before assessing anything else.'},
+    {n:'Conus medullaris', d:'Normally ends at L1–L2. A conus below L2 raises tethered cord. This is the first thing to identify on a lumbar study, and it is why the sagittal midline slice is read first.'},
+    {n:'Disc signal', d:'On T2 a healthy disc is bright with a central cleft. Loss of that brightness is desiccation — the earliest sign of degeneration, and near-universal with age, so it must be correlated clinically.'},
+    {n:'Neural foramina', d:'Seen on the parasagittal slices as you scroll laterally. The exiting nerve root sits in the upper foramen surrounded by bright fat; loss of that fat halo indicates foraminal stenosis.'},
+    {n:'Facet joints', d:'Furthest laterally. Effusion, hypertrophy and synovial cysts are seen here, and a facet effusion is a recognised marker of degenerative instability.'}
+  ],
+  meas:[
+    {n:'Conus level', v:'L1–L2', how:'Mid-sagittal, count from the sacrum up', why:'Below L2 suggests tethering; the level determines where a lumbar puncture is safe'},
+    {n:'AP canal diameter', v:'> 12 mm normal', how:'Mid-sagittal, behind the disc', why:'10–12 mm relative stenosis; < 10 mm absolute stenosis'},
+    {n:'Pfirrmann grade', v:'I–V', how:'T2 disc signal and height', why:'Standardises how disc degeneration is reported'},
+    {n:'Modic changes', v:'Type I–III', how:'Endplate signal on T1 and T2', why:'Type I (dark T1 / bright T2) is oedematous and associated with pain'},
+    {n:'Foraminal fat', v:'Preserved halo', how:'Parasagittal slices', why:'Loss of perineural fat is the sign of foraminal stenosis'}
+  ],
+  pitfalls:[
+    {t:'Count the levels before you report one', d:'Transitional vertebrae — sacralised L5 or lumbarised S1 — are common. Operating at the wrong level is a never-event that begins with miscounting on the sagittal series.'},
+    {t:'Degeneration is not a diagnosis', d:'Disc desiccation, bulges and facet arthrosis are near-universal after middle age and appear in people with no symptoms. The scan explains the patient only when the level matches the clinical syndrome.'},
+    {t:'A sagittal series alone is not enough', d:'Lateral recess and foraminal compression is often best seen on axial images. Reporting stenosis from sagittals alone under-calls lateral recess disease.'}
+  ],
+  pearls:[
+    {t:'Scroll outward deliberately', d:'Going midline → parasagittal → facet in a fixed order each time means the foramina and facets are never forgotten, which is exactly where the pathology hides in a patient with radicular pain and a normal-looking canal.'}
+  ]
+},
+
 /* ─────────────── MRI SEQUENCES ─────────────── */
 {
   id:'mri', icon:'fa-magnet', group:'Cross-sectional',
@@ -1040,6 +1151,9 @@ function show(id, focusLm){
   document.querySelectorAll('.rgn').forEach(x=>x.classList.toggle('active',x.dataset.id===id));
   $('vTitle').innerHTML=r.name;
   $('vSub').textContent=r.sub;
+  // A slice atlas exists to be scrolled, so open it in the viewer directly.
+  // Set the mode without re-entering show(), which would skip the panel build.
+  if(r.stack && mode!=='film'){ mode='film'; syncModeButtons(); }
   renderStage(r);
 
 
@@ -1083,7 +1197,9 @@ function show(id, focusLm){
  */
 function renderStage(r){
   const wrap=$('film');
-  if(mode==='diagram' || !(r.films&&r.films.length)){
+  // A slice stack behaves like a workstation: scroll through the series
+  if(mode==='film' && r.stack && STACKS[r.stack]){ renderStack(wrap, STACKS[r.stack]); return; }
+  if(mode==='diagram' || !((r.films&&r.films.length) || r.stack)){
     wrap.innerHTML=r.svg;
     applyLines();
     wrap.querySelectorAll('.hot').forEach(h=>{
@@ -1091,7 +1207,7 @@ function renderStage(r){
       h.addEventListener('mouseleave',()=>highlight(-1));
       h.addEventListener('click',()=>{ selectTab('landmarks'); highlight(+h.dataset.hot,true); });
     });
-    if(mode==='film' && !(r.films&&r.films.length)){
+    if(mode==='film' && !((r.films&&r.films.length)||r.stack)){
       wrap.insertAdjacentHTML('afterbegin',
         `<div class="nofilm"><i class="fas fa-circle-info"></i> No openly-licensed radiograph of this
          view was available, so the schematic is shown. Only images that permit commercial reuse are
@@ -1109,6 +1225,49 @@ function renderStage(r){
         </div>
       </figcaption></figure>`;
   }).join('')+`</div>`;
+}
+
+/* ---- slice stack viewer ---- */
+let stackState=null;
+function renderStack(wrap, st){
+  const base='radiographs/stacks/'+st.dir+'/';
+  wrap.innerHTML=
+   `<div id="stackview">
+      <div class="stackimg"><img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/></div>
+      <div class="stackctl">
+        <button class="sbtn" id="sPrev" aria-label="Previous slice"><i class="fas fa-chevron-up"></i></button>
+        <input type="range" id="sRange" min="1" max="${st.slices.length}" value="1"/>
+        <button class="sbtn" id="sNext" aria-label="Next slice"><i class="fas fa-chevron-down"></i></button>
+        <span class="scount" id="sCount">1 / ${st.slices.length}</span>
+      </div>
+      <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓</div>
+      <div class="filmcap">${esc(st.caption)}
+        <div class="filmcred">${esc(st.by)} · ${esc(st.lic)} · via
+          <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a></div>
+      </div>
+    </div>`;
+
+  const img=$('sliceImg'), range=$('sRange'), count=$('sCount');
+  stackState={st, base, i:0};
+  // Preload the series so scrolling does not flicker
+  st.slices.forEach(s=>{ const p=new Image(); p.src=base+s; });
+
+  function go(i){
+    i=Math.max(0,Math.min(st.slices.length-1,i));
+    stackState.i=i;
+    img.src=base+st.slices[i];
+    img.alt=st.caption+' — slice '+(i+1);
+    range.value=i+1;
+    count.textContent=(i+1)+' / '+st.slices.length;
+  }
+  stackState.go=go;
+  $('sPrev').onclick=()=>go(stackState.i-1);
+  $('sNext').onclick=()=>go(stackState.i+1);
+  range.oninput=()=>go(+range.value-1);
+  wrap.querySelector('.stackimg').addEventListener('wheel',e=>{
+    e.preventDefault();
+    go(stackState.i + (e.deltaY>0?1:-1));
+  },{passive:false});
 }
 
 function selectTab(k){
@@ -1140,13 +1299,15 @@ $('btnLines').addEventListener('click',()=>{
 });
 
 /* ---- diagram ⇄ radiograph ---- */
-function setMode(m){
-  mode=m;
-  $('btnDiagram').classList.toggle('on',m==='diagram');
-  $('btnFilm').classList.toggle('on',m==='film');
+function syncModeButtons(){
+  $('btnDiagram').classList.toggle('on',mode==='diagram');
+  $('btnFilm').classList.toggle('on',mode==='film');
   // Construction lines only mean anything on the schematic
-  $('btnLines').style.opacity = m==='diagram'?'1':'.4';
-  $('btnLines').disabled = m!=='diagram';
+  $('btnLines').style.opacity = mode==='diagram'?'1':'.4';
+  $('btnLines').disabled = mode!=='diagram';
+}
+function setMode(m){
+  mode=m; syncModeButtons();
   if(current) renderStage(current);
 }
 $('btnDiagram').addEventListener('click',()=>setMode('diagram'));
@@ -1195,6 +1356,11 @@ window.addEventListener('keydown',e=>{
   if(e.target===$('search')){ if(e.key==='Escape') $('search').blur(); return; }
   if(e.key==='/'){ e.preventDefault(); $('search').focus(); }
   if(e.key==='l'||e.key==='L') $('btnLines').click();
+  // In a slice stack the arrows drive the slices, not the region list
+  if(stackState && stackState.go && document.getElementById('sliceImg')){
+    if(e.key==='ArrowDown'){ e.preventDefault(); stackState.go(stackState.i+1); return; }
+    if(e.key==='ArrowUp'){   e.preventDefault(); stackState.go(stackState.i-1); return; }
+  }
   const i=REGIONS.findIndex(r=>r.id===(current&&current.id));
   if(e.key==='ArrowDown'&&i<REGIONS.length-1) show(REGIONS[i+1].id);
   if(e.key==='ArrowUp'&&i>0) show(REGIONS[i-1].id);
