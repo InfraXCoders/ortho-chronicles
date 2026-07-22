@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Radiological Anatomy — Lines, Angles &amp; Normal Values | OrthoChronicles</title>
+<meta name="description" content="Interactive radiological anatomy for orthopaedics: the alignment lines, angles and normal values on every standard view — cervical spine, shoulder, elbow, wrist, pelvis, hip, knee, ankle and foot — with measurement technique, clinical significance and the classic pitfalls. By Dr. Maninder Singh, MS Orthopedics, GMCH Amritsar." />
+<link rel="canonical" href="https://www.orthochronicles.info/radio-anatomy.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Radiological Anatomy | OrthoChronicles" />
+<meta property="og:description" content="The lines, angles and normal values of orthopaedic radiology — interactive, region by region." />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
+<style>
+:root{
+  --navy:#0F1D3A; --ink:#0b1424; --gold:#B8963E; --gold2:#d8b45c;
+  --teal:#2DD4BF; --txt:#E8EDF6; --mut:#93A4C0; --line:rgba(255,255,255,.10);
+  --film:#0a1220; --bone:#E7E2D4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--ink);color:var(--txt);
+  overflow:hidden;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+
+/* ---------- top bar ---------- */
+#topbar{position:fixed;top:0;left:0;right:0;height:58px;z-index:40;display:flex;
+  align-items:center;gap:12px;padding:0 14px;
+  background:linear-gradient(180deg,rgba(15,29,58,.97),rgba(15,29,58,.88));
+  border-bottom:1px solid var(--line);backdrop-filter:blur(10px);}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.brand img{height:30px;}
+.brand span{font-weight:800;font-size:.95rem;white-space:nowrap;}
+.brand span i{color:var(--gold);}
+.tb-spacer{flex:1;}
+.tb-btn{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--txt);
+  padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:.18s;
+  text-decoration:none;font-family:inherit;}
+.tb-btn:hover{background:rgba(255,255,255,.13);}
+.tb-btn.on{background:rgba(45,212,191,.22);border-color:rgba(45,212,191,.45);}
+.tb-btn.home{background:var(--gold);border-color:var(--gold);color:#1a1204;}
+
+/* ---------- layout ---------- */
+#stage{position:fixed;inset:58px 0 0 0;display:flex;}
+#rail{width:236px;flex-shrink:0;border-right:1px solid var(--line);
+  background:rgba(11,20,36,.6);overflow-y:auto;}
+.rail-h{padding:11px 14px 7px;font-size:.63rem;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--gold2);font-weight:800;}
+.rgn{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;
+  border-left:3px solid transparent;transition:.15s;font-size:.84rem;}
+.rgn:hover{background:rgba(255,255,255,.05);}
+.rgn.active{background:rgba(45,212,191,.12);border-left-color:var(--teal);color:#fff;font-weight:600;}
+.rgn i{width:18px;color:var(--mut);font-size:.8rem;}
+.rgn.active i{color:var(--teal);}
+
+#viewer{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;}
+#viewhead{padding:14px 20px 10px;border-bottom:1px solid var(--line);}
+#viewhead h1{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:3px;}
+#viewhead p{font-size:.8rem;color:var(--mut);}
+#filmwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;}
+#film{background:var(--film);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);max-width:100%;max-height:100%;}
+#film svg{display:block;width:min(560px,86vw);height:auto;}
+
+/* diagram styling */
+.bone{fill:var(--bone);stroke:#9d9584;stroke-width:1.2;}
+.bone-2{fill:#cfc9b9;stroke:#9d9584;stroke-width:1.1;}
+.soft{fill:rgba(190,205,225,.13);stroke:rgba(190,205,225,.30);stroke-width:1;}
+.cart{fill:rgba(120,200,220,.18);stroke:rgba(120,200,220,.45);stroke-width:1;}
+.ln{fill:none;stroke:var(--teal);stroke-width:2;stroke-dasharray:7 5;opacity:0;transition:opacity .25s;}
+.ln.show{opacity:1;}
+.ln.solid{stroke-dasharray:none;}
+.ln.warn{stroke:#ff8f6b;}
+.ang{fill:none;stroke:#ffd166;stroke-width:1.8;opacity:0;transition:opacity .25s;}
+.ang.show{opacity:1;}
+.lnlab{fill:var(--teal);font-size:11px;font-weight:700;opacity:0;transition:opacity .25s;
+  font-family:'Inter',sans-serif;pointer-events:none;}
+.lnlab.show{opacity:1;}
+.lnlab.gold{fill:#ffd166;}
+.hot{cursor:pointer;}
+.hot circle{fill:var(--gold);stroke:#fff;stroke-width:1.5;transition:.16s;}
+.hot:hover circle,.hot.sel circle{fill:var(--teal);r:9;}
+.hot text{fill:#0b1424;font-size:9.5px;font-weight:800;pointer-events:none;
+  font-family:'Inter',sans-serif;}
+.viewtag{fill:var(--mut);font-size:11px;font-family:'Inter',sans-serif;letter-spacing:1px;}
+
+/* ---------- panel ---------- */
+#panel{width:380px;flex-shrink:0;border-left:1px solid var(--line);
+  background:rgba(11,20,36,.72);display:flex;flex-direction:column;overflow:hidden;}
+.pn-tabs{display:flex;gap:2px;padding:9px 10px 0;border-bottom:1px solid var(--line);
+  overflow-x:auto;flex-shrink:0;}
+.pn-tab{background:0;border:0;color:var(--mut);font-size:.75rem;font-weight:700;
+  padding:8px 10px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;
+  font-family:inherit;transition:.15s;}
+.pn-tab:hover{color:var(--txt);}
+.pn-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.pn-body{flex:1;overflow-y:auto;padding:15px 16px 26px;}
+.pn-body::-webkit-scrollbar{width:7px;}
+.pn-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:4px;}
+.pane{display:none;} .pane.active{display:block;animation:fade .2s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.pn-body p{font-size:.86rem;line-height:1.72;color:#D3DCEC;margin-bottom:12px;}
+.pn-body h4{font-size:.67rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold2);
+  margin:18px 0 8px;font-weight:800;}
+.pn-body h4:first-child{margin-top:0;}
+.lmrow{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;margin-bottom:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:9px;
+  cursor:pointer;transition:.16s;}
+.lmrow:hover,.lmrow.hot2{background:rgba(45,212,191,.13);border-color:rgba(45,212,191,.45);}
+.lmn{width:21px;height:21px;border-radius:50%;background:var(--gold);color:#1a1204;
+  font-size:.66rem;font-weight:800;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;}
+.lmrow.hot2 .lmn{background:var(--teal);color:#04201c;}
+.lmt{font-size:.83rem;font-weight:700;margin-bottom:2px;}
+.lmd{font-size:.77rem;color:var(--mut);line-height:1.55;}
+table.meas{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:.79rem;}
+table.meas th{text-align:left;font-size:.63rem;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold2);padding:6px 8px;border-bottom:1px solid var(--line);}
+table.meas td{padding:8px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;
+  color:#D3DCEC;line-height:1.5;}
+table.meas td strong{color:#fff;}
+table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
+.pitfall{background:rgba(255,90,90,.09);border:1px solid rgba(255,90,90,.28);
+  border-left:3px solid #ff6b6b;border-radius:9px;padding:11px 13px;margin-bottom:11px;}
+.pitfall strong{color:#ff9a9a;display:block;margin-bottom:4px;font-size:.79rem;}
+.pitfall span{font-size:.83rem;line-height:1.65;color:#D3DCEC;}
+.pearl{background:rgba(45,212,191,.09);border:1px solid rgba(45,212,191,.26);
+  border-left:3px solid var(--teal);border-radius:9px;padding:11px 13px;margin-bottom:11px;}
+.pearl strong{color:#8fe6d8;display:block;margin-bottom:4px;font-size:.79rem;}
+.pearl span{font-size:.83rem;line-height:1.65;color:#D3DCEC;}
+
+/* ---------- search ---------- */
+#searchWrap{position:relative;padding:10px 12px;border-bottom:1px solid var(--line);}
+#search{width:100%;padding:9px 12px 9px 32px;border-radius:9px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);color:var(--txt);font-size:.82rem;font-family:inherit;outline:0;}
+#search:focus{border-color:rgba(45,212,191,.5);}
+#searchWrap .si{position:absolute;left:23px;top:20px;color:var(--mut);font-size:.8rem;}
+#results{position:absolute;left:12px;right:12px;top:52px;z-index:30;background:#0d1727;
+  border:1px solid var(--line);border-radius:10px;max-height:52vh;overflow-y:auto;display:none;}
+#results.show{display:block;}
+.res{padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);font-size:.81rem;}
+.res:last-child{border-bottom:0;}
+.res:hover{background:rgba(45,212,191,.14);}
+.res small{display:block;color:var(--mut);font-size:.7rem;margin-top:1px;}
+
+/* ---------- disclaimer ---------- */
+#note{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  font-size:.68rem;color:var(--mut);background:rgba(11,20,36,.85);border:1px solid var(--line);
+  padding:5px 12px;border-radius:8px;white-space:nowrap;}
+
+/* ---------- mobile ---------- */
+#mobBtn{display:none;}
+@media(max-width:1080px){ #panel{width:330px;} }
+@media(max-width:900px){
+  /* Stacked panes cannot all fit a phone screen, so the page scrolls
+     normally instead of trapping the detail panel below the fold. */
+  body{overflow:auto;}
+  #stage{position:static;display:block;margin-top:58px;}
+  #rail{width:100%;max-height:none;border-right:0;border-bottom:1px solid var(--line);}
+  #regionList{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 12px;}
+  .rail-h{width:100%;padding:6px 4px 2px;}
+  .rgn{border:1px solid var(--line);border-left-width:3px;border-radius:8px;padding:7px 10px;font-size:.78rem;}
+  #viewer{display:block;}
+  #filmwrap{padding:12px;}
+  #film svg{width:min(460px,92vw);}
+  #panel{width:100%;border-left:0;border-top:1px solid var(--line);max-height:none;display:block;}
+  .pn-body{overflow:visible;}
+  #note{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <a href="index.html" class="brand">
+    <img src="assets/logo.png" alt="OrthoChronicles" onerror="this.style.display='none'"/>
+    <span><i class="fas fa-x-ray"></i> Radiological Anatomy</span>
+  </a>
+  <div class="tb-spacer"></div>
+  <button class="tb-btn on" id="btnLines"><i class="fas fa-ruler-combined"></i> Lines &amp; Angles</button>
+  <a class="tb-btn" href="anatomy.html"><i class="fas fa-cube"></i> 3D Anatomy</a>
+  <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i> Site Home</a>
+</div>
+
+<div id="stage">
+
+  <!-- region rail -->
+  <div id="rail">
+    <div id="searchWrap">
+      <i class="fas fa-magnifying-glass si"></i>
+      <input id="search" type="text" placeholder="Search a line, angle or value…" autocomplete="off"/>
+      <div id="results"></div>
+    </div>
+    <div id="regionList"></div>
+  </div>
+
+  <!-- viewer -->
+  <div id="viewer">
+    <div id="viewhead">
+      <h1 id="vTitle">—</h1>
+      <p id="vSub"></p>
+    </div>
+    <div id="filmwrap"><div id="film"></div></div>
+    <div id="note">Schematic diagrams — drawn for teaching, not radiographs of real patients</div>
+  </div>
+
+  <!-- detail panel -->
+  <div id="panel">
+    <div class="pn-tabs" id="pnTabs"></div>
+    <div class="pn-body" id="pnBody"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   RADIOLOGICAL ANATOMY
+   Every diagram below is an original schematic drawn in SVG. No patient
+   radiographs are used — that keeps this both lawful and clearer, since a
+   diagram can show the construction lines a real film cannot.
+   ══════════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+/* Small SVG helpers so each region reads as anatomy, not path soup */
+const S = {
+  open: (w,h)=>`<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`,
+  close: '</svg>',
+  /** dashed construction line + label */
+  line: (id,x1,y1,x2,y2,label,cls='')=>
+    `<line class="ln ${cls}" data-ln="${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`+
+    (label?`<text class="lnlab ${cls.includes('warn')?'':''}" data-ln="${id}" x="${(x1+x2)/2+6}" y="${(y1+y2)/2-6}">${label}</text>`:''),
+  path: (id,d,label,lx,ly,cls='')=>
+    `<path class="ln ${cls}" data-ln="${id}" d="${d}"/>`+
+    (label?`<text class="lnlab" data-ln="${id}" x="${lx}" y="${ly}">${label}</text>`:''),
+  ang: (id,d,label,lx,ly)=>
+    `<path class="ang" data-ln="${id}" d="${d}"/>`+
+    (label?`<text class="lnlab gold" data-ln="${id}" x="${lx}" y="${ly}">${label}</text>`:''),
+  hot: (i,x,y)=>`<g class="hot" data-hot="${i}"><circle cx="${x}" cy="${y}" r="8"/>`+
+                `<text x="${x}" y="${y+3.4}" text-anchor="middle">${i+1}</text></g>`,
+  tag: (x,y,t)=>`<text class="viewtag" x="${x}" y="${y}">${t}</text>`
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   REGION DATA
+   ══════════════════════════════════════════════════════════════════ */
+const REGIONS = [
+
+/* ─────────────── CERVICAL SPINE ─────────────── */
+{
+  id:'cspine', icon:'fa-bone', group:'Spine',
+  name:'Cervical Spine — Lateral',
+  sub:'The three alignment lines, the atlanto-dental interval and the prevertebral soft tissues',
+  svg:(()=>{
+    const bodies=[[150,70,52,30],[146,108,54,30],[144,146,56,30],[144,184,58,30],
+                  [146,222,60,30],[150,260,62,32]];
+    let g=S.open(400,400);
+    g+=`<rect x="0" y="0" width="400" height="400" fill="none"/>`;
+    g+=S.tag(20,26,'LATERAL C-SPINE');
+    // occiput + prevertebral soft tissue band
+    g+=`<path class="soft" d="M120 40 Q210 34 250 46 L250 300 Q200 306 120 300 Z" opacity=".5"/>`;
+    g+=`<path class="soft" d="M206 60 L214 106 L216 300 L120 300 L120 60 Z"/>`;
+    // C1 arch + dens
+    g+=`<rect class="bone" x="152" y="44" width="46" height="18" rx="6"/>`;
+    g+=`<path class="bone-2" d="M158 62 L158 40 Q168 30 178 40 L178 62 Z"/>`;
+    // vertebral bodies + spinous processes
+    bodies.forEach(([x,y,w,h])=>{
+      g+=`<rect class="bone" x="${x}" y="${y}" width="${w}" height="${h}" rx="5"/>`;
+      g+=`<rect class="bone-2" x="${x-46}" y="${y+8}" width="42" height="13" rx="5"/>`;
+      g+=`<rect class="cart" x="${x}" y="${y+h}" width="${w}" height="8" rx="3"/>`;
+    });
+    // three alignment lines
+    g+=S.path('ant','M198 46 L200 70 L200 108 L200 146 L202 184 L206 222 L212 292','Anterior vertebral',216,120);
+    g+=S.path('post','M152 46 L150 70 L146 108 L144 146 L144 184 L146 222 L150 292','Posterior vertebral',60,150,'');
+    g+=S.path('spino','M110 52 L106 78 L102 116 L100 154 L100 192 L102 230 L106 270','Spinolaminar',18,200);
+    // ADI
+    g+=S.line('adi',158,52,152,52,'ADI','warn solid');
+    // prevertebral soft tissue markers
+    g+=S.line('pvst1',216,96,250,96,'','solid');
+    g+=S.line('pvst2',216,250,272,250,'','solid');
+    [[200,60],[155,52],[104,120],[233,96],[244,250],[176,300]].forEach((p,i)=>{ g+=S.hot(i,p[0],p[1]); });
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Anterior vertebral line', d:'A smooth curve along the anterior margins of the vertebral bodies. A step of more than 2 mm suggests ligamentous injury or subluxation.'},
+    {n:'Atlanto-dental interval (ADI)', d:'The gap between the anterior arch of C1 and the dens. Widening indicates transverse ligament failure — the reason a child with Down syndrome or rheumatoid disease needs this checked before intubation.'},
+    {n:'Spinolaminar line', d:'Joins the junctions of lamina and spinous process. It is the most reliable of the three lines because it is unaffected by degenerative osteophytes at the body margins.'},
+    {n:'Prevertebral soft tissue (upper)', d:'Measured at C2–C3. Widening here is often the only sign of an occult fracture or a retropharyngeal abscess.'},
+    {n:'Prevertebral soft tissue (lower)', d:'Measured at C6. The normal step-up occurs where the oesophagus begins.'},
+    {n:'C7–T1 junction', d:'The single most commonly missed level on a cervical film, because shoulders obscure it. An inadequate film is not a normal film — obtain a swimmer\'s view or CT.'}
+  ],
+  meas:[
+    {n:'ADI — adult', v:'< 3 mm', how:'Anterior arch of C1 to anterior dens, mid-height, on lateral view', why:'Widening means transverse ligament rupture and atlantoaxial instability'},
+    {n:'ADI — child', v:'< 5 mm', how:'Same technique; laxity is physiological in children', why:'Applying the adult limit to a child causes false alarms'},
+    {n:'Prevertebral soft tissue at C2', v:'< 7 mm', how:'Anterior vertebral body cortex to the air column', why:'Haematoma from an occult fracture; retropharyngeal abscess'},
+    {n:'Prevertebral soft tissue at C6', v:'< 22 mm (adult)', how:'Same, at the C6 level below the oesophageal inlet', why:'Roughly the width of a vertebral body is the quick bedside check'},
+    {n:'Interspinous distance', v:'No abrupt widening', how:'Compare with the levels above and below', why:'Fanning indicates posterior ligamentous complex disruption'},
+    {n:'Adequate film', v:'C1 to T1 visible', how:'Count down and confirm the C7–T1 disc is seen', why:'The commonest cause of a missed cervical injury is an inadequate film'}
+  ],
+  pitfalls:[
+    {t:'Pseudosubluxation in children', d:'Up to 4 mm of anterior displacement of C2 on C3 is normal below about 8 years. Use the posterior cervical line of Swischuk: if the spinolaminar line of C2 lies within 2 mm of a line joining C1 and C3, it is physiological.'},
+    {t:'The film that stops at C6', d:'Shoulders routinely obscure C7–T1, exactly where injuries cluster in the adult. Never clear a neck on a film that does not show the top of T1.'},
+    {t:'A normal X-ray does not exclude injury', d:'Plain films miss a significant proportion of cervical fractures. Follow validated rules — Canadian C-Spine or NEXUS — and go to CT when they are met, particularly in the elderly and in the obtunded patient.'}
+  ],
+  pearls:[
+    {t:'Read it in a fixed order', d:'Adequacy → alignment (the three lines) → bones (each body, each posterior element) → cartilage/disc spaces → soft tissues. Doing it the same way every time is what stops you missing the second injury.'},
+    {t:'Look for the second fracture', d:'Around 10–15% of cervical spine injuries are non-contiguous. Finding one fracture increases, not decreases, the need to image the whole spine.'}
+  ]
+},
+
+/* ─────────────── SHOULDER ─────────────── */
+{
+  id:'shoulder', icon:'fa-user-injured', group:'Upper limb',
+  name:'Shoulder — AP &amp; Scapular Y',
+  sub:'Glenohumeral alignment, the acromiohumeral interval and Maloney\'s arch',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'AP SHOULDER');
+    // clavicle
+    g+=`<path class="bone" d="M40 96 Q120 78 190 96 L192 108 Q120 92 40 108 Z"/>`;
+    // acromion + scapular spine
+    g+=`<path class="bone" d="M186 92 L246 96 L252 118 L192 116 Z"/>`;
+    g+=`<path class="bone-2" d="M246 100 L318 128 L316 148 L244 122 Z"/>`;
+    // coracoid
+    g+=`<path class="bone-2" d="M196 122 L226 132 L222 148 L192 140 Z"/>`;
+    // glenoid + scapula body
+    g+=`<path class="bone" d="M236 138 L252 150 L258 200 L242 214 Q226 190 230 160 Z"/>`;
+    g+=`<path class="bone-2" d="M252 160 L330 230 L300 268 L246 208 Z"/>`;
+    // humeral head + shaft
+    g+=`<ellipse class="bone" cx="206" cy="176" rx="44" ry="42"/>`;
+    g+=`<path class="bone" d="M170 206 Q186 250 176 330 L232 336 Q238 250 244 200 Z"/>`;
+    g+=`<rect class="cart" x="166" y="140" width="10" height="72" rx="5" transform="rotate(-8 171 176)"/>`;
+    // greater tuberosity
+    g+=`<path class="bone-2" d="M232 148 Q252 162 246 190 L228 186 Z"/>`;
+    // lines
+    g+=S.line('ahi',204,132,204,110,'AHI','solid');
+    g+=S.path('arch','M150 250 Q180 210 214 200 Q244 192 252 152','Maloney arch (scapulohumeral)',44,268);
+    g+=S.line('joint',238,146,238,212,'Glenohumeral space','');
+    [[204,120],[186,240],[240,178],[214,96],[222,140],[236,158]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Acromiohumeral interval', d:'The gap between the undersurface of the acromion and the top of the humeral head. Narrowing is the radiographic signature of a chronic, retracted rotator cuff tear.'},
+    {n:'Maloney\'s arch', d:'A smooth curve running from the medial border of the humeral metaphysis onto the inferior border of the glenoid and scapular neck. A break in this arch is the most reliable sign of a shoulder dislocation.'},
+    {n:'Glenohumeral joint space', d:'Should be uniform, roughly 4–5 mm. Loss of the space with osteophytes and a posteriorly worn glenoid is the picture of glenohumeral osteoarthritis.'},
+    {n:'Acromioclavicular joint', d:'Normally 5–8 mm wide with the inferior cortices of clavicle and acromion aligned. A step here indicates AC joint separation.'},
+    {n:'Coracoid process', d:'The "lighthouse of the shoulder" — the guide to the neurovascular bundle, and a landmark for judging coracoclavicular distance.'},
+    {n:'Greater tuberosity', d:'Look specifically at its profile: an isolated greater tuberosity fracture behaves functionally like an acute cuff tear and is easily overlooked.'}
+  ],
+  meas:[
+    {n:'Acromiohumeral interval', v:'7–14 mm', how:'Acromion undersurface to humeral head apex on a true AP', why:'< 7 mm indicates a chronic massive cuff tear and predicts cuff arthropathy'},
+    {n:'Glenohumeral joint space', v:'4–5 mm', how:'Measured on a true (Grashey) AP with the beam parallel to the glenoid', why:'Narrowing = arthritis; a standard AP overlaps the joint and hides it'},
+    {n:'AC joint width', v:'5–8 mm', how:'Between the distal clavicle and the acromion', why:'> 8 mm or a step suggests AC separation'},
+    {n:'Coracoclavicular distance', v:'11–13 mm', how:'Coracoid superior surface to the clavicle undersurface', why:'Increase > 25% over the other side indicates a type III+ AC injury'},
+    {n:'Critical shoulder angle', v:'30–35°', how:'Glenoid line to a line from inferior glenoid to the lateral acromion', why:'> 35° associates with cuff tears; < 30° with glenohumeral arthritis'}
+  ],
+  pitfalls:[
+    {t:'The lightbulb sign', d:'A posterior dislocation is missed on the AP in more than half of cases. The internally rotated head loses its tuberosity profile and looks like a lightbulb. If you suspect it, get an axillary or scapular Y view — never accept a single AP.'},
+    {t:'A standard AP is not a true AP', d:'The scapula sits about 35–40° anterior to the coronal plane, so a routine AP overlaps the glenohumeral joint. Judging joint space narrowing needs a Grashey view.'},
+    {t:'Seizure or electrocution', d:'These classically cause bilateral posterior dislocations. Bilateral shoulder pain after a fit should prompt axillary views on both sides.'}
+  ],
+  pearls:[
+    {t:'Trace the arch every time', d:'Maloney\'s arch is to the shoulder what Shenton\'s line is to the hip: one smooth curve whose disruption localises the problem instantly.'}
+  ]
+},
+
+/* ─────────────── ELBOW ─────────────── */
+{
+  id:'elbow', icon:'fa-hand-back-fist', group:'Upper limb',
+  name:'Elbow — Lateral',
+  sub:'Anterior humeral line, radiocapitellar line, the fat pads and the figure-of-eight',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'LATERAL ELBOW');
+    // humerus
+    g+=`<path class="bone" d="M120 40 L176 40 L182 150 Q186 178 168 196 L134 196 Q116 176 118 150 Z"/>`;
+    // capitellum + trochlea (figure of eight)
+    g+=`<circle class="bone-2" cx="158" cy="190" r="30"/>`;
+    g+=`<circle class="bone-2" cx="140" cy="204" r="26"/>`;
+    // radius
+    g+=`<path class="bone" d="M186 196 L214 196 L216 214 L206 224 L200 340 L178 340 L184 224 Z"/>`;
+    g+=`<ellipse class="bone-2" cx="198" cy="200" rx="22" ry="11"/>`;
+    // ulna / olecranon
+    g+=`<path class="bone" d="M96 178 L128 172 L146 214 L150 250 L142 344 L118 344 L120 244 Q104 214 96 178 Z"/>`;
+    // fat pads
+    g+=`<path class="soft" d="M150 150 Q168 140 180 152 L176 166 Q160 158 150 164 Z"/>`;
+    g+=`<path class="soft" d="M112 150 Q100 140 92 154 L98 168 Q110 158 116 164 Z"/>`;
+    // lines
+    g+=S.path('ahl','M150 36 L150 250','Anterior humeral line',154,66);
+    g+=S.path('rcl','M198 340 L186 196 L166 176','Radiocapitellar line',210,300);
+    g+=S.ang('ang1','M158 190 m -46 0 a 46 46 0 0 1 30 -42','',0,0);
+    [[150,196],[172,186],[168,150],[100,152],[198,206],[128,196]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Anterior humeral line', d:'A line drawn down the anterior cortex of the humerus should pass through the middle third of the capitellum. If it passes anterior to it, there is an extension-type supracondylar fracture.'},
+    {n:'Capitellum', d:'The lateral of the two distal condyles, articulating with the radial head. Its ossification centre is the first to appear, at about one year.'},
+    {n:'Anterior fat pad', d:'A small anterior lucency is normal. When it is lifted into a "sail sign" it indicates an effusion — a fracture until proven otherwise.'},
+    {n:'Posterior fat pad', d:'Never normal. A visible posterior fat pad means haemarthrosis, and in an adult this most often means a radial head fracture even if no fracture line is visible.'},
+    {n:'Radial head', d:'Should point at the capitellum in every view. The commonest adult elbow fracture; look for a subtle cortical step.'},
+    {n:'Olecranon', d:'Subcutaneous and the insertion of triceps. A displaced fracture disables active extension and needs fixation.'}
+  ],
+  meas:[
+    {n:'Anterior humeral line', v:'Through middle third of capitellum', how:'Draw along the anterior humeral cortex on a true lateral', why:'Anterior displacement = supracondylar fracture, the paediatric emergency'},
+    {n:'Radiocapitellar line', v:'Through the capitellum in every view', how:'Draw along the radial neck axis', why:'If it misses, the radial head is dislocated — the missed half of a Monteggia'},
+    {n:'Baumann angle (AP)', v:'64–81° (compare sides)', how:'Humeral shaft axis to the capitellar physis line', why:'Assesses coronal alignment after supracondylar reduction'},
+    {n:'Posterior fat pad', v:'Should be absent', how:'Look in the olecranon fossa on a true 90° lateral', why:'Presence indicates haemarthrosis; treat as an occult fracture'},
+    {n:'Carrying angle', v:'♂ 11–14°, ♀ 13–16°', how:'Clinical, arm extended and supinated', why:'Cubitus varus is the classic malunion of a supracondylar fracture'}
+  ],
+  pitfalls:[
+    {t:'CRITOE — do not call a normal ossification centre a fracture', d:'Order of appearance: Capitellum 1, Radial head 3, Internal (medial) epicondyle 5, Trochlea 7, Olecranon 9, External (lateral) epicondyle 11 years. If you see the trochlea but not the medial epicondyle, that "trochlear" ossicle is an entrapped medial epicondyle in the joint.'},
+    {t:'Effusion with no visible fracture', d:'In an adult this is a radial head fracture until proven otherwise; in a child a supracondylar fracture. Treat, splint and re-image at 10–14 days rather than discharging.'},
+    {t:'Always image the joint above and below', d:'An isolated ulnar shaft fracture is a Monteggia until the radial head is proven located. This is the classic, litigated miss.'}
+  ],
+  pearls:[
+    {t:'The true lateral test', d:'On a correctly positioned lateral the trochlea and capitellum superimpose as a figure of eight or "hourglass". If you cannot see it, your lines are unreliable — reposition before you measure.'}
+  ]
+},
+
+/* ─────────────── WRIST ─────────────── */
+{
+  id:'wrist', icon:'fa-hand', group:'Upper limb',
+  name:'Wrist — PA &amp; Lateral',
+  sub:'Radial inclination, volar tilt, ulnar variance and Gilula\'s carpal arcs',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'PA WRIST');
+    // radius + ulna
+    g+=`<path class="bone" d="M96 330 L152 330 L160 200 Q164 168 150 150 L104 152 Q92 174 94 206 Z"/>`;
+    g+=`<path class="bone" d="M196 330 L238 330 L234 210 Q232 180 220 168 L196 170 Q190 186 192 210 Z"/>`;
+    g+=`<rect class="cart" x="98" y="140" width="58" height="12" rx="5"/>`;
+    g+=`<rect class="cart" x="190" y="158" width="42" height="11" rx="5"/>`;
+    // proximal carpal row
+    g+=`<ellipse class="bone-2" cx="118" cy="122" rx="24" ry="17"/>`;
+    g+=`<ellipse class="bone-2" cx="162" cy="118" rx="21" ry="16"/>`;
+    g+=`<ellipse class="bone-2" cx="202" cy="124" rx="19" ry="15"/>`;
+    g+=`<circle class="bone-2" cx="222" cy="140" r="10"/>`;
+    // distal carpal row
+    g+=`<ellipse class="bone-2" cx="104" cy="88" rx="20" ry="15"/>`;
+    g+=`<ellipse class="bone-2" cx="142" cy="84" rx="17" ry="14"/>`;
+    g+=`<ellipse class="bone-2" cx="178" cy="86" rx="20" ry="15"/>`;
+    g+=`<ellipse class="bone-2" cx="212" cy="94" rx="18" ry="14"/>`;
+    // metacarpal bases
+    [[96,52],[132,48],[168,48],[202,52],[232,62]].forEach(([x,y])=>{
+      g+=`<rect class="bone" x="${x-13}" y="${y-26}" width="26" height="34" rx="7"/>`;});
+    // Gilula arcs
+    g+=S.path('arc1','M96 130 Q160 104 220 130','Arc I',60,140);
+    g+=S.path('arc2','M98 106 Q160 82 220 108','Arc II',238,104);
+    g+=S.path('arc3','M92 94 Q158 66 224 90','Arc III',248,76);
+    // radial inclination + ulnar variance
+    g+=S.line('ri',102,146,158,138,'Radial inclination','solid');
+    g+=S.line('uv',192,164,236,164,'Ulnar variance','warn solid');
+    [[118,122],[162,118],[104,88],[222,140],[128,146],[214,164]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Scaphoid', d:'The most commonly fractured carpal bone. Its retrograde blood supply means proximal pole fractures risk avascular necrosis — which is why snuffbox tenderness with a normal film is still treated as a fracture.'},
+    {n:'Lunate', d:'On the PA it is quadrilateral; if it becomes triangular, suspect a perilunate or lunate dislocation. On the lateral it should sit like a cup facing the capitate.'},
+    {n:'Trapezium', d:'Carries the thumb carpometacarpal joint — the hand joint most often disabled by osteoarthritis.'},
+    {n:'Pisiform', d:'A sesamoid in the flexor carpi ulnaris; forms the ulnar wall of Guyon canal.'},
+    {n:'Radial styloid', d:'Should sit about 1 cm distal to the ulnar styloid. Loss of that relationship means radial shortening after a distal radius fracture.'},
+    {n:'Ulnar variance', d:'The relative length of the ulna against the radius at the wrist. Positive variance loads the TFCC and causes ulnar impaction; negative variance associates with Kienböck disease.'}
+  ],
+  meas:[
+    {n:'Radial inclination', v:'22° (19–29°)', how:'Line along the radial articular surface vs a line perpendicular to the radial shaft, on PA', why:'Loss of inclination after fracture reduces grip strength'},
+    {n:'Radial height', v:'11–12 mm', how:'Radial styloid tip to a perpendicular at the ulnar articular surface', why:'Shortening > 5 mm is an accepted indication to fix'},
+    {n:'Volar (palmar) tilt', v:'11° (2–20°)', how:'Line across the distal radial articular surface vs perpendicular to shaft, on lateral', why:'Dorsal tilt > 10° after reduction predicts poor function'},
+    {n:'Ulnar variance', v:'0 ± 2 mm', how:'Distal ulnar articular surface vs the ulnar corner of the radius, PA in neutral rotation', why:'Positive → ulnar impaction; negative → Kienböck association'},
+    {n:'Scapholunate angle', v:'30–60°', how:'Scaphoid axis vs lunate axis on lateral', why:'> 70° indicates scapholunate dissociation (DISI)'},
+    {n:'Scapholunate gap', v:'< 3 mm', how:'PA view, ideally with a clenched fist', why:'> 3 mm is the Terry Thomas sign of scapholunate ligament rupture'}
+  ],
+  pitfalls:[
+    {t:'The normal scaphoid film', d:'Up to 20–25% of scaphoid fractures are invisible initially. Snuffbox tenderness is treated in a cast with repeat imaging at 10–14 days, or an early MRI. Discharging on a single normal film is the classic cause of non-union.'},
+    {t:'Gilula\'s arcs', d:'Three smooth arcs run along the proximal and distal margins of the proximal carpal row and the proximal margin of the distal row. Any step or break means carpal instability — this is how a perilunate dislocation is caught.'},
+    {t:'Re-displacement in plaster', d:'Comminuted distal radius fractures frequently slip in the first two weeks. A check film at one week is mandatory, not optional.'}
+  ],
+  pearls:[
+    {t:'Ulnar variance depends on positioning', d:'It changes with forearm rotation and grip, so it must be measured on a standard PA with the shoulder abducted 90°, elbow flexed 90° and the forearm neutral — otherwise you are comparing different things.'}
+  ]
+},
+
+/* ─────────────── PELVIS ─────────────── */
+{
+  id:'pelvis', icon:'fa-child-reaching', group:'Lower limb',
+  name:'Pelvis — AP',
+  sub:'Shenton\'s line, the six acetabular lines, centre-edge angle and the paediatric hip',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'AP PELVIS');
+    // iliac wings
+    g+=`<path class="bone" d="M40 120 Q60 60 130 62 Q168 70 176 130 L162 186 Q110 196 74 176 Z"/>`;
+    g+=`<path class="bone" d="M360 120 Q340 60 270 62 Q232 70 224 130 L238 186 Q290 196 326 176 Z"/>`;
+    // sacrum
+    g+=`<path class="bone-2" d="M176 96 L224 96 L232 190 L200 214 L168 190 Z"/>`;
+    // pubic rami + symphysis
+    g+=`<path class="bone" d="M150 214 Q182 232 196 236 L196 254 Q160 250 130 232 Z"/>`;
+    g+=`<path class="bone" d="M250 214 Q218 232 204 236 L204 254 Q240 250 270 232 Z"/>`;
+    g+=`<rect class="cart" x="196" y="230" width="8" height="26" rx="3"/>`;
+    // ischium
+    g+=`<path class="bone-2" d="M132 236 Q120 268 140 288 L168 274 Q154 254 156 240 Z"/>`;
+    g+=`<path class="bone-2" d="M268 236 Q280 268 260 288 L232 274 Q246 254 244 240 Z"/>`;
+    // acetabula + femoral heads
+    [[128,196],[272,196]].forEach(([cx,cy])=>{
+      g+=`<path class="cart" d="M${cx-40} ${cy-16} A 40 40 0 0 1 ${cx+40} ${cy-16} L ${cx+32} ${cy-4} A 32 32 0 0 0 ${cx-32} ${cy-4} Z"/>`;
+      g+=`<circle class="bone" cx="${cx}" cy="${cy+6}" r="31"/>`;
+    });
+    // femoral necks + shafts
+    g+=`<path class="bone" d="M104 220 L128 244 L118 300 L74 300 L72 250 Z"/>`;
+    g+=`<path class="bone" d="M296 220 L272 244 L282 300 L326 300 L328 250 Z"/>`;
+    g+=`<path class="bone" d="M62 292 L120 292 L124 372 L66 372 Z"/>`;
+    g+=`<path class="bone" d="M338 292 L280 292 L276 372 L334 372 Z"/>`;
+    // Shenton line
+    g+=S.path('shen','M150 232 Q126 250 106 262 Q92 272 84 292','Shenton line',150,262);
+    g+=S.path('shen2','M250 232 Q274 250 294 262 Q308 272 316 292','',0,0);
+    // Hilgenreiner + Perkin
+    g+=S.line('hilg',56,186,344,186,'Hilgenreiner','solid');
+    g+=S.line('perk1',96,150,96,300,'Perkin','solid');
+    g+=S.line('perk2',304,150,304,300,'','solid');
+    // CE angle
+    g+=S.ang('ce','M272 202 L272 150 M272 202 L306 168','CE angle',300,146);
+    [[128,202],[112,254],[96,186],[272,202],[196,242],[168,150]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Femoral head', d:'Should be a smooth sphere, its medial margin concentric with the acetabulum. Loss of sphericity is the hallmark of avascular necrosis and Perthes disease.'},
+    {n:'Shenton\'s line', d:'A continuous curve from the inferior border of the femoral neck onto the superior border of the obturator foramen. A break means the head has moved — fracture, dislocation or developmental dysplasia.'},
+    {n:'Hilgenreiner\'s line', d:'A horizontal line through both triradiate cartilages. The reference for the acetabular index in a child whose femoral head has not yet ossified.'},
+    {n:'Acetabular teardrop', d:'A U-shaped density formed by the acetabular floor. It is the landmark for judging medial migration of the head and for restoring the hip centre at replacement.'},
+    {n:'Pubic symphysis', d:'Normally under 5 mm wide. Widening beyond about 2.5 cm indicates an unstable open-book pelvic injury.'},
+    {n:'Iliopectineal &amp; ilioischial lines', d:'The anterior and posterior columns of the acetabulum respectively. Which line is broken tells you which column is fractured — the basis of the Judet-Letournel classification.'}
+  ],
+  meas:[
+    {n:'Centre-edge angle of Wiberg', v:'> 25° normal', how:'Vertical line through femoral head centre vs a line to the lateral acetabular edge', why:'< 20° = dysplasia; > 40° = over-coverage / pincer impingement'},
+    {n:'Acetabular index (child)', v:'< 30° at 6 months', how:'Hilgenreiner line vs the acetabular roof slope', why:'Elevated index indicates acetabular dysplasia'},
+    {n:'Neck-shaft angle', v:'125–135°', how:'Femoral neck axis vs shaft axis', why:'< 120° coxa vara; > 140° coxa valga'},
+    {n:'Shenton\'s line', v:'Smooth and unbroken', how:'Trace neck inferior border onto obturator foramen superior border', why:'Break = fracture, dislocation or dysplasia'},
+    {n:'Pubic symphysis width', v:'< 5 mm', how:'Between the two pubic bodies', why:'> 25 mm indicates an unstable open-book injury'},
+    {n:'Tönnis angle', v:'0–10°', how:'Horizontal vs the sclerotic weight-bearing acetabular roof', why:'> 10° suggests instability and dysplasia'}
+  ],
+  pitfalls:[
+    {t:'Pelvic rotation invalidates every measurement', d:'On a true AP the coccyx points at the symphysis and the obturator foramina are symmetrical. A rotated film falsely alters centre-edge angle, joint space and version — check adequacy before you measure anything.'},
+    {t:'The undisplaced femoral neck fracture', d:'An elderly patient with hip pain, an inability to weight bear and a "normal" X-ray needs an MRI, which is the gold standard for the occult neck fracture. A CT can still miss it.'},
+    {t:'Look at both hips', d:'Perthes and slipped capital femoral epiphysis are bilateral in a substantial minority. Always compare sides, and use a frog-lateral view for SCFE — the AP alone commonly misses an early slip.'}
+  ],
+  pearls:[
+    {t:'The six lines of the acetabulum', d:'Iliopectineal, ilioischial, teardrop, acetabular roof, anterior wall and posterior wall. Reading them in order turns a confusing acetabular fracture into a column-based classification.'}
+  ]
+},
+
+/* ─────────────── KNEE ─────────────── */
+{
+  id:'knee', icon:'fa-person-walking', group:'Lower limb',
+  name:'Knee — AP &amp; Lateral',
+  sub:'Blumensaat\'s line, Insall-Salvati ratio, tibiofemoral alignment and the segond fragment',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'LATERAL KNEE');
+    // femur
+    g+=`<path class="bone" d="M120 30 L188 30 L196 170 Q206 208 178 224 L134 224 Q108 206 114 172 Z"/>`;
+    g+=`<circle class="bone-2" cx="156" cy="208" r="42"/>`;
+    // tibia
+    g+=`<path class="bone" d="M112 262 L206 262 L212 290 L200 380 L128 380 L118 290 Z"/>`;
+    g+=`<rect class="bone-2" x="112" y="248" width="98" height="20" rx="6"/>`;
+    // fibula
+    g+=`<path class="bone-2" d="M214 276 L240 276 L236 372 L214 372 Z"/>`;
+    // patella
+    g+=`<path class="bone" d="M78 176 L104 168 L112 208 L92 226 L74 210 Z"/>`;
+    // joint space
+    g+=`<rect class="cart" x="112" y="236" width="98" height="12" rx="5"/>`;
+    // patellar tendon
+    g+=`<path class="soft" d="M92 226 L110 226 L152 258 L140 268 Z"/>`;
+    // lines
+    g+=S.path('blum','M120 214 L214 206','Blumensaat line',220,204);
+    g+=S.line('pat',86,168,96,222,'Patella length','solid');
+    g+=S.line('tend',96,224,146,262,'Tendon length','warn solid');
+    g+=S.path('post','M206 262 L200 380','Posterior tibial cortex',214,330);
+    [[100,196],[164,210],[160,242],[126,262],[228,290],[118,240]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Patella', d:'Its height is judged against the patellar tendon. Patella alta predisposes to instability and dislocation; patella baja follows surgery or prolonged immobilisation.'},
+    {n:'Blumensaat\'s line', d:'The dense line of the intercondylar notch roof on a true lateral. The inferior pole of the patella should lie approximately on its extension with the knee flexed 30°.'},
+    {n:'Joint space', d:'Assessed on a weight-bearing film. Non-weight-bearing views systematically underestimate arthritis because the space opens when the load is removed.'},
+    {n:'Tibial plateau', d:'Look for a subtle cortical depression on the lateral plateau — the classic bumper injury. If the plain film is equivocal but the patient cannot bear weight, get a CT.'},
+    {n:'Fibular head', d:'The common peroneal nerve winds round its neck. A fibular head or neck fracture demands documentation of foot dorsiflexion.'},
+    {n:'Segond fragment', d:'A small vertical avulsion from the lateral tibial rim. It is a tiny fleck with a large meaning: over 75% association with an ACL tear.'}
+  ],
+  meas:[
+    {n:'Insall-Salvati ratio', v:'0.8–1.2', how:'Patellar tendon length ÷ patellar length, lateral at 30° flexion', why:'> 1.2 patella alta (instability); < 0.8 patella baja'},
+    {n:'Blumensaat\'s line', v:'Patella inferior pole on the line', how:'True lateral at 30° flexion', why:'A quick alternative check for patellar height'},
+    {n:'Tibiofemoral (anatomic) angle', v:'5–7° valgus', how:'Femoral shaft axis vs tibial shaft axis on a standing AP', why:'Guides realignment osteotomy and TKR planning'},
+    {n:'Mechanical axis', v:'Through the knee centre', how:'Femoral head centre to ankle centre on a long-leg standing film', why:'Deviation quantifies varus/valgus overload'},
+    {n:'Joint space width', v:'≥ 4 mm', how:'Weight-bearing AP, or a Rosenberg 45° flexed PA', why:'< 2 mm indicates advanced arthritis and correlates with bone-on-bone'},
+    {n:'Posterior tibial slope', v:'7–10°', how:'Perpendicular to the tibial shaft vs the plateau slope on lateral', why:'Increased slope raises ACL graft strain and affects TKR flexion'}
+  ],
+  pitfalls:[
+    {t:'The non-weight-bearing knee film', d:'Arthritis is systematically under-called on a supine film. A standing AP, and better a Rosenberg 45° flexed view, unmasks the posterior femoral wear that a supine film hides.'},
+    {t:'Lipohaemarthrosis', d:'A fat-fluid level on a horizontal-beam lateral means marrow fat has escaped into the joint — there is an intra-articular fracture even if you cannot see the line. Get a CT.'},
+    {t:'Do not dismiss the small fleck', d:'A Segond fragment, an arcuate fibular avulsion or a tibial spine avulsion are each tiny findings that signal major ligament injury.'}
+  ],
+  pearls:[
+    {t:'Ottawa knee rules', d:'X-ray is indicated if age ≥ 55, isolated patellar tenderness, fibular head tenderness, inability to flex to 90°, or inability to weight-bear four steps both immediately and in the department.'}
+  ]
+},
+
+/* ─────────────── ANKLE ─────────────── */
+{
+  id:'ankle', icon:'fa-shoe-prints', group:'Lower limb',
+  name:'Ankle — Mortise View',
+  sub:'Medial clear space, talar tilt, tibiofibular overlap and the Weber levels',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'MORTISE VIEW');
+    // tibia
+    g+=`<path class="bone" d="M126 40 L232 40 L238 210 L212 246 L142 246 L120 210 Z"/>`;
+    // medial malleolus
+    g+=`<path class="bone-2" d="M126 214 L166 214 L160 268 L128 262 Z"/>`;
+    // fibula + lateral malleolus
+    g+=`<path class="bone" d="M248 60 L286 60 L292 214 L284 282 L252 278 L246 210 Z"/>`;
+    // talus
+    g+=`<path class="bone" d="M146 276 Q206 258 268 276 Q276 316 240 330 L172 330 Q140 314 146 276 Z"/>`;
+    // calcaneus
+    g+=`<path class="bone-2" d="M150 336 Q210 328 264 336 L268 380 L146 380 Z"/>`;
+    // joint spaces
+    g+=`<path class="cart" d="M148 268 Q206 250 266 268 L268 278 Q206 260 146 278 Z"/>`;
+    g+=`<rect class="cart" x="160" y="220" width="10" height="48" rx="4"/>`;
+    g+=`<rect class="cart" x="244" y="220" width="10" height="52" rx="4"/>`;
+    // lines
+    g+=S.line('mcs',164,244,176,244,'Medial clear space','warn solid');
+    g+=S.line('tfo',232,196,252,196,'Tib-fib overlap','solid');
+    g+=S.line('tfcs',234,176,250,176,'Tib-fib clear space','solid');
+    g+=S.path('talar','M150 272 Q206 254 264 272','Talar dome',126,262);
+    g+=S.line('weber',242,214,300,214,'Syndesmosis level','solid');
+    [[170,246],[242,196],[206,268],[290,214],[146,240],[206,300]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Medial clear space', d:'The gap between the lateral border of the medial malleolus and the medial talus. Widening indicates deltoid ligament rupture and an unstable ankle even when the medial malleolus is intact.'},
+    {n:'Tibiofibular overlap', d:'Reduced overlap indicates syndesmotic disruption. Together with the clear space it is the key measure of syndesmotic integrity.'},
+    {n:'Talar dome', d:'Should be perfectly congruent with the tibial plafond. Even 1 mm of talar shift reduces contact area by around 40% and leads to arthritis.'},
+    {n:'Fibula', d:'Palpate and image its whole length. A proximal fibular fracture with a medial ankle injury is a Maisonneuve — easily missed if only the ankle is filmed.'},
+    {n:'Medial malleolus', d:'Its fracture, or an equivalent deltoid rupture, converts a stable lateral injury into an unstable bimalleolar-equivalent pattern.'},
+    {n:'Talar tilt', d:'The angle between the tibial plafond and the talar dome. Any tilt means the mortise is not congruent.'}
+  ],
+  meas:[
+    {n:'Medial clear space', v:'≤ 4 mm', how:'Mortise view (15–20° internal rotation), at the level of the talar dome', why:'> 4 mm, or greater than the superior clear space, means deltoid rupture'},
+    {n:'Superior clear space', v:'≤ 4 mm and equal to medial', how:'Plafond to talar dome', why:'The comparison, not the absolute number, detects lateral talar shift'},
+    {n:'Tibiofibular clear space', v:'< 6 mm', how:'1 cm above the plafond, on both AP and mortise', why:'The most reliable single sign of syndesmotic injury'},
+    {n:'Tibiofibular overlap', v:'> 6 mm (AP), > 1 mm (mortise)', how:'1 cm above the plafond', why:'Reduced overlap indicates syndesmotic widening'},
+    {n:'Talar tilt', v:'< 2°', how:'Plafond line vs talar dome line on mortise', why:'Any tilt indicates an incongruent, unstable mortise'},
+    {n:'Talocrural angle', v:'83° ± 4', how:'Intermalleolar line vs the plafond line', why:'Confirms fibular length is restored after fixation'}
+  ],
+  pitfalls:[
+    {t:'Weber B with a normal-looking medial side', d:'A fibular fracture at the syndesmosis may be stable or unstable depending on the deltoid. If the medial clear space is equivocal, weight-bearing or gravity-stress views reveal the instability that a supine film hides.'},
+    {t:'Maisonneuve fracture', d:'Always palpate and, if tender, image the proximal fibula in any ankle injury with a medial-sided finding. The ankle film alone will look deceptively minor.'},
+    {t:'Ottawa ankle rules', d:'X-ray only if there is pain in the malleolar zone plus bony tenderness at the posterior edge or tip of either malleolus, or inability to weight-bear four steps. Applied properly this safely reduces imaging by around a third.'}
+  ],
+  pearls:[
+    {t:'Restore fibular length first', d:'The fibula is the key to the mortise. Getting its length and rotation right — checked by the talocrural angle and Shenton line of the ankle — is what makes the reduction anatomical.'}
+  ]
+},
+
+/* ─────────────── FOOT ─────────────── */
+{
+  id:'foot', icon:'fa-shoe-prints', group:'Lower limb',
+  name:'Foot — Lateral',
+  sub:'Böhler\'s and Gissane\'s angles, Meary\'s line and the Lisfranc alignment',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'LATERAL FOOT');
+    // tibia
+    g+=`<path class="bone" d="M104 30 L164 30 L170 150 L102 150 Z"/>`;
+    // talus
+    g+=`<path class="bone" d="M96 158 Q140 146 178 160 Q196 178 176 196 L124 202 Q92 190 96 158 Z"/>`;
+    // calcaneus
+    g+=`<path class="bone" d="M62 186 Q96 176 132 196 L188 214 Q206 236 178 250 L84 254 Q56 236 62 186 Z"/>`;
+    // navicular / cuboid / cuneiform
+    g+=`<path class="bone-2" d="M182 178 L206 172 L214 208 L188 214 Z"/>`;
+    g+=`<path class="bone-2" d="M196 216 L226 210 L232 244 L204 248 Z"/>`;
+    g+=`<path class="bone-2" d="M210 176 L246 172 L250 206 L216 210 Z"/>`;
+    // metatarsals
+    g+=`<path class="bone" d="M248 178 L322 190 L326 206 L250 202 Z"/>`;
+    g+=`<path class="bone" d="M232 214 L318 216 L320 232 L234 236 Z"/>`;
+    // phalanges
+    g+=`<rect class="bone-2" x="326" y="186" width="34" height="18" rx="6"/>`;
+    g+=`<rect class="bone-2" x="322" y="214" width="32" height="18" rx="6"/>`;
+    // angles
+    g+=S.ang('bohler','M76 196 L136 190 L188 214','Böhler angle',66,182);
+    g+=S.ang('gissane','M132 196 L188 214 L206 240','Gissane',204,258);
+    g+=S.path('meary','M130 176 L330 198','Meary line',300,182);
+    [[136,192],[188,216],[100,172],[214,196],[254,190],[300,198]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Posterior facet of calcaneus', d:'The apex of Böhler\'s angle and the joint surface that determines outcome after a calcaneal fracture. Its depression is what flattens the angle.'},
+    {n:'Crucial angle of Gissane', d:'The dense V where the posterior and anterior facets meet. It increases as the posterior facet is driven down.'},
+    {n:'Calcaneal tuberosity', d:'The Achilles insertion. A fall from height loads this axially — always examine the spine and the opposite heel too.'},
+    {n:'Navicular', d:'The keystone of the medial column. Stress fracture here is a classic missed running injury needing CT or MRI.'},
+    {n:'Lisfranc joint', d:'The second metatarsal base should align exactly with the medial border of the middle cuneiform. Any step is a Lisfranc injury.'},
+    {n:'Meary\'s line (talo-first metatarsal)', d:'The talar axis should be collinear with the first metatarsal axis. A break at the apex localises the deformity in flatfoot or cavus.'}
+  ],
+  meas:[
+    {n:'Böhler\'s angle', v:'20–40°', how:'Line from posterior tuberosity to posterior facet apex, vs apex to anterior process', why:'< 20° indicates a depressed intra-articular calcaneal fracture'},
+    {n:'Crucial angle of Gissane', v:'120–145°', how:'Between the posterior facet slope and the anterior process', why:'Increases with posterior facet depression'},
+    {n:'Meary\'s angle', v:'0° (±4)', how:'Talar axis vs first metatarsal axis, weight-bearing lateral', why:'Apex plantar = cavus; apex dorsal = flatfoot'},
+    {n:'Calcaneal pitch', v:'20–30°', how:'Calcaneal inferior border vs the floor, weight-bearing', why:'Low pitch = pes planus; high = pes cavus'},
+    {n:'Lisfranc alignment', v:'Perfect 2nd MT / middle cuneiform line', how:'Weight-bearing AP, compare with the other foot', why:'> 2 mm diastasis indicates Lisfranc injury needing fixation'},
+    {n:'Hallux valgus angle', v:'< 15°', how:'1st metatarsal axis vs proximal phalanx axis', why:'Grades bunion severity and guides the osteotomy chosen'}
+  ],
+  pitfalls:[
+    {t:'Lisfranc injuries are missed in up to 20%', d:'A non-weight-bearing film can look normal. If the mechanism and midfoot tenderness fit, get weight-bearing views — comparing with the opposite foot — or a CT. Missed, it is a leading cause of permanent midfoot disability.'},
+    {t:'Calcaneal fracture means look elsewhere', d:'Axial loading from a fall causes associated lumbar spine fractures in about 10% and contralateral calcaneal fractures. Examine the back and the other heel deliberately.'},
+    {t:'Jones versus avulsion', d:'A fifth metatarsal avulsion at the tuberosity heals well; a Jones fracture at the metaphyseal-diaphyseal junction has a poor blood supply and a real non-union rate. The distinction is a few millimetres on the film.'}
+  ],
+  pearls:[
+    {t:'Weight-bearing changes the diagnosis', d:'Meary\'s angle, calcaneal pitch and Lisfranc alignment are only meaningful on a standing film. A supine foot series answers a different question from the one you asked.'}
+  ]
+},
+
+/* ─────────────── PAEDIATRIC ─────────────── */
+{
+  id:'paeds', icon:'fa-child', group:'Paediatric',
+  name:'Paediatric — Physis &amp; Ossification',
+  sub:'Salter-Harris classification, CRITOE and the growing skeleton',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'SALTER-HARRIS TYPES');
+    const bone=(x,label,type)=>{
+      let s='';
+      s+=`<path class="bone" d="M${x-26} 90 L${x+26} 90 L${x+22} 176 L${x-22} 176 Z"/>`;   // metaphysis
+      s+=`<rect class="cart" x="${x-26}" y="176" width="52" height="13" rx="4"/>`;         // physis
+      s+=`<path class="bone-2" d="M${x-30} 189 L${x+30} 189 L${x+26} 232 L${x-26} 232 Z"/>`; // epiphysis
+      // fracture lines by type
+      const F=`stroke="#ff8f6b" stroke-width="3" fill="none" stroke-linecap="round"`;
+      if(type===1) s+=`<line ${F} x1="${x-26}" y1="182" x2="${x+26}" y2="182"/>`;
+      if(type===2){ s+=`<line ${F} x1="${x-26}" y1="182" x2="${x+8}" y2="182"/>`;
+                    s+=`<line ${F} x1="${x+8}" y1="182" x2="${x+24}" y2="150"/>`; }
+      if(type===3){ s+=`<line ${F} x1="${x-26}" y1="182" x2="${x+4}" y2="182"/>`;
+                    s+=`<line ${F} x1="${x+4}" y1="182" x2="${x+4}" y2="232"/>`; }
+      if(type===4) s+=`<line ${F} x1="${x+2}" y1="146" x2="${x+2}" y2="232"/>`;
+      if(type===5){ s+=`<line ${F} x1="${x-22}" y1="180" x2="${x+22}" y2="180"/>`;
+                    s+=`<path ${F} d="M${x-14} 168 L${x-14} 158 M${x+14} 168 L${x+14} 158"/>`; }
+      s+=`<text class="viewtag" x="${x}" y="258" text-anchor="middle">${label}</text>`;
+      return s;
+    };
+    g+=bone(70,'I — Straight',1);
+    g+=bone(148,'II — Above',2);
+    g+=bone(226,'III — Lower',3);
+    g+=bone(304,'IV — Through',4);
+    g+=`<g transform="translate(0,110)">${bone(148,'V — Crush (ERasure)',5)}</g>`;
+    g+=`<text class="viewtag" x="200" y="300" text-anchor="middle">SALTR: Straight · Above · Lower · Through · Rammed</text>`;
+    [[70,182],[148,168],[226,206],[304,190],[148,292]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Type I — through the physis', d:'A pure separation through the growth plate. Often radiographically invisible, diagnosed clinically by tenderness directly over the physis. Excellent prognosis.'},
+    {n:'Type II — above (metaphyseal)', d:'Through the physis and out through the metaphysis, leaving the Thurston-Holland fragment. The commonest type, around 75%, and usually managed closed.'},
+    {n:'Type III — lower (epiphyseal)', d:'Through the physis and out through the epiphysis into the joint. Being intra-articular it needs anatomical reduction, often with fixation.'},
+    {n:'Type IV — through both', d:'A vertical split crossing metaphysis, physis and epiphysis. Highest risk of bony bridge and growth arrest; requires anatomical open reduction.'},
+    {n:'Type V — crush', d:'Axial compression of the physis. Usually diagnosed retrospectively when growth arrest appears; the initial film may look normal.'}
+  ],
+  meas:[
+    {n:'CRITOE — elbow ossification', v:'1, 3, 5, 7, 9, 11 years', how:'Capitellum, Radial head, Internal epicondyle, Trochlea, Olecranon, External epicondyle', why:'Seeing trochlea without medial epicondyle = entrapped epicondyle in the joint'},
+    {n:'Physeal widening', v:'Symmetrical with the other side', how:'Compare with a contralateral film when in doubt', why:'Asymmetric widening indicates a Salter-Harris I or chronic stress (gymnast wrist, Little League shoulder)'},
+    {n:'Bone age (Greulich &amp; Pyle)', v:'Within 2 SD of chronological', how:'Left hand and wrist PA against the atlas', why:'Guides timing of limb-length and deformity surgery'},
+    {n:'Acetabular index', v:'< 30° at 6 months', how:'Hilgenreiner line vs acetabular roof', why:'Screening for developmental dysplasia before the head ossifies'},
+    {n:'Southwick slip angle (SCFE)', v:'Mild < 30°, Severe > 50°', how:'Epiphyseal-shaft angle on frog-lateral, compared with the normal side', why:'Grades slip severity and guides treatment'}
+  ],
+  pitfalls:[
+    {t:'A child\'s ligament is stronger than the physis', d:'What would be a sprain in an adult is a physeal injury in a child. Tenderness over the growth plate with a normal film is a Salter-Harris I — splint it and review, do not discharge it as a sprain.'},
+    {t:'The growth plate is not a fracture', d:'Physes and accessory ossicles are the commonest source of false-positive paediatric reads. When unsure, a comparison view of the other side settles it more cheaply than a CT.'},
+    {t:'Suspect non-accidental injury', d:'Metaphyseal corner (bucket-handle) fractures, posterior rib fractures, fractures in a non-ambulant infant, and injuries of differing ages together demand a formal safeguarding pathway and a skeletal survey.'}
+  ],
+  pearls:[
+    {t:'Remodelling buys forgiveness', d:'Angulation in the plane of joint motion, close to the physis, in a young child, remodels remarkably. Anatomical reduction matters far more for intra-articular Salter-Harris III and IV injuries.'}
+  ]
+},
+
+/* ─────────────── MODALITIES ─────────────── */
+{
+  id:'modalities', icon:'fa-magnet', group:'Modalities',
+  name:'Modalities &amp; Signal Characteristics',
+  sub:'What each investigation actually shows, and when to ask for it',
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'TISSUE SIGNAL BY MODALITY');
+    const row=(y,label,xr,ct,t1,t2)=>{
+      let s=`<text class="viewtag" x="18" y="${y+5}" style="font-size:12px;fill:#D3DCEC">${label}</text>`;
+      const cell=(x,v,tone)=>{
+        const fill = tone==='w'?'#E7E2D4':tone==='g'?'#8d95a5':'#1b2536';
+        const txt  = tone==='w'?'#0b1424':tone==='g'?'#0b1424':'#93A4C0';
+        s+=`<rect x="${x}" y="${y-13}" width="62" height="26" rx="6" fill="${fill}" stroke="rgba(255,255,255,.14)"/>`;
+        s+=`<text x="${x+31}" y="${y+4}" text-anchor="middle" style="font-size:10.5px;font-weight:700;fill:${txt};font-family:Inter,sans-serif">${v}</text>`;
+      };
+      cell(150,xr[0],xr[1]); cell(216,ct[0],ct[1]); cell(282,t1[0],t1[1]); cell(348,t2[0],t2[1]);
+      return s;
+    };
+    g+=`<text class="viewtag" x="150" y="58">X-RAY</text><text class="viewtag" x="222" y="58">CT</text>`;
+    g+=`<text class="viewtag" x="292" y="58">T1</text><text class="viewtag" x="356" y="58">T2</text>`;
+    g+=row(90,'Cortical bone',['white','w'],['white','w'],['dark','d'],['dark','d']);
+    g+=row(130,'Marrow fat',['grey','g'],['dark','d'],['bright','w'],['grey','g']);
+    g+=row(170,'Muscle',['grey','g'],['grey','g'],['grey','g'],['grey','g']);
+    g+=row(210,'Fluid / oedema',['grey','g'],['dark','d'],['dark','d'],['bright','w']);
+    g+=row(250,'Cartilage',['lucent','d'],['grey','g'],['grey','g'],['grey','g']);
+    g+=row(290,'Ligament/tendon',['unseen','d'],['grey','g'],['dark','d'],['dark','d']);
+    g+=row(330,'Fat',['dark','d'],['dark','d'],['bright','w'],['grey','g']);
+    [[181,90],[181,210],[313,130],[379,210],[313,290]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Cortical bone', d:'Dense on X-ray and CT; signal void (black) on both T1 and T2 because it contains almost no mobile protons. CT remains the gold standard for cortical detail and fracture configuration.'},
+    {n:'Fluid and oedema', d:'Bright on T2 and STIR, dark on T1. This is why STIR is the sequence that reveals occult fractures, bone bruising and early infection long before X-ray changes appear.'},
+    {n:'Marrow fat', d:'Bright on T1. Its replacement by anything — tumour, infection, oedema — makes marrow dark on T1, which is why T1 is the workhorse for detecting marrow pathology.'},
+    {n:'Fat suppression', d:'STIR or fat-saturated T2 removes the bright fat signal so that oedema stands out. Ordering "MRI" without fat suppression risks missing exactly what you were looking for.'},
+    {n:'Ligament and tendon', d:'Low signal on all sequences when normal. Increased internal signal, thickening or discontinuity indicates degeneration or tear.'}
+  ],
+  meas:[
+    {n:'X-ray', v:'First line', how:'Two orthogonal views minimum; include the joint above and below', why:'Fracture, alignment, arthritis, bone lesions. Cheap, fast, low dose'},
+    {n:'CT', v:'Bone detail', how:'Thin slices with multiplanar and 3D reconstruction', why:'Fracture configuration, articular depression, surgical planning, non-union'},
+    {n:'MRI', v:'Soft tissue and marrow', how:'T1 + fluid-sensitive (STIR / fat-sat T2), at least two planes', why:'Occult fracture, AVN, tumour, infection, ligament and meniscal tears, cord compression'},
+    {n:'Ultrasound', v:'Dynamic soft tissue', how:'High-frequency linear probe, compare with the other side', why:'Cuff tears, tendinopathy, effusion, DDH screening under 6 months, guided injection'},
+    {n:'Bone scan', v:'Whole-body survey', how:'Technetium-99m, three-phase if infection suspected', why:'Metastases, stress fracture, loosening — sensitive but not specific'},
+    {n:'DEXA', v:'T-score', how:'Hip and lumbar spine', why:'≤ −2.5 diagnoses osteoporosis; the reason a fragility fracture must trigger a scan'}
+  ],
+  pitfalls:[
+    {t:'MRI is not always the answer', d:'For cortical bone detail, articular depression and implant assessment, CT beats MRI. Asking for the wrong test delays treatment as surely as asking for none.'},
+    {t:'Radiation dose is not trivial', d:'A CT abdomen-pelvis carries several hundred times the dose of a chest film. In children and in young women of reproductive age, justify each scan and prefer ultrasound or MRI where they answer the question.'},
+    {t:'Metalwork degrades MRI', d:'Susceptibility artefact around implants obscures exactly the region of interest. Use metal artefact reduction sequences, or choose CT with metal artefact reduction instead.'}
+  ],
+  pearls:[
+    {t:'The occult hip fracture', d:'An elderly patient who cannot weight bear with a normal X-ray needs an MRI, not a repeat film. MRI is close to 100% sensitive within 24 hours and changes management the same day.'},
+    {t:'Always request the clinical question', d:'"?scaphoid fracture, snuffbox tender" gets a targeted, correctly-sequenced study. "Wrist pain" gets a generic one. The request is part of the investigation.'}
+  ]
+}
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   UI
+   ══════════════════════════════════════════════════════════════════ */
+const $ = id=>document.getElementById(id);
+const esc = s=>String(s).replace(/&(?!(amp|lt|gt|#\d+);)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let current=null, showLines=true;
+
+/* ---- rail ---- */
+(function buildRail(){
+  const byGroup={};
+  REGIONS.forEach(r=>{ (byGroup[r.group]=byGroup[r.group]||[]).push(r); });
+  let html='';
+  Object.keys(byGroup).forEach(g=>{
+    html+=`<div class="rail-h">${g}</div>`;
+    byGroup[g].forEach(r=>{
+      html+=`<div class="rgn" data-id="${r.id}"><i class="fas ${r.icon}"></i><span>${r.name}</span></div>`;
+    });
+  });
+  $('regionList').innerHTML=html;
+  $('regionList').addEventListener('click',e=>{
+    const row=e.target.closest('.rgn'); if(row) show(row.dataset.id);
+  });
+})();
+
+/* ---- render a region ---- */
+function show(id, focusLm){
+  const r=REGIONS.find(x=>x.id===id); if(!r) return;
+  current=r;
+  document.querySelectorAll('.rgn').forEach(x=>x.classList.toggle('active',x.dataset.id===id));
+  $('vTitle').innerHTML=r.name;
+  $('vSub').textContent=r.sub;
+  $('film').innerHTML=r.svg;
+  applyLines();
+
+  // hotspot ↔ list wiring
+  $('film').querySelectorAll('.hot').forEach(h=>{
+    h.addEventListener('mouseenter',()=>highlight(+h.dataset.hot));
+    h.addEventListener('mouseleave',()=>highlight(-1));
+    h.addEventListener('click',()=>{ selectTab('landmarks'); highlight(+h.dataset.hot,true); });
+  });
+
+  const tabs=[{k:'landmarks',l:'Landmarks'},{k:'meas',l:'Measurements'},
+              {k:'pitfalls',l:'Pitfalls'},{k:'pearls',l:'Pearls'}];
+  $('pnTabs').innerHTML=tabs.map((t,i)=>
+    `<button class="pn-tab${i===0?' active':''}" data-k="${t.k}">${t.l}</button>`).join('');
+
+  let html='';
+  html+=`<div class="pane active" data-k="landmarks"><h4>Numbered on the diagram</h4>`+
+    r.landmarks.map((l,i)=>
+      `<div class="lmrow" data-lm="${i}"><div class="lmn">${i+1}</div>
+        <div><div class="lmt">${l.n}</div><div class="lmd">${l.d}</div></div></div>`).join('')+`</div>`;
+
+  html+=`<div class="pane" data-k="meas"><h4>Normal values &amp; how to measure</h4>
+    <table class="meas"><tr><th>Measurement</th><th>Normal</th></tr>`+
+    r.meas.map(m=>`<tr><td><strong>${m.n}</strong><br><span style="color:var(--mut)">${m.how}</span>
+      <br><span style="color:#9fd8cf">Why: ${m.why}</span></td><td class="val">${m.v}</td></tr>`).join('')+
+    `</table></div>`;
+
+  html+=`<div class="pane" data-k="pitfalls">`+
+    r.pitfalls.map(p=>`<div class="pitfall"><strong>${p.t}</strong><span>${p.d}</span></div>`).join('')+`</div>`;
+
+  html+=`<div class="pane" data-k="pearls">`+
+    (r.pearls||[]).map(p=>`<div class="pearl"><strong>${p.t}</strong><span>${p.d}</span></div>`).join('')+`</div>`;
+
+  $('pnBody').innerHTML=html;
+  $('pnBody').scrollTop=0;
+
+  $('pnBody').querySelectorAll('.lmrow').forEach(row=>{
+    row.addEventListener('mouseenter',()=>highlight(+row.dataset.lm));
+    row.addEventListener('mouseleave',()=>highlight(-1));
+  });
+  if(focusLm!=null){ selectTab('landmarks'); highlight(focusLm,true); }
+}
+
+function selectTab(k){
+  $('pnTabs').querySelectorAll('.pn-tab').forEach(b=>b.classList.toggle('active',b.dataset.k===k));
+  $('pnBody').querySelectorAll('.pane').forEach(p=>p.classList.toggle('active',p.dataset.k===k));
+}
+$('pnTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.pn-tab'); if(b) selectTab(b.dataset.k);
+});
+
+/** Light up a numbered landmark on the diagram and its row together. */
+function highlight(i,scroll){
+  $('film').querySelectorAll('.hot').forEach(h=>h.classList.toggle('sel',+h.dataset.hot===i));
+  $('pnBody').querySelectorAll('.lmrow').forEach(r=>r.classList.toggle('hot2',+r.dataset.lm===i));
+  if(scroll && i>=0){
+    const row=$('pnBody').querySelector(`.lmrow[data-lm="${i}"]`);
+    if(row) row.scrollIntoView({block:'nearest'});
+  }
+}
+
+/* ---- lines toggle ---- */
+function applyLines(){
+  $('film').querySelectorAll('.ln,.ang,.lnlab').forEach(el=>el.classList.toggle('show',showLines));
+}
+$('btnLines').addEventListener('click',()=>{
+  showLines=!showLines;
+  $('btnLines').classList.toggle('on',showLines);
+  applyLines();
+});
+
+/* ---- search across landmarks, measurements and pitfalls ---- */
+/* Strip diacritics so "bohler" finds Böhler and "tonnis" finds Tönnis —
+   nobody types the umlaut when searching. */
+const fold = s => String(s).toLowerCase()
+  .normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .replace(/[’']/g,"'");
+
+const INDEX=[];
+REGIONS.forEach(r=>{
+  INDEX.push({rid:r.id,label:r.name,sub:'Region',hay:fold(r.name+' '+r.sub)});
+  r.landmarks.forEach((l,i)=>INDEX.push({rid:r.id,lm:i,label:l.n,sub:'Landmark · '+r.name,
+    hay:fold(l.n+' '+l.d)}));
+  r.meas.forEach(m=>INDEX.push({rid:r.id,tab:'meas',label:m.n+' — '+m.v,sub:'Measurement · '+r.name,
+    hay:fold(m.n+' '+m.v+' '+m.why+' '+m.how)}));
+  r.pitfalls.forEach(p=>INDEX.push({rid:r.id,tab:'pitfalls',label:p.t,sub:'Pitfall · '+r.name,
+    hay:fold(p.t+' '+p.d)}));
+  (r.pearls||[]).forEach(p=>INDEX.push({rid:r.id,tab:'pearls',label:p.t,sub:'Pearl · '+r.name,
+    hay:fold(p.t+' '+p.d)}));
+});
+$('search').addEventListener('input',()=>{
+  const q=fold($('search').value.trim());
+  const box=$('results');
+  if(q.length<2){ box.classList.remove('show'); return; }
+  const hits=INDEX.filter(x=>x.hay.includes(q)).slice(0,16);
+  box.innerHTML = hits.length
+    ? hits.map((h,i)=>`<div class="res" data-i="${INDEX.indexOf(h)}">${esc(h.label)}<small>${esc(h.sub)}</small></div>`).join('')
+    : '<div class="res">Nothing found</div>';
+  box.classList.add('show');
+});
+$('results').addEventListener('click',e=>{
+  const el=e.target.closest('.res'); if(!el||!el.dataset.i) return;
+  const h=INDEX[+el.dataset.i];
+  show(h.rid, h.lm);
+  if(h.tab) selectTab(h.tab);
+  $('results').classList.remove('show'); $('search').value='';
+});
+document.addEventListener('click',e=>{ if(!e.target.closest('#searchWrap')) $('results').classList.remove('show'); });
+
+/* keyboard */
+window.addEventListener('keydown',e=>{
+  if(e.target===$('search')){ if(e.key==='Escape') $('search').blur(); return; }
+  if(e.key==='/'){ e.preventDefault(); $('search').focus(); }
+  if(e.key==='l'||e.key==='L') $('btnLines').click();
+  const i=REGIONS.findIndex(r=>r.id===(current&&current.id));
+  if(e.key==='ArrowDown'&&i<REGIONS.length-1) show(REGIONS[i+1].id);
+  if(e.key==='ArrowUp'&&i>0) show(REGIONS[i-1].id);
+});
+
+/* debug handle for automated checks */
+if(/debug=1/.test(location.search+location.hash)){
+  window.__radio = {REGIONS, show, selectTab, highlight, count:()=>REGIONS.length};
+}
+
+show(REGIONS[0].id);
+})();
+</script>
+</body>
+</html>
