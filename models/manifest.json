@@ -1,6 +1,6 @@
 {
   "attribution": {
-    "source": "BodyParts3D © DBCLS (skeleton, muscles, vessels)",
+    "source": "BodyParts3D © DBCLS (skeleton, muscles, tendons, vessels)",
     "license": "CC BY-SA 2.1 JP / CC BY-SA 4.0",
     "url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/desc.html"
   },
@@ -599,6 +599,36 @@
     },
     "transvthoracis_r": {
       "file": "transvthoracis_r.glb"
+    },
+    "flexret_wrist_l": {
+      "file": "flexret_wrist_l.glb"
+    },
+    "flexret_wrist_r": {
+      "file": "flexret_wrist_r.glb"
+    },
+    "iom_forearm_l": {
+      "file": "iom_forearm_l.glb"
+    },
+    "iom_forearm_r": {
+      "file": "iom_forearm_r.glb"
+    },
+    "iom_leg_l": {
+      "file": "iom_leg_l.glb"
+    },
+    "iom_leg_r": {
+      "file": "iom_leg_r.glb"
+    },
+    "itband_l": {
+      "file": "itband_l.glb"
+    },
+    "itband_r": {
+      "file": "itband_r.glb"
+    },
+    "plantar_lig_l": {
+      "file": "plantar_lig_l.glb"
+    },
+    "plantar_lig_r": {
+      "file": "plantar_lig_r.glb"
     }
   }
 }
