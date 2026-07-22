@@ -148,5 +148,85 @@
   "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
   "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_a_normal_knee_by_lateral_projection.jpg",
   "title": "X-ray of a normal knee by lateral projection"
+ },
+ "mri_lumbar_t1": {
+  "file": "mri_lumbar_t1.jpg",
+  "kb": 125,
+  "w": 900,
+  "h": 900,
+  "licence": "CC BY-SA 4.0",
+  "author": "Ptrump16",
+  "title": "SAGITTAL-FSE T1 MRI-ANNOTATED",
+  "source": "https://commons.wikimedia.org/wiki/File%3ASAGITTAL-FSE_T1_MRI-ANNOTATED.jpg"
+ },
+ "mri_lumbar_t2": {
+  "file": "mri_lumbar_t2.jpg",
+  "kb": 143,
+  "w": 900,
+  "h": 900,
+  "licence": "CC BY-SA 4.0",
+  "author": "Ptrump16",
+  "title": "SAGITTAL-FRFSE-T2 MRI-ANNOTATED",
+  "source": "https://commons.wikimedia.org/wiki/File%3ASAGITTAL-FRFSE-T2_MRI-ANNOTATED.jpg"
+ },
+ "mri_lumbar_stir": {
+  "file": "mri_lumbar_stir.jpg",
+  "kb": 109,
+  "w": 900,
+  "h": 900,
+  "licence": "CC BY-SA 4.0",
+  "author": "Ptrump16",
+  "title": "SAGITTAL-FAST-STIR MRI-ANNOTATED",
+  "source": "https://commons.wikimedia.org/wiki/File%3ASAGITTAL-FAST-STIR_MRI-ANNOTATED.jpg"
+ },
+ "ct_thorax_3d": {
+  "file": "ct_thorax_3d.jpg",
+  "kb": 253,
+  "w": 900,
+  "h": 659,
+  "licence": "CC0",
+  "author": "Mikael Häggström",
+  "title": "3D CT of thorax, annotated",
+  "source": "https://commons.wikimedia.org/wiki/File%3A3D_CT_of_thorax%2C_annotated.jpg"
+ },
+ "xr_hip_occult": {
+  "file": "xr_hip_occult.jpg",
+  "kb": 175,
+  "w": 815,
+  "h": 879,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.Consent note: Written informed consent was obtained from the individual, including online publication.",
+  "title": "X-ray of subtle compressive hip fracture, labeled",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_subtle_compressive_hip_fracture%2C_labeled.jpg"
+ },
+ "mri_knee_seq": {
+  "file": "mri_knee_seq.jpg",
+  "kb": 124,
+  "w": 512,
+  "h": 512,
+  "licence": "CC BY-SA 3.0",
+  "author": "Nevit Dilmen (talk)",
+  "title": "21 Knee MRI T1W TSE R T2W TSE G PDW DR TSE B",
+  "source": "https://commons.wikimedia.org/wiki/File%3A21_Knee_MRI_T1W_TSE_R_T2W_TSE_G_PDW_DR_TSE_B.jpg"
+ },
+ "mri_knee_t1t2pd": {
+  "file": "mri_knee_t1t2pd.jpg",
+  "kb": 227,
+  "w": 768,
+  "h": 768,
+  "licence": "CC BY-SA 3.0",
+  "author": "Nevit Dilmen (talk)",
+  "title": "Knee MRI, T1T2PD 06",
+  "source": "https://commons.wikimedia.org/wiki/File%3AKnee_MRI%2C_T1T2PD_06.jpg"
+ },
+ "ct_lumbar_sag": {
+  "file": "ct_lumbar_sag.png",
+  "kb": 551,
+  "w": 813,
+  "h": 1710,
+  "licence": "CC BY-SA 3.0",
+  "author": "Hellerhoff",
+  "title": "Baastrup CT sagittal",
+  "source": "https://commons.wikimedia.org/wiki/File%3ABaastrup_CT_sagittal.png"
  }
 }

@@ -282,7 +282,17 @@ const FILMS = {
   foot_lat     :{f:'foot_lat.jpg',      t:'Lateral foot — normal',                  by:'Mikael Häggström', lic:'CC0'},
   foot_ap      :{f:'foot_ap.jpg',       t:'Dorsoplantar foot — normal',             by:'Mikael Häggström', lic:'CC0'},
   chest_pa     :{f:'chest_pa.jpg',      t:'PA chest — normal',                      by:'Mikael Häggström', lic:'CC0'},
-  ct_acetabulum:{f:'ct_acetabulum.png', t:'CT — acetabular fracture, bone window',  by:'Seannovak', lic:'CC BY-SA 3.0'}
+  ct_acetabulum:{f:'ct_acetabulum.png', t:'CT — acetabular fracture, bone window',  by:'Seannovak', lic:'CC BY-SA 3.0'},
+  /* Cross-sectional set. The three lumbar sagittals are the SAME patient in
+     three sequences — the clearest way to teach how signal changes. */
+  mri_lumbar_t1  :{f:'mri_lumbar_t1.jpg',  t:'Lumbar spine — sagittal T1 (FSE), annotated', by:'Ptrump16', lic:'CC BY-SA 4.0'},
+  mri_lumbar_t2  :{f:'mri_lumbar_t2.jpg',  t:'Same patient — sagittal T2 (FRFSE), annotated', by:'Ptrump16', lic:'CC BY-SA 4.0'},
+  mri_lumbar_stir:{f:'mri_lumbar_stir.jpg',t:'Same patient — sagittal STIR, annotated', by:'Ptrump16', lic:'CC BY-SA 4.0'},
+  mri_knee_seq   :{f:'mri_knee_seq.jpg',   t:'Knee MRI — T1 / T2 / PD compared', by:'Nevit Dilmen', lic:'CC BY-SA 3.0'},
+  mri_knee_t1t2pd:{f:'mri_knee_t1t2pd.jpg',t:'Knee MRI — multi-sequence panel', by:'Nevit Dilmen', lic:'CC BY-SA 3.0'},
+  ct_lumbar_sag  :{f:'ct_lumbar_sag.png',  t:'CT lumbar spine — sagittal reformat, bone window', by:'Ptrump16', lic:'CC BY-SA 3.0'},
+  ct_thorax_3d   :{f:'ct_thorax_3d.jpg',   t:'CT thorax — 3D volume rendering, annotated', by:'Mikael Häggström', lic:'CC0'},
+  xr_hip_occult  :{f:'xr_hip_occult.jpg',  t:'Occult hip fracture — labelled', by:'Mikael Häggström', lic:'CC0'}
 };
 
 const REGIONS = [
@@ -824,9 +834,125 @@ const REGIONS = [
   ]
 },
 
+/* ─────────────── MRI SEQUENCES ─────────────── */
+{
+  id:'mri', icon:'fa-magnet', group:'Cross-sectional',
+  name:'MRI — Sequences &amp; Signal',
+  sub:'What each sequence shows, and why the same anatomy looks different on every one',
+  films:['mri_lumbar_t1','mri_lumbar_t2','mri_lumbar_stir','mri_knee_seq','mri_knee_t1t2pd'],
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'SIGNAL BY SEQUENCE');
+    const hdr=['T1','T2','STIR','PD'];
+    hdr.forEach((h,i)=>g+=`<text class="viewtag" x="${168+i*58}" y="56">${h}</text>`);
+    const row=(y,label,vals)=>{
+      let s=`<text class="viewtag" x="18" y="${y+5}" style="font-size:11.5px;fill:#D3DCEC">${label}</text>`;
+      vals.forEach((v,i)=>{
+        const x=158+i*58;
+        const tone=v[1];
+        const fill = tone==='w'?'#EFEAD9':tone==='g'?'#8d95a5':tone==='m'?'#4a5468':'#141c2b';
+        const txt  = (tone==='w'||tone==='g')?'#0b1424':'#93A4C0';
+        s+=`<rect x="${x}" y="${y-12}" width="52" height="24" rx="5" fill="${fill}" stroke="rgba(255,255,255,.13)"/>`;
+        s+=`<text x="${x+26}" y="${y+4}" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:${txt};font-family:Inter,sans-serif">${v[0]}</text>`;
+      });
+      return s;
+    };
+    g+=row(86 ,'Fat / marrow',   [['bright','w'],['mid','g'],['dark','d'],['bright','w']]);
+    g+=row(122,'Water / oedema', [['dark','d'],['bright','w'],['bright','w'],['mid','g']]);
+    g+=row(158,'Muscle',         [['mid','g'],['mid','m'],['mid','m'],['mid','g']]);
+    g+=row(194,'Cortical bone',  [['dark','d'],['dark','d'],['dark','d'],['dark','d']]);
+    g+=row(230,'Cartilage',      [['mid','g'],['mid','g'],['mid','g'],['bright','w']]);
+    g+=row(266,'Ligament/tendon',[['dark','d'],['dark','d'],['dark','d'],['dark','d']]);
+    g+=row(302,'Flowing blood',  [['dark','d'],['dark','d'],['dark','d'],['dark','d']]);
+    g+=`<text class="viewtag" x="200" y="352" text-anchor="middle" style="font-size:10.5px">T1 = anatomy &amp; marrow  ·  T2/STIR = pathology  ·  PD = cartilage &amp; menisci</text>`;
+    g+=`<text class="viewtag" x="200" y="372" text-anchor="middle" style="font-size:10px;fill:#8fe6d8">"WW2" — Water is White on T2</text>`;
+    [[184,122],[184,86],[300,230],[242,122],[184,266]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'T2 — water is white', d:'Fluid, oedema and most pathology are bright. The mnemonic WW2 (Water is White on T2) is the single most useful memory aid in MRI. Pathology in bone or soft tissue nearly always means increased water, so T2 is the sequence that finds it.'},
+    {n:'T1 — anatomy and marrow', d:'Fat, including normal marrow, is bright. T1 gives the best anatomical detail and is the workhorse for marrow: anything replacing marrow — tumour, infection, oedema — makes it dark on T1.'},
+    {n:'PD — cartilage and menisci', d:'Proton density, usually fat-saturated, gives the best contrast between articular cartilage, meniscus and fluid. It is the standard sequence for internal derangement of the knee.'},
+    {n:'STIR — fat suppressed', d:'Short tau inversion recovery nulls the fat signal so oedema stands out starkly. It is how occult fractures, bone bruises and early osteomyelitis are found long before any X-ray change.'},
+    {n:'Low signal on every sequence', d:'Cortical bone, ligament, tendon, fibrocartilage and flowing blood are all dark throughout. A structure that should be uniformly dark but shows internal bright signal is degenerate or torn.'}
+  ],
+  meas:[
+    {n:'T1-weighted', v:'Short TR, short TE', how:'TR < 700 ms, TE < 30 ms', why:'Anatomy, marrow replacement, fat-containing lesions; the post-contrast sequence'},
+    {n:'T2-weighted', v:'Long TR, long TE', how:'TR > 2000 ms, TE > 80 ms', why:'Fluid, oedema, cysts, most pathology'},
+    {n:'STIR', v:'Fat nulled', how:'Inversion recovery with TI ≈ 150 ms at 1.5 T', why:'Bone marrow oedema, occult fracture, infection, stress reaction'},
+    {n:'Proton density', v:'Long TR, short TE', how:'Usually with fat saturation', why:'Meniscus, articular cartilage, labrum'},
+    {n:'T1 fat-sat + gadolinium', v:'Enhancement', how:'Compare directly with the pre-contrast T1', why:'Abscess vs phlegmon, tumour vascularity, synovitis'},
+    {n:'Minimum useful study', v:'T1 + a fluid-sensitive sequence, 2 planes', how:'Requesting "MRI" alone risks getting neither', why:'T1 alone misses oedema; T2 alone misses marrow replacement'}
+  ],
+  pitfalls:[
+    {t:'Fat suppression that failed', d:'If fat looks bright on what should be a fat-saturated image, the suppression has failed — often from metal or an off-centre field. Oedema will be invisible. Check that subcutaneous fat is dark before you trust a negative fluid-sensitive sequence.'},
+    {t:'Magic angle artefact', d:'Tendons oriented about 55° to the main magnetic field show artificially increased signal on short-TE sequences (T1, PD), mimicking a tear. It disappears on T2. Classically caught in the supraspinatus and the peroneal tendons.'},
+    {t:'MRI finds too much', d:'Disc bulges, labral fraying and meniscal signal are common in asymptomatic people and become more common with age. An MRI finding is only meaningful when it explains the patient in front of you.'}
+  ],
+  pearls:[
+    {t:'Read T1 and the fluid-sensitive sequence together', d:'Marrow that is dark on T1 and bright on STIR is abnormal. Dark on T1 but not bright on STIR suggests sclerosis rather than active disease — a distinction that changes management.'},
+    {t:'Compare the three lumbar images in the radiograph view', d:'They are the same patient in T1, T2 and STIR. Watching the CSF go from dark to bright, and fat from bright to dark, teaches sequence recognition faster than any table.'}
+  ]
+},
+
+/* ─────────────── CT PLANES & WINDOWS ─────────────── */
+{
+  id:'ctwindows', icon:'fa-layer-group', group:'Cross-sectional',
+  name:'CT — Planes, Windows &amp; Hounsfield Units',
+  sub:'Why the same slice must be read at more than one window, and what the numbers mean',
+  films:['ct_lumbar_sag','ct_acetabulum','ct_thorax_3d','xr_hip_occult'],
+  svg:(()=>{
+    let g=S.open(400,400);
+    g+=S.tag(20,26,'HOUNSFIELD SCALE');
+    // vertical HU scale
+    const scale=[['Cortical bone','+1000 and above',60,'#EFEAD9','#0b1424'],
+                 ['Cancellous bone','+300 to +400',104,'#cfc9b9','#0b1424'],
+                 ['Acute blood','+60 to +90',148,'#9aa3b4','#0b1424'],
+                 ['Muscle','+10 to +40',192,'#6f7a8d','#0b1424'],
+                 ['Water','0',236,'#404a5c','#D3DCEC'],
+                 ['Fat','−50 to −100',280,'#2a3242','#93A4C0'],
+                 ['Air','−1000',324,'#141c2b','#93A4C0']];
+    scale.forEach(([n,v,y,bg,fg])=>{
+      g+=`<rect x="120" y="${y-15}" width="176" height="30" rx="6" fill="${bg}" stroke="rgba(255,255,255,.12)"/>`;
+      g+=`<text x="208" y="${y+4}" text-anchor="middle" style="font-size:10.5px;font-weight:700;fill:${fg};font-family:Inter,sans-serif">${v}</text>`;
+      g+=`<text class="viewtag" x="18" y="${y+4}" style="font-size:11px;fill:#D3DCEC">${n}</text>`;
+    });
+    g+=`<text class="viewtag" x="308" y="64" style="font-size:10px">dense</text>`;
+    g+=`<text class="viewtag" x="308" y="328" style="font-size:10px">lucent</text>`;
+    g+=`<line class="ln solid show" x1="306" y1="72" x2="306" y2="316" stroke-width="1.5"/>`;
+    g+=`<text class="viewtag" x="200" y="368" text-anchor="middle" style="font-size:10.5px">Window WIDTH sets contrast · Window LEVEL sets the centre</text>`;
+    [[208,60],[208,192],[208,236],[208,324],[208,104]].forEach((p,i)=>{g+=S.hot(i,p[0],p[1]);});
+    return g+S.close;
+  })(),
+  landmarks:[
+    {n:'Cortical bone — +1000 HU and above', d:'The densest normal tissue. Read on a bone window, where a wide width compresses everything soft into grey and lets cortical detail and fracture lines stand out.'},
+    {n:'Muscle — +10 to +40 HU', d:'The reference soft tissue. On a soft-tissue window, muscle, haematoma and abscess separate from one another; on a bone window they all look identically grey.'},
+    {n:'Water — 0 HU by definition', d:'The Hounsfield scale is anchored on water at 0 and air at −1000. A simple cyst measures close to 0; anything much above that is not simple fluid.'},
+    {n:'Air — −1000 HU', d:'Black on every window. Gas within soft tissue is never normal outside the bowel — it means an open injury, a gas-forming infection, or a recent procedure.'},
+    {n:'Cancellous bone — +300 to +400 HU', d:'Trabecular bone. A subtle change in trabecular density is often the only clue to an impacted fracture, which is why bone windows and thin slices matter.'}
+  ],
+  meas:[
+    {n:'Bone window', v:'WW ≈ 2000, WL ≈ 500', how:'Wide width, high level', why:'Fracture lines, cortical breach, trabecular detail, implant position'},
+    {n:'Soft-tissue window', v:'WW ≈ 400, WL ≈ 40', how:'Narrow width centred on muscle', why:'Haematoma, abscess, muscle injury, visceral trauma'},
+    {n:'Lung window', v:'WW ≈ 1500, WL ≈ −600', how:'Wide width, very low level', why:'Pneumothorax, contusion — routinely missed on soft-tissue windows'},
+    {n:'Slice thickness', v:'≤ 1 mm for MPR', how:'Thin acquisition, then reformat', why:'Thick slices blur small fractures through partial volume averaging'},
+    {n:'Multiplanar reformat', v:'Axial + coronal + sagittal', how:'Reconstructed from one thin-slice acquisition', why:'A fracture invisible in one plane is often obvious in another'},
+    {n:'Effective dose (CT)', v:'Head ≈ 2 mSv, abdo-pelvis ≈ 8–10 mSv', how:'Compare: chest X-ray ≈ 0.02 mSv', why:'Justify every scan, especially in children and young women'}
+  ],
+  pitfalls:[
+    {t:'Reading only one window', d:'A pneumothorax hides on soft-tissue windows, a subtle fracture hides on soft-tissue windows, and a haematoma hides on bone windows. Every trauma CT must be reviewed on bone, soft-tissue and — for the chest — lung windows.'},
+    {t:'Partial volume averaging', d:'A structure occupying only part of the slice returns an averaged density, which can fabricate a lesion or erase a real fracture. Thin slices and reformats resolve it.'},
+    {t:'Beam hardening and streak artefact', d:'Metal implants and dense bone produce dark and bright streaks that mimic or obscure pathology, worst in the posterior fossa and around arthroplasty. Metal artefact reduction algorithms help; MRI may be the better test.'}
+  ],
+  pearls:[
+    {t:'Scroll, do not stare', d:'Cross-sectional images are read by scrolling a stack, not by studying one slice. A structure is followed in and out of plane — that is how a vessel is told from a lymph node, and a nutrient canal from a fracture.'},
+    {t:'The occult hip fracture in the radiograph view', d:'The labelled example shows what a subtle compressive fracture looks like when it is nearly invisible — the trabecular buckle that justifies going on to MRI when the patient cannot weight bear.'}
+  ]
+},
+
 /* ─────────────── MODALITIES ─────────────── */
 {
-  id:'modalities', icon:'fa-magnet', group:'Modalities',
+  id:'modalities', icon:'fa-microscope', group:'Modalities',
   name:'Modalities &amp; Signal Characteristics',
   sub:'What each investigation actually shows, and when to ask for it',
   films:['chest_pa','ct_acetabulum'],
