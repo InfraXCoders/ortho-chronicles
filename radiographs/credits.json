@@ -1,0 +1,152 @@
+{
+ "elbow_ap": {
+  "file": "elbow_ap.jpg",
+  "kb": 98,
+  "w": 849,
+  "h": 1138,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_elbow_by_anteroposterior_projection.jpg",
+  "title": "X-ray of normal elbow by anteroposterior projection"
+ },
+ "wrist_pa": {
+  "file": "wrist_pa.jpg",
+  "kb": 164,
+  "w": 900,
+  "h": 1278,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_hand_by_dorsoplantar_projection.jpg",
+  "title": "X-ray of normal hand by dorsoplantar projection"
+ },
+ "elbow_lat": {
+  "file": "elbow_lat.jpg",
+  "kb": 55,
+  "w": 900,
+  "h": 914,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_elbow_by_lateral_projection.jpg",
+  "title": "X-ray of normal elbow by lateral projection"
+ },
+ "wrist_lat": {
+  "file": "wrist_lat.jpg",
+  "kb": 246,
+  "w": 686,
+  "h": 2123,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_hand_by_lateral_projection.jpg",
+  "title": "X-ray of normal hand by lateral projection"
+ },
+ "shoulder_ap": {
+  "file": "shoulder_ap.jpg",
+  "kb": 314,
+  "w": 900,
+  "h": 1358,
+  "licence": "CC0",
+  "author": "Mikael Häggström",
+  "source": "https://commons.wikimedia.org/wiki/File%3AAnteroposterior_glenoid_(Grashey_view)_X-ray_of_a_normal_shoulder.jpg",
+  "title": "Anteroposterior glenoid (Grashey view) X-ray of a normal shoulder"
+ },
+ "knee_ap": {
+  "file": "knee_ap.jpg",
+  "kb": 117,
+  "w": 900,
+  "h": 1614,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_a_normal_knee_by_anteroposterior_projection.jpg",
+  "title": "X-ray of a normal knee by anteroposterior projection"
+ },
+ "pelvis_ap": {
+  "file": "pelvis_ap.jpg",
+  "kb": 106,
+  "w": 900,
+  "h": 701,
+  "licence": "Public domain",
+  "author": "Staff at the Department of Radiology, UC San Diego Health.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_the_pelvis_of_an_18_year_old_male_-_case_1_-_anteroposterior.jpg",
+  "title": "X-ray of the pelvis of an 18 year old male - case 1 - anteroposterior"
+ },
+ "hip_ap": {
+  "file": "hip_ap.jpg",
+  "kb": 183,
+  "w": 900,
+  "h": 763,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.Consent note: Written informed consent was obtained from the individual, including online publication.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_a_normal_hip.jpg",
+  "title": "X-ray of a normal hip"
+ },
+ "ct_acetabulum": {
+  "file": "ct_acetabulum.png",
+  "kb": 241,
+  "w": 853,
+  "h": 547,
+  "licence": "CC BY-SA 3.0",
+  "author": "Seannovak",
+  "source": "https://commons.wikimedia.org/wiki/File%3AAcetabular_Fracture_CT.png",
+  "title": "Acetabular Fracture CT"
+ },
+ "foot_lat": {
+  "file": "foot_lat.jpg",
+  "kb": 65,
+  "w": 900,
+  "h": 451,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_right_foot_by_lateral_projection.jpg",
+  "title": "X-ray of normal right foot by lateral projection"
+ },
+ "foot_ap": {
+  "file": "foot_ap.jpg",
+  "kb": 391,
+  "w": 900,
+  "h": 2062,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_right_foot_by_dorsoplantar_projection.jpg",
+  "title": "X-ray of normal right foot by dorsoplantar projection"
+ },
+ "chest_pa": {
+  "file": "chest_pa.jpg",
+  "kb": 164,
+  "w": 900,
+  "h": 1030,
+  "licence": "CC0",
+  "author": "Mikael Häggström",
+  "source": "https://commons.wikimedia.org/wiki/File%3ANormal_posteroanterior_(PA)_chest_radiograph_(X-ray).jpg",
+  "title": "Normal posteroanterior (PA) chest radiograph (X-ray)"
+ },
+ "ankle_lat": {
+  "file": "ankle_lat.jpg",
+  "kb": 385,
+  "w": 932,
+  "h": 1678,
+  "licence": "CC0",
+  "author": "Mikael Häggström",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_ankle_-_lateral.jpg",
+  "title": "X-ray of normal ankle - lateral"
+ },
+ "ankle_mortise": {
+  "file": "ankle_mortise.jpg",
+  "kb": 294,
+  "w": 775,
+  "h": 1515,
+  "licence": "CC0",
+  "author": "Mikael Häggström",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_normal_ankle_-_15_degrees_internal_rotation.jpg",
+  "title": "X-ray of normal ankle - 15 degrees internal rotation"
+ },
+ "knee_lat": {
+  "file": "knee_lat.jpg",
+  "kb": 152,
+  "w": 900,
+  "h": 1540,
+  "licence": "CC0",
+  "author": "Mikael Häggström, M.D. Author info - Reusing images- Conflicts of interest:  None\nMikael Häggström, M.D.",
+  "source": "https://commons.wikimedia.org/wiki/File%3AX-ray_of_a_normal_knee_by_lateral_projection.jpg",
+  "title": "X-ray of a normal knee by lateral projection"
+ }
+}

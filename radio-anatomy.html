@@ -147,6 +147,17 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 .res:hover{background:rgba(45,212,191,.14);}
 .res small{display:block;color:var(--mut);font-size:.7rem;margin-top:1px;}
 
+/* ---------- radiograph gallery ---------- */
+#films{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-start;padding:4px;}
+.filmcard{background:#05090f;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  max-width:340px;box-shadow:0 10px 30px rgba(0,0,0,.5);}
+.filmcard img{display:block;width:100%;height:auto;background:#000;}
+.filmcap{padding:8px 10px;font-size:.76rem;color:#D3DCEC;border-top:1px solid var(--line);}
+.filmcred{font-size:.64rem;color:var(--mut);margin-top:3px;line-height:1.45;}
+.filmcred a{color:var(--teal);text-decoration:none;}
+.filmcred a:hover{text-decoration:underline;}
+.nofilm{color:var(--mut);font-size:.85rem;text-align:center;padding:40px 20px;max-width:420px;line-height:1.7;}
+
 /* ---------- disclaimer ---------- */
 #note{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
   font-size:.68rem;color:var(--mut);background:rgba(11,20,36,.85);border:1px solid var(--line);
@@ -181,6 +192,8 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
     <span><i class="fas fa-x-ray"></i> Radiological Anatomy</span>
   </a>
   <div class="tb-spacer"></div>
+  <button class="tb-btn on" id="btnDiagram"><i class="fas fa-draw-polygon"></i> Diagram</button>
+  <button class="tb-btn" id="btnFilm"><i class="fas fa-x-ray"></i> Radiograph</button>
   <button class="tb-btn on" id="btnLines"><i class="fas fa-ruler-combined"></i> Lines &amp; Angles</button>
   <a class="tb-btn" href="anatomy.html"><i class="fas fa-cube"></i> 3D Anatomy</a>
   <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i> Site Home</a>
@@ -205,7 +218,7 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
       <p id="vSub"></p>
     </div>
     <div id="filmwrap"><div id="film"></div></div>
-    <div id="note">Schematic diagrams — drawn for teaching, not radiographs of real patients</div>
+    <div id="note">Schematics are original teaching diagrams · Radiographs are openly-licensed (CC0 / public domain / CC BY-SA) and credited under each image</div>
   </div>
 
   <!-- detail panel -->
@@ -247,6 +260,31 @@ const S = {
 /* ══════════════════════════════════════════════════════════════════
    REGION DATA
    ══════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   REAL RADIOGRAPHS
+   Self-hosted from Wikimedia Commons. Every file was licence-checked
+   programmatically before download: 13 CC0, 1 public domain, 1 CC BY-SA.
+   Nothing non-commercial or no-derivatives is used, because this site
+   carries advertising. Attribution renders under each image.
+   ══════════════════════════════════════════════════════════════════ */
+const FILMS = {
+  shoulder_ap  :{f:'shoulder_ap.jpg',   t:'AP glenoid (Grashey) — normal shoulder', by:'Mikael Häggström', lic:'CC0'},
+  elbow_ap     :{f:'elbow_ap.jpg',      t:'AP elbow — normal',                      by:'Mikael Häggström', lic:'CC0'},
+  elbow_lat    :{f:'elbow_lat.jpg',     t:'Lateral elbow — normal',                 by:'Mikael Häggström', lic:'CC0'},
+  wrist_pa     :{f:'wrist_pa.jpg',      t:'PA wrist and hand — normal',             by:'Mikael Häggström', lic:'CC0'},
+  wrist_lat    :{f:'wrist_lat.jpg',     t:'Lateral wrist and hand — normal',        by:'Mikael Häggström', lic:'CC0'},
+  pelvis_ap    :{f:'pelvis_ap.jpg',     t:'AP pelvis — normal (18-year-old)',       by:'Dept. of Radiology, Uppsala', lic:'Public domain'},
+  hip_ap       :{f:'hip_ap.jpg',        t:'AP hip — normal',                        by:'Mikael Häggström', lic:'CC0'},
+  knee_ap      :{f:'knee_ap.jpg',       t:'AP knee — normal',                       by:'Mikael Häggström', lic:'CC0'},
+  knee_lat     :{f:'knee_lat.jpg',      t:'Lateral knee — normal',                  by:'Mikael Häggström', lic:'CC0'},
+  ankle_mortise:{f:'ankle_mortise.jpg', t:'Mortise view — 15° internal rotation',   by:'Mikael Häggström', lic:'CC0'},
+  ankle_lat    :{f:'ankle_lat.jpg',     t:'Lateral ankle — normal',                 by:'Mikael Häggström', lic:'CC0'},
+  foot_lat     :{f:'foot_lat.jpg',      t:'Lateral foot — normal',                  by:'Mikael Häggström', lic:'CC0'},
+  foot_ap      :{f:'foot_ap.jpg',       t:'Dorsoplantar foot — normal',             by:'Mikael Häggström', lic:'CC0'},
+  chest_pa     :{f:'chest_pa.jpg',      t:'PA chest — normal',                      by:'Mikael Häggström', lic:'CC0'},
+  ct_acetabulum:{f:'ct_acetabulum.png', t:'CT — acetabular fracture, bone window',  by:'Seannovak', lic:'CC BY-SA 3.0'}
+};
+
 const REGIONS = [
 
 /* ─────────────── CERVICAL SPINE ─────────────── */
@@ -316,6 +354,7 @@ const REGIONS = [
   id:'shoulder', icon:'fa-user-injured', group:'Upper limb',
   name:'Shoulder — AP &amp; Scapular Y',
   sub:'Glenohumeral alignment, the acromiohumeral interval and Maloney\'s arch',
+  films:['shoulder_ap'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'AP SHOULDER');
@@ -372,6 +411,7 @@ const REGIONS = [
   id:'elbow', icon:'fa-hand-back-fist', group:'Upper limb',
   name:'Elbow — Lateral',
   sub:'Anterior humeral line, radiocapitellar line, the fat pads and the figure-of-eight',
+  films:['elbow_ap','elbow_lat'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'LATERAL ELBOW');
@@ -425,6 +465,7 @@ const REGIONS = [
   id:'wrist', icon:'fa-hand', group:'Upper limb',
   name:'Wrist — PA &amp; Lateral',
   sub:'Radial inclination, volar tilt, ulnar variance and Gilula\'s carpal arcs',
+  films:['wrist_pa','wrist_lat'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'PA WRIST');
@@ -487,6 +528,7 @@ const REGIONS = [
   id:'pelvis', icon:'fa-child-reaching', group:'Lower limb',
   name:'Pelvis — AP',
   sub:'Shenton\'s line, the six acetabular lines, centre-edge angle and the paediatric hip',
+  films:['pelvis_ap','hip_ap','ct_acetabulum'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'AP PELVIS');
@@ -555,6 +597,7 @@ const REGIONS = [
   id:'knee', icon:'fa-person-walking', group:'Lower limb',
   name:'Knee — AP &amp; Lateral',
   sub:'Blumensaat\'s line, Insall-Salvati ratio, tibiofemoral alignment and the segond fragment',
+  films:['knee_ap','knee_lat'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'LATERAL KNEE');
@@ -611,6 +654,7 @@ const REGIONS = [
   id:'ankle', icon:'fa-shoe-prints', group:'Lower limb',
   name:'Ankle — Mortise View',
   sub:'Medial clear space, talar tilt, tibiofibular overlap and the Weber levels',
+  films:['ankle_mortise','ankle_lat'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'MORTISE VIEW');
@@ -668,6 +712,7 @@ const REGIONS = [
   id:'foot', icon:'fa-shoe-prints', group:'Lower limb',
   name:'Foot — Lateral',
   sub:'Böhler\'s and Gissane\'s angles, Meary\'s line and the Lisfranc alignment',
+  films:['foot_lat','foot_ap'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'LATERAL FOOT');
@@ -784,6 +829,7 @@ const REGIONS = [
   id:'modalities', icon:'fa-magnet', group:'Modalities',
   name:'Modalities &amp; Signal Characteristics',
   sub:'What each investigation actually shows, and when to ask for it',
+  films:['chest_pa','ct_acetabulum'],
   svg:(()=>{
     let g=S.open(400,400);
     g+=S.tag(20,26,'TISSUE SIGNAL BY MODALITY');
@@ -842,7 +888,7 @@ const REGIONS = [
    ══════════════════════════════════════════════════════════════════ */
 const $ = id=>document.getElementById(id);
 const esc = s=>String(s).replace(/&(?!(amp|lt|gt|#\d+);)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-let current=null, showLines=true;
+let current=null, showLines=true, mode='diagram';
 
 /* ---- rail ---- */
 (function buildRail(){
@@ -868,15 +914,8 @@ function show(id, focusLm){
   document.querySelectorAll('.rgn').forEach(x=>x.classList.toggle('active',x.dataset.id===id));
   $('vTitle').innerHTML=r.name;
   $('vSub').textContent=r.sub;
-  $('film').innerHTML=r.svg;
-  applyLines();
+  renderStage(r);
 
-  // hotspot ↔ list wiring
-  $('film').querySelectorAll('.hot').forEach(h=>{
-    h.addEventListener('mouseenter',()=>highlight(+h.dataset.hot));
-    h.addEventListener('mouseleave',()=>highlight(-1));
-    h.addEventListener('click',()=>{ selectTab('landmarks'); highlight(+h.dataset.hot,true); });
-  });
 
   const tabs=[{k:'landmarks',l:'Landmarks'},{k:'meas',l:'Measurements'},
               {k:'pitfalls',l:'Pitfalls'},{k:'pearls',l:'Pearls'}];
@@ -911,6 +950,41 @@ function show(id, focusLm){
   if(focusLm!=null){ selectTab('landmarks'); highlight(focusLm,true); }
 }
 
+/**
+ * Draw either the schematic (with its numbered hotspots and construction
+ * lines) or the real radiographs for this region. Films are lazy-loaded so
+ * switching regions never fetches images the reader has not asked for.
+ */
+function renderStage(r){
+  const wrap=$('film');
+  if(mode==='diagram' || !(r.films&&r.films.length)){
+    wrap.innerHTML=r.svg;
+    applyLines();
+    wrap.querySelectorAll('.hot').forEach(h=>{
+      h.addEventListener('mouseenter',()=>highlight(+h.dataset.hot));
+      h.addEventListener('mouseleave',()=>highlight(-1));
+      h.addEventListener('click',()=>{ selectTab('landmarks'); highlight(+h.dataset.hot,true); });
+    });
+    if(mode==='film' && !(r.films&&r.films.length)){
+      wrap.insertAdjacentHTML('afterbegin',
+        `<div class="nofilm"><i class="fas fa-circle-info"></i> No openly-licensed radiograph of this
+         view was available, so the schematic is shown. Only images that permit commercial reuse are
+         published here.</div>`);
+    }
+    return;
+  }
+  wrap.innerHTML=`<div id="films">`+r.films.map(k=>{
+    const f=FILMS[k]; if(!f) return '';
+    return `<figure class="filmcard">
+      <img src="radiographs/${f.f}" alt="${esc(f.t)}" loading="lazy"/>
+      <figcaption class="filmcap">${esc(f.t)}
+        <div class="filmcred">${esc(f.by)} · ${esc(f.lic)} · via
+          <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>
+        </div>
+      </figcaption></figure>`;
+  }).join('')+`</div>`;
+}
+
 function selectTab(k){
   $('pnTabs').querySelectorAll('.pn-tab').forEach(b=>b.classList.toggle('active',b.dataset.k===k));
   $('pnBody').querySelectorAll('.pane').forEach(p=>p.classList.toggle('active',p.dataset.k===k));
@@ -938,6 +1012,19 @@ $('btnLines').addEventListener('click',()=>{
   $('btnLines').classList.toggle('on',showLines);
   applyLines();
 });
+
+/* ---- diagram ⇄ radiograph ---- */
+function setMode(m){
+  mode=m;
+  $('btnDiagram').classList.toggle('on',m==='diagram');
+  $('btnFilm').classList.toggle('on',m==='film');
+  // Construction lines only mean anything on the schematic
+  $('btnLines').style.opacity = m==='diagram'?'1':'.4';
+  $('btnLines').disabled = m!=='diagram';
+  if(current) renderStage(current);
+}
+$('btnDiagram').addEventListener('click',()=>setMode('diagram'));
+$('btnFilm').addEventListener('click',()=>setMode('film'));
 
 /* ---- search across landmarks, measurements and pitfalls ---- */
 /* Strip diacritics so "bohler" finds Böhler and "tonnis" finds Tönnis —
