@@ -162,7 +162,27 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 #stackview{background:#05090f;border:1px solid var(--line);border-radius:12px;overflow:hidden;
   max-width:520px;box-shadow:0 14px 40px rgba(0,0,0,.55);}
 .stackimg{background:#000;display:flex;align-items:center;justify-content:center;cursor:ns-resize;
-  min-height:240px;}
+  min-height:240px;position:relative;}
+/* label overlay — sits exactly over the image box */
+.slabels{position:absolute;inset:0;pointer-events:none;}
+/* The dot must sit exactly on the coordinate, so it is positioned at the
+   anchor and the caption is offset from it — otherwise the flex row centres
+   dot+text together and drags the dot off the structure. */
+.spin{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
+  width:0;height:0;display:block;}
+.spin b{position:absolute;left:-8.5px;top:-8.5px;}
+.spin em{position:absolute;left:12px;top:-9px;}
+/* labels past the midline read leftwards so they stay in frame */
+.spin.flip em{left:auto;right:12px;}
+.spin b{width:17px;height:17px;border-radius:50%;background:var(--teal);color:#04201c;
+  font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 0 0 2px rgba(0,0,0,.55),0 0 9px rgba(45,212,191,.9);}
+.spin em{font-style:normal;font-size:.63rem;font-weight:700;color:#CFFAF3;
+  background:rgba(4,14,26,.82);border:1px solid rgba(45,212,191,.45);
+  padding:2px 6px;border-radius:5px;}
+/* keep right-side labels inside the frame */
+.spin[style*="left:5"] em,.spin[style*="left:6"] em,.spin[style*="left:7"] em{}
+.sbtn.lab.on{background:rgba(45,212,191,.28);border-color:rgba(45,212,191,.55);color:#8fe6d8;}
 .stackimg img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:none;}
 .stackctl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line);}
 .sbtn{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--txt);
@@ -331,6 +351,67 @@ const STACKS = {
     slices:['lumbar_01.jpg','lumbar_02.jpg','lumbar_03.jpg','lumbar_05.jpg','lumbar_06.jpg',
             'lumbar_07.jpg','lumbar_08.jpg','lumbar_09.jpg','lumbar_10.jpg','lumbar_11.jpg',
             'lumbar_12.jpg']
+  },
+  /* Brain — the same subject in four sequences, so the reader can compare
+     T1 against T2 and FLAIR at matching levels. */
+  brain_t1sag:{
+    dir:'brain_t1sag', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — sagittal T1, 21 slices (midline outward)',
+    slices:Array.from({length:21},(_,i)=>`brain_t1sag_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  brain_t1ax:{
+    dir:'brain_t1ax', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial T1, 21 slices (vertex to skull base)',
+    slices:Array.from({length:21},(_,i)=>`brain_t1ax_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  brain_t2ax:{
+    dir:'brain_t2ax', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial T2, 21 slices (same levels as T1)',
+    slices:Array.from({length:21},(_,i)=>`brain_t2ax_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  brain_flair:{
+    dir:'brain_flair', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial FLAIR, 21 slices (CSF suppressed)',
+    slices:Array.from({length:21},(_,i)=>`brain_flair_${String(i+1).padStart(2,'0')}.jpg`)
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   SLICE LABELS
+   Coordinates are fractions of the image (0–1), so they hold at any
+   display size. Only slices I have actually inspected are labelled —
+   an unlabelled slice simply shows no pins rather than guessed ones.
+   ══════════════════════════════════════════════════════════════════ */
+const SLICE_LABELS = {
+  brain_t1sag:{
+    11:[ {x:.50,y:.40,t:'Corpus callosum'},
+         {x:.55,y:.52,t:'Thalamus / 3rd ventricle'},
+         {x:.55,y:.60,t:'Midbrain'},
+         {x:.56,y:.70,t:'Pons'},
+         {x:.70,y:.63,t:'Cerebellum'},
+         {x:.57,y:.83,t:'Medulla → cervical cord'},
+         {x:.44,y:.55,t:'Pituitary fossa'},
+         {x:.47,y:.24,t:'Cingulate gyrus'} ]
+  },
+  brain_t1ax:{
+    11:[ {x:.50,y:.36,t:'Frontal horn, lateral ventricle'},
+         {x:.50,y:.30,t:'Genu of corpus callosum'},
+         {x:.42,y:.45,t:'Anterior limb, internal capsule'},
+         {x:.57,y:.48,t:'Thalamus'},
+         {x:.50,y:.60,t:'Atrium / occipital horn'},
+         {x:.50,y:.72,t:'Splenium of corpus callosum'},
+         {x:.28,y:.45,t:'Insula'},
+         {x:.50,y:.14,t:'Falx cerebri'} ]
+  },
+  brain_t2ax:{
+    11:[ {x:.50,y:.36,t:'Lateral ventricle (CSF bright)'},
+         {x:.43,y:.45,t:'Caudate head'},
+         {x:.57,y:.47,t:'Thalamus'},
+         {x:.45,y:.50,t:'Internal capsule'},
+         {x:.50,y:.62,t:'Choroid plexus'},
+         {x:.30,y:.44,t:'Insular cortex'},
+         {x:.50,y:.85,t:'Occipital grey / white'},
+         {x:.50,y:.17,t:'Interhemispheric fissure'} ]
   }
 };
 
@@ -909,6 +990,124 @@ const REGIONS = [
   ]
 },
 
+/* ─────────────── SLICE ATLAS: BRAIN (4 sequences) ─────────────── */
+{
+  id:'stack_brain_t1sag', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Sagittal T1',
+  sub:'Twenty-one slices from the midline outward · labelled on the mid-sagittal slice',
+  stack:'brain_t1sag',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'Start at the midline (slice 11)', d:'The mid-sagittal slice is the anatomical anchor: corpus callosum, brainstem, cerebellum and pituitary fossa are all visible in one plane. Labels are shown on this slice — toggle them with the tag button.'},
+    {n:'Corpus callosum', d:'The great commissure arching over the lateral ventricles, running genu → body → splenium. Thinning suggests chronic white matter loss; absence indicates agenesis.'},
+    {n:'Brainstem', d:'Midbrain, pons and medulla in continuity down to the cervical cord. The pons is the bulge; the midbrain above it carries the cerebral aqueduct.'},
+    {n:'Pituitary fossa', d:'The sella turcica beneath the optic chiasm. A key surgical landmark, and the reason a sagittal T1 is always reviewed in suspected pituitary disease.'},
+    {n:'Cerebellum &amp; fourth ventricle', d:'The cerebellar vermis sits behind the fourth ventricle. Crowding at the foramen magnum here is how a Chiari malformation is recognised.'}
+  ],
+  meas:[
+    {n:'Tonsillar position (Chiari)', v:'< 5 mm below foramen magnum', how:'Mid-sagittal T1, McRae line to tonsil tip', why:'≥ 5 mm descent defines Chiari I malformation'},
+    {n:'Corpus callosum thickness', v:'Uniform, no focal thinning', how:'Mid-sagittal, genu to splenium', why:'Thinning in chronic ischaemia, MS and hydrocephalus'},
+    {n:'Pituitary height', v:'≤ 9 mm (adult)', how:'Mid-sagittal, floor to superior margin', why:'Enlargement suggests adenoma or hyperplasia'},
+    {n:'Slice thickness (brain)', v:'4–5 mm', how:'Standard 2-D sequence', why:'Thin slices needed for pituitary and internal auditory meatus'}
+  ],
+  pitfalls:[
+    {t:'The midline slice is not always slice 11', d:'Scroll until the cerebral aqueduct and the full brainstem are in one plane. Judging midline structures off a parasagittal slice misreads normal asymmetry as pathology.'},
+    {t:'Partial volume at the edges', d:'The outermost slices of any series average tissue across the slice thickness, which can fabricate lesions. Confirm anything suspicious on the adjacent slice and in a second plane.'}
+  ],
+  pearls:[
+    {t:'Compare across sequences', d:'This is the same subject as the axial T1, T2 and FLAIR atlases. Finding the same structure in each is the fastest way to learn sequence recognition.'}
+  ]
+},
+{
+  id:'stack_brain_t1ax', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Axial T1',
+  sub:'Twenty-one slices, vertex to skull base · labelled at the ventricular level',
+  stack:'brain_t1ax',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'Anatomical anchor: the ventricles', d:'Scroll to the slice showing both frontal horns and the atria (around slice 11). This is the level where the basal ganglia, internal capsule and thalami are all visible together — labels are shown here.'},
+    {n:'Lateral ventricles', d:'CSF is dark on T1. The frontal horns anteriorly and the atria/occipital horns posteriorly. Asymmetry of a few millimetres is common and normal.'},
+    {n:'Internal capsule', d:'The white matter band between caudate/thalamus medially and lentiform nucleus laterally, in anterior limb, genu and posterior limb. It carries the corticospinal tract — a small infarct here causes a dense hemiparesis.'},
+    {n:'Thalamus', d:'The grey matter mass either side of the third ventricle, posteromedial to the internal capsule.'},
+    {n:'Insula', d:'Cortex buried deep in the Sylvian fissure. Loss of the normal insular ribbon is an early CT/MRI sign of middle cerebral artery infarction.'}
+  ],
+  meas:[
+    {n:'Evans index', v:'< 0.30', how:'Widest frontal horns ÷ maximal inner skull diameter', why:'≥ 0.30 indicates ventriculomegaly / hydrocephalus'},
+    {n:'Midline shift', v:'0 mm', how:'Septum pellucidum against the inner table midline', why:'Any shift indicates mass effect and is a neurosurgical concern'},
+    {n:'Grey–white differentiation', v:'Crisp', how:'Compare cortex with underlying white matter', why:'Loss is an early infarct sign'},
+    {n:'T1 signal — fat', v:'Bright', how:'Compare with subcutaneous fat', why:'T1 shows anatomy best; pathology usually needs T2/FLAIR'}
+  ],
+  pitfalls:[
+    {t:'T1 alone will miss the lesion', d:'Most pathology is water-rich and therefore near-invisible on T1. Always read T1 alongside T2 or FLAIR — the whole reason all three are provided here.'},
+    {t:'Normal ventricular asymmetry', d:'Mild asymmetry of the lateral ventricles is a normal variant. It is only meaningful with midline shift or effacement of the sulci.'}
+  ],
+  pearls:[
+    {t:'Match the level, then switch sequence', d:'Note the slice number here, open the T2 or FLAIR atlas and go to the same number. The levels correspond, so you can compare the identical anatomy across sequences.'}
+  ]
+},
+{
+  id:'stack_brain_t2ax', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Axial T2',
+  sub:'Same levels as the axial T1 · water is white · labelled at the ventricular level',
+  stack:'brain_t2ax',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'CSF is bright — the giveaway', d:'The single fastest way to tell T2 from T1: on T2 the ventricles and subarachnoid space are white. "WW2 — Water is White on T2."'},
+    {n:'Lateral ventricles', d:'Brilliantly bright with CSF, so ventricular size and shape are easiest to judge on T2.'},
+    {n:'Basal ganglia', d:'Caudate head, putamen and globus pallidus are separated by the internal capsule. The pallidum is darker with age from iron deposition — a normal finding.'},
+    {n:'Choroid plexus', d:'Within the atria; frequently calcified in adults, which appears dark. A normal variant, not pathology.'},
+    {n:'Grey–white contrast', d:'Grey matter is brighter than white matter on T2 — the reverse of T1. Recognising that inversion is how you name the sequence at a glance.'}
+  ],
+  meas:[
+    {n:'CSF signal', v:'Bright (white)', how:'Look at the lateral ventricles', why:'Distinguishes T2 from T1 and from FLAIR immediately'},
+    {n:'Periventricular white matter', v:'No confluent bright signal', how:'Compare with FLAIR at the same level', why:'Small vessel disease and demyelination show here first'},
+    {n:'Evans index', v:'< 0.30', how:'As on T1, easier to measure with bright CSF', why:'Ventriculomegaly'},
+    {n:'Virchow-Robin spaces', v:'Follow CSF on all sequences', how:'Compare T2 with FLAIR', why:'They suppress on FLAIR; lesions do not — the key discriminator'}
+  ],
+  pitfalls:[
+    {t:'Bright is not automatically abnormal', d:'Perivascular (Virchow-Robin) spaces follow CSF exactly and are normal. If a bright T2 focus goes dark on FLAIR, it is CSF — not a lesion.'},
+    {t:'Periventricular caps', d:'Small symmetric bright caps at the frontal horns are usually normal ependymitis granularis, not disease.'}
+  ],
+  pearls:[
+    {t:'T2 finds it, T1 characterises it', d:'Use T2 to spot the abnormality, then go back to T1 to judge marrow, fat and anatomy. Neither sequence alone is a study.'}
+  ]
+},
+{
+  id:'stack_brain_flair', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Axial FLAIR',
+  sub:'CSF suppressed, so periventricular lesions stand out · same levels as T1 and T2',
+  stack:'brain_flair',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'What FLAIR does', d:'Fluid Attenuated Inversion Recovery is a T2 sequence with the CSF signal nulled. Ventricles go dark while genuinely abnormal tissue stays bright — which is why a periventricular plaque hidden against bright CSF on T2 becomes obvious here.'},
+    {n:'Dark ventricles', d:'The identifying feature. If CSF is dark but grey matter is still brighter than white, you are looking at FLAIR, not T1.'},
+    {n:'Periventricular white matter', d:'The highest-yield area on the whole sequence: small vessel ischaemia, demyelination and Dawson fingers of multiple sclerosis all appear here first.'},
+    {n:'Cortical sulci', d:'Normally dark with suppressed CSF. Bright signal in the sulci is abnormal — subarachnoid blood, meningitis or, with incomplete suppression, artefact.'},
+    {n:'Deep grey matter', d:'Basal ganglia and thalami remain assessable, so lacunar infarcts show clearly against the suppressed background.'}
+  ],
+  meas:[
+    {n:'Fazekas grade', v:'0–3', how:'Extent of periventricular and deep white matter hyperintensity', why:'Standard grading of small vessel disease burden'},
+    {n:'CSF signal', v:'Suppressed (dark)', how:'Look at the lateral ventricles', why:'Confirms it is FLAIR and that suppression worked'},
+    {n:'Sulcal signal', v:'Dark', how:'Scan the convexity sulci', why:'Bright sulci = subarachnoid blood, infection, or failed suppression'},
+    {n:'Lesion count (MS)', v:'Per McDonald criteria', how:'Periventricular, juxtacortical, infratentorial, spinal', why:'Dissemination in space requires lesions in ≥ 2 of 4 sites'}
+  ],
+  pitfalls:[
+    {t:'Incomplete suppression', d:'Motion, metal or an off-centre field can leave CSF bright, mimicking subarachnoid haemorrhage. Check the ventricles are properly dark before calling sulcal signal abnormal.'},
+    {t:'FLAIR is not for the posterior fossa', d:'CSF pulsation artefact around the brainstem and fourth ventricle is common. Confirm posterior fossa findings on T2 or DWI.'}
+  ],
+  pearls:[
+    {t:'The three-sequence habit', d:'T1 for anatomy, T2 to find it, FLAIR to prove it is not CSF. Open the same slice number in all three atlases and the logic becomes obvious.'}
+  ]
+},
+
 /* ─────────────── SLICE ATLAS: LUMBAR ─────────────── */
 {
   id:'stack_lumbar', icon:'fa-layer-group', group:'Slice atlas',
@@ -1228,19 +1427,46 @@ function renderStage(r){
 }
 
 /* ---- slice stack viewer ---- */
-let stackState=null;
+let stackState=null, sLabelsOn=true;
+
+/**
+ * Draw the labels for the current slice, if any were authored for it.
+ * Positions are fractions of the image box, so they track any resize.
+ * A slice with no entry simply shows nothing — never a guessed pin.
+ */
+function drawSliceLabels(){
+  const host=$('sLabels'); if(!host||!stackState) return;
+  const set=SLICE_LABELS[stackState.st.dir];
+  const pins=(set && set[stackState.i+1]) || null;
+  const hint=$('sLabHint');
+  if(!pins || !sLabelsOn){
+    host.innerHTML='';
+    if(hint) hint.textContent = pins ? ' · labels hidden' : '';
+    return;
+  }
+  host.innerHTML=pins.map((p,i)=>
+    `<span class="spin${p.x>0.52?' flip':''}" style="left:${(p.x*100).toFixed(2)}%;top:${(p.y*100).toFixed(2)}%">
+       <b>${i+1}</b><em>${esc(p.t)}</em></span>`).join('');
+  if(hint) hint.textContent=' · '+pins.length+' structures labelled on this slice';
+}
+
 function renderStack(wrap, st){
   const base='radiographs/stacks/'+st.dir+'/';
   wrap.innerHTML=
    `<div id="stackview">
-      <div class="stackimg"><img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/></div>
+      <div class="stackimg">
+        <img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/>
+        <div class="slabels" id="sLabels"></div>
+      </div>
       <div class="stackctl">
         <button class="sbtn" id="sPrev" aria-label="Previous slice"><i class="fas fa-chevron-up"></i></button>
         <input type="range" id="sRange" min="1" max="${st.slices.length}" value="1"/>
         <button class="sbtn" id="sNext" aria-label="Next slice"><i class="fas fa-chevron-down"></i></button>
         <span class="scount" id="sCount">1 / ${st.slices.length}</span>
+        <button class="sbtn lab ${sLabelsOn?'on':''}" id="sLabBtn" title="Toggle labels"><i class="fas fa-tags"></i></button>
       </div>
-      <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓</div>
+      <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓
+        <span id="sLabHint"></span></div>
       <div class="filmcap">${esc(st.caption)}
         <div class="filmcred">${esc(st.by)} · ${esc(st.lic)} · via
           <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a></div>
@@ -1259,11 +1485,18 @@ function renderStack(wrap, st){
     img.alt=st.caption+' — slice '+(i+1);
     range.value=i+1;
     count.textContent=(i+1)+' / '+st.slices.length;
+    drawSliceLabels();
   }
   stackState.go=go;
   $('sPrev').onclick=()=>go(stackState.i-1);
   $('sNext').onclick=()=>go(stackState.i+1);
   range.oninput=()=>go(+range.value-1);
+  $('sLabBtn').onclick=()=>{
+    sLabelsOn=!sLabelsOn;
+    $('sLabBtn').classList.toggle('on',sLabelsOn);
+    drawSliceLabels();
+  };
+  drawSliceLabels();
   wrap.querySelector('.stackimg').addEventListener('wheel',e=>{
     e.preventDefault();
     go(stackState.i + (e.deltaY>0?1:-1));
