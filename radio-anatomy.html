@@ -402,6 +402,27 @@ const STACKS = {
     dir:'brain_flair', by:'511KeV', lic:'CC BY-SA 4.0',
     caption:'Brain — axial FLAIR, 21 slices (CSF suppressed)',
     slices:Array.from({length:21},(_,i)=>`brain_flair_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  /* ── CT series (all CC0, Mikael Häggström / normal cases) ── */
+  ct_brain:{
+    dir:'ct_brain', by:'Mikael Häggström', lic:'CC0',
+    caption:'NCCT head — 18 axial levels, vertex to skull base',
+    slices:Array.from({length:18},(_,i)=>`ct_brain_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  ct_hrct:{
+    dir:'ct_hrct', by:'Mikael Häggström', lic:'CC0',
+    caption:'HRCT thorax — 16 axial levels (lung window), apices to bases',
+    slices:Array.from({length:16},(_,i)=>`ct_hrct_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  ct_abdo:{
+    dir:'ct_abdo', by:'Mikael Häggström', lic:'CC0',
+    caption:'CECT abdomen & pelvis — 18 axial levels, dome of liver to thighs',
+    slices:Array.from({length:18},(_,i)=>`ct_abdo_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  ct_cspine:{
+    dir:'ct_cspine', by:'Mikael Häggström', lic:'CC0',
+    caption:'NCCT cervical spine — 15 axial levels (bone window), C1 to C7',
+    slices:Array.from({length:15},(_,i)=>`ct_cspine_${String(i+1).padStart(2,'0')}.jpg`)
   }
 };
 
@@ -1208,6 +1229,155 @@ SLICE_LABELS.brain_t1ax[14] = [
   {x:.505,y:.175,t:'Diploic space / scalp fat'}
 ];
 
+/* ══════════════════════════════════════════════════════════════════
+   CT SLICE LABELS — every labelled level was opened and read; image
+   left is the patient's right. Localizer panels were cropped off the
+   head and abdomen series so the axial fills the frame.
+   ══════════════════════════════════════════════════════════════════ */
+/* NCCT head (18 levels; 7 inspected: vertex → skull base) */
+SLICE_LABELS.ct_brain = {
+  1:[  {x:.50,y:.52,t:'Centrum semiovale'},
+       {x:.42,y:.36,t:'Superior frontal gyrus'},
+       {x:.50,y:.44,t:'Falx / interhemispheric fissure'},
+       {x:.34,y:.52,t:'Cortical sulci'},
+       {x:.50,y:.76,t:'Superior sagittal sinus'} ],
+  4:[  {x:.44,y:.46,t:'Centrum semiovale'},
+       {x:.50,y:.30,t:'Interhemispheric fissure'},
+       {x:.34,y:.48,t:'Cortical grey matter'},
+       {x:.40,y:.66,t:'Subcortical white matter'},
+       {x:.50,y:.85,t:'Superior sagittal sinus'} ],
+  6:[  {x:.42,y:.50,t:'Corona radiata'},
+       {x:.50,y:.24,t:'Falx cerebri'},
+       {x:.33,y:.44,t:'Frontal lobe'},
+       {x:.40,y:.72,t:'Parietal lobe'},
+       {x:.50,y:.88,t:'Superior sagittal sinus'} ],
+  9:[  {x:.46,y:.44,t:'Frontal horn, lateral ventricle'},
+       {x:.50,y:.35,t:'Genu of corpus callosum'},
+       {x:.40,y:.44,t:'Caudate head'},
+       {x:.50,y:.28,t:'Interhemispheric fissure'},
+       {x:.33,y:.52,t:'Frontal lobe'},
+       {x:.50,y:.70,t:'Falx / parietal lobe'} ],
+  11:[ {x:.47,y:.40,t:'Frontal horns'},
+       {x:.50,y:.50,t:'Third ventricle'},
+       {x:.40,y:.46,t:'Caudate head'},
+       {x:.37,y:.52,t:'Lentiform nucleus'},
+       {x:.44,y:.52,t:'Internal capsule'},
+       {x:.53,y:.53,t:'Thalamus'},
+       {x:.43,y:.66,t:'Atrium / occipital horn'},
+       {x:.50,y:.20,t:'Falx cerebri'},
+       {x:.30,y:.44,t:'Sylvian fissure'} ],
+  14:[ {x:.28,y:.22,t:'Globe'},
+       {x:.50,y:.20,t:'Ethmoid / nasal cavity'},
+       {x:.30,y:.44,t:'Temporal lobe'},
+       {x:.50,y:.40,t:'Suprasellar cistern'},
+       {x:.45,y:.52,t:'Midbrain'},
+       {x:.50,y:.60,t:'Interpeduncular / prepontine'},
+       {x:.38,y:.40,t:'Sylvian fissure'},
+       {x:.50,y:.78,t:'Cerebellar vermis'} ],
+  17:[ {x:.30,y:.20,t:'Globe / orbit'},
+       {x:.50,y:.24,t:'Sphenoid sinus'},
+       {x:.28,y:.44,t:'Petrous temporal bone'},
+       {x:.36,y:.50,t:'Mastoid air cells'},
+       {x:.50,y:.55,t:'Pons'},
+       {x:.50,y:.70,t:'Fourth ventricle'},
+       {x:.50,y:.82,t:'Cerebellar hemisphere'} ]
+};
+/* HRCT thorax (16 levels; 5 inspected: apices → bases; lung window) */
+SLICE_LABELS.ct_hrct = {
+  3:[  {x:.36,y:.40,t:'Right lung apex'},
+       {x:.60,y:.40,t:'Left lung apex'},
+       {x:.50,y:.42,t:'Trachea'},
+       {x:.50,y:.28,t:'Manubrium sterni'},
+       {x:.30,y:.58,t:'Scapula'},
+       {x:.50,y:.66,t:'Thoracic vertebra'} ],
+  6:[  {x:.48,y:.50,t:'Carina / trachea'},
+       {x:.34,y:.42,t:'Right lung'},
+       {x:.64,y:.42,t:'Left lung'},
+       {x:.50,y:.30,t:'Ascending aorta / arch'},
+       {x:.58,y:.36,t:'Aortopulmonary window'},
+       {x:.52,y:.60,t:'Descending aorta'},
+       {x:.50,y:.70,t:'Vertebral body'} ],
+  9:[  {x:.47,y:.36,t:'Ascending aorta'},
+       {x:.40,y:.44,t:'Pulmonary trunk'},
+       {x:.32,y:.46,t:'Right lung'},
+       {x:.66,y:.46,t:'Left lung'},
+       {x:.50,y:.58,t:'Left atrium / heart'},
+       {x:.55,y:.64,t:'Descending aorta'},
+       {x:.50,y:.72,t:'Vertebral body'},
+       {x:.50,y:.20,t:'Sternum'} ],
+  12:[ {x:.42,y:.42,t:'Heart (left ventricle)'},
+       {x:.30,y:.52,t:'Right lung base'},
+       {x:.66,y:.50,t:'Left lung base'},
+       {x:.52,y:.58,t:'Descending aorta'},
+       {x:.50,y:.66,t:'Vertebral body'},
+       {x:.40,y:.34,t:'Right middle lobe'} ],
+  15:[ {x:.34,y:.42,t:'Liver'},
+       {x:.62,y:.34,t:'Stomach (gas)'},
+       {x:.70,y:.50,t:'Spleen'},
+       {x:.50,y:.62,t:'Aorta'},
+       {x:.50,y:.70,t:'Vertebral body'},
+       {x:.30,y:.60,t:'Posterior costophrenic recess'} ]
+};
+/* CECT abdomen & pelvis (18 levels; 5 inspected: liver dome → thighs) */
+SLICE_LABELS.ct_abdo = {
+  2:[  {x:.28,y:.45,t:'Liver'},
+       {x:.62,y:.35,t:'Stomach'},
+       {x:.72,y:.52,t:'Spleen'},
+       {x:.48,y:.55,t:'Aorta'},
+       {x:.42,y:.50,t:'IVC'},
+       {x:.50,y:.66,t:'Vertebral body'},
+       {x:.30,y:.30,t:'Ribs'} ],
+  6:[  {x:.30,y:.52,t:'Right kidney'},
+       {x:.70,y:.60,t:'Left kidney'},
+       {x:.47,y:.52,t:'Aorta'},
+       {x:.42,y:.47,t:'IVC'},
+       {x:.50,y:.62,t:'Vertebral body (L-spine)'},
+       {x:.40,y:.62,t:'Psoas major'},
+       {x:.50,y:.80,t:'Spinous process'} ],
+  9:[  {x:.34,y:.47,t:'Iliac bone (ala)'},
+       {x:.50,y:.62,t:'Sacrum'},
+       {x:.40,y:.55,t:'Sacroiliac joint'},
+       {x:.38,y:.28,t:'Bowel loops'},
+       {x:.47,y:.44,t:'Common iliac vessels'},
+       {x:.32,y:.52,t:'Iliacus muscle'} ],
+  13:[ {x:.30,y:.55,t:'Right femoral head'},
+       {x:.70,y:.55,t:'Left femoral head'},
+       {x:.36,y:.52,t:'Acetabulum'},
+       {x:.50,y:.50,t:'Bladder / pelvic contents'},
+       {x:.20,y:.55,t:'Gluteus muscles'},
+       {x:.50,y:.72,t:'Sacrum / coccyx'} ],
+  17:[ {x:.24,y:.60,t:'Right femur'},
+       {x:.76,y:.60,t:'Left femur'},
+       {x:.50,y:.40,t:'Scrotum / perineum'},
+       {x:.36,y:.48,t:'Femoral vessels'},
+       {x:.50,y:.55,t:'Adductor muscles'},
+       {x:.20,y:.45,t:'Quadriceps / vastus'} ]
+};
+/* NCCT cervical spine (15 levels; 3 inspected: C1–C2 → C7; bone window) */
+SLICE_LABELS.ct_cspine = {
+  3:[  {x:.50,y:.50,t:'Dens (odontoid process)'},
+       {x:.50,y:.40,t:'Anterior arch of C1'},
+       {x:.34,y:.50,t:'Lateral mass of C1'},
+       {x:.66,y:.50,t:'Lateral mass of C1'},
+       {x:.38,y:.44,t:'Transverse foramen'},
+       {x:.50,y:.30,t:'Airway (naso/oropharynx)'},
+       {x:.50,y:.66,t:'Posterior arch of C1'} ],
+  8:[  {x:.50,y:.48,t:'Vertebral body'},
+       {x:.34,y:.48,t:'Transverse foramen'},
+       {x:.40,y:.54,t:'Pedicle'},
+       {x:.42,y:.62,t:'Lamina'},
+       {x:.50,y:.72,t:'Spinous process'},
+       {x:.50,y:.34,t:'Airway'},
+       {x:.50,y:.58,t:'Spinal canal / cord'} ],
+  12:[ {x:.50,y:.50,t:'Vertebral body'},
+       {x:.38,y:.46,t:'Uncinate process'},
+       {x:.34,y:.52,t:'Transverse foramen'},
+       {x:.42,y:.62,t:'Lamina'},
+       {x:.50,y:.74,t:'Bifid spinous process'},
+       {x:.50,y:.34,t:'Airway (larynx)'},
+       {x:.50,y:.58,t:'Spinal canal'} ]
+};
+
 const REGIONS = [
 
 /* ─────────────── CERVICAL SPINE ─────────────── */
@@ -1898,6 +2068,124 @@ const REGIONS = [
   ],
   pearls:[
     {t:'The three-sequence habit', d:'T1 for anatomy, T2 to find it, FLAIR to prove it is not CSF. Open the same slice number in all three atlases and the logic becomes obvious.'}
+  ]
+},
+
+/* ─────────────── CT SLICE ATLASES ─────────────── */
+{
+  id:'stack_ct_brain', icon:'fa-brain', group:'CT slice atlas',
+  name:'NCCT Head — Scroll Atlas',
+  sub:'Non-contrast CT, vertex to skull base · 7 levels labelled · CC0',
+  stack:'ct_brain',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'CT ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'Why NCCT first', d:'The unenhanced head CT is the workhorse of acute neuro-imaging: fast, available, and the definitive test for acute haemorrhage, which is bright (hyperdense) within minutes. Read it before contrast is even considered.'},
+    {n:'Grey–white differentiation', d:'Normal cortex is slightly denser than white matter, giving a crisp ribbon. Loss of that distinction is the earliest sign of infarction — the "insular ribbon sign" at the Sylvian fissure.'},
+    {n:'The ventricles and cisterns', d:'CSF spaces are low density (dark). Effacement means mass effect or swelling; dilatation means hydrocephalus or atrophy. The basal cisterns must be open — obliteration signals raised pressure or herniation.'},
+    {n:'Bone versus brain windows', d:'The same data is reviewed twice — a narrow brain window to see grey/white/CSF, and a wide bone window for the skull. A fracture invisible on brain windows is obvious on bone windows.'},
+    {n:'Symmetry', d:'The normal brain is near-symmetric. Scroll and compare left with right at every level — a subtle asymmetry of a sulcus, ventricle or grey-white margin is often the only clue to early pathology.'}
+  ],
+  meas:[
+    {n:'Acute blood density', v:'+50 to +70 HU', how:'Region of interest over the lesion', why:'Hyperdense to brain (~30 HU); the basis of NCCT for stroke and trauma'},
+    {n:'Evans index', v:'< 0.30', how:'Frontal horns ÷ maximal inner skull width', why:'Ventriculomegaly / hydrocephalus'},
+    {n:'Midline shift', v:'0 mm', how:'Septum pellucidum vs midline', why:'Any shift indicates mass effect'},
+    {n:'Basal cisterns', v:'Open / patent', how:'Look at the suprasellar and quadrigeminal cisterns', why:'Effacement signals raised intracranial pressure'}
+  ],
+  pitfalls:[
+    {t:'Beam-hardening in the posterior fossa', d:'Streaks between the petrous bones (Hounsfield artefact) mimic or hide brainstem lesions. Confirm posterior fossa findings on MRI.'},
+    {t:'Early infarct is subtle', d:'In the first hours an infarct may show only loss of grey-white differentiation, not frank low density. Compare sides carefully rather than expecting an obvious dark area.'}
+  ],
+  pearls:[
+    {t:'Blood is bright, air and CSF are dark', d:'The two ends of the density scale carry most of the acute diagnoses — hyperdense haemorrhage and hypodense infarct/oedema. Anchor every read to those.'}
+  ]
+},
+{
+  id:'stack_ct_hrct', icon:'fa-lungs', group:'CT slice atlas',
+  name:'HRCT Thorax — Scroll Atlas',
+  sub:'High-resolution lung window, apices to bases · 5 levels labelled · CC0',
+  stack:'ct_hrct',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'CT ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'What HRCT is', d:'High-resolution CT uses thin (~1 mm) sections and a sharp (lung) reconstruction to show the finest lung detail — secondary pulmonary lobules, fissures and small airways. It is the test for interstitial lung disease and bronchiectasis.'},
+    {n:'Lung window', d:'This series is displayed at roughly C −500, W 1500. Air-filled lung is black, vessels and interstitium are grey-white. The same scan at a soft-tissue window would show the mediastinum instead.'},
+    {n:'Vessels taper outward', d:'Normal pulmonary vessels branch and taper toward the pleura, and none should reach the outer 1 cm. A vessel that fails to taper, or visible structure at the pleural edge, is abnormal.'},
+    {n:'The fissures', d:'Thin avascular lines — the major (oblique) and minor (horizontal, right) fissures — divide the lobes. They are the map for localising disease to a lobe.'},
+    {n:'Trachea, carina and hila', d:'Follow the airway down: trachea, carina, main then lobar bronchi. The hila carry the pulmonary arteries and veins — bulky hila suggest nodes or vascular enlargement.'}
+  ],
+  meas:[
+    {n:'Bronchoarterial ratio', v:'< 1', how:'Bronchus lumen ÷ adjacent artery', why:'> 1 defines bronchiectasis (signet-ring sign)'},
+    {n:'Tracheal shape', v:'Round / oval', how:'Axial section of the trachea', why:'Sabre-sheath or lunate shapes indicate airways disease'},
+    {n:'Peripheral vessel-free zone', v:'Outer ~1 cm', how:'Look at the subpleural lung', why:'Structure here suggests fibrosis, nodules or septal disease'},
+    {n:'Lung attenuation', v:'Homogeneous', how:'Compare regions at the same level', why:'Mosaic pattern indicates small-airways or vascular disease'}
+  ],
+  pitfalls:[
+    {t:'Expiration mimics disease', d:'A scan taken in expiration shows patchy increased density that looks like ground-glass or mosaic attenuation. Confirm the study was inspiratory before calling it.'},
+    {t:'Dependent atelectasis', d:'Normal gravity-dependent grey change in the posterior lung bases clears on prone imaging — do not mistake it for early fibrosis.'}
+  ],
+  pearls:[
+    {t:'Always localise to a lobe', d:'Use the fissures to assign any finding to a lobe before describing it. "Right lower lobe" is a diagnosis; "somewhere in the right lung" is not.'}
+  ]
+},
+{
+  id:'stack_ct_abdo', icon:'fa-layer-group', group:'CT slice atlas',
+  name:'CECT Abdomen & Pelvis — Scroll Atlas',
+  sub:'Contrast-enhanced, liver dome to thighs · 5 levels labelled · CC0',
+  stack:'ct_abdo',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'CT ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'Why contrast', d:'Intravenous contrast opacifies the aorta, IVC and solid-organ parenchyma, separating vessels from nodes and making organ lesions conspicuous. This series is portal-venous phase — the workhorse for the abdomen.'},
+    {n:'Follow the aorta down', d:'The aorta is the fixed midline landmark: it gives off the coeliac, SMA and renal arteries, then bifurcates into the common iliacs at about L4. Track it and every other structure falls into place.'},
+    {n:'Solid organs', d:'Liver, spleen, pancreas, kidneys and adrenals each enhance in a characteristic pattern. Scroll through the whole organ — a lesion may occupy only one or two slices.'},
+    {n:'Bowel', d:'Stomach, small bowel and colon wind through the abdomen. Judge them by wall thickness and calibre; fluid- or contrast-filled loops are normal, a thick wall is not.'},
+    {n:'Into the pelvis', d:'Below the iliac crest: bladder, rectum, reproductive organs, then the hip joints and femoral vessels. The bony pelvis and femoral heads round out the series.'}
+  ],
+  meas:[
+    {n:'Aortic diameter', v:'< 3 cm (infrarenal)', how:'Outer wall to outer wall', why:'≥ 3 cm defines an aneurysm'},
+    {n:'Common bile duct', v:'≤ 6–7 mm', how:'Axial through the porta', why:'Dilatation suggests obstruction'},
+    {n:'Bowel wall', v:'≤ 3 mm (distended)', how:'Perpendicular to the wall', why:'Thickening indicates inflammation, ischaemia or tumour'},
+    {n:'Portal-venous timing', v:'~70 s post-injection', how:'Aorta and portal vein both enhanced', why:'Optimal phase for liver and bowel'}
+  ],
+  pitfalls:[
+    {t:'Unopacified bowel mimics a mass', d:'A collapsed or fluid-only loop can look like a lesion. Scroll adjacent slices to prove it is continuous tubular bowel before calling it.'},
+    {t:'Phase matters', d:'A hypervascular liver lesion can vanish on portal-venous images and only show on arterial phase. Know which phase you are reading before excluding pathology.'}
+  ],
+  pearls:[
+    {t:'Image left is the patient’s right', d:'The right kidney, right lobe of liver and appendix all sit on the left of the image. Fix this early — side errors in the abdomen are consequential.'}
+  ]
+},
+{
+  id:'stack_ct_cspine', icon:'fa-bone', group:'CT slice atlas',
+  name:'NCCT Cervical Spine — Scroll Atlas',
+  sub:'Non-contrast bone window, C1 to C7 · 3 levels labelled · CC0',
+  stack:'ct_cspine',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'CT ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'CT is first for cervical trauma', d:'Multidetector CT has replaced plain films for clearing the cervical spine after injury — it shows fractures the radiograph misses and reconstructs in any plane. This is a normal study for comparison.'},
+    {n:'C1 and C2 are unique', d:'The atlas (C1) is a ring with no body; the axis (C2) carries the dens (odontoid) projecting up through it. Most of the named cervical fractures — Jefferson, hangman’s, odontoid — live at these two levels.'},
+    {n:'The typical vertebra', d:'From C3 down: a body anteriorly, pedicles and laminae enclosing the spinal canal, transverse processes with the transverse foramina (carrying the vertebral artery), and a bifid spinous process behind.'},
+    {n:'Transverse foramina', d:'The paired foramina in the transverse processes transmit the vertebral arteries from C6 up. A fracture extending into them raises the concern of vertebral artery injury.'},
+    {n:'The spinal canal', d:'The triangular canal must stay patent. Retropulsed bone, a narrowed canal or malalignment on the reconstructed sagittal are the findings that change management.'}
+  ],
+  meas:[
+    {n:'Predental (ADI) space', v:'≤ 3 mm adult', how:'Anterior arch C1 to dens', why:'Widening indicates transverse-ligament injury'},
+    {n:'Canal AP diameter', v:'> 12 mm', how:'Axial or sagittal, body to spinolaminar line', why:'< 12 mm risks cord compression'},
+    {n:'Vertebral alignment', v:'Smooth lordosis', how:'Sagittal reconstruction', why:'Step-off signals subluxation or facet injury'},
+    {n:'Bone window', v:'C ~300–500, W ~1500–3000', how:'Wide window for cortical detail', why:'A fracture line is only seen at bone settings'}
+  ],
+  pitfalls:[
+    {t:'The cervicothoracic junction hides injury', d:'Shoulders obscure C7–T1 on axial images and radiographs alike. Insist on seeing the top of T1 before calling the spine cleared.'},
+    {t:'Ossification centres mimic fractures', d:'In the young, unfused synchondroses (especially around the dens) look like fracture lines. Know the normal developmental anatomy before diagnosing a break.'}
+  ],
+  pearls:[
+    {t:'Always review the reconstructions', d:'Axial slices alone can miss a horizontal fracture or a subluxation. The sagittal and coronal reformats are where alignment and odontoid fractures declare themselves.'}
   ]
 },
 
