@@ -428,7 +428,26 @@ const SLICE_LABELS = {
          {x:.330,y:.400,t:'Cortical grey matter'},
          {x:.380,y:.450,t:'Grey–white junction'},
          {x:.505,y:.855,t:'Superior sagittal sinus'},
-         {x:.505,y:.180,t:'Falx cerebri'} ]
+         {x:.505,y:.180,t:'Falx cerebri'} ],
+    /* pons / cerebellopontine angle */
+    5:[  {x:.360,y:.220,t:'Globe'},
+         {x:.500,y:.145,t:'Nasal septum'},
+         {x:.345,y:.430,t:'Temporal lobe'},
+         {x:.285,y:.500,t:'Mastoid air cells'},
+         {x:.500,y:.495,t:'Prepontine cistern'},
+         {x:.500,y:.545,t:'Pons'},
+         {x:.415,y:.515,t:'Cerebellopontine angle cistern'},
+         {x:.500,y:.625,t:'Fourth ventricle (CSF bright)'},
+         {x:.500,y:.700,t:'Cerebellar vermis'},
+         {x:.385,y:.720,t:'Cerebellar hemisphere'} ],
+    /* high convexity */
+    17:[ {x:.420,y:.300,t:'Superior frontal gyrus'},
+         {x:.505,y:.400,t:'Interhemispheric fissure (CSF bright)'},
+         {x:.400,y:.500,t:'Cortical sulci (CSF bright)'},
+         {x:.440,y:.550,t:'Subcortical white matter'},
+         {x:.420,y:.660,t:'Parietal lobe'},
+         {x:.500,y:.800,t:'Superior sagittal sinus'},
+         {x:.500,y:.200,t:'Scalp / calvarium'} ]
   },
   brain_flair:{
     /* ventricular level — the sequence's highest-yield slice */
@@ -447,7 +466,63 @@ const SLICE_LABELS = {
          {x:.505,y:.300,t:'Interhemispheric fissure'},
          {x:.340,y:.390,t:'Cortical grey matter'},
          {x:.505,y:.840,t:'Superior sagittal sinus'},
-         {x:.505,y:.175,t:'Falx cerebri'} ]
+         {x:.505,y:.175,t:'Falx cerebri'} ],
+    /* medulla / lower cerebellum — the lowest slice with brain on it */
+    3:[  {x:.500,y:.130,t:'Nasal septum'},
+         {x:.360,y:.260,t:'Maxillary sinus'},
+         {x:.500,y:.330,t:'Nasopharynx'},
+         {x:.320,y:.420,t:'Mandibular condyle'},
+         {x:.500,y:.425,t:'Clivus'},
+         {x:.300,y:.500,t:'Mastoid air cells'},
+         {x:.500,y:.550,t:'Medulla oblongata'},
+         {x:.400,y:.680,t:'Cerebellar hemisphere'},
+         {x:.500,y:.710,t:'Cerebellar tonsil'},
+         {x:.500,y:.830,t:'Occipital bone'} ],
+    /* pons and fourth ventricle */
+    5:[  {x:.375,y:.235,t:'Globe'},
+         {x:.500,y:.160,t:'Nasal septum / ethmoid'},
+         {x:.345,y:.440,t:'Temporal lobe'},
+         {x:.290,y:.470,t:'Mastoid air cells'},
+         {x:.500,y:.530,t:'Pons'},
+         {x:.500,y:.615,t:'Fourth ventricle'},
+         {x:.500,y:.700,t:'Cerebellar vermis'},
+         {x:.395,y:.720,t:'Cerebellar hemisphere'} ],
+    /* midbrain — same level as the T2 slice 8 */
+    8:[  {x:.370,y:.240,t:'Globe'},
+         {x:.340,y:.400,t:'Sylvian fissure'},
+         {x:.300,y:.500,t:'Temporal lobe'},
+         {x:.500,y:.440,t:'Suprasellar cistern'},
+         {x:.450,y:.510,t:'Cerebral peduncle'},
+         {x:.500,y:.540,t:'Midbrain'},
+         {x:.500,y:.580,t:'Quadrigeminal cistern'},
+         {x:.500,y:.650,t:'Cerebellar vermis'},
+         {x:.440,y:.790,t:'Occipital lobe'} ],
+    /* third ventricle / basal ganglia */
+    9:[  {x:.500,y:.160,t:'Frontal sinus'},
+         {x:.400,y:.250,t:'Frontal lobe'},
+         {x:.500,y:.280,t:'Interhemispheric fissure'},
+         {x:.320,y:.450,t:'Sylvian fissure'},
+         {x:.450,y:.420,t:'Caudate head'},
+         {x:.400,y:.480,t:'Lentiform nucleus'},
+         {x:.500,y:.470,t:'Third ventricle'},
+         {x:.460,y:.550,t:'Thalamus'},
+         {x:.500,y:.630,t:'Pineal / quadrigeminal region'},
+         {x:.440,y:.800,t:'Occipital lobe'} ],
+    /* high convexity */
+    17:[ {x:.420,y:.320,t:'Superior frontal gyrus'},
+         {x:.500,y:.400,t:'Interhemispheric fissure'},
+         {x:.400,y:.500,t:'Paracentral white matter'},
+         {x:.420,y:.620,t:'Cortical sulci (dark — normal)'},
+         {x:.420,y:.680,t:'Parietal lobe'},
+         {x:.500,y:.790,t:'Superior sagittal sinus'},
+         {x:.500,y:.205,t:'Scalp / calvarium'} ],
+    /* vertex */
+    19:[ {x:.450,y:.360,t:'Superior frontal gyrus'},
+         {x:.500,y:.450,t:'Interhemispheric fissure'},
+         {x:.440,y:.480,t:'Parasagittal white matter'},
+         {x:.420,y:.550,t:'Cortical sulci'},
+         {x:.500,y:.730,t:'Superior sagittal sinus'},
+         {x:.500,y:.280,t:'Scalp / calvarium'} ]
   }
 };
 /* T1 sagittal slice 16 and axial T1 slice 14 sit on the sagittal/axial sets above */
@@ -461,6 +536,34 @@ SLICE_LABELS.brain_t1sag[16] = [
   {x:.720,y:.680,t:'Cerebellar hemisphere'},
   {x:.550,y:.720,t:'Mastoid air cells'},
   {x:.500,y:.190,t:'Scalp fat (bright on T1)'}
+];
+/* T1 sagittal, just off midline — the corpus callosum is seen end to end */
+SLICE_LABELS.brain_t1sag[13] = [
+  {x:.385,y:.410,t:'Genu of corpus callosum'},
+  {x:.470,y:.375,t:'Body of corpus callosum'},
+  {x:.600,y:.435,t:'Splenium of corpus callosum'},
+  {x:.430,y:.335,t:'Cingulate gyrus'},
+  {x:.550,y:.455,t:'Lateral ventricle'},
+  {x:.290,y:.360,t:'Frontal lobe'},
+  {x:.700,y:.290,t:'Parietal lobe'},
+  {x:.800,y:.480,t:'Occipital lobe'},
+  {x:.690,y:.620,t:'Cerebellum'},
+  {x:.350,y:.575,t:'Sphenoid sinus'},
+  {x:.470,y:.635,t:'Clivus'},
+  {x:.500,y:.170,t:'Scalp fat (bright on T1)'}
+];
+/* T1 axial, midbrain level — the same plane as T2 slice 8 and FLAIR slice 8 */
+SLICE_LABELS.brain_t1ax[8] = [
+  {x:.360,y:.230,t:'Globe'},
+  {x:.310,y:.235,t:'Orbital fat (bright on T1)'},
+  {x:.340,y:.410,t:'Sylvian fissure'},
+  {x:.300,y:.500,t:'Temporal lobe'},
+  {x:.500,y:.400,t:'Suprasellar cistern'},
+  {x:.450,y:.490,t:'Cerebral peduncle'},
+  {x:.500,y:.500,t:'Midbrain'},
+  {x:.500,y:.550,t:'Quadrigeminal cistern'},
+  {x:.500,y:.630,t:'Cerebellar vermis'},
+  {x:.440,y:.780,t:'Occipital lobe'}
 ];
 SLICE_LABELS.brain_t1ax[14] = [
   {x:.420,y:.470,t:'Centrum semiovale'},
@@ -1050,7 +1153,7 @@ const REGIONS = [
 {
   id:'stack_brain_t1sag', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Sagittal T1',
-  sub:'Twenty-one slices from the midline outward · labelled at the midline (11) and through the orbit (16)',
+  sub:'Twenty-one slices from the midline outward · labelled at slices 11, 13 and 16',
   stack:'brain_t1sag',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1079,7 +1182,7 @@ const REGIONS = [
 {
   id:'stack_brain_t1ax', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial T1',
-  sub:'Twenty-one slices, vertex to skull base · labelled at the ventricular level (11) and centrum semiovale (14)',
+  sub:'Twenty-one slices, vertex to skull base · labelled at slices 8, 11 and 14',
   stack:'brain_t1ax',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1108,7 +1211,7 @@ const REGIONS = [
 {
   id:'stack_brain_t2ax', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial T2',
-  sub:'Same levels as the axial T1 · water is white · labelled at the skull base (8), ventricles (11) and centrum semiovale (14)',
+  sub:'Same levels as the axial T1 · water is white · labelled at slices 5, 8, 11, 14 and 17',
   stack:'brain_t2ax',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1137,7 +1240,7 @@ const REGIONS = [
 {
   id:'stack_brain_flair', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial FLAIR',
-  sub:'CSF suppressed, so periventricular lesions stand out · labelled at the ventricles (11) and centrum semiovale (14)',
+  sub:'CSF suppressed, so periventricular lesions stand out · labelled at slices 3, 5, 8, 9, 11, 14, 17 and 19',
   stack:'brain_flair',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
