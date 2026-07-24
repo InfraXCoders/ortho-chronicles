@@ -201,12 +201,18 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
   background:rgba(4,14,26,.82);border:1px solid rgba(45,212,191,.45);
   padding:2px 6px;border-radius:5px;}
 .sbtn.lab.on{background:rgba(45,212,191,.28);border-color:rgba(45,212,191,.55);color:#8fe6d8;}
-/* 54% leaves ~23% either side for captions; the cap keeps it sane on wide
-   screens. Below 720px the gutters are too narrow to use and the script
-   falls back to pins beside the structure, so the image takes the width. */
-.stackimg img{display:block;width:54%;max-width:440px;height:auto;
-  user-select:none;-webkit-user-drag:none;}
-@media(max-width:720px){ .stackimg img{width:100%;max-width:100%;} }
+/* The stage box is the fixed viewport onto the slice: 54% leaves ~23%
+   either side for captions. Zooming scales the image inside this box, so
+   the gutters never move. Below 720px there is no room for gutters and the
+   script falls back to pins beside the structure. */
+.stagebox{position:relative;overflow:hidden;width:54%;max-width:440px;flex-shrink:0;}
+@media(max-width:720px){ .stagebox{width:100%;max-width:100%;} }
+.stackimg img{display:block;width:100%;height:100%;user-select:none;
+  -webkit-user-drag:none;transform-origin:center center;}
+.stagebox.zoomed{cursor:grab;}
+.stagebox.zoomed.grabbing{cursor:grabbing;}
+.zlabel{font-size:.68rem;color:var(--mut);min-width:38px;text-align:center;
+  font-variant-numeric:tabular-nums;}
 .stackctl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line);}
 .sbtn{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--txt);
   width:30px;height:30px;border-radius:8px;cursor:pointer;flex-shrink:0;font-size:.78rem;
@@ -2274,31 +2280,48 @@ function drawSliceLabels(){
   }
   if(hint) hint.textContent=' · '+pins.length+' structures labelled on this slice';
 
-  const im=$('sliceImg'); if(!im) return;
-  const stage=host.getBoundingClientRect(), ib=im.getBoundingClientRect();
-  // The image reports a zero box while a new src decodes; its load handler
-  // calls back in. Bail rather than divide by zero.
-  if(!ib.width || !stage.width) return;
+  const im=$('sliceImg'), box=$('sStage'); if(!im||!box) return;
+  const stage=host.getBoundingClientRect();
+  const ib=im.getBoundingClientRect();     // includes the zoom transform
+  const bb=box.getBoundingClientRect();    // the fixed viewport onto the slice
+  // The box is zero while a new series' first slice decodes; the load
+  // handler calls back in. Bail rather than divide by zero.
+  if(!ib.width || !bb.width || !stage.width) return;
 
-  const ox=ib.left-stage.left, oy=ib.top-stage.top, W=stage.width, H=stage.height;
-  const gutter=Math.min(ox, W-(ox+ib.width));
+  // Gutters are measured from the stage box, which zoom never moves.
+  const bx=bb.left-stage.left, by=bb.top-stage.top, W=stage.width, H=stage.height;
+  const gutter=Math.min(bx, W-(bx+bb.width));
 
   // Not enough gutter to be readable — fall back to a pin beside the structure.
   if(gutter<96){
-    host.innerHTML=pins.map((p,i)=>
-      `<span class="spin${p.x>0.52?' flip':''}" style="left:${(ox+p.x*ib.width).toFixed(1)}px;top:${(oy+p.y*ib.height).toFixed(1)}px">
-         <b>${i+1}</b><em>${esc(p.t)}</em></span>`).join('');
+    const vis=pins.map((p,i)=>({p,i,
+      ax:(ib.left-stage.left)+p.x*ib.width, ay:(ib.top-stage.top)+p.y*ib.height}))
+      .filter(o=>o.ax>=bx-1&&o.ax<=bx+bb.width+1&&o.ay>=by-1&&o.ay<=by+bb.height+1);
+    host.innerHTML=vis.map(o=>
+      `<span class="spin${o.p.x>0.52?' flip':''}" style="left:${o.ax.toFixed(1)}px;top:${o.ay.toFixed(1)}px">
+         <b>${o.i+1}</b><em>${esc(o.p.t)}</em></span>`).join('');
+    if(hint && vis.length<pins.length)
+      hint.textContent=' · '+vis.length+' of '+pins.length+' structures in view';
     return;
   }
 
+  // Anchors come from the transformed image rect, so they follow the zoom.
+  // Anything scrolled out of the viewport is dropped rather than drawn
+  // pointing at empty space.
   const items=pins.map((p,i)=>({
     n:i+1, t:p.t,
-    ax:ox+p.x*ib.width, ay:oy+p.y*ib.height,
+    ax:(ib.left-stage.left)+p.x*ib.width,
+    ay:(ib.top-stage.top)+p.y*ib.height,
     side:p.x<0.5?'L':'R'
-  }));
+  })).filter(o=>o.ax>=bx-1 && o.ax<=bx+bb.width+1 && o.ay>=by-1 && o.ay<=by+bb.height+1);
 
-  const capL=ox-16, capR=ox+ib.width+16;   // caption edge nearest the image
-  const bendL=ox-7,  bendR=ox+ib.width+7;  // where the leader turns
+  if(!items.length){ host.innerHTML=''; if(hint) hint.textContent=' · no labelled structure in view'; return; }
+  if(hint && items.length<pins.length)
+    hint.textContent=' · '+items.length+' of '+pins.length+' structures in view';
+
+  // Captions hug the stage box, not the zoomed image, so they hold still.
+  const capL=bx-16, capR=bx+bb.width+16;   // caption edge nearest the image
+  const bendL=bx-7,  bendR=bx+bb.width+7;  // where the leader turns
   const capMax=Math.max(60, gutter-22);    // wrap rather than overflow the stage
 
   // Pass 1: render the captions off-layout to measure how tall each ends up
@@ -2335,7 +2358,9 @@ function renderStack(wrap, st){
   wrap.innerHTML=
    `<div id="stackview">
       <div class="stackimg">
-        <img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/>
+        <div class="stagebox" id="sStage">
+          <img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/>
+        </div>
         <div class="slabels" id="sLabels"></div>
       </div>
       <div class="stackctl">
@@ -2343,6 +2368,10 @@ function renderStack(wrap, st){
         <input type="range" id="sRange" min="1" max="${st.slices.length}" value="1"/>
         <button class="sbtn" id="sNext" aria-label="Next slice"><i class="fas fa-chevron-down"></i></button>
         <span class="scount" id="sCount">1 / ${st.slices.length}</span>
+        <button class="sbtn" id="sZoomOut" title="Zoom out"><i class="fas fa-magnifying-glass-minus"></i></button>
+        <span class="zlabel" id="sZoomLbl">100%</span>
+        <button class="sbtn" id="sZoomIn" title="Zoom in"><i class="fas fa-magnifying-glass-plus"></i></button>
+        <button class="sbtn" id="sZoomReset" title="Reset zoom"><i class="fas fa-compress"></i></button>
         <button class="sbtn lab ${sLabelsOn?'on':''}" id="sLabBtn" title="Toggle labels"><i class="fas fa-tags"></i></button>
       </div>
       <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓
@@ -2357,14 +2386,15 @@ function renderStack(wrap, st){
   stackState={st, base, i:0};
   // Known ratio for this series? Apply it before the first paint so the
   // viewer never opens collapsed and the labels have a box immediately.
-  if(SERIES_RATIO[st.dir]) img.style.aspectRatio=SERIES_RATIO[st.dir];
+  const stageEl=$('sStage');
+  if(SERIES_RATIO[st.dir]) stageEl.style.aspectRatio=SERIES_RATIO[st.dir];
   // Preload the series so scrolling does not flicker
   st.slices.forEach((s,k)=>{
     const p=new Image();
     if(k===0) p.onload=()=>{
       if(p.naturalWidth && p.naturalHeight){
         SERIES_RATIO[st.dir]=p.naturalWidth+' / '+p.naturalHeight;
-        if(!img.style.aspectRatio){ img.style.aspectRatio=SERIES_RATIO[st.dir]; drawSliceLabels(); }
+        if(!stageEl.style.aspectRatio){ stageEl.style.aspectRatio=SERIES_RATIO[st.dir]; drawSliceLabels(); }
       }
     };
     p.src=base+s;
@@ -2392,10 +2422,73 @@ function renderStack(wrap, st){
   // the first one. Without it the box collapses to zero height while each
   // new slice decodes — the labels lose their reference and the whole
   // viewer jumps on every scroll step.
+  /* ---- zoom & pan ------------------------------------------------------
+     Zoom scales the image inside a fixed stage box, so the gutters and the
+     caption columns never move. Anchors are read from the image's live
+     rect, which already includes the transform, so labels track the
+     anatomy as it grows; those pushed outside the box are dropped. */
+  const stage=$('sStage'), ZMIN=1, ZMAX=6;
+  let z=1, tx=0, ty=0;
+
+  function clampPan(){
+    const b=stage.getBoundingClientRect();
+    const mx=Math.max(0,(z-1)*b.width/2), my=Math.max(0,(z-1)*b.height/2);
+    tx=Math.max(-mx,Math.min(mx,tx));
+    ty=Math.max(-my,Math.min(my,ty));
+  }
+  function applyZoom(){
+    clampPan();
+    img.style.transform=`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(${z})`;
+    stage.classList.toggle('zoomed',z>1);
+    const lbl=$('sZoomLbl'); if(lbl) lbl.textContent=Math.round(z*100)+'%';
+    drawSliceLabels();
+  }
+  function setZoom(nz,cx,cy){
+    const b=stage.getBoundingClientRect();
+    nz=Math.max(ZMIN,Math.min(ZMAX,nz));
+    // Keep the point under the cursor (or the centre) fixed while scaling.
+    if(cx!=null){
+      const ox=cx-b.left-b.width/2, oy=cy-b.top-b.height/2;
+      tx=ox-(ox-tx)*(nz/z); ty=oy-(oy-ty)*(nz/z);
+    }
+    z=nz; if(z===1){tx=0;ty=0;}
+    applyZoom();
+  }
+  stackState.setZoom=setZoom;
+  stackState.getZoom=()=>({z,tx,ty});
+
+  $('sZoomIn').onclick =()=>setZoom(z*1.4);
+  $('sZoomOut').onclick=()=>setZoom(z/1.4);
+  $('sZoomReset').onclick=()=>{ z=1; tx=0; ty=0; applyZoom(); };
+
+  // Ctrl/⌘ + wheel zooms about the cursor; plain wheel still steps slices.
+  stage.addEventListener('wheel',e=>{
+    if(!(e.ctrlKey||e.metaKey)) return;
+    e.preventDefault(); e.stopPropagation();
+    setZoom(z*(e.deltaY<0?1.18:1/1.18), e.clientX, e.clientY);
+  },{passive:false});
+
+  let drag=null;
+  stage.addEventListener('pointerdown',e=>{
+    if(z<=1) return;
+    drag={x:e.clientX,y:e.clientY,tx,ty};
+    stage.setPointerCapture(e.pointerId); stage.classList.add('grabbing');
+  });
+  stage.addEventListener('pointermove',e=>{
+    if(!drag) return;
+    tx=drag.tx+(e.clientX-drag.x); ty=drag.ty+(e.clientY-drag.y);
+    applyZoom();
+  });
+  ['pointerup','pointercancel'].forEach(ev=>stage.addEventListener(ev,e=>{
+    if(!drag) return;
+    drag=null; stage.classList.remove('grabbing');
+    try{ stage.releasePointerCapture(e.pointerId); }catch(_){}
+  }));
+
   function pinRatio(){
-    if(!img.style.aspectRatio && img.naturalWidth && img.naturalHeight){
+    if(!stage.style.aspectRatio && img.naturalWidth && img.naturalHeight){
       SERIES_RATIO[st.dir]=img.naturalWidth+' / '+img.naturalHeight;
-      img.style.aspectRatio=SERIES_RATIO[st.dir];
+      stage.style.aspectRatio=SERIES_RATIO[st.dir];
     }
   }
   img.addEventListener('load',()=>{ pinRatio(); drawSliceLabels(); });
@@ -2407,6 +2500,7 @@ function renderStack(wrap, st){
   }
   drawSliceLabels();
   wrap.querySelector('.stackimg').addEventListener('wheel',e=>{
+    if(e.ctrlKey||e.metaKey) return;   // that gesture is zoom, handled above
     e.preventDefault();
     go(stackState.i + (e.deltaY>0?1:-1));
   },{passive:false});
