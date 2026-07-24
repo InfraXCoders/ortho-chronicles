@@ -64,6 +64,8 @@ a{color:inherit;}
 #filmwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;}
 #film{background:var(--film);border:1px solid var(--line);border-radius:12px;
   box-shadow:0 18px 50px rgba(0,0,0,.5);max-width:100%;max-height:100%;}
+/* Slice atlases need the whole column; shrink-to-fit would starve the gutters. */
+#film.stackmode{width:100%;}
 #film svg{display:block;width:min(560px,86vw);height:auto;}
 
 /* diagram styling */
@@ -159,20 +161,38 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 .nofilm{color:var(--mut);font-size:.85rem;text-align:center;padding:40px 20px;max-width:420px;line-height:1.7;}
 
 /* ---------- slice stack viewer ---------- */
+/* Wider than the image itself: the extra width is the label gutters. */
+/* Explicit width, not shrink-to-fit: the gutters only exist if the viewer
+   claims the space, and a flex item sized by its content will not. */
 #stackview{background:#05090f;border:1px solid var(--line);border-radius:12px;overflow:hidden;
-  max-width:520px;box-shadow:0 14px 40px rgba(0,0,0,.55);}
+  width:min(820px,100%);box-shadow:0 14px 40px rgba(0,0,0,.55);}
 .stackimg{background:#000;display:flex;align-items:center;justify-content:center;cursor:ns-resize;
   min-height:240px;position:relative;}
-/* label overlay — sits exactly over the image box */
+/* Label overlay. The layer spans the whole stage, not just the image, so
+   captions can sit in the gutters either side and reach the structure with
+   a leader line. Anchors stay in image-fraction coordinates. */
 .slabels{position:absolute;inset:0;pointer-events:none;}
-/* The dot must sit exactly on the coordinate, so it is positioned at the
-   anchor and the caption is offset from it — otherwise the flex row centres
-   dot+text together and drags the dot off the structure. */
+.slabels svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+.lead-line{fill:none;stroke:rgba(45,212,191,.75);stroke-width:1.1;}
+.lead-head{fill:rgba(45,212,191,.95);}
+.lead-dot{fill:var(--teal);stroke:rgba(0,0,0,.6);stroke-width:1.4;}
+/* caption chips in the gutters */
+/* Wraps rather than overflowing the gutter; the layout measures the
+   resulting height so stacked captions still clear each other. */
+.cap{position:absolute;font-size:.62rem;font-weight:700;
+  color:#CFFAF3;background:rgba(4,14,26,.9);border:1px solid rgba(45,212,191,.45);
+  padding:2px 6px;border-radius:5px;line-height:1.25;}
+.cap.L{text-align:right;}
+.cap i{font-style:normal;color:var(--teal);font-weight:800;margin-right:4px;}
+.cap.L{transform:translate(-100%,-50%);}
+.cap.R{transform:translateY(-50%);}
+/* Narrow stages have no room for gutters, so the pin sits beside the
+   structure instead. The dot is positioned at the anchor and the caption
+   offset from it — centring dot+text together would drag the dot off. */
 .spin{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
   width:0;height:0;display:block;}
 .spin b{position:absolute;left:-8.5px;top:-8.5px;}
 .spin em{position:absolute;left:12px;top:-9px;}
-/* labels past the midline read leftwards so they stay in frame */
 .spin.flip em{left:auto;right:12px;}
 .spin b{width:17px;height:17px;border-radius:50%;background:var(--teal);color:#04201c;
   font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;
@@ -180,10 +200,13 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 .spin em{font-style:normal;font-size:.63rem;font-weight:700;color:#CFFAF3;
   background:rgba(4,14,26,.82);border:1px solid rgba(45,212,191,.45);
   padding:2px 6px;border-radius:5px;}
-/* keep right-side labels inside the frame */
-.spin[style*="left:5"] em,.spin[style*="left:6"] em,.spin[style*="left:7"] em{}
 .sbtn.lab.on{background:rgba(45,212,191,.28);border-color:rgba(45,212,191,.55);color:#8fe6d8;}
-.stackimg img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:none;}
+/* 54% leaves ~23% either side for captions; the cap keeps it sane on wide
+   screens. Below 720px the gutters are too narrow to use and the script
+   falls back to pins beside the structure, so the image takes the width. */
+.stackimg img{display:block;width:54%;max-width:440px;height:auto;
+  user-select:none;-webkit-user-drag:none;}
+@media(max-width:720px){ .stackimg img{width:100%;max-width:100%;} }
 .stackctl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line);}
 .sbtn{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--txt);
   width:30px;height:30px;border-radius:8px;cursor:pointer;flex-shrink:0;font-size:.78rem;
@@ -2161,7 +2184,12 @@ function show(id, focusLm){
 function renderStage(r){
   const wrap=$('film');
   // A slice stack behaves like a workstation: scroll through the series
-  if(mode==='film' && r.stack && STACKS[r.stack]){ renderStack(wrap, STACKS[r.stack]); return; }
+  if(mode==='film' && r.stack && STACKS[r.stack]){
+    wrap.classList.add('stackmode');   // claim the full column for the gutters
+    renderStack(wrap, STACKS[r.stack]);
+    return;
+  }
+  wrap.classList.remove('stackmode');
   if(mode==='diagram' || !((r.films&&r.films.length) || r.stack)){
     wrap.innerHTML=r.svg;
     applyLines();
@@ -2192,11 +2220,47 @@ function renderStage(r){
 
 /* ---- slice stack viewer ---- */
 let stackState=null, sLabelsOn=true;
+/* Aspect ratio per series, learned once and reused. Slices in a series all
+   share a size, so this keeps the viewer from collapsing between slices or
+   when a region is reopened. */
+const SERIES_RATIO={};
 
 /**
  * Draw the labels for the current slice, if any were authored for it.
  * Positions are fractions of the image box, so they track any resize.
  * A slice with no entry simply shows nothing — never a guessed pin.
+ */
+/**
+ * Stack captions vertically so none overlap: push each below its neighbour,
+ * shift the whole column up if it overruns the bottom, then re-resolve and
+ * clamp at the top. Order follows the anatomy down the image, so leaders
+ * rarely cross.
+ */
+function stackColumn(list, top, bottom){
+  const gap=(a,b)=>(a.h+b.h)/2+3;          // half each height, plus breathing room
+  list.sort((a,b)=>a.ay-b.ay);
+  list.forEach(o=>o.cy=o.ay);
+  for(let k=1;k<list.length;k++)
+    if(list[k].cy-list[k-1].cy<gap(list[k-1],list[k]))
+      list[k].cy=list[k-1].cy+gap(list[k-1],list[k]);
+  const last=list[list.length-1];
+  const over=list.length ? (last.cy+last.h/2)-bottom : 0;
+  if(over>0) list.forEach(o=>o.cy-=over);
+  for(let k=1;k<list.length;k++)
+    if(list[k].cy-list[k-1].cy<gap(list[k-1],list[k]))
+      list[k].cy=list[k-1].cy+gap(list[k-1],list[k]);
+  if(list.length && list[0].cy-list[0].h/2<top){
+    const d=top-(list[0].cy-list[0].h/2); list.forEach(o=>o.cy+=d);
+  }
+  return list;
+}
+
+/**
+ * Draw the labels for the current slice, if any were authored for it.
+ * Anchors are fractions of the image box, so they track any resize; the
+ * captions live in the gutters either side and reach their structure with
+ * a leader line and arrowhead. A slice with no entry shows nothing —
+ * never a guessed pin.
  */
 function drawSliceLabels(){
   const host=$('sLabels'); if(!host||!stackState) return;
@@ -2208,10 +2272,62 @@ function drawSliceLabels(){
     if(hint) hint.textContent = pins ? ' · labels hidden' : '';
     return;
   }
-  host.innerHTML=pins.map((p,i)=>
-    `<span class="spin${p.x>0.52?' flip':''}" style="left:${(p.x*100).toFixed(2)}%;top:${(p.y*100).toFixed(2)}%">
-       <b>${i+1}</b><em>${esc(p.t)}</em></span>`).join('');
   if(hint) hint.textContent=' · '+pins.length+' structures labelled on this slice';
+
+  const im=$('sliceImg'); if(!im) return;
+  const stage=host.getBoundingClientRect(), ib=im.getBoundingClientRect();
+  // The image reports a zero box while a new src decodes; its load handler
+  // calls back in. Bail rather than divide by zero.
+  if(!ib.width || !stage.width) return;
+
+  const ox=ib.left-stage.left, oy=ib.top-stage.top, W=stage.width, H=stage.height;
+  const gutter=Math.min(ox, W-(ox+ib.width));
+
+  // Not enough gutter to be readable — fall back to a pin beside the structure.
+  if(gutter<96){
+    host.innerHTML=pins.map((p,i)=>
+      `<span class="spin${p.x>0.52?' flip':''}" style="left:${(ox+p.x*ib.width).toFixed(1)}px;top:${(oy+p.y*ib.height).toFixed(1)}px">
+         <b>${i+1}</b><em>${esc(p.t)}</em></span>`).join('');
+    return;
+  }
+
+  const items=pins.map((p,i)=>({
+    n:i+1, t:p.t,
+    ax:ox+p.x*ib.width, ay:oy+p.y*ib.height,
+    side:p.x<0.5?'L':'R'
+  }));
+
+  const capL=ox-16, capR=ox+ib.width+16;   // caption edge nearest the image
+  const bendL=ox-7,  bendR=ox+ib.width+7;  // where the leader turns
+  const capMax=Math.max(60, gutter-22);    // wrap rather than overflow the stage
+
+  // Pass 1: render the captions off-layout to measure how tall each ends up
+  // once wrapped, so pass 2 can stack them without collisions.
+  host.innerHTML=items.map(o=>
+    `<div class="cap ${o.side}" data-n="${o.n}" style="left:${(o.side==='L'?capL:capR).toFixed(1)}px;top:-999px;max-width:${capMax.toFixed(0)}px">
+       <i>${o.n}</i>${esc(o.t)}</div>`).join('');
+  const nodes=host.querySelectorAll('.cap');
+  items.forEach((o,k)=>{ o.h=nodes[k].getBoundingClientRect().height||18; });
+
+  // Pass 2: place them.
+  ['L','R'].forEach(s=>stackColumn(items.filter(o=>o.side===s), 8, H-8));
+
+  const paths=items.map(o=>{
+    const cx=o.side==='L'?capL:capR, bx=o.side==='L'?bendL:bendR;
+    // Stop the line short of the anchor so the arrowhead tip lands on it.
+    const dx=o.ax-bx, dy=o.ay-o.cy, len=Math.hypot(dx,dy)||1;
+    const tx=o.ax-(dx/len)*7, ty=o.ay-(dy/len)*7;
+    const ang=Math.atan2(dy,dx)*180/Math.PI;
+    return `<path class="lead-line" d="M${cx.toFixed(1)},${o.cy.toFixed(1)} L${bx.toFixed(1)},${o.cy.toFixed(1)} L${tx.toFixed(1)},${ty.toFixed(1)}"/>`
+      + `<path class="lead-head" d="M0,0 L-7,-3 L-7,3 Z" transform="translate(${o.ax.toFixed(1)},${o.ay.toFixed(1)}) rotate(${ang.toFixed(1)})"/>`
+      + `<circle class="lead-dot" cx="${o.ax.toFixed(1)}" cy="${o.ay.toFixed(1)}" r="2.4"/>`;
+  }).join('');
+
+  const caps=items.map(o=>
+    `<div class="cap ${o.side}" style="left:${(o.side==='L'?capL:capR).toFixed(1)}px;top:${o.cy.toFixed(1)}px;max-width:${capMax.toFixed(0)}px">
+       <i>${o.n}</i>${esc(o.t)}</div>`).join('');
+
+  host.innerHTML=`<svg viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" preserveAspectRatio="none">${paths}</svg>${caps}`;
 }
 
 function renderStack(wrap, st){
@@ -2239,8 +2355,20 @@ function renderStack(wrap, st){
 
   const img=$('sliceImg'), range=$('sRange'), count=$('sCount');
   stackState={st, base, i:0};
+  // Known ratio for this series? Apply it before the first paint so the
+  // viewer never opens collapsed and the labels have a box immediately.
+  if(SERIES_RATIO[st.dir]) img.style.aspectRatio=SERIES_RATIO[st.dir];
   // Preload the series so scrolling does not flicker
-  st.slices.forEach(s=>{ const p=new Image(); p.src=base+s; });
+  st.slices.forEach((s,k)=>{
+    const p=new Image();
+    if(k===0) p.onload=()=>{
+      if(p.naturalWidth && p.naturalHeight){
+        SERIES_RATIO[st.dir]=p.naturalWidth+' / '+p.naturalHeight;
+        if(!img.style.aspectRatio){ img.style.aspectRatio=SERIES_RATIO[st.dir]; drawSliceLabels(); }
+      }
+    };
+    p.src=base+s;
+  });
 
   function go(i){
     i=Math.max(0,Math.min(st.slices.length-1,i));
@@ -2260,6 +2388,23 @@ function renderStack(wrap, st){
     $('sLabBtn').classList.toggle('on',sLabelsOn);
     drawSliceLabels();
   };
+  // Every slice in a series shares one size, so pin the aspect ratio from
+  // the first one. Without it the box collapses to zero height while each
+  // new slice decodes — the labels lose their reference and the whole
+  // viewer jumps on every scroll step.
+  function pinRatio(){
+    if(!img.style.aspectRatio && img.naturalWidth && img.naturalHeight){
+      SERIES_RATIO[st.dir]=img.naturalWidth+' / '+img.naturalHeight;
+      img.style.aspectRatio=SERIES_RATIO[st.dir];
+    }
+  }
+  img.addEventListener('load',()=>{ pinRatio(); drawSliceLabels(); });
+  if(img.complete) pinRatio();          // already cached: no load event coming
+  stackState.pinRatio=pinRatio;
+  if(!renderStack._resizeBound){
+    renderStack._resizeBound=true;
+    let t; addEventListener('resize',()=>{ clearTimeout(t); t=setTimeout(drawSliceLabels,120); });
+  }
   drawSliceLabels();
   wrap.querySelector('.stackimg').addEventListener('wheel',e=>{
     e.preventDefault();
