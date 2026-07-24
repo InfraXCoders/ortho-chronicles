@@ -411,9 +411,65 @@ const SLICE_LABELS = {
          {x:.50,y:.62,t:'Choroid plexus'},
          {x:.30,y:.44,t:'Insular cortex'},
          {x:.50,y:.85,t:'Occipital grey / white'},
-         {x:.50,y:.17,t:'Interhemispheric fissure'} ]
+         {x:.50,y:.17,t:'Interhemispheric fissure'} ],
+    /* skull base / midbrain level — orbits, suprasellar cistern, brainstem */
+    8:[  {x:.365,y:.220,t:'Globe (vitreous — bright on T2)'},
+         {x:.345,y:.395,t:'Sylvian fissure'},
+         {x:.300,y:.500,t:'Temporal lobe'},
+         {x:.505,y:.440,t:'Suprasellar cistern'},
+         {x:.445,y:.505,t:'Cerebral peduncle'},
+         {x:.505,y:.535,t:'Midbrain / cerebral aqueduct'},
+         {x:.505,y:.575,t:'Quadrigeminal cistern'},
+         {x:.505,y:.640,t:'Cerebellar vermis'},
+         {x:.440,y:.790,t:'Occipital lobe'} ],
+    /* centrum semiovale — above the ventricles */
+    14:[ {x:.420,y:.470,t:'Centrum semiovale'},
+         {x:.505,y:.300,t:'Interhemispheric fissure (CSF bright)'},
+         {x:.330,y:.400,t:'Cortical grey matter'},
+         {x:.380,y:.450,t:'Grey–white junction'},
+         {x:.505,y:.855,t:'Superior sagittal sinus'},
+         {x:.505,y:.180,t:'Falx cerebri'} ]
+  },
+  brain_flair:{
+    /* ventricular level — the sequence's highest-yield slice */
+    11:[ {x:.555,y:.355,t:'Frontal horn (CSF suppressed — dark)'},
+         {x:.500,y:.330,t:'Genu of corpus callosum'},
+         {x:.440,y:.400,t:'Caudate head'},
+         {x:.435,y:.480,t:'Internal capsule, posterior limb'},
+         {x:.455,y:.530,t:'Thalamus'},
+         {x:.435,y:.615,t:'Choroid plexus (calcified glomus)'},
+         {x:.500,y:.655,t:'Splenium of corpus callosum'},
+         {x:.320,y:.720,t:'Cortical sulci (dark — normal)'},
+         {x:.500,y:.200,t:'Interhemispheric fissure'} ],
+    /* centrum semiovale — where small vessel disease shows first */
+    14:[ {x:.420,y:.480,t:'Centrum semiovale'},
+         {x:.580,y:.480,t:'Periventricular white matter'},
+         {x:.505,y:.300,t:'Interhemispheric fissure'},
+         {x:.340,y:.390,t:'Cortical grey matter'},
+         {x:.505,y:.840,t:'Superior sagittal sinus'},
+         {x:.505,y:.175,t:'Falx cerebri'} ]
   }
 };
+/* T1 sagittal slice 16 and axial T1 slice 14 sit on the sagittal/axial sets above */
+SLICE_LABELS.brain_t1sag[16] = [
+  {x:.235,y:.545,t:'Globe'},
+  {x:.310,y:.545,t:'Optic nerve'},
+  {x:.240,y:.700,t:'Maxillary sinus'},
+  {x:.350,y:.380,t:'Frontal lobe'},
+  {x:.680,y:.330,t:'Parietal lobe'},
+  {x:.550,y:.630,t:'Temporal lobe'},
+  {x:.720,y:.680,t:'Cerebellar hemisphere'},
+  {x:.550,y:.720,t:'Mastoid air cells'},
+  {x:.500,y:.190,t:'Scalp fat (bright on T1)'}
+];
+SLICE_LABELS.brain_t1ax[14] = [
+  {x:.420,y:.470,t:'Centrum semiovale'},
+  {x:.505,y:.300,t:'Interhemispheric fissure'},
+  {x:.330,y:.400,t:'Cortical grey matter'},
+  {x:.380,y:.450,t:'Grey–white junction'},
+  {x:.505,y:.855,t:'Superior sagittal sinus'},
+  {x:.505,y:.175,t:'Diploic space / scalp fat'}
+];
 
 const REGIONS = [
 
@@ -994,7 +1050,7 @@ const REGIONS = [
 {
   id:'stack_brain_t1sag', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Sagittal T1',
-  sub:'Twenty-one slices from the midline outward · labelled on the mid-sagittal slice',
+  sub:'Twenty-one slices from the midline outward · labelled at the midline (11) and through the orbit (16)',
   stack:'brain_t1sag',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1023,7 +1079,7 @@ const REGIONS = [
 {
   id:'stack_brain_t1ax', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial T1',
-  sub:'Twenty-one slices, vertex to skull base · labelled at the ventricular level',
+  sub:'Twenty-one slices, vertex to skull base · labelled at the ventricular level (11) and centrum semiovale (14)',
   stack:'brain_t1ax',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1052,7 +1108,7 @@ const REGIONS = [
 {
   id:'stack_brain_t2ax', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial T2',
-  sub:'Same levels as the axial T1 · water is white · labelled at the ventricular level',
+  sub:'Same levels as the axial T1 · water is white · labelled at the skull base (8), ventricles (11) and centrum semiovale (14)',
   stack:'brain_t2ax',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1081,7 +1137,7 @@ const REGIONS = [
 {
   id:'stack_brain_flair', icon:'fa-brain', group:'Slice atlas',
   name:'Brain MRI — Axial FLAIR',
-  sub:'CSF suppressed, so periventricular lesions stand out · same levels as T1 and T2',
+  sub:'CSF suppressed, so periventricular lesions stand out · labelled at the ventricles (11) and centrum semiovale (14)',
   stack:'brain_flair',
   svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
     g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
@@ -1089,7 +1145,7 @@ const REGIONS = [
   landmarks:[
     {n:'What FLAIR does', d:'Fluid Attenuated Inversion Recovery is a T2 sequence with the CSF signal nulled. Ventricles go dark while genuinely abnormal tissue stays bright — which is why a periventricular plaque hidden against bright CSF on T2 becomes obvious here.'},
     {n:'Dark ventricles', d:'The identifying feature. If CSF is dark but grey matter is still brighter than white, you are looking at FLAIR, not T1.'},
-    {n:'Periventricular white matter', d:'The highest-yield area on the whole sequence: small vessel ischaemia, demyelination and Dawson fingers of multiple sclerosis all appear here first.'},
+    {n:'Periventricular white matter', d:'The highest-yield area on the whole sequence: small vessel ischaemia, demyelination and Dawson fingers of multiple sclerosis all appear here first. Labelled on slices 11 and 14 — scroll to either and toggle the pins.'},
     {n:'Cortical sulci', d:'Normally dark with suppressed CSF. Bright signal in the sulci is abnormal — subarachnoid blood, meningitis or, with incomplete suppression, artefact.'},
     {n:'Deep grey matter', d:'Basal ganglia and thalami remain assessable, so lacunar infarcts show clearly against the suppressed background.'}
   ],
@@ -1601,7 +1657,7 @@ window.addEventListener('keydown',e=>{
 
 /* debug handle for automated checks */
 if(/debug=1/.test(location.search+location.hash)){
-  window.__radio = {REGIONS, show, selectTab, highlight, count:()=>REGIONS.length};
+  window.__radio = {REGIONS, SLICE_LABELS, show, selectTab, highlight, count:()=>REGIONS.length};
 }
 
 show(REGIONS[0].id);
