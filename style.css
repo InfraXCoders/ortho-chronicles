@@ -3561,7 +3561,7 @@ html {
 
 /* â”€â”€ Responsive â”€â”€ */
 @media (max-width: 480px) {
-  .hmr-btn { bottom: 90px; right: 12px; width: 50px; height: 50px; font-size: 1.15rem; }
+  .hmr-btn { bottom: 90px; left: 12px; width: 50px; height: 50px; font-size: 1.15rem; }
   .hmr-panel {
     right: 8px; left: 8px; width: auto;
     bottom: 154px; height: 480px;
