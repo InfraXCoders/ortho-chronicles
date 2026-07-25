@@ -3160,8 +3160,8 @@
       {
         id: 'greeting',
         keys: ['hi','hello','hey','hii','namaste','good morning','good afternoon','good evening'],
-        reply: "Hello! 👋 I'm <strong>Hammer</strong>, your OrthoChronicles assistant. I can help you with orthopedic queries, book recommendations, and guidance about treatments.<br><br>What would you like to know?",
-        quick: ['Knee Replacement','Hip Replacement','Shoulder Surgery','Fractures & Trauma','Recovery Tips','3D Anatomy','Contact Dr. Singh']
+        reply: "Hello! 👋 I'm <strong>Hammer</strong>, your OrthoChronicles assistant. I know every part of this site — the <strong>3D anatomy explorer</strong>, the <strong>X-ray, MRI & CT atlases</strong>, the <strong>case library</strong>, slides, the gym, recommended books — plus orthopedic conditions and treatments.<br><br>What are you looking for?",
+        quick: ['What can you do?','Anatomy + Radiology','Case Library','Knee Replacement','Fractures & Trauma','Gym & Exercises','Contact Dr. Singh']
       },
       {
         id: 'knee',
@@ -3183,7 +3183,7 @@
       },
       {
         id: 'fracture',
-        keys: ['fracture','broken bone','break','fractures','trauma','accident','road accident','fall','injury','broken'],
+        keys: ['fracture','broken bone','break','fractures','trauma','accident','road accident','fall','injury','broken','broke','cracked','crack','dislocat','sprain'],
         reply: "🚑 <strong>Fracture & Trauma</strong><br><br><strong>Immediate steps after a fracture:</strong><ul><li>Immobilise the injured limb — do not force movement</li><li>Apply ice (wrapped in cloth) to reduce swelling</li><li>Go to the nearest emergency department immediately</li><li>The <em>golden hour</em> — early treatment dramatically improves outcomes</li></ul><br>For complex fractures, Dr. Maninder Singh's team at GMCH Amritsar provides comprehensive trauma care.",
         quick: ['Road accident care','Golden hour info','3D Anatomy','Contact Dr. Singh']
       },
@@ -3246,13 +3246,87 @@
         keys: ['submit','publish','write','article','blog','contribute','share','upload'],
         reply: "✍️ <strong>Contribute to OrthoChronicles</strong><br><br>We welcome contributions from:<ul><li>Orthopedic surgeons & residents</li><li>Physiotherapists</li><li>Medical students & researchers</li><li>Patients with their stories</li></ul><br>Submit your article, case study, blog post, or journal summary. Every submission is reviewed by Dr. Maninder Singh's team before publication.<br><br>Scroll to the <strong>Blog section</strong> and click <em>Submit Your Contribution</em>.",
         quick: ['Go to submit form','Upload a slide','Contact Dr. Singh']
+      },
+
+      /* ─────────── Site navigation & features ─────────── */
+      {
+        id: 'about',
+        keys: ['about','what is orthochronicles','orthochronicles','platform','who are you','who runs','what is this site','purpose','mission'],
+        reply: "🏥 <strong>About OrthoChronicles</strong><br><br>OrthoChronicles is a common platform for <strong>orthopedic surgeons, researchers, physiotherapists, medical students and patients</strong> to share thoughts, blogs, articles, journals and medical cases — building a richer body of orthopedic knowledge for everyone.<br><br>It's run by <strong>Dr. Maninder Singh</strong> (MS Orthopedics, Associate Professor, GMCH Amritsar) and offers a 3D anatomy explorer, a radiology atlas, a surgical case library, downloadable slides, an exercise guide and peer contributions.",
+        quick: ['What can you do?','Anatomy + Radiology','Case Library','Contact Dr. Singh']
+      },
+      {
+        id: 'help',
+        keys: ['what can you do','help','how can you help','features','options','menu','guide me','site map','navigate','sections','what do you have','show me around'],
+        reply: "🔨 <strong>I'm Hammer — here's everything I can guide you to:</strong><ul><li><strong>Anatomy + Radiology</strong> — 3D explorer, radiographs, MRI & CT atlases, teaching diagrams</li><li><strong>Case Library</strong> — 50 real surgical cases</li><li><strong>Slides</strong> — downloadable PowerPoint decks</li><li><strong>Gym</strong> — rehab & strengthening exercises</li><li><strong>Blog & Articles</strong> — joints, spine, trauma</li><li><strong>Recommended Books</strong></li><li><strong>Dr. Maninder Singh</strong> — profile & appointments</li></ul>Ask me about any joint, procedure, injury, or just say what you're looking for.",
+        quick: ['Anatomy + Radiology','Case Library','Gym & Exercises','Slides','Recommended Books']
+      },
+      {
+        id: 'anatomy_radiology',
+        keys: ['anatomy + radiology','anatomy and radiology','anatomy radiology','radiology tab','imaging section','radiological anatomy','radio anatomy'],
+        reply: "🩻 <strong>Anatomy + Radiology</strong><br><br>One hub with three subsections:<ul><li><strong>Anatomy</strong> — the interactive 3D skeleton/muscle/vessel explorer</li><li><strong>Radiology</strong> — real radiographs, MRI atlases (T1/T2/FLAIR) and CT atlases (NCCT, CECT, HRCT) you can scroll slice-by-slice with labels</li><li><strong>Diagram Anatomy</strong> — teaching schematics with construction lines, angles and normal values</li></ul><a href='radio-anatomy.html' style='color:var(--teal);font-weight:700;'>Open Anatomy + Radiology →</a>",
+        quick: ['3D Anatomy','MRI atlas','CT scans','Diagram Anatomy']
+      },
+      {
+        id: 'anatomy3d',
+        keys: ['3d anatomy','3d model','3d explorer','skeleton','rotate','interactive anatomy','bones model','muscles model','anatomy explorer','study anatomy'],
+        reply: "🦴 <strong>3D Anatomy Explorer</strong><br><br>Rotate and zoom a real human skeleton, then toggle layers — <strong>bones, muscles, tendons, arteries, veins, nerves and lymphatics</strong>. Click any structure to see its name and anatomical landmarks. Muscles are shaded red-to-white by mass.<br><br><a href='radio-anatomy.html#anatomy' style='color:var(--teal);font-weight:700;'>Launch the 3D Explorer →</a>",
+        quick: ['Anatomy + Radiology','Diagram Anatomy','MRI atlas','Contact Dr. Singh']
+      },
+      {
+        id: 'mri',
+        keys: ['mri','magnetic resonance','t1','t2','flair','mri atlas','mri brain','mri knee','mri lumbar','cross-sectional'],
+        reply: "🧲 <strong>MRI Atlases</strong><br><br>Scroll-through, fully-labelled MRI series in the Radiology section:<ul><li><strong>Brain</strong> — sagittal T1, axial T1, T2 and FLAIR (same subject, matched levels)</li><li><strong>Lumbar spine</strong> and <strong>knee</strong> sequences</li></ul>Every slice is labelled, with sequence-recognition tips (CSF dark on T1, bright on T2, suppressed on FLAIR).<br><br><a href='radio-anatomy.html#radiology' style='color:var(--teal);font-weight:700;'>Open the MRI atlas →</a>",
+        quick: ['CT scans','3D Anatomy','Radiographs','Diagram Anatomy']
+      },
+      {
+        id: 'ct',
+        keys: ['ct','ct scan','cect','ncct','hrct','computed tomography','ct atlas','ct brain','ct chest','ct abdomen','hounsfield','lung window','bone window'],
+        reply: "🩻 <strong>CT Atlases</strong><br><br>Openly-licensed normal CT series you can scroll with labels:<ul><li><strong>NCCT head</strong> — non-contrast, vertex to skull base</li><li><strong>HRCT thorax</strong> — high-resolution lung window, apices to bases</li><li><strong>CECT abdomen & pelvis</strong> — contrast-enhanced</li><li><strong>NCCT cervical spine</strong> — bone window, C1–C7</li></ul>Each carries HU values, windows and reading pitfalls.<br><br><a href='radio-anatomy.html#radiology' style='color:var(--teal);font-weight:700;'>Open the CT atlas →</a>",
+        quick: ['MRI atlas','Radiographs','3D Anatomy','Diagram Anatomy']
+      },
+      {
+        id: 'radiograph',
+        keys: ['radiograph','x-ray','xray','plain film','ap view','lateral view','lines and angles','angles','normal values','measurements','bohler','tonnis','diagram anatomy','schematic'],
+        reply: "📐 <strong>Radiographs & Diagram Anatomy</strong><br><br>The Radiology section has real AP/lateral radiographs of the shoulder, elbow, wrist, pelvis, knee, ankle and foot. <strong>Diagram Anatomy</strong> pairs each with an original schematic showing the construction lines, angles and normal values (Böhler's angle, Tönnis angle, and more) — searchable by name.<br><br><a href='radio-anatomy.html#diagram' style='color:var(--teal);font-weight:700;'>Open Diagram Anatomy →</a>",
+        quick: ['MRI atlas','CT scans','3D Anatomy','Case Library']
+      },
+      {
+        id: 'cases',
+        keys: ['case','cases','case library','surgical case','clinical case','case study','real case','50 cases'],
+        reply: "📁 <strong>Surgical Case Library</strong><br><br>50 real orthopedic cases — presentation, imaging, decision-making and outcome — spanning trauma, joint replacement, spine, sports and paediatrics. A quick way to see how theory meets the operating table.<br><br><a href='cases.html' style='color:var(--teal);font-weight:700;'>Browse the Case Library →</a>",
+        quick: ['Slides','3D Anatomy','Fractures & Trauma','Contact Dr. Singh']
+      },
+      {
+        id: 'gym',
+        keys: ['gym','exercise','exercises','workout','strengthening','stretch','stretching','fitness','physio exercises','rehab exercises','home exercises'],
+        reply: "🏋️ <strong>Gym & Exercises</strong><br><br>A guided library of rehabilitation and strengthening exercises with demonstration videos — useful after surgery or injury, and for keeping joints healthy. Always match the routine to your surgeon's or physiotherapist's protocol.<br><br><a href='gym.html' style='color:var(--teal);font-weight:700;'>Open the Gym →</a>",
+        quick: ['Recovery Tips','Physiotherapy tips','Case Library','Contact Dr. Singh']
+      },
+      {
+        id: 'books',
+        keys: ['book','books','reading','textbook','recommend','recommended reading','study material','references','bibliography'],
+        reply: "📚 <strong>Recommended Reading</strong><br><br>A curated list of standard orthopedic textbooks and references with links to legitimate publisher and retailer pages — Campbell's, Apley's, Rockwood & Green, and more. Great for residents and students building a core library.<br><br>Scroll to the <strong>Books section</strong> on the home page.",
+        quick: ['Slides','Case Library','3D Anatomy','Contact Dr. Singh']
+      },
+      {
+        id: 'videos',
+        keys: ['video','videos','youtube','watch','lecture','tutorial','demonstration'],
+        reply: "🎥 <strong>Videos</strong><br><br>Curated orthopedic lecture and technique videos are embedded on the home page and inside Hammer's <em>Videos</em> tab. Open me and switch to the Videos tab, or scroll to the <strong>Videos section</strong>.",
+        quick: ['Slides','Gym & Exercises','Case Library','3D Anatomy']
+      },
+      {
+        id: 'search_help',
+        keys: ['search','find','look for','where is','how do i find','cannot find'],
+        reply: "🔎 <strong>Finding things</strong><br><br>• Use the <strong>navigation bar</strong> at the top for Blog, Slides, Videos, Anatomy + Radiology, Case Library and Gym.<br>• Inside <strong>Anatomy + Radiology</strong> there's a search box for any line, angle or normal value.<br>• Or just tell me what you need — a joint, a procedure, an injury, or a page — and I'll point you there.",
+        quick: ['What can you do?','Anatomy + Radiology','Case Library','Slides']
       }
     ];
 
     /* ── Fallback ── */
     const FALLBACK = {
-      reply: "I'm not sure about that specific query. Here's how I can help:",
-      quick: ['Knee Replacement','Hip Replacement','Fractures','3D Anatomy','Contact Dr. Singh']
+      reply: "I didn't quite catch that — but I know this whole site. Try one of these, or ask about a joint, procedure, injury or page:<ul><li><strong>Anatomy + Radiology</strong> — 3D model, X-ray, MRI & CT</li><li><strong>Case Library</strong>, <strong>Slides</strong>, <strong>Gym</strong>, <strong>Books</strong></li><li>Knee / hip / shoulder, fractures, spine, sports, paediatrics</li><li><strong>Contact Dr. Singh</strong> or book an appointment</li></ul>",
+      quick: ['What can you do?','Anatomy + Radiology','Case Library','Gym & Exercises','Contact Dr. Singh']
     };
 
     /* ── Quick-reply shortcuts ── */
@@ -3262,8 +3336,19 @@
       'Shoulder Surgery':      'shoulder replacement',
       'Fractures & Trauma':    'fracture',
       'Recovery Tips':         'recovery',
-      '3D Anatomy':            'resources',
+      '3D Anatomy':            '3d anatomy',
       'Contact Dr. Singh':     'contact',
+      /* site-feature chips */
+      'What can you do?':      'what can you do',
+      'Anatomy + Radiology':   'anatomy + radiology',
+      'Case Library':          'case library',
+      'Gym & Exercises':       'gym',
+      'Slides':                'slides',
+      'Recommended Books':     'books',
+      'MRI atlas':             'mri',
+      'CT scans':              'ct scan',
+      'Diagram Anatomy':       'diagram anatomy',
+      'Radiographs':           'radiograph',
       'Book appointment':      'appointment',
       'Slides & Presentations':'slides',
       'Go to Slides':          null,
@@ -3410,15 +3495,32 @@
       respond(query);
     }
 
-    /* ── Respond ── */
+    /* ── Respond ──
+       Score every intent by the total length of the keywords it matches, so
+       a specific phrase ("3d anatomy", "hrct") beats a generic one
+       ("anatomy") that happens to be a substring. Ties keep KB order. */
+    const norm = s => s.toLowerCase().replace(/[^a-z0-9+ ]/g, ' ').replace(/\s+/g, ' ').trim();
     function respond(text) {
-      const t = text.toLowerCase();
-      const matched = KB.find(k => k.keys.some(kw => t.includes(kw)));
-      if (matched) {
-        addBot(matched.reply, matched.quick);
-      } else {
-        addBot(FALLBACK.reply, FALLBACK.quick);
-      }
+      const raw = norm(text);
+      const t = ' ' + raw + ' ';
+      const tokens = new Set(raw.split(' '));      // for short abbreviations
+      let best = null, bestScore = 0;
+      KB.forEach(k => {
+        if (k.id === 'greeting') return;
+        let score = 0;
+        k.keys.forEach(kw => {
+          const w = norm(kw);
+          if (!w) return;
+          // Short single-word keys (ct, mri, tkr…) must match a whole word so
+          // they don't fire inside "contact", "connect", etc. Everything else
+          // is a phrase/substring match.
+          const hit = (w.length <= 3 && !w.includes(' ')) ? tokens.has(w) : t.includes(w);
+          if (hit) score += w.length;
+        });
+        if (score > bestScore) { bestScore = score; best = k; }
+      });
+      if (best) addBot(best.reply, best.quick);
+      else addBot(FALLBACK.reply, FALLBACK.quick);
     }
 
     /* ── Send ── */
