@@ -348,5 +348,32 @@
   "count": 21,
   "licence": "CC BY-SA 4.0",
   "author": "511KeV"
+ },
+ "mri_shoulder": {
+  "dir": "mri_shoulder",
+  "slices": [
+   "mri_shoulder_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "RSatUSZ"
+ },
+ "mri_knee": {
+  "dir": "mri_knee",
+  "slices": [
+   "mri_knee_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "Hellerhoff"
+ },
+ "mri_abdomen": {
+  "dir": "mri_abdomen",
+  "slices": [
+   "mri_abdomen_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "Hellerhoff"
  }
 }

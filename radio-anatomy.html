@@ -454,6 +454,22 @@ const STACKS = {
     caption:'Brain — axial SWI, 21 levels (susceptibility-weighted, vertex to skull base)',
     slices:Array.from({length:21},(_,i)=>`brain_swi_${String(i+1).padStart(2,'0')}.jpg`)
   },
+  /* ── Single labelled MRI views (one representative image per region) ── */
+  mri_shoulder:{
+    dir:'mri_shoulder', by:'RSatUSZ', lic:'CC BY-SA 4.0',
+    caption:'Shoulder MRI — single coronal oblique view (one image, not a scroll series)',
+    slices:['mri_shoulder_01.jpg']
+  },
+  mri_knee:{
+    dir:'mri_knee', by:'Hellerhoff', lic:'CC BY-SA 4.0',
+    caption:'Knee MRI — single sagittal PD fat-sat view (one image, not a scroll series)',
+    slices:['mri_knee_01.jpg']
+  },
+  mri_abdomen:{
+    dir:'mri_abdomen', by:'Hellerhoff', lic:'CC BY-SA 4.0',
+    caption:'Abdomen MRI — single axial T1 view, upper abdomen (one image, not a scroll series)',
+    slices:['mri_abdomen_01.jpg']
+  },
   /* ── CT series (all CC0, Mikael Häggström / normal cases) ── */
   ct_brain:{
     dir:'ct_brain', by:'Mikael Häggström', lic:'CC0',
@@ -1361,6 +1377,46 @@ SLICE_LABELS.brain_swi = {
        {x:.50,y:.62,t:'Internal cerebral veins (dark)'},
        {x:.32,y:.44,t:'Cortical grey matter'},
        {x:.50,y:.20,t:'Interhemispheric fissure'} ]
+};
+/* ══════════════════════════════════════════════════════════════════
+   SINGLE MRI VIEWS — one representative labelled image per region.
+   Each was opened and read individually. These are single images, not
+   scroll series, so only slice 1 is labelled.
+   ══════════════════════════════════════════════════════════════════ */
+/* Shoulder — coronal oblique, fluid-sensitive (image left = lateral) */
+SLICE_LABELS.mri_shoulder = {
+  1:[ {x:.42,y:.42,t:'Humeral head'},
+      {x:.30,y:.34,t:'Greater tuberosity'},
+      {x:.15,y:.46,t:'Deltoid muscle'},
+      {x:.42,y:.22,t:'Supraspinatus muscle / tendon'},
+      {x:.45,y:.12,t:'Acromion'},
+      {x:.58,y:.42,t:'Glenoid'},
+      {x:.52,y:.40,t:'Glenohumeral joint'},
+      {x:.32,y:.70,t:'Humeral shaft'},
+      {x:.52,y:.60,t:'Axillary recess (joint fluid)'} ]
+};
+/* Knee — sagittal PD fat-sat (anterior = left) */
+SLICE_LABELS.mri_knee = {
+  1:[ {x:.16,y:.30,t:'Patella'},
+      {x:.20,y:.20,t:'Quadriceps tendon'},
+      {x:.12,y:.60,t:'Patellar tendon'},
+      {x:.28,y:.55,t:'Hoffa’s fat pad'},
+      {x:.42,y:.45,t:'Femoral condyle'},
+      {x:.42,y:.60,t:'Cruciate ligaments'},
+      {x:.48,y:.64,t:'Articular cartilage'},
+      {x:.48,y:.73,t:'Tibial plateau'},
+      {x:.75,y:.55,t:'Gastrocnemius / popliteal'} ]
+};
+/* Abdomen — axial T1 in-phase, upper abdomen (image left = patient right) */
+SLICE_LABELS.mri_abdomen = {
+  1:[ {x:.18,y:.50,t:'Liver'},
+      {x:.82,y:.22,t:'Spleen'},
+      {x:.40,y:.20,t:'Stomach'},
+      {x:.44,y:.48,t:'Aorta'},
+      {x:.66,y:.50,t:'Left kidney / adrenal'},
+      {x:.45,y:.70,t:'Vertebral body'},
+      {x:.45,y:.80,t:'Spinal cord'},
+      {x:.30,y:.86,t:'Paraspinal muscles'} ]
 };
 /* ══════════════════════════════════════════════════════════════════
    CT SLICE LABELS — every labelled level was opened and read; image
@@ -2288,6 +2344,89 @@ const REGIONS = [
   ],
   pearls:[
     {t:'Different levels here', d:'This SWI set is numbered vertex-first, so its slice numbers do not line up with the T1/T2/FLAIR/DWI atlases — match by anatomy, not by number.'}
+  ]
+},
+
+/* ─────────────── SINGLE MRI VIEWS ─────────────── */
+{
+  id:'stack_mri_shoulder', icon:'fa-bone', group:'Single MRI view',
+  name:'Shoulder MRI — Coronal',
+  sub:'One representative coronal oblique image · labelled · not a scroll series',
+  stack:'mri_shoulder',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'This is one representative coronal oblique slice, not a scroll-through series — a complete openly-licensed normal shoulder MRI series was not available. The rotator-cuff plane is chosen because it shows the most anatomy at once.'},
+    {n:'The rotator cuff', d:'The supraspinatus runs from the scapula over the top of the humeral head to the greater tuberosity. This oblique-coronal plane is the standard one for assessing it.'},
+    {n:'Glenohumeral joint', d:'The humeral head articulates with the shallow glenoid; the fibrocartilaginous labrum deepens the socket. Joint fluid pools in the dependent axillary recess.'},
+    {n:'The subacromial space', d:'Between the acromion above and the humeral head below lies the subacromial-subdeltoid bursa and the supraspinatus. Narrowing here is the basis of impingement.'}
+  ],
+  meas:[
+    {n:'Acromiohumeral distance', v:'7–14 mm', how:'Acromion undersurface to humeral head', why:'< 7 mm suggests cuff tear / superior migration'},
+    {n:'Supraspinatus signal', v:'Uniformly low', how:'Follow the tendon to its footprint', why:'Fluid signal indicates a tear'},
+    {n:'Fluid-sensitive sequence', v:'Fluid is bright', how:'Fat-saturated PD/T2', why:'Highlights tears, effusion and oedema'}
+  ],
+  pitfalls:[
+    {t:'Magic-angle artefact', d:'The cuff tendon can look falsely bright where it curves at ~55° to the field on short-TE sequences. Confirm on a T2-weighted image before calling a tear.'},
+    {t:'One slice is not a study', d:'A real read scrolls the whole cuff in two planes. Use this as an anatomy reference, not a diagnostic dataset.'}
+  ],
+  pearls:[
+    {t:'Learn the plane first', d:'Fix deltoid laterally, supraspinatus on top, glenoid medial and humeral shaft below — then every shoulder MRI orients itself.'}
+  ]
+},
+{
+  id:'stack_mri_knee', icon:'fa-bone', group:'Single MRI view',
+  name:'Knee MRI — Sagittal',
+  sub:'One representative sagittal PD fat-sat image · labelled · not a scroll series',
+  stack:'mri_knee',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative sagittal fat-saturated PD slice through the extensor mechanism, not a scroll series. It is chosen to show the patella, both tendons and the femorotibial joint together.'},
+    {n:'The extensor mechanism', d:'Quadriceps tendon → patella → patellar tendon → tibial tuberosity, in a straight line anteriorly. Hoffa’s fat pad sits behind the patellar tendon.'},
+    {n:'Femorotibial joint', d:'The femoral condyle rolls on the tibial plateau, cushioned by articular cartilage and the menisci. The cruciate ligaments cross in the intercondylar notch — seen on the more central slices.'},
+    {n:'Fat-saturated PD', d:'Fat is dark and fluid is bright, so a joint effusion, marrow oedema or a tendon tear stands out. Normal tendon and cartilage stay dark and smooth.'}
+  ],
+  meas:[
+    {n:'Articular cartilage', v:'Smooth, uniform', how:'Femoral & tibial surfaces', why:'Focal loss indicates chondral injury / OA'},
+    {n:'Patellar tendon', v:'≤ 7 mm thick, dark', how:'Sagittal, patella to tibia', why:'Thickened / bright = tendinopathy'},
+    {n:'Effusion', v:'Minimal', how:'Suprapatellar pouch', why:'Bright fluid on PD-FS signals joint pathology'}
+  ],
+  pitfalls:[
+    {t:'One slice misses the menisci', d:'Menisci and cruciates need the peripheral and central slices respectively. A single image cannot exclude a meniscal tear.'},
+    {t:'Magic-angle in tendons', d:'The patellar tendon can look bright where it curves; judge tendinopathy on thickness and T2, not one sequence.'}
+  ],
+  pearls:[
+    {t:'Follow the extensor line', d:'Quadriceps → patella → patellar tendon is the anterior landmark that anchors every sagittal knee.'}
+  ]
+},
+{
+  id:'stack_mri_abdomen', icon:'fa-layer-group', group:'Single MRI view',
+  name:'Abdomen MRI — Axial',
+  sub:'One representative axial T1 image, upper abdomen · labelled · not a scroll series',
+  stack:'mri_abdomen',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative axial T1 in-phase slice through the upper abdomen, not a scroll series. It shows the solid organs, aorta and vertebra at one level.'},
+    {n:'Solid organs', d:'Liver fills the right side (image left); spleen sits posterolaterally on the left. Both have uniform intermediate T1 signal.'},
+    {n:'The great vessel', d:'The aorta is the round structure just anterior and left of the vertebral body — the fixed midline landmark for orientation.'},
+    {n:'In-phase / out-of-phase', d:'This is the in-phase image of a chemical-shift pair. The out-of-phase partner drops signal where fat and water coexist in a voxel — the basis for detecting fatty liver and adrenal adenomas.'}
+  ],
+  meas:[
+    {n:'Aortic diameter', v:'< 3 cm', how:'Outer wall to outer wall', why:'≥ 3 cm defines an aneurysm'},
+    {n:'Chemical-shift drop', v:'Signal loss out-of-phase', how:'Compare the paired sequences', why:'Confirms intracellular fat (steatosis, adenoma)'},
+    {n:'Liver signal', v:'Uniform', how:'Compare with spleen', why:'Focal change flags a lesion'}
+  ],
+  pitfalls:[
+    {t:'One level, one plane', d:'The pancreas, kidneys and bowel span several levels. A single axial slice is an anatomy reference, not an abdominal survey.'},
+    {t:'Image left is the patient’s right', d:'The liver and right kidney appear on the left of the image — fix this before describing a side.'}
+  ],
+  pearls:[
+    {t:'Anchor on the aorta', d:'Find the aorta and vertebra first; liver, spleen and kidneys then fall into place around them.'}
   ]
 },
 
