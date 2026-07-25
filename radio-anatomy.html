@@ -439,6 +439,21 @@ const STACKS = {
     caption:'Brain — axial FLAIR, 21 slices (CSF suppressed)',
     slices:Array.from({length:21},(_,i)=>`brain_flair_${String(i+1).padStart(2,'0')}.jpg`)
   },
+  brain_dwi:{
+    dir:'brain_dwi', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial DWI, 21 slices (diffusion-weighted)',
+    slices:Array.from({length:21},(_,i)=>`brain_dwi_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  brain_adc:{
+    dir:'brain_adc', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial ADC map, 21 slices (diffusion coefficient)',
+    slices:Array.from({length:21},(_,i)=>`brain_adc_${String(i+1).padStart(2,'0')}.jpg`)
+  },
+  brain_swi:{
+    dir:'brain_swi', by:'511KeV', lic:'CC BY-SA 4.0',
+    caption:'Brain — axial SWI, 21 levels (susceptibility-weighted, vertex to skull base)',
+    slices:Array.from({length:21},(_,i)=>`brain_swi_${String(i+1).padStart(2,'0')}.jpg`)
+  },
   /* ── CT series (all CC0, Mikael Häggström / normal cases) ── */
   ct_brain:{
     dir:'ct_brain', by:'Mikael Häggström', lic:'CC0',
@@ -1265,6 +1280,88 @@ SLICE_LABELS.brain_t1ax[14] = [
   {x:.505,y:.175,t:'Diploic space / scalp fat'}
 ];
 
+/* ══════════════════════════════════════════════════════════════════
+   BRAIN DWI / ADC / SWI — same subject and levels as the T1/T2/FLAIR
+   atlases (511KeV, CC BY-SA 4.0). Each labelled level was opened and
+   read individually; image left is the patient's right.
+   ══════════════════════════════════════════════════════════════════ */
+/* DWI — grey matter bright, CSF dark; the stroke sequence */
+SLICE_LABELS.brain_dwi = {
+  8:[  {x:.35,y:.26,t:'Orbit / globe'},
+       {x:.30,y:.48,t:'Temporal lobe'},
+       {x:.36,y:.42,t:'Sylvian fissure'},
+       {x:.50,y:.46,t:'Interpeduncular cistern'},
+       {x:.50,y:.53,t:'Midbrain'},
+       {x:.50,y:.63,t:'Pons'},
+       {x:.50,y:.80,t:'Cerebellar vermis'},
+       {x:.38,y:.68,t:'Cerebellar hemisphere'} ],
+  11:[ {x:.47,y:.35,t:'Frontal horn, lateral ventricle'},
+       {x:.50,y:.30,t:'Genu of corpus callosum'},
+       {x:.43,y:.41,t:'Caudate head'},
+       {x:.40,y:.47,t:'Lentiform nucleus'},
+       {x:.45,y:.46,t:'Internal capsule'},
+       {x:.55,y:.50,t:'Thalamus'},
+       {x:.44,y:.61,t:'Atrium / occipital horn'},
+       {x:.50,y:.63,t:'Splenium of corpus callosum'},
+       {x:.31,y:.45,t:'Sylvian fissure'},
+       {x:.50,y:.18,t:'Interhemispheric fissure'} ],
+  14:[ {x:.45,y:.48,t:'Centrum semiovale'},
+       {x:.50,y:.27,t:'Interhemispheric fissure'},
+       {x:.33,y:.40,t:'Cortical grey matter'},
+       {x:.42,y:.56,t:'Corona radiata'},
+       {x:.42,y:.70,t:'Parietal lobe'},
+       {x:.50,y:.83,t:'Superior sagittal sinus'},
+       {x:.50,y:.19,t:'Falx cerebri'} ]
+};
+/* ADC map — the DWI counterpart; free water is bright, so CSF is white */
+SLICE_LABELS.brain_adc = {
+  8:[  {x:.35,y:.26,t:'Globe (bright — high ADC)'},
+       {x:.30,y:.48,t:'Temporal lobe'},
+       {x:.50,y:.44,t:'Suprasellar cistern (bright CSF)'},
+       {x:.50,y:.53,t:'Midbrain'},
+       {x:.50,y:.63,t:'Pons'},
+       {x:.50,y:.80,t:'Cerebellar vermis'},
+       {x:.38,y:.68,t:'Cerebellar hemisphere'} ],
+  11:[ {x:.47,y:.35,t:'Frontal horn (bright CSF)'},
+       {x:.43,y:.41,t:'Caudate head'},
+       {x:.40,y:.47,t:'Lentiform nucleus'},
+       {x:.45,y:.46,t:'Internal capsule'},
+       {x:.55,y:.50,t:'Thalamus'},
+       {x:.44,y:.60,t:'Atrium (bright CSF)'},
+       {x:.50,y:.63,t:'Splenium of corpus callosum'},
+       {x:.33,y:.42,t:'Cortical grey matter'},
+       {x:.50,y:.18,t:'Interhemispheric fissure'} ],
+  14:[ {x:.45,y:.48,t:'Centrum semiovale'},
+       {x:.50,y:.27,t:'Interhemispheric fissure'},
+       {x:.33,y:.40,t:'Cortical grey matter'},
+       {x:.42,y:.70,t:'Parietal lobe'},
+       {x:.50,y:.83,t:'Superior sagittal sinus'},
+       {x:.50,y:.19,t:'Falx cerebri'} ]
+};
+/* SWI — veins and iron are dark; numbered vertex → skull base */
+SLICE_LABELS.brain_swi = {
+  7:[  {x:.45,y:.35,t:'Superior frontal gyrus'},
+       {x:.50,y:.31,t:'Superior sagittal sinus'},
+       {x:.38,y:.45,t:'Cortical vein (dark on SWI)'},
+       {x:.42,y:.58,t:'Precentral / central sulcus'},
+       {x:.42,y:.68,t:'Parietal cortex'},
+       {x:.50,y:.80,t:'Superior sagittal sinus'} ],
+  11:[ {x:.42,y:.50,t:'Centrum semiovale'},
+       {x:.40,y:.45,t:'Deep medullary veins (dark)'},
+       {x:.50,y:.25,t:'Interhemispheric fissure'},
+       {x:.33,y:.42,t:'Cortical grey matter'},
+       {x:.42,y:.70,t:'Parietal lobe'},
+       {x:.50,y:.80,t:'Superior sagittal sinus'} ],
+  15:[ {x:.47,y:.38,t:'Frontal horn'},
+       {x:.44,y:.43,t:'Caudate head'},
+       {x:.41,y:.47,t:'Putamen'},
+       {x:.43,y:.49,t:'Globus pallidus (dark — iron)'},
+       {x:.54,y:.50,t:'Thalamus'},
+       {x:.50,y:.57,t:'Midbrain nuclei (iron)'},
+       {x:.50,y:.62,t:'Internal cerebral veins (dark)'},
+       {x:.32,y:.44,t:'Cortical grey matter'},
+       {x:.50,y:.20,t:'Interhemispheric fissure'} ]
+};
 /* ══════════════════════════════════════════════════════════════════
    CT SLICE LABELS — every labelled level was opened and read; image
    left is the patient's right. Localizer panels were cropped off the
@@ -2104,6 +2201,93 @@ const REGIONS = [
   ],
   pearls:[
     {t:'The three-sequence habit', d:'T1 for anatomy, T2 to find it, FLAIR to prove it is not CSF. Open the same slice number in all three atlases and the logic becomes obvious.'}
+  ]
+},
+{
+  id:'stack_brain_dwi', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Axial DWI',
+  sub:'Diffusion-weighted, the stroke sequence · same levels as T1/T2/FLAIR',
+  stack:'brain_dwi',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'What DWI shows', d:'Diffusion-weighted imaging measures the random motion of water molecules. Where diffusion is restricted — most importantly in acute ischaemic stroke — the tissue stays bright. It is the single most important sequence in acute neuro-imaging.'},
+    {n:'Acute infarct is bright', d:'A cytotoxically oedematous infarct restricts diffusion and lights up on DWI within minutes to hours, long before CT or conventional MRI change. Always pair it with the ADC map.'},
+    {n:'Grey–white contrast', d:'On this b1000 image grey matter is a little brighter than white, and CSF is dark. Recognising that pattern tells you it is DWI, not T2.'},
+    {n:'Read it with ADC', d:'True restriction is bright on DWI and dark on ADC. Bright on both is "T2 shine-through", not restriction — the commonest DWI trap.'},
+    {n:'Susceptibility artefact', d:'DWI is an echo-planar sequence, so it distorts near bone–air interfaces — the skull base, sinuses and posterior fossa. Confirm findings there on another sequence.'}
+  ],
+  meas:[
+    {n:'b-value', v:'~1000 s/mm²', how:'Standard diffusion weighting', why:'Higher b = more diffusion sensitivity'},
+    {n:'Restriction pattern', v:'Bright DWI + dark ADC', how:'Compare the two maps', why:'Defines true diffusion restriction (acute infarct)'},
+    {n:'T2 shine-through', v:'Bright DWI + bright ADC', how:'Compare the two maps', why:'Not restriction — an old lesion showing through'},
+    {n:'Time window', v:'Positive within minutes', how:'DWI in hyperacute stroke', why:'Positive long before CT or T2/FLAIR change'}
+  ],
+  pitfalls:[
+    {t:'T2 shine-through', d:'A bright DWI focus that is also bright on ADC is T2 signal bleeding through, not restriction. Never call a stroke on DWI alone.'},
+    {t:'Distortion at the skull base', d:'Echo-planar geometric distortion mimics or hides brainstem and temporal-lobe lesions. Correlate with T2/FLAIR.'}
+  ],
+  pearls:[
+    {t:'DWI + ADC are one test', d:'They are always read as a pair. Open the same slice number here and in the ADC atlas and compare — that is how restriction is confirmed.'}
+  ]
+},
+{
+  id:'stack_brain_adc', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — ADC Map',
+  sub:'The DWI counterpart · free water is bright, so CSF is white',
+  stack:'brain_adc',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'What the ADC map is', d:'The Apparent Diffusion Coefficient map is calculated from the diffusion images. It removes the T2 component of DWI, so it reflects diffusion alone — the quantitative partner to DWI.'},
+    {n:'CSF is bright', d:'Free water diffuses easily and has a high ADC, so CSF is white and the ventricles are the brightest structure — the opposite of DWI. That inversion is how you tell an ADC map from DWI at a glance.'},
+    {n:'Restriction is dark', d:'An acute infarct has a low ADC and appears dark. Bright on DWI plus dark here confirms true diffusion restriction.'},
+    {n:'Grey and white matter', d:'Brain parenchyma is mid-grey with modest grey–white contrast. Symmetric low signal in the deep grey nuclei can be normal — compare the two sides.'},
+    {n:'Quantify when unsure', d:'Because ADC is quantitative, a region of interest gives an absolute value (×10⁻³ mm²/s), useful when the visual impression is borderline.'}
+  ],
+  meas:[
+    {n:'Normal white matter ADC', v:'~0.7 ×10⁻³ mm²/s', how:'ROI over normal white matter', why:'Baseline for comparison'},
+    {n:'Acute infarct ADC', v:'Reduced (dark)', how:'ROI over the lesion', why:'Low ADC confirms restriction'},
+    {n:'CSF ADC', v:'~3 ×10⁻³ mm²/s (bright)', how:'ROI over a ventricle', why:'Free-water reference; confirms it is an ADC map'},
+    {n:'ADC pseudonormalisation', v:'~7–10 days', how:'Serial imaging', why:'ADC re-normalises as an infarct ages — timing clue'}
+  ],
+  pitfalls:[
+    {t:'Pseudonormalisation', d:'Around a week after a stroke the ADC passes back through normal before turning bright. A normal-looking ADC does not exclude a subacute infarct.'},
+    {t:'Bright ADC is usually benign', d:'High-ADC (bright) lesions are vasogenic oedema or old damage, not acute restriction — the reassuring half of the DWI/ADC pair.'}
+  ],
+  pearls:[
+    {t:'Always the pair', d:'Never interpret the ADC map without its DWI, or vice versa. Match the slice number across the two atlases.'}
+  ]
+},
+{
+  id:'stack_brain_swi', icon:'fa-brain', group:'Slice atlas',
+  name:'Brain MRI — Axial SWI',
+  sub:'Susceptibility-weighted · veins and iron are dark · vertex to skull base',
+  stack:'brain_swi',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SCROLL ATLAS');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the series</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'What SWI shows', d:'Susceptibility-weighted imaging is exquisitely sensitive to anything that distorts the local magnetic field — deoxygenated blood, haemorrhage products (haemosiderin) and iron. All of these appear very dark (low signal).'},
+    {n:'Veins are dark', d:'Deoxygenated venous blood is strongly hypointense, so cortical veins, the deep medullary veins and the internal cerebral veins stand out as fine dark lines — a normal venogram, essentially.'},
+    {n:'Iron in the deep grey', d:'The globus pallidus, red nucleus and substantia nigra normally contain iron and are dark on SWI, more so with age. Recognising the normal pattern lets you spot abnormal deposition.'},
+    {n:'Microbleeds and calcium', d:'Tiny dark foci are the hallmark of cerebral microbleeds (hypertension, amyloid, trauma). Calcium is also dark — the filtered phase image distinguishes the two.'},
+    {n:'The best sequence for blood', d:'For any suspected haemorrhage, cavernoma or diffuse axonal injury, SWI is more sensitive than every other sequence.'}
+  ],
+  meas:[
+    {n:'Microbleed size', v:'≤ 5–10 mm, round', how:'Blooming dark focus on SWI', why:'Defines a cerebral microbleed'},
+    {n:'Deep grey iron', v:'Symmetric low signal', how:'Globus pallidus, SN, red nucleus', why:'Normal with age; asymmetry is the flag'},
+    {n:'Venous signal', v:'Hypointense (dark)', how:'Trace the cortical and deep veins', why:'Confirms it is SWI; maps venous anatomy'},
+    {n:'Blooming', v:'Lesion looks larger than true', how:'Compare with T2*/GRE', why:'Susceptibility exaggerates size — do not overcall'}
+  ],
+  pitfalls:[
+    {t:'Calcium mimics blood', d:'Both calcium and haemosiderin are dark on the magnitude image. Use the phase image to tell them apart before calling a bleed.'},
+    {t:'Blooming exaggerates size', d:'A microbleed blooms larger than its true extent. Measure conservatively and do not mistake several small foci for one large lesion.'}
+  ],
+  pearls:[
+    {t:'Different levels here', d:'This SWI set is numbered vertex-first, so its slice numbers do not line up with the T1/T2/FLAIR/DWI atlases — match by anatomy, not by number.'}
   ]
 },
 
