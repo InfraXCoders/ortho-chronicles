@@ -174,7 +174,6 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 .slabels{position:absolute;inset:0;pointer-events:none;}
 .slabels svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
 .lead-line{fill:none;stroke:rgba(45,212,191,.75);stroke-width:1.1;}
-.lead-head{fill:rgba(45,212,191,.95);}
 .lead-dot{fill:var(--teal);stroke:rgba(0,0,0,.6);stroke-width:1.4;}
 /* caption chips in the gutters */
 /* Wraps rather than overflowing the gutter; the layout measures the
@@ -2625,12 +2624,9 @@ function drawSliceLabels(){
 
   const paths=items.map(o=>{
     const cx=o.side==='L'?capL:capR, bx=o.side==='L'?bendL:bendR;
-    // Stop the line short of the anchor so the arrowhead tip lands on it.
-    const dx=o.ax-bx, dy=o.ay-o.cy, len=Math.hypot(dx,dy)||1;
-    const tx=o.ax-(dx/len)*7, ty=o.ay-(dy/len)*7;
-    const ang=Math.atan2(dy,dx)*180/Math.PI;
-    return `<path class="lead-line" d="M${cx.toFixed(1)},${o.cy.toFixed(1)} L${bx.toFixed(1)},${o.cy.toFixed(1)} L${tx.toFixed(1)},${ty.toFixed(1)}"/>`
-      + `<path class="lead-head" d="M0,0 L-7,-3 L-7,3 Z" transform="translate(${o.ax.toFixed(1)},${o.ay.toFixed(1)}) rotate(${ang.toFixed(1)})"/>`
+    // Leader runs from the caption edge, turns once at the image edge, and
+    // ends on the anchor dot — no arrowhead.
+    return `<path class="lead-line" d="M${cx.toFixed(1)},${o.cy.toFixed(1)} L${bx.toFixed(1)},${o.cy.toFixed(1)} L${o.ax.toFixed(1)},${o.ay.toFixed(1)}"/>`
       + `<circle class="lead-dot" cx="${o.ax.toFixed(1)}" cy="${o.ay.toFixed(1)}" r="2.4"/>`;
   }).join('');
 
