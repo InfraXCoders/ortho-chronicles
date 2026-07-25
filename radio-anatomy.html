@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Radiological Anatomy — Lines, Angles &amp; Normal Values | OrthoChronicles</title>
+<title>Anatomy + Radiology — 3D Anatomy, Radiographs, MRI, CT &amp; Diagrams | OrthoChronicles</title>
 <meta name="description" content="Interactive radiological anatomy for orthopaedics: the alignment lines, angles and normal values on every standard view — cervical spine, shoulder, elbow, wrist, pelvis, hip, knee, ankle and foot — with measurement technique, clinical significance and the classic pitfalls. By Dr. Maninder Singh, MS Orthopedics, GMCH Amritsar." />
 <link rel="canonical" href="https://www.orthochronicles.info/radio-anatomy.html" />
 <meta property="og:type" content="website" />
@@ -43,6 +43,35 @@ a{color:inherit;}
 .tb-btn:hover{background:rgba(255,255,255,.13);}
 .tb-btn.on{background:rgba(45,212,191,.22);border-color:rgba(45,212,191,.45);}
 .tb-btn.home{background:var(--gold);border-color:var(--gold);color:#1a1204;}
+
+/* three-way subsection switch */
+#sectionTabs{display:inline-flex;gap:4px;padding:4px;border-radius:11px;
+  background:rgba(0,0,0,.28);border:1px solid var(--line);}
+.sec-tab{background:transparent;border:0;color:var(--mut);font-family:inherit;
+  padding:8px 14px;border-radius:8px;font-size:.83rem;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:.16s;}
+.sec-tab:hover{color:var(--txt);}
+.sec-tab.on{background:rgba(45,212,191,.24);color:#eafaf7;
+  box-shadow:0 1px 0 rgba(45,212,191,.35) inset;}
+
+/* 3D anatomy embed */
+#anatomyFrame{position:fixed;inset:58px 0 0 0;border:0;width:100%;display:none;background:#0a0f18;}
+body.sec-anatomy #stage{display:none;}
+body.sec-anatomy #anatomyFrame{display:block;}
+
+/* Tighten the bar so three sections, Lines and Home all fit narrow screens.
+   Under 760px the section tabs collapse to icons; the brand text hides too. */
+@media(max-width:760px){
+  #topbar{gap:7px;padding:0 8px;}
+  .brand span{display:none;}
+  #sectionTabs .lbl{display:none;}
+  .sec-tab{padding:8px 11px;}
+  #btnLines{padding:8px 10px;}
+}
+@media(max-width:420px){
+  .tb-btn.home span,.tb-btn.home{font-size:0;}
+  .tb-btn.home i{font-size:.82rem;}
+}
 
 /* ---------- layout ---------- */
 #stage{position:fixed;inset:58px 0 0 0;display:flex;}
@@ -253,13 +282,15 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 <div id="topbar">
   <a href="index.html" class="brand">
     <img src="assets/logo.png" alt="OrthoChronicles" onerror="this.style.display='none'"/>
-    <span><i class="fas fa-x-ray"></i> Radiological Anatomy</span>
+    <span><i class="fas fa-layer-group"></i> Anatomy + Radiology</span>
   </a>
   <div class="tb-spacer"></div>
-  <button class="tb-btn on" id="btnDiagram"><i class="fas fa-draw-polygon"></i> Diagram</button>
-  <button class="tb-btn" id="btnFilm"><i class="fas fa-x-ray"></i> Radiograph</button>
+  <div id="sectionTabs">
+    <button class="sec-tab" id="secAnatomy"><i class="fas fa-cube"></i> <span class="lbl">Anatomy</span></button>
+    <button class="sec-tab on" id="secRadiology"><i class="fas fa-x-ray"></i> <span class="lbl">Radiology</span></button>
+    <button class="sec-tab" id="secDiagram"><i class="fas fa-draw-polygon"></i> <span class="lbl">Diagram Anatomy</span></button>
+  </div>
   <button class="tb-btn on" id="btnLines"><i class="fas fa-ruler-combined"></i> Lines &amp; Angles</button>
-  <a class="tb-btn" href="anatomy.html"><i class="fas fa-cube"></i> 3D Anatomy</a>
   <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i> Site Home</a>
 </div>
 
@@ -291,6 +322,9 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
     <div class="pn-body" id="pnBody"></div>
   </div>
 </div>
+
+<!-- Anatomy subsection: the 3D explorer, loaded on demand -->
+<iframe id="anatomyFrame" title="3D Anatomy Explorer" loading="lazy"></iframe>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
@@ -2404,12 +2438,22 @@ const REGIONS = [
    ══════════════════════════════════════════════════════════════════ */
 const $ = id=>document.getElementById(id);
 const esc = s=>String(s).replace(/&(?!(amp|lt|gt|#\d+);)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-let current=null, showLines=true, mode='diagram';
+let current=null, showLines=true, mode='film', section='radiology';
 
-/* ---- rail ---- */
-(function buildRail(){
+/* ---- how each region is filed into the two rail sections ----
+   Radiology = anything with a radiograph or a slice stack.
+   Diagram Anatomy = the musculoskeletal teaching schematics.
+   Joint regions carry both, so they appear in each — the schematic under
+   Diagram Anatomy, the radiographs under Radiology. */
+const MSK_GROUPS=['Spine','Upper limb','Lower limb','Paediatric'];
+const isRadiology = r => !!(r.stack || (r.films && r.films.length));
+const isDiagram   = r => MSK_GROUPS.includes(r.group);
+const SECTION_FILTER={ radiology:isRadiology, diagram:isDiagram };
+
+/* ---- rail (rebuilt per section) ---- */
+function buildRail(pred){
   const byGroup={};
-  REGIONS.forEach(r=>{ (byGroup[r.group]=byGroup[r.group]||[]).push(r); });
+  REGIONS.filter(pred).forEach(r=>{ (byGroup[r.group]=byGroup[r.group]||[]).push(r); });
   let html='';
   Object.keys(byGroup).forEach(g=>{
     html+=`<div class="rail-h">${g}</div>`;
@@ -2418,10 +2462,10 @@ let current=null, showLines=true, mode='diagram';
     });
   });
   $('regionList').innerHTML=html;
-  $('regionList').addEventListener('click',e=>{
-    const row=e.target.closest('.rgn'); if(row) show(row.dataset.id);
-  });
-})();
+}
+$('regionList').addEventListener('click',e=>{
+  const row=e.target.closest('.rgn'); if(row) show(row.dataset.id);
+});
 
 /* ---- render a region ---- */
 function show(id, focusLm){
@@ -2818,20 +2862,43 @@ $('btnLines').addEventListener('click',()=>{
   applyLines();
 });
 
-/* ---- diagram ⇄ radiograph ---- */
+/* syncModeButtons is kept because renderStage/show still call it, but the
+   only per-mode control left is the Lines toggle, meaningful on schematics. */
 function syncModeButtons(){
-  $('btnDiagram').classList.toggle('on',mode==='diagram');
-  $('btnFilm').classList.toggle('on',mode==='film');
-  // Construction lines only mean anything on the schematic
-  $('btnLines').style.opacity = mode==='diagram'?'1':'.4';
-  $('btnLines').disabled = mode!=='diagram';
+  const onDiagram = section==='diagram';
+  $('btnLines').style.display = onDiagram ? '' : 'none';
+  $('btnLines').style.opacity = onDiagram ? '1' : '.4';
+  $('btnLines').disabled = !onDiagram;
 }
-function setMode(m){
-  mode=m; syncModeButtons();
-  if(current) renderStage(current);
+
+/* ---- Anatomy | Radiology | Diagram Anatomy ---- */
+function setSection(sec){
+  section=sec;
+  ['secAnatomy','secRadiology','secDiagram'].forEach(id=>
+    $(id).classList.toggle('on',
+      (id==='secAnatomy'&&sec==='anatomy3d')||
+      (id==='secRadiology'&&sec==='radiology')||
+      (id==='secDiagram'&&sec==='diagram')));
+
+  if(sec==='anatomy3d'){
+    document.body.classList.add('sec-anatomy');
+    const f=$('anatomyFrame'); if(!f.getAttribute('src')) f.setAttribute('src','anatomy.html');
+    $('btnLines').style.display='none';
+    return;
+  }
+  document.body.classList.remove('sec-anatomy');
+  mode = sec==='radiology' ? 'film' : 'diagram';
+  syncModeButtons();
+  buildRail(SECTION_FILTER[sec]);
+  // Open the first region of this section (or keep the current one if it
+  // still belongs here).
+  const list=REGIONS.filter(SECTION_FILTER[sec]);
+  const keep = current && list.some(r=>r.id===current.id) ? current.id : (list[0]&&list[0].id);
+  if(keep) show(keep);
 }
-$('btnDiagram').addEventListener('click',()=>setMode('diagram'));
-$('btnFilm').addEventListener('click',()=>setMode('film'));
+$('secAnatomy').addEventListener('click',()=>setSection('anatomy3d'));
+$('secRadiology').addEventListener('click',()=>setSection('radiology'));
+$('secDiagram').addEventListener('click',()=>setSection('diagram'));
 
 /* ---- search across landmarks, measurements and pitfalls ---- */
 /* Strip diacritics so "bohler" finds Böhler and "tonnis" finds Tönnis —
@@ -2865,6 +2932,11 @@ $('search').addEventListener('input',()=>{
 $('results').addEventListener('click',e=>{
   const el=e.target.closest('.res'); if(!el||!el.dataset.i) return;
   const h=INDEX[+el.dataset.i];
+  const r=REGIONS.find(x=>x.id===h.rid);
+  // Landmarks and measurements live on the schematic; jump to the section
+  // that actually holds this region.
+  const sec = isDiagram(r) ? 'diagram' : 'radiology';
+  if(section!==sec) setSection(sec);
   show(h.rid, h.lm);
   if(h.tab) selectTab(h.tab);
   $('results').classList.remove('show'); $('search').value='';
@@ -2881,17 +2953,24 @@ window.addEventListener('keydown',e=>{
     if(e.key==='ArrowDown'){ e.preventDefault(); stackState.go(stackState.i+1); return; }
     if(e.key==='ArrowUp'){   e.preventDefault(); stackState.go(stackState.i-1); return; }
   }
-  const i=REGIONS.findIndex(r=>r.id===(current&&current.id));
-  if(e.key==='ArrowDown'&&i<REGIONS.length-1) show(REGIONS[i+1].id);
-  if(e.key==='ArrowUp'&&i>0) show(REGIONS[i-1].id);
+  // Arrow keys walk the current section's rail, not the full region list.
+  if(section==='anatomy3d') return;
+  const list=REGIONS.filter(SECTION_FILTER[section]);
+  const i=list.findIndex(r=>r.id===(current&&current.id));
+  if(e.key==='ArrowDown'&&i<list.length-1) show(list[i+1].id);
+  if(e.key==='ArrowUp'&&i>0) show(list[i-1].id);
 });
 
 /* debug handle for automated checks */
 if(/debug=1/.test(location.search+location.hash)){
-  window.__radio = {REGIONS, SLICE_LABELS, show, selectTab, highlight, count:()=>REGIONS.length};
+  window.__radio = {REGIONS, SLICE_LABELS, show, selectTab, highlight,
+    setSection, getSection:()=>section, isRadiology, isDiagram, count:()=>REGIONS.length};
 }
 
-show(REGIONS[0].id);
+/* Deep links: #anatomy / #diagram / #radiology pick the opening section. */
+const hashSec = /anatomy3d|3d|anatomy/.test(location.hash) ? 'anatomy3d'
+              : /diagram/.test(location.hash) ? 'diagram' : 'radiology';
+setSection(hashSec);
 })();
 </script>
 </body>
