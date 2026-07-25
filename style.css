@@ -3052,7 +3052,7 @@ html {
 /* â”€â”€ 29. Floating buttons â€” tighter on 380px â”€â”€ */
 @media (max-width: 380px) {
   .float-wa { right: 10px; bottom: 16px; width: 48px; height: 48px; font-size: 1.2rem; }
-  .hmr-btn { right: 10px; bottom: 74px; width: 48px; height: 48px; font-size: 1.15rem; }
+  .hmr-btn { left: 10px; bottom: 74px; width: 48px; height: 48px; font-size: 1.15rem; }
 }
 
 /* â”€â”€ 30. Hammer panel â€” fluid max-height so it never overflows short phones â”€â”€ */
@@ -3196,7 +3196,7 @@ html {
 
 /* â”€â”€ Trigger button â”€â”€ */
 .hmr-btn {
-  position: fixed; bottom: 100px; right: 30px;
+  position: fixed; bottom: 100px; left: 30px;
   width: 58px; height: 58px; border-radius: 50%;
   background: linear-gradient(135deg, var(--teal-dark), var(--teal));
   color: #fff; font-size: 1.35rem;
@@ -3226,7 +3226,7 @@ html {
 
 /* â”€â”€ Chat panel â”€â”€ */
 .hmr-panel {
-  position: fixed; bottom: 172px; right: 30px;
+  position: fixed; bottom: 172px; left: 30px;
   width: 380px; height: 530px;
   background: #0F1D3A;
   border-radius: 20px;
