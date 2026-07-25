@@ -54,8 +54,11 @@ a{color:inherit;}
 .sec-tab.on{background:rgba(45,212,191,.24);color:#eafaf7;
   box-shadow:0 1px 0 rgba(45,212,191,.35) inset;}
 
-/* 3D anatomy embed */
-#anatomyFrame{position:fixed;inset:58px 0 0 0;border:0;width:100%;display:none;background:#0a0f18;}
+/* 3D anatomy embed. An iframe is a replaced element, so top+bottom will
+   NOT stretch it — its height falls back to the 150px intrinsic default.
+   Give it an explicit height that fills below the 58px top bar. */
+#anatomyFrame{position:fixed;top:58px;left:0;border:0;width:100%;
+  height:calc(100vh - 58px);display:none;background:#0a0f18;}
 body.sec-anatomy #stage{display:none;}
 body.sec-anatomy #anatomyFrame{display:block;}
 
