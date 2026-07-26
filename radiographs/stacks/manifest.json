@@ -375,5 +375,50 @@
   "count": 1,
   "licence": "CC BY-SA 4.0",
   "author": "Hellerhoff"
+ },
+ "mri_elbow": {
+  "dir": "mri_elbow",
+  "slices": [
+   "mri_elbow_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "Hellerhoff"
+ },
+ "mri_hip": {
+  "dir": "mri_hip",
+  "slices": [
+   "mri_hip_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "Hellerhoff"
+ },
+ "mri_cervical": {
+  "dir": "mri_cervical",
+  "slices": [
+   "mri_cervical_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 4.0",
+  "author": "Hellerhoff"
+ },
+ "mri_thoracic": {
+  "dir": "mri_thoracic",
+  "slices": [
+   "mri_thoracic_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC BY-SA 3.0",
+  "author": "Hellerhoff"
+ },
+ "mri_chest": {
+  "dir": "mri_chest",
+  "slices": [
+   "mri_chest_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC0",
+  "author": "MBq"
  }
 }

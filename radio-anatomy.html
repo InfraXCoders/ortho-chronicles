@@ -470,6 +470,31 @@ const STACKS = {
     caption:'Abdomen MRI — single axial T1 view, upper abdomen (one image, not a scroll series)',
     slices:['mri_abdomen_01.jpg']
   },
+  mri_elbow:{
+    dir:'mri_elbow', by:'Hellerhoff', lic:'CC BY-SA 4.0',
+    caption:'Elbow MRI — single coronal PD fat-sat view (one image, not a scroll series)',
+    slices:['mri_elbow_01.jpg']
+  },
+  mri_hip:{
+    dir:'mri_hip', by:'Hellerhoff', lic:'CC BY-SA 4.0',
+    caption:'Pelvis / hip MRI — single coronal T1 view, both hips (one image, not a scroll series)',
+    slices:['mri_hip_01.jpg']
+  },
+  mri_cervical:{
+    dir:'mri_cervical', by:'Hellerhoff', lic:'CC BY-SA 4.0',
+    caption:'Cervical spine MRI — single sagittal T2 view (one image, not a scroll series)',
+    slices:['mri_cervical_01.jpg']
+  },
+  mri_thoracic:{
+    dir:'mri_thoracic', by:'Hellerhoff', lic:'CC BY-SA 3.0',
+    caption:'Thoracic spine MRI — single sagittal T2 view, with an incidental intradural mass (one image, not a scroll series)',
+    slices:['mri_thoracic_01.jpg']
+  },
+  mri_chest:{
+    dir:'mri_chest', by:'MBq', lic:'CC0',
+    caption:'Cardiac MRI — single long-axis bright-blood view of the heart (one image, not a scroll series)',
+    slices:['mri_chest_01.jpg']
+  },
   /* ── CT series (all CC0, Mikael Häggström / normal cases) ── */
   ct_brain:{
     dir:'ct_brain', by:'Mikael Häggström', lic:'CC0',
@@ -1417,6 +1442,62 @@ SLICE_LABELS.mri_abdomen = {
       {x:.45,y:.70,t:'Vertebral body'},
       {x:.45,y:.80,t:'Spinal cord'},
       {x:.30,y:.86,t:'Paraspinal muscles'} ]
+};
+/* Elbow — coronal PD fat-sat (image right = lateral) */
+SLICE_LABELS.mri_elbow = {
+  1:[ {x:.48,y:.34,t:'Distal humerus'},
+      {x:.58,y:.50,t:'Capitellum'},
+      {x:.43,y:.52,t:'Trochlea'},
+      {x:.60,y:.64,t:'Radial head'},
+      {x:.36,y:.70,t:'Ulna (coronoid)'},
+      {x:.66,y:.46,t:'Lateral epicondyle / common extensor origin'},
+      {x:.30,y:.47,t:'Medial epicondyle'},
+      {x:.30,y:.58,t:'Ulnar collateral ligament'},
+      {x:.59,y:.60,t:'Radiocapitellar joint'},
+      {x:.42,y:.86,t:'Proximal radius / ulna'} ]
+};
+/* Pelvis / hip — coronal T1 (image left = patient right) */
+SLICE_LABELS.mri_hip = {
+  1:[ {x:.18,y:.43,t:'Femoral head'},
+      {x:.23,y:.30,t:'Acetabulum'},
+      {x:.13,y:.54,t:'Femoral neck'},
+      {x:.10,y:.50,t:'Greater trochanter'},
+      {x:.21,y:.38,t:'Hip joint'},
+      {x:.24,y:.18,t:'Iliac bone'},
+      {x:.49,y:.72,t:'Pubic symphysis'},
+      {x:.49,y:.26,t:'Bladder'},
+      {x:.40,y:.62,t:'Adductor muscles'},
+      {x:.11,y:.80,t:'Femoral shaft'} ]
+};
+/* Cervical spine — sagittal T2 (anterior = left) */
+SLICE_LABELS.mri_cervical = {
+  1:[ {x:.40,y:.12,t:'Clivus'},
+      {x:.44,y:.22,t:'Dens (C2 odontoid)'},
+      {x:.37,y:.52,t:'Vertebral body'},
+      {x:.38,y:.45,t:'Intervertebral disc'},
+      {x:.51,y:.55,t:'Spinal cord'},
+      {x:.57,y:.48,t:'CSF (subarachnoid space)'},
+      {x:.65,y:.60,t:'Spinous process'},
+      {x:.28,y:.72,t:'Prevertebral soft tissue / airway'} ]
+};
+/* Thoracic spine — sagittal T2 (anterior = left) */
+SLICE_LABELS.mri_thoracic = {
+  1:[ {x:.33,y:.52,t:'Thoracic vertebral body'},
+      {x:.33,y:.45,t:'Intervertebral disc'},
+      {x:.48,y:.58,t:'Spinal cord'},
+      {x:.53,y:.64,t:'CSF (thecal sac)'},
+      {x:.64,y:.55,t:'Spinous process'},
+      {x:.53,y:.42,t:'Intradural mass (meningioma)'},
+      {x:.15,y:.55,t:'Paraspinal muscles'} ]
+};
+/* Cardiac — long-axis bright-blood (SSFP) */
+SLICE_LABELS.mri_chest = {
+  1:[ {x:.42,y:.38,t:'Left ventricle'},
+      {x:.60,y:.30,t:'Left ventricular myocardium'},
+      {x:.50,y:.56,t:'Left atrium'},
+      {x:.47,y:.48,t:'Mitral valve'},
+      {x:.50,y:.72,t:'Descending thoracic aorta'},
+      {x:.20,y:.26,t:'Chest wall / pericardium'} ]
 };
 /* ══════════════════════════════════════════════════════════════════
    CT SLICE LABELS — every labelled level was opened and read; image
@@ -2427,6 +2508,141 @@ const REGIONS = [
   ],
   pearls:[
     {t:'Anchor on the aorta', d:'Find the aorta and vertebra first; liver, spleen and kidneys then fall into place around them.'}
+  ]
+},
+{
+  id:'stack_mri_elbow', icon:'fa-bone', group:'Single MRI view',
+  name:'Elbow MRI — Coronal',
+  sub:'One representative coronal PD fat-sat image · labelled · not a scroll series',
+  stack:'mri_elbow',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative coronal fat-saturated PD slice through the elbow, not a scroll series. The coronal plane shows both the medial and lateral compartments of the joint at once.'},
+    {n:'The three articulations', d:'The elbow is really three joints in one capsule: ulnohumeral (trochlea–ulna), radiocapitellar (capitellum–radial head) and the proximal radioulnar joint. This plane shows the first two.'},
+    {n:'The collateral ligaments', d:'The ulnar (medial) collateral ligament resists valgus and is the key throwing-athlete structure; the radial (lateral) collateral complex resists varus and posterolateral rotation.'},
+    {n:'Common tendon origins', d:'The common extensor origin arises from the lateral epicondyle (tennis elbow) and the common flexor origin from the medial epicondyle (golfer’s elbow). Fluid signal here is the hallmark of epicondylitis.'}
+  ],
+  meas:[
+    {n:'Ulnar collateral ligament', v:'Uniform low signal', how:'Coronal, medial epicondyle to sublime tubercle', why:'Fluid/thickening indicates a throwing injury'},
+    {n:'Common extensor origin', v:'Low signal', how:'Lateral epicondyle attachment', why:'Bright signal = lateral epicondylitis'},
+    {n:'Fat-saturated PD', v:'Fluid bright', how:'Fat-sat sequence', why:'Highlights ligament tears, marrow oedema, effusion'}
+  ],
+  pitfalls:[
+    {t:'One plane misses the tendons', d:'The distal biceps and triceps tendons need the sagittal and axial planes. A coronal slice cannot exclude a tendon tear.'},
+    {t:'Ossification centres in children', d:'The six elbow ossification centres appear and fuse in a set order; do not mistake an unfused centre for a fracture.'}
+  ],
+  pearls:[
+    {t:'Medial vs lateral', d:'Fix the trochlea/ulna medially and the capitellum/radial head laterally — then valgus (UCL) and varus (LCL) injuries map straight onto the image.'}
+  ]
+},
+{
+  id:'stack_mri_hip', icon:'fa-bone', group:'Single MRI view',
+  name:'Pelvis / Hip MRI — Coronal',
+  sub:'One representative coronal T1 image, both hips · labelled · not a scroll series',
+  stack:'mri_hip',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative coronal T1 slice through both hips, not a scroll series. The coronal plane is the standard one for the femoral heads, joint spaces and the bony pelvis.'},
+    {n:'The ball-and-socket joint', d:'The femoral head sits in the acetabulum, deepened by the fibrocartilaginous labrum. The joint space should be uniform and the head perfectly spherical.'},
+    {n:'Marrow signal', d:'On T1 normal fatty marrow is bright. Low T1 signal in the femoral head is the alarm for avascular necrosis or, as here, transient osteoporosis; oedema shows better on the fat-sat/STIR partner.'},
+    {n:'Landmarks', d:'Greater trochanter laterally, femoral neck, then the acetabulum and iliac bone above; the pubic symphysis joins the two halves in the midline, with the bladder above it.'}
+  ],
+  meas:[
+    {n:'Joint space', v:'Uniform, ~3–5 mm', how:'Femoral head to acetabulum', why:'Narrowing indicates osteoarthritis'},
+    {n:'Femoral head marrow (T1)', v:'Bright (fatty)', how:'Compare the two heads', why:'Low T1 signal = AVN / oedema'},
+    {n:'Centre–edge angle', v:'25–40°', how:'Coronal, acetabular coverage', why:'< 20° suggests dysplasia'}
+  ],
+  pitfalls:[
+    {t:'One slice misses the labrum', d:'Labral tears need radial or oblique sequences, often with intra-articular contrast. A single coronal slice is anatomy, not a labral study.'},
+    {t:'Image left is the patient’s right', d:'Fix the side before reporting an avascular or dysplastic hip.'}
+  ],
+  pearls:[
+    {t:'Compare the two hips', d:'Symmetry is the fastest check — a difference in head shape, joint space or marrow signal between sides is the finding.'}
+  ]
+},
+{
+  id:'stack_mri_cervical', icon:'fa-bone', group:'Single MRI view',
+  name:'Cervical Spine MRI — Sagittal',
+  sub:'One representative sagittal T2 image · labelled · not a scroll series',
+  stack:'mri_cervical',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative mid-sagittal T2 slice of the cervical spine, not a scroll series. The sagittal T2 is the workhorse for alignment, discs and the cord.'},
+    {n:'CSF is bright on T2', d:'The subarachnoid space outlines the cord in bright signal — a "CSF myelogram" effect that makes cord compression and canal narrowing obvious.'},
+    {n:'The spinal cord', d:'A uniform intermediate-signal band running through the canal. Focal bright signal within it indicates myelopathy — oedema, gliosis or a lesion.'},
+    {n:'Discs and alignment', d:'Follow the smooth lordotic curve of the posterior vertebral bodies. Each disc should stay behind that line; a bulge or herniation projects into the canal.'}
+  ],
+  meas:[
+    {n:'Canal AP diameter', v:'> 12 mm', how:'Sagittal, body to spinolaminar line', why:'< 12 mm risks cord compression'},
+    {n:'Disc signal (T2)', v:'Bright (hydrated)', how:'Nucleus pulposus', why:'Dark = degeneration/desiccation'},
+    {n:'Cord signal', v:'Uniform', how:'Follow the cord on T2', why:'Focal bright signal = myelopathy'}
+  ],
+  pitfalls:[
+    {t:'One slice is only the midline', d:'Foraminal stenosis and lateral discs live on the parasagittal and axial images. A mid-sagittal slice cannot clear the foramina.'},
+    {t:'CSF pulsation artefact', d:'Flow artefact in the dorsal CSF can mimic a lesion. Confirm on a second sequence or plane.'}
+  ],
+  pearls:[
+    {t:'Trace the posterior line', d:'The smooth curve along the back of the vertebral bodies is the single best check for alignment and disc protrusion.'}
+  ]
+},
+{
+  id:'stack_mri_thoracic', icon:'fa-bone', group:'Single MRI view',
+  name:'Thoracic Spine MRI — Sagittal',
+  sub:'One representative sagittal T2 image, with an incidental mass · labelled · not a scroll series',
+  stack:'mri_thoracic',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative sagittal T2 slice of the thoracic spine, not a scroll series. Note the bright intradural mass compressing the cord — a spinal meningioma, labelled honestly; the surrounding spinal anatomy is otherwise normal and is the point of the image.'},
+    {n:'Thoracic vertebrae', d:'Twelve bodies with their intervening discs, in a gentle kyphotic curve. The thoracic canal is the narrowest of the spine, so the cord has the least room here.'},
+    {n:'The cord and thecal sac', d:'The cord runs to the conus at about L1; here it is displaced by the mass. The bright CSF of the thecal sac normally surrounds it evenly.'},
+    {n:'Why cord signal matters', d:'A compressed thoracic cord can develop bright T2 signal (myelomalacia). Early recognition changes management — this is why the sequence is read carefully.'}
+  ],
+  meas:[
+    {n:'Cord compression', v:'CSF effaced', how:'Look for loss of the bright CSF rim', why:'Effacement = significant compression'},
+    {n:'Disc signal (T2)', v:'Bright (hydrated)', how:'Nucleus pulposus', why:'Dark = degeneration'},
+    {n:'Vertebral marrow', v:'Uniform', how:'Compare adjacent bodies', why:'Focal change flags metastasis / fracture'}
+  ],
+  pitfalls:[
+    {t:'Counting the level', d:'Thoracic levels are hard to number on a single slice — count down from C2 or up from the sacrum on a whole-spine image before naming a level.'},
+    {t:'This one is not normal', d:'The mass is real pathology included for honesty. Use the vertebrae, discs, cord and CSF as the anatomy reference, not the lesion.'}
+  ],
+  pearls:[
+    {t:'The tightest canal', d:'Remember the thoracic canal is the narrowest — a small lesion here causes cord signs sooner than the same lesion in the lumbar spine.'}
+  ]
+},
+{
+  id:'stack_mri_chest', icon:'fa-heart-pulse', group:'Single MRI view',
+  name:'Cardiac MRI — Long Axis',
+  sub:'One representative bright-blood (SSFP) image of the heart · labelled · not a scroll series',
+  stack:'mri_chest',
+  svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'SINGLE VIEW');
+    g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to see the labelled image</text>`;
+    return g+S.close;})(),
+  landmarks:[
+    {n:'A single teaching view', d:'One representative long-axis balanced-SSFP ("bright-blood") image of the heart, not a cine series. Blood is bright, the myocardium mid-grey — the standard cardiac-MRI contrast.'},
+    {n:'The left ventricle', d:'The main pumping chamber, its thick myocardial wall around a bright blood pool. Wall thickness, cavity size and contraction (on cine) are the core measurements.'},
+    {n:'Valves and atrium', d:'The mitral valve separates the left atrium from the left ventricle. Bright blood on both sides makes the leaflets and any regurgitant jet visible.'},
+    {n:'The descending aorta', d:'Seen in cross-section behind the heart — a reliable posterior landmark on any long-axis view.'}
+  ],
+  meas:[
+    {n:'LV wall thickness', v:'≤ 11 mm (diastole)', how:'Perpendicular to the wall', why:'> 12 mm indicates hypertrophy'},
+    {n:'Ejection fraction', v:'55–70%', how:'From the cine stack (not this still)', why:'The key functional measure'},
+    {n:'Bright-blood contrast', v:'Blood white, muscle grey', how:'Balanced SSFP', why:'Confirms the sequence; basis of function imaging'}
+  ],
+  pitfalls:[
+    {t:'A still is not a cine', d:'Function and valve motion need the moving cine loop. This single frame is an anatomy reference only.'},
+    {t:'Plane defines the chambers', d:'Which chambers appear depends on the exact long-axis prescribed. Confirm the plane before naming every chamber.'}
+  ],
+  pearls:[
+    {t:'Find the descending aorta', d:'The round aorta behind the heart orients any long-axis view and tells you posterior from anterior at a glance.'}
   ]
 },
 
