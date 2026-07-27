@@ -515,7 +515,31 @@ const STACKS = {
     dir:'ct_cspine', by:'Mikael Häggström', lic:'CC0',
     caption:'NCCT cervical spine — 15 axial levels (bone window), C1 to C7',
     slices:Array.from({length:15},(_,i)=>`ct_cspine_${String(i+1).padStart(2,'0')}.jpg`)
-  }
+  },
+  /* ── Normal X-ray atlas (labelled; each body part scrolls through its
+     standard views). All CC0 (Häggström) except the cervical film. ── */
+  xr_chest:{ dir:'xr_chest', by:'Mikael Häggström', lic:'CC0',
+    caption:'Chest X-ray — normal · PA and lateral', slices:['xr_chest_01.jpg','xr_chest_02.jpg'] },
+  xr_cspine:{ dir:'xr_cspine', by:'Dept. of Radiology, Uppsala', lic:'Public domain',
+    caption:'Cervical spine X-ray — normal · lateral', slices:['xr_cspine_01.jpg'] },
+  xr_shoulder:{ dir:'xr_shoulder', by:'Mikael Häggström', lic:'CC0',
+    caption:'Shoulder X-ray — normal · AP (Grashey)', slices:['xr_shoulder_01.jpg'] },
+  xr_elbow:{ dir:'xr_elbow', by:'Mikael Häggström', lic:'CC0',
+    caption:'Elbow X-ray — normal · AP, lateral and oblique', slices:['xr_elbow_01.jpg','xr_elbow_02.jpg','xr_elbow_03.jpg'] },
+  xr_wrist:{ dir:'xr_wrist', by:'Mikael Häggström', lic:'CC0',
+    caption:'Wrist X-ray — normal · PA and lateral', slices:['xr_wrist_01.jpg','xr_wrist_02.jpg'] },
+  xr_hand:{ dir:'xr_hand', by:'Mikael Häggström', lic:'CC0',
+    caption:'Hand X-ray — normal · PA, oblique and lateral', slices:['xr_hand_01.jpg','xr_hand_02.jpg','xr_hand_03.jpg'] },
+  xr_pelvis:{ dir:'xr_pelvis', by:'Dept. of Radiology, Uppsala', lic:'Public domain',
+    caption:'Pelvis X-ray — normal · AP', slices:['xr_pelvis_01.jpg'] },
+  xr_hip:{ dir:'xr_hip', by:'Mikael Häggström', lic:'CC0',
+    caption:'Hip X-ray — normal · AP', slices:['xr_hip_01.jpg'] },
+  xr_knee:{ dir:'xr_knee', by:'Mikael Häggström', lic:'CC0',
+    caption:'Knee X-ray — normal · AP, lateral and patella skyline', slices:['xr_knee_01.jpg','xr_knee_02.jpg','xr_knee_03.jpg'] },
+  xr_ankle:{ dir:'xr_ankle', by:'Mikael Häggström', lic:'CC0',
+    caption:'Ankle X-ray — normal · mortise and lateral', slices:['xr_ankle_01.jpg','xr_ankle_02.jpg'] },
+  xr_foot:{ dir:'xr_foot', by:'Mikael Häggström', lic:'CC0',
+    caption:'Foot X-ray — normal · dorsoplantar, lateral and oblique', slices:['xr_foot_01.jpg','xr_foot_02.jpg','xr_foot_03.jpg'] }
 };
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1646,6 +1670,44 @@ SLICE_LABELS.ct_cspine = {
        {x:.50,y:.74,t:'Bifid spinous process'},
        {x:.50,y:.34,t:'Airway (larynx)'},
        {x:.50,y:.58,t:'Spinal canal'} ]
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   NORMAL X-RAY ATLAS LABELS — each view opened and read individually.
+   Slice order matches the STACKS caption for that body part.
+   ══════════════════════════════════════════════════════════════════ */
+SLICE_LABELS.xr_chest = {
+  1:[ {x:.47,y:.12,t:'Trachea'},
+      {x:.25,y:.42,t:'Right lung'},
+      {x:.73,y:.42,t:'Left lung'},
+      {x:.58,y:.33,t:'Aortic knob'},
+      {x:.40,y:.48,t:'Right hilum'},
+      {x:.62,y:.44,t:'Left hilum'},
+      {x:.60,y:.62,t:'Cardiac silhouette'},
+      {x:.31,y:.80,t:'Right hemidiaphragm'},
+      {x:.70,y:.85,t:'Left hemidiaphragm'},
+      {x:.75,y:.93,t:'Gastric air bubble'},
+      {x:.16,y:.80,t:'Costophrenic angle'},
+      {x:.28,y:.17,t:'Clavicle'} ],
+  2:[ {x:.16,y:.42,t:'Sternum'},
+      {x:.28,y:.37,t:'Retrosternal clear space'},
+      {x:.47,y:.40,t:'Trachea'},
+      {x:.70,y:.52,t:'Thoracic vertebral bodies'},
+      {x:.34,y:.68,t:'Cardiac silhouette'},
+      {x:.42,y:.82,t:'Hemidiaphragm'},
+      {x:.72,y:.85,t:'Posterior costophrenic recess'},
+      {x:.32,y:.28,t:'Scapula'} ]
+};
+SLICE_LABELS.xr_cspine = {
+  1:[ {x:.46,y:.22,t:'Dens (C2 odontoid)'},
+      {x:.40,y:.19,t:'Anterior arch of C1'},
+      {x:.30,y:.52,t:'Vertebral body'},
+      {x:.33,y:.61,t:'Intervertebral disc space'},
+      {x:.50,y:.52,t:'Facet (zygapophyseal) joints'},
+      {x:.56,y:.62,t:'Spinous process'},
+      {x:.48,y:.80,t:'C7 spinous process (vertebra prominens)'},
+      {x:.20,y:.50,t:'Prevertebral soft tissue'},
+      {x:.18,y:.68,t:'Tracheal air column'} ]
 };
 
 const REGIONS = [
@@ -3253,18 +3315,20 @@ function renderStack(wrap, st){
     </div>`;
 
   const img=$('sliceImg'), range=$('sRange'), count=$('sCount');
-  stackState={st, base, i:0};
-  // Known ratio for this series? Apply it before the first paint so the
-  // viewer never opens collapsed and the labels have a box immediately.
+  stackState={st, base, i:0, ratios:[]};
+  // Per-slice aspect ratios. Cross-sectional series share one shape, but an
+  // X-ray view stack mixes portrait and landscape films, so each slice needs
+  // its own ratio or the box would distort. Seed slice 0 from the cached
+  // series ratio so the viewer never opens collapsed.
   const stageEl=$('sStage');
   if(SERIES_RATIO[st.dir]) stageEl.style.aspectRatio=SERIES_RATIO[st.dir];
-  // Preload the series so scrolling does not flicker
   st.slices.forEach((s,k)=>{
     const p=new Image();
-    if(k===0) p.onload=()=>{
+    p.onload=()=>{
       if(p.naturalWidth && p.naturalHeight){
-        SERIES_RATIO[st.dir]=p.naturalWidth+' / '+p.naturalHeight;
-        if(!stageEl.style.aspectRatio){ stageEl.style.aspectRatio=SERIES_RATIO[st.dir]; drawSliceLabels(); }
+        stackState.ratios[k]=p.naturalWidth+' / '+p.naturalHeight;
+        if(k===0 && !SERIES_RATIO[st.dir]) SERIES_RATIO[st.dir]=stackState.ratios[k];
+        if(k===stackState.i){ stageEl.style.aspectRatio=stackState.ratios[k]; drawSliceLabels(); }
       }
     };
     p.src=base+s;
@@ -3273,6 +3337,7 @@ function renderStack(wrap, st){
   function go(i){
     i=Math.max(0,Math.min(st.slices.length-1,i));
     stackState.i=i;
+    if(stackState.ratios[i]) stageEl.style.aspectRatio=stackState.ratios[i];  // set before src so no collapse
     img.src=base+st.slices[i];
     img.alt=st.caption+' — slice '+(i+1);
     range.value=i+1;
@@ -3356,9 +3421,11 @@ function renderStack(wrap, st){
   }));
 
   function pinRatio(){
-    if(!stage.style.aspectRatio && img.naturalWidth && img.naturalHeight){
-      SERIES_RATIO[st.dir]=img.naturalWidth+' / '+img.naturalHeight;
-      stage.style.aspectRatio=SERIES_RATIO[st.dir];
+    if(img.naturalWidth && img.naturalHeight){
+      const r=img.naturalWidth+' / '+img.naturalHeight;
+      stackState.ratios[stackState.i]=r;
+      if(!SERIES_RATIO[st.dir]) SERIES_RATIO[st.dir]=r;
+      stage.style.aspectRatio=r;   // the on-screen image is the source of truth for its slice
     }
   }
   img.addEventListener('load',()=>{ pinRatio(); drawSliceLabels(); });

@@ -420,5 +420,115 @@
   "count": 1,
   "licence": "CC0",
   "author": "MBq"
+ },
+ "xr_chest": {
+  "dir": "xr_chest",
+  "slices": [
+   "xr_chest_01.jpg",
+   "xr_chest_02.jpg"
+  ],
+  "count": 2,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_cspine": {
+  "dir": "xr_cspine",
+  "slices": [
+   "xr_cspine_01.jpg"
+  ],
+  "count": 1,
+  "licence": "Public domain",
+  "author": "Mikael Häggström"
+ },
+ "xr_shoulder": {
+  "dir": "xr_shoulder",
+  "slices": [
+   "xr_shoulder_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_elbow": {
+  "dir": "xr_elbow",
+  "slices": [
+   "xr_elbow_01.jpg",
+   "xr_elbow_02.jpg",
+   "xr_elbow_03.jpg"
+  ],
+  "count": 3,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_wrist": {
+  "dir": "xr_wrist",
+  "slices": [
+   "xr_wrist_01.jpg",
+   "xr_wrist_02.jpg"
+  ],
+  "count": 2,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_hand": {
+  "dir": "xr_hand",
+  "slices": [
+   "xr_hand_01.jpg",
+   "xr_hand_02.jpg",
+   "xr_hand_03.jpg"
+  ],
+  "count": 3,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_pelvis": {
+  "dir": "xr_pelvis",
+  "slices": [
+   "xr_pelvis_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_hip": {
+  "dir": "xr_hip",
+  "slices": [
+   "xr_hip_01.jpg"
+  ],
+  "count": 1,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_knee": {
+  "dir": "xr_knee",
+  "slices": [
+   "xr_knee_01.jpg",
+   "xr_knee_02.jpg",
+   "xr_knee_03.jpg"
+  ],
+  "count": 3,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_ankle": {
+  "dir": "xr_ankle",
+  "slices": [
+   "xr_ankle_01.jpg",
+   "xr_ankle_02.jpg"
+  ],
+  "count": 2,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
+ },
+ "xr_foot": {
+  "dir": "xr_foot",
+  "slices": [
+   "xr_foot_01.jpg",
+   "xr_foot_02.jpg",
+   "xr_foot_03.jpg"
+  ],
+  "count": 3,
+  "licence": "CC0",
+  "author": "Mikael Häggström"
  }
 }
