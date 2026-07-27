@@ -1709,6 +1709,216 @@ SLICE_LABELS.xr_cspine = {
       {x:.20,y:.50,t:'Prevertebral soft tissue'},
       {x:.18,y:.68,t:'Tracheal air column'} ]
 };
+SLICE_LABELS.xr_shoulder = {
+  1:[ {x:.42,y:.32,t:'Humeral head'},
+      {x:.27,y:.30,t:'Greater tuberosity'},
+      {x:.40,y:.44,t:'Surgical neck'},
+      {x:.42,y:.78,t:'Humeral shaft'},
+      {x:.63,y:.36,t:'Glenoid'},
+      {x:.55,y:.33,t:'Glenohumeral joint space'},
+      {x:.45,y:.12,t:'Acromion'},
+      {x:.58,y:.20,t:'Coracoid process'},
+      {x:.78,y:.10,t:'Clavicle'},
+      {x:.80,y:.40,t:'Scapula (body)'} ]
+};
+SLICE_LABELS.xr_elbow = {
+  1:[ {x:.50,y:.12,t:'Humeral shaft'},        /* AP (image left = lateral) */
+      {x:.20,y:.33,t:'Lateral epicondyle'},
+      {x:.62,y:.35,t:'Medial epicondyle'},
+      {x:.36,y:.45,t:'Capitellum'},
+      {x:.50,y:.47,t:'Trochlea'},
+      {x:.45,y:.31,t:'Olecranon fossa'},
+      {x:.32,y:.57,t:'Radial head'},
+      {x:.34,y:.64,t:'Radial neck'},
+      {x:.48,y:.56,t:'Coronoid process (ulna)'},
+      {x:.37,y:.85,t:'Radius shaft'},
+      {x:.51,y:.82,t:'Ulna shaft'} ],
+  2:[ {x:.76,y:.25,t:'Humeral shaft'},        /* Lateral (flexed) */
+      {x:.70,y:.48,t:'Distal humerus'},
+      {x:.62,y:.68,t:'Capitellum'},
+      {x:.60,y:.74,t:'Trochlea'},
+      {x:.73,y:.60,t:'Olecranon'},
+      {x:.54,y:.72,t:'Coronoid process'},
+      {x:.49,y:.70,t:'Radial head'},
+      {x:.42,y:.75,t:'Radial neck'},
+      {x:.28,y:.83,t:'Ulna shaft'},
+      {x:.24,y:.76,t:'Radius shaft'} ],
+  3:[ {x:.48,y:.15,t:'Distal humerus'},       /* Oblique */
+      {x:.22,y:.35,t:'Medial epicondyle'},
+      {x:.72,y:.42,t:'Lateral epicondyle'},
+      {x:.55,y:.46,t:'Capitellum'},
+      {x:.42,y:.48,t:'Trochlea'},
+      {x:.40,y:.56,t:'Coronoid process (ulna)'},
+      {x:.62,y:.55,t:'Radial head'},
+      {x:.60,y:.63,t:'Radial neck'},
+      {x:.42,y:.78,t:'Ulna shaft'},
+      {x:.55,y:.85,t:'Radius shaft'} ]
+};
+SLICE_LABELS.xr_wrist = {
+  1:[ {x:.44,y:.92,t:'Distal radius'},        /* PA (thumb = image right) */
+      {x:.22,y:.86,t:'Distal ulna (styloid)'},
+      {x:.40,y:.83,t:'Radiocarpal joint'},
+      {x:.45,y:.78,t:'Scaphoid'},
+      {x:.38,y:.76,t:'Lunate'},
+      {x:.29,y:.76,t:'Triquetrum'},
+      {x:.52,y:.74,t:'Trapezium'},
+      {x:.45,y:.70,t:'Trapezoid'},
+      {x:.40,y:.72,t:'Capitate'},
+      {x:.32,y:.71,t:'Hamate'},
+      {x:.47,y:.65,t:'Metacarpal bases (CMC joints)'} ],
+  2:[ {x:.60,y:.88,t:'Distal radius'},        /* Lateral (thumb projects left) */
+      {x:.52,y:.83,t:'Distal ulna'},
+      {x:.58,y:.81,t:'Radiocarpal joint'},
+      {x:.55,y:.77,t:'Lunate'},
+      {x:.56,y:.72,t:'Capitate'},
+      {x:.48,y:.76,t:'Scaphoid'},
+      {x:.38,y:.79,t:'Pisiform'},
+      {x:.64,y:.52,t:'Metacarpals (superimposed)'},
+      {x:.24,y:.55,t:'Thumb (1st ray)'} ]
+};
+SLICE_LABELS.xr_hand = {
+  1:[ {x:.44,y:.06,t:'Distal phalanx'},       /* PA (thumb = image right) */
+      {x:.45,y:.14,t:'DIP joint'},
+      {x:.44,y:.22,t:'Middle phalanx'},
+      {x:.44,y:.29,t:'PIP joint'},
+      {x:.43,y:.36,t:'Proximal phalanx'},
+      {x:.44,y:.47,t:'MCP joint'},
+      {x:.44,y:.58,t:'Metacarpal (shaft)'},
+      {x:.35,y:.76,t:'Carpal bones'},
+      {x:.80,y:.62,t:'1st metacarpal (thumb)'},
+      {x:.84,y:.50,t:'Thumb proximal phalanx'},
+      {x:.36,y:.93,t:'Distal radius'} ],
+  2:[ {x:.42,y:.10,t:'Distal phalanx'},       /* Oblique */
+      {x:.40,y:.28,t:'Middle phalanx'},
+      {x:.38,y:.40,t:'Proximal phalanx'},
+      {x:.38,y:.44,t:'MCP joint'},
+      {x:.42,y:.58,t:'Metacarpal (shaft)'},
+      {x:.40,y:.72,t:'Metacarpal base'},
+      {x:.40,y:.80,t:'Carpal bones'},
+      {x:.72,y:.62,t:'1st metacarpal (thumb)'},
+      {x:.80,y:.42,t:'Thumb phalanges'},
+      {x:.38,y:.92,t:'Distal radius'} ],
+  3:[ {x:.60,y:.22,t:'Phalanges (superimposed)'},   /* Lateral */
+      {x:.58,y:.45,t:'MCP joints'},
+      {x:.63,y:.55,t:'Metacarpals (superimposed)'},
+      {x:.24,y:.48,t:'Thumb (1st ray)'},
+      {x:.30,y:.63,t:'Thumb metacarpal'},
+      {x:.18,y:.40,t:'Thumb IP joint'},
+      {x:.52,y:.78,t:'Carpal bones'},
+      {x:.60,y:.88,t:'Distal radius'} ]
+};
+SLICE_LABELS.xr_pelvis = {
+  1:[ {x:.20,y:.14,t:'Iliac crest'},          /* AP (image left = patient right) */
+      {x:.50,y:.24,t:'Sacrum'},
+      {x:.36,y:.30,t:'Sacroiliac joint'},
+      {x:.16,y:.62,t:'Femoral head'},
+      {x:.24,y:.54,t:'Acetabulum'},
+      {x:.13,y:.69,t:'Femoral neck'},
+      {x:.07,y:.72,t:'Greater trochanter'},
+      {x:.20,y:.76,t:'Lesser trochanter'},
+      {x:.50,y:.80,t:'Pubic symphysis'},
+      {x:.36,y:.76,t:'Obturator foramen'},
+      {x:.36,y:.89,t:'Ischial tuberosity'} ]
+};
+SLICE_LABELS.xr_hip = {
+  1:[ {x:.30,y:.32,t:'Femoral head'},         /* AP (femur = image left) */
+      {x:.14,y:.30,t:'Greater trochanter'},
+      {x:.32,y:.43,t:'Femoral neck'},
+      {x:.39,y:.55,t:'Lesser trochanter'},
+      {x:.22,y:.82,t:'Femoral shaft'},
+      {x:.44,y:.20,t:'Acetabular roof'},
+      {x:.36,y:.28,t:'Hip joint space'},
+      {x:.62,y:.36,t:'Superior pubic ramus'},
+      {x:.73,y:.52,t:'Obturator foramen'},
+      {x:.66,y:.62,t:'Ischium'} ]
+};
+SLICE_LABELS.xr_knee = {
+  1:[ {x:.50,y:.15,t:'Femur (shaft)'},        /* AP (image left = lateral, right knee) */
+      {x:.32,y:.55,t:'Lateral femoral condyle'},
+      {x:.64,y:.55,t:'Medial femoral condyle'},
+      {x:.48,y:.54,t:'Intercondylar notch'},
+      {x:.45,y:.42,t:'Patella (superimposed)'},
+      {x:.50,y:.60,t:'Tibial spines (intercondylar eminence)'},
+      {x:.33,y:.63,t:'Lateral tibial plateau'},
+      {x:.62,y:.63,t:'Medial tibial plateau'},
+      {x:.22,y:.68,t:'Fibular head'},
+      {x:.48,y:.86,t:'Tibia (shaft)'},
+      {x:.20,y:.86,t:'Fibula (shaft)'} ],
+  2:[ {x:.16,y:.40,t:'Patella'},              /* Lateral (anterior = left) */
+      {x:.60,y:.14,t:'Femur (shaft)'},
+      {x:.46,y:.42,t:'Femoral condyles'},
+      {x:.28,y:.44,t:'Patellofemoral joint'},
+      {x:.48,y:.53,t:'Femorotibial joint'},
+      {x:.55,y:.58,t:'Tibial plateau'},
+      {x:.35,y:.68,t:'Tibial tuberosity'},
+      {x:.76,y:.60,t:'Fibular head'},
+      {x:.60,y:.86,t:'Tibia (shaft)'} ],
+  3:[ {x:.45,y:.26,t:'Patella'},              /* Patella skyline */
+      {x:.47,y:.37,t:'Median ridge of patella'},
+      {x:.30,y:.31,t:'Lateral patellar facet'},
+      {x:.63,y:.30,t:'Medial patellar facet'},
+      {x:.46,y:.50,t:'Patellofemoral joint'},
+      {x:.48,y:.63,t:'Trochlear groove'},
+      {x:.28,y:.71,t:'Lateral femoral condyle'},
+      {x:.68,y:.72,t:'Medial femoral condyle'} ]
+};
+SLICE_LABELS.xr_ankle = {
+  1:[ {x:.42,y:.12,t:'Tibia (shaft)'},        /* Mortise (image left = medial) */
+      {x:.72,y:.12,t:'Fibula (shaft)'},
+      {x:.28,y:.62,t:'Medial malleolus'},
+      {x:.74,y:.68,t:'Lateral malleolus'},
+      {x:.48,y:.62,t:'Tibial plafond'},
+      {x:.48,y:.73,t:'Talar dome'},
+      {x:.34,y:.67,t:'Medial clear space'},
+      {x:.60,y:.54,t:'Tibiofibular syndesmosis'},
+      {x:.45,y:.80,t:'Talus (body)'},
+      {x:.30,y:.90,t:'Calcaneus'} ],
+  2:[ {x:.45,y:.16,t:'Tibia (shaft)'},        /* Lateral (anterior = left) */
+      {x:.42,y:.54,t:'Distal tibia (plafond)'},
+      {x:.54,y:.45,t:'Fibula'},
+      {x:.40,y:.60,t:'Talus (dome)'},
+      {x:.40,y:.57,t:'Tibiotalar joint'},
+      {x:.66,y:.76,t:'Calcaneus'},
+      {x:.40,y:.72,t:'Subtalar joint'},
+      {x:.27,y:.72,t:'Sinus tarsi'},
+      {x:.15,y:.68,t:'Navicular'},
+      {x:.86,y:.80,t:'Calcaneal tuberosity'} ]
+};
+SLICE_LABELS.xr_foot = {
+  1:[ {x:.20,y:.10,t:'Distal phalanx (great toe)'},   /* Dorsoplantar (great toe = image left) */
+      {x:.20,y:.22,t:'Proximal phalanx (great toe)'},
+      {x:.20,y:.32,t:'1st MTP joint'},
+      {x:.16,y:.35,t:'Sesamoid'},
+      {x:.22,y:.46,t:'1st metatarsal'},
+      {x:.48,y:.45,t:'Metatarsals (2nd–5th)'},
+      {x:.73,y:.58,t:'5th metatarsal base (tuberosity)'},
+      {x:.28,y:.62,t:'Medial cuneiform'},
+      {x:.35,y:.73,t:'Navicular'},
+      {x:.63,y:.68,t:'Cuboid'},
+      {x:.42,y:.83,t:'Talus'},
+      {x:.35,y:.92,t:'Calcaneus'} ],
+  2:[ {x:.72,y:.16,t:'Tibia'},                        /* Lateral (toes = image left) */
+      {x:.72,y:.42,t:'Ankle (tibiotalar) joint'},
+      {x:.72,y:.50,t:'Talus'},
+      {x:.72,y:.62,t:'Subtalar joint'},
+      {x:.78,y:.75,t:'Calcaneus'},
+      {x:.93,y:.80,t:'Calcaneal tuberosity'},
+      {x:.55,y:.55,t:'Navicular'},
+      {x:.42,y:.60,t:'Cuneiforms (superimposed)'},
+      {x:.28,y:.70,t:'Metatarsals (superimposed)'},
+      {x:.10,y:.78,t:'Phalanges (toes)'} ],
+  3:[ {x:.28,y:.10,t:'Distal phalanx (great toe)'},   /* Oblique */
+      {x:.25,y:.28,t:'Proximal phalanx (great toe)'},
+      {x:.24,y:.38,t:'1st MTP joint'},
+      {x:.20,y:.55,t:'1st metatarsal'},
+      {x:.55,y:.55,t:'Metatarsals (2nd–5th)'},
+      {x:.82,y:.75,t:'5th metatarsal base (tuberosity)'},
+      {x:.62,y:.82,t:'Cuboid'},
+      {x:.35,y:.78,t:'Cuneiforms'},
+      {x:.30,y:.86,t:'Navicular'},
+      {x:.45,y:.70,t:'Tarsometatarsal (Lisfranc) joints'},
+      {x:.40,y:.95,t:'Calcaneus'} ]
+};
 
 const REGIONS = [
 
@@ -2825,6 +3035,106 @@ const REGIONS = [
     {t:'Always review the reconstructions', d:'Axial slices alone can miss a horizontal fracture or a subluxation. The sagittal and coronal reformats are where alignment and odontoid fractures declare themselves.'}
   ]
 },
+
+/* ─────────────── NORMAL X-RAY ATLAS ─────────────── */
+...(function(){
+  const XV=(id,icon,name,sub,stack,lm,me,pf,pe)=>({
+    id,icon,group:'X-ray atlas',name,sub,stack,
+    svg:(()=>{let g=S.open(400,400);g+=S.tag(20,26,'X-RAY');
+      g+=`<text class="viewtag" x="200" y="200" text-anchor="middle" style="font-size:12px;fill:#D3DCEC">Switch to Radiograph view to scroll the labelled views</text>`;
+      return g+S.close;})(),
+    landmarks:lm, meas:me, pitfalls:pf, pearls:pe });
+  return [
+  XV('stack_xr_chest','fa-lungs','Chest X-ray — Normal','PA and lateral, labelled','xr_chest',
+    [{n:'Two projections',d:'The PA shows the lungs, heart size and both hemidiaphragms; the lateral adds the retrosternal and retrocardiac spaces and the thoracic spine. Read them together.'},
+     {n:'Cardiothoracic ratio',d:'On a PA the heart should be less than half the widest internal thoracic diameter. Enlargement is meaningful only on a true PA, never on an AP or rotated film.'},
+     {n:'Review areas',d:'Lung apices, behind the heart, below the diaphragms and the bones — the places a lesion hides. The lateral is where a retrocardiac or posterior-recess opacity finally shows.'}],
+    [{n:'Cardiothoracic ratio',v:'< 0.5',how:'Heart width ÷ thoracic width on PA',why:'> 0.5 suggests cardiomegaly'},
+     {n:'Diaphragm level',v:'Right slightly higher',how:'Posterior ribs at the dome',why:'Flattening = hyperinflation'}],
+    [{t:'AP is not PA',d:'A supine or AP film magnifies the heart and widens the mediastinum. Do not call cardiomegaly on an AP.'}],
+    [{t:'Silhouette sign',d:'Loss of a normal border (heart, diaphragm) localises disease to the adjacent lobe — the fastest way to place an opacity.'}]),
+  XV('stack_xr_cspine','fa-bone','Cervical Spine X-ray — Normal','Lateral, labelled','xr_cspine',
+    [{n:'Three lines',d:'Trace the anterior vertebral, posterior vertebral and spinolaminar lines — each should form a smooth curve. A step signals subluxation.'},
+     {n:'Must see C7–T1',d:'The commonest place to miss injury is the cervicothoracic junction. The film is inadequate unless the top of T1 is visible.'},
+     {n:'Predental space',d:'The gap between the anterior arch of C1 and the dens should be ≤ 3 mm in an adult — wider means transverse-ligament disruption.'}],
+    [{n:'Predental (ADI) space',v:'≤ 3 mm adult',how:'C1 anterior arch to dens',why:'Widening = ligament injury'},
+     {n:'Prevertebral soft tissue',v:'≤ 7 mm at C2',how:'In front of the body',why:'Swelling suggests occult injury'}],
+    [{t:'Inadequate film',d:'Not seeing C7–T1 is the classic miss. Repeat with a swimmer’s view or go to CT rather than accept it.'}],
+    [{t:'Lines before bones',d:'Alignment of the three lines catches more injuries than staring at individual vertebrae.'}]),
+  XV('stack_xr_shoulder','fa-bone','Shoulder X-ray — Normal','AP (Grashey), labelled','xr_shoulder',
+    [{n:'The Grashey view',d:'Angled ~40° to profile the glenoid, so the glenohumeral joint space is seen clear and open. On a straight AP the joint overlaps and a posterior dislocation can be missed.'},
+     {n:'Humeral head and glenoid',d:'The head should sit congruently against the glenoid with a uniform joint space. Fix the greater tuberosity laterally.'},
+     {n:'Around the joint',d:'Acromion and clavicle above, coracoid anteriorly, scapular body medially.'}],
+    [{n:'Glenohumeral space',v:'Uniform, open',how:'Grashey projection',why:'Overlap suggests dislocation'},
+     {n:'Acromiohumeral distance',v:'7–14 mm',how:'Acromion to humeral head',why:'< 7 mm = cuff arthropathy'}],
+    [{t:'Posterior dislocation',d:'Subtle on a straight AP (“light-bulb” head). The Grashey and axillary views are what confirm it.'}],
+    [{t:'Always two views',d:'A single AP cannot exclude dislocation — pair it with an axillary or Y view.'}]),
+  XV('stack_xr_elbow','fa-bone','Elbow X-ray — Normal','AP, lateral and oblique, labelled','xr_elbow',
+    [{n:'Fat pads on the lateral',d:'A visible posterior fat pad, or a raised “sail” anterior fat pad, means a joint effusion — in trauma, an occult fracture until proven otherwise.'},
+     {n:'Radiocapitellar line',d:'A line through the radial neck should point to the centre of the capitellum on every view; if not, suspect a radial-head dislocation.'},
+     {n:'Three articulations',d:'Ulnohumeral, radiocapitellar and proximal radioulnar — the oblique frees the radial head from overlap.'}],
+    [{n:'Anterior humeral line',v:'Through middle 1/3 of capitellum',how:'Lateral view',why:'Displaced in supracondylar fracture'},
+     {n:'Posterior fat pad',v:'Not visible (normal)',how:'Lateral view',why:'Visible = effusion / occult fracture'}],
+    [{t:'The fat-pad trap',d:'A posterior fat pad with no visible fracture still means a fracture is present — treat accordingly.'}],
+    [{t:'Check the lines',d:'Anterior humeral and radiocapitellar lines catch the fractures the eye skips.'}]),
+  XV('stack_xr_wrist','fa-bone','Wrist X-ray — Normal','PA and lateral, labelled','xr_wrist',
+    [{n:'The three carpal arcs',d:'On the PA, three smooth arcs run along the proximal and distal carpal rows. A broken arc means dislocation or instability.'},
+     {n:'Scaphoid',d:'The most-fractured carpal and the one most often missed. Tenderness in the snuffbox with a normal film still warrants scaphoid views or a repeat.'},
+     {n:'Lateral alignment',d:'Radius, lunate and capitate should line up colinearly; the lunate must not tip volar or dorsal.'}],
+    [{n:'Radial inclination',v:'~22°',how:'PA, radial styloid to ulnar corner',why:'Lost in distal radius fracture'},
+     {n:'Volar tilt',v:'~11°',how:'Lateral, articular surface',why:'Dorsal tilt = Colles’ fracture'}],
+    [{t:'Occult scaphoid fracture',d:'A normal film does not exclude it. Immobilise and re-image at 10–14 days or get an MRI.'}],
+    [{t:'Follow the arcs',d:'Gilula’s arcs turn carpal chaos into a quick yes/no on alignment.'}]),
+  XV('stack_xr_hand','fa-hand','Hand X-ray — Normal','PA, oblique and lateral, labelled','xr_hand',
+    [{n:'Three views per digit',d:'PA and oblique profile the metacarpals and phalanges; the lateral is essential for detecting displacement and volar-plate injuries.'},
+     {n:'Count the bones',d:'14 phalanges, 5 metacarpals, then the carpus. Work distal to proximal so nothing is skipped.'},
+     {n:'Joint spaces',d:'DIP, PIP and MCP joints should be uniform and congruent.'}],
+    [{n:'Metacarpal alignment',v:'Smooth cascade',how:'Oblique / lateral',why:'Rotation = malunion risk'},
+     {n:'Joint congruity',v:'Uniform spaces',how:'All three views',why:'Subluxation after volar-plate injury'}],
+    [{t:'Rotation is missed on PA',d:'Malrotation of a metacarpal fracture shows on the oblique/lateral and clinically, not on the PA.'}],
+    [{t:'The lateral matters',d:'Volar-plate avulsions and subtle subluxations declare themselves only in profile.'}]),
+  XV('stack_xr_pelvis','fa-bone','Pelvis X-ray — Normal','AP, labelled','xr_pelvis',
+    [{n:'The rings',d:'The pelvis is a ring: a break in one place usually means a second break or a joint diastasis elsewhere. Trace the pelvic brim and both obturator foramina.'},
+     {n:'Shenton’s line',d:'A smooth arc from the inferior femoral neck to the superior obturator foramen; a step indicates a hip fracture or dysplasia.'},
+     {n:'Symmetry',d:'Compare the two hips, sacroiliac joints and pubic rami side to side — asymmetry is the finding.'}],
+    [{n:'Shenton’s line',v:'Smooth, unbroken',how:'Femoral neck to obturator foramen',why:'Disrupted in NOF fracture'},
+     {n:'SI joint width',v:'2–4 mm, symmetric',how:'Both sides',why:'Widening = diastasis'}],
+    [{t:'One break, look for two',d:'A single pubic ramus fracture should prompt a search for a posterior (sacral/SI) injury.'}],
+    [{t:'Trace the lines',d:'Iliopectineal, ilioischial and Shenton’s lines structure the read.'}]),
+  XV('stack_xr_hip','fa-bone','Hip X-ray — Normal','AP, labelled','xr_hip',
+    [{n:'Femoral neck',d:'The commonest fracture site in the elderly. Follow the cortex around the head and neck for a break or an impacted, sclerotic line.'},
+     {n:'Shenton’s line',d:'Same arc as on the pelvis — a step is the sign of a neck fracture or slipped epiphysis.'},
+     {n:'Trabecular pattern',d:'Normal trabeculae stream through the head and neck; an interruption or a sclerotic band marks an impacted fracture.'}],
+    [{n:'Neck-shaft angle',v:'125–135°',how:'Femoral shaft to neck axis',why:'Coxa vara / valga'},
+     {n:'Shenton’s line',v:'Smooth',how:'Neck to obturator foramen',why:'Broken in NOF fracture'}],
+    [{t:'Impacted fracture is subtle',d:'It may show only as a sclerotic line or a break in Shenton’s line. Low threshold for MRI if painful and film “normal”.'}],
+    [{t:'Compare sides',d:'The uninjured hip is the best template for the injured one.'}]),
+  XV('stack_xr_knee','fa-bone','Knee X-ray — Normal','AP, lateral and patella skyline, labelled','xr_knee',
+    [{n:'Three views',d:'AP and lateral for the femorotibial joint and alignment; the skyline profiles the patellofemoral joint and patellar tilt.'},
+     {n:'Lipohaemarthrosis',d:'A fat–fluid level in the suprapatellar pouch on a horizontal-beam lateral means an intra-articular fracture even when no fracture line is seen.'},
+     {n:'Alignment',d:'The tibial spines, joint space and patellar height (Insall–Salvati) are the routine checks.'}],
+    [{n:'Insall–Salvati ratio',v:'0.8–1.2',how:'Patellar tendon ÷ patella length',why:'Patella alta / baja'},
+     {n:'Joint space',v:'Symmetric',how:'AP, weight-bearing',why:'Narrowing = osteoarthritis'}],
+    [{t:'Fat-fluid level',d:'Seen only on a horizontal-beam lateral — it signals an occult intra-articular fracture.'}],
+    [{t:'Skyline for the PFJ',d:'Patellofemoral maltracking and osteochondral fragments hide until the skyline view.'}]),
+  XV('stack_xr_ankle','fa-bone','Ankle X-ray — Normal','Mortise and lateral, labelled','xr_ankle',
+    [{n:'The mortise',d:'On the 15°-internal-rotation mortise view the clear space around the talus should be uniform. Asymmetry means a malleolar fracture or ligament injury.'},
+     {n:'Ring concept',d:'The ankle is a ring of two malleoli, the plafond and the ligaments — a break on one side implies injury opposite.'},
+     {n:'Talar shift',d:'The talus must sit centred under the tibia; lateral shift is the key sign of an unstable injury.'}],
+    [{n:'Medial clear space',v:'≤ 4 mm',how:'Mortise, malleolus to talus',why:'Widening = deltoid / syndesmosis injury'},
+     {n:'Tib-fib overlap',v:'> 1 mm',how:'Mortise',why:'Loss = syndesmotic diastasis'}],
+    [{t:'Maisonneuve fracture',d:'A medial malleolus or deltoid injury with a widened mortise means a proximal fibula fracture — image the whole leg.'}],
+    [{t:'Symmetry of the mortise',d:'A uniform clear space all around the talus is the quickest sign the ankle is intact.'}]),
+  XV('stack_xr_foot','fa-shoe-prints','Foot X-ray — Normal','Dorsoplantar, lateral and oblique, labelled','xr_foot',
+    [{n:'The oblique is key',d:'It frees the metatarsal shafts and bases from overlap — the view for a 5th-metatarsal or Lisfranc injury.'},
+     {n:'Lisfranc alignment',d:'The medial border of the 2nd metatarsal should line up with the medial border of the intermediate cuneiform. A step is a Lisfranc injury.'},
+     {n:'5th metatarsal base',d:'A common fracture site; distinguish it from the normal apophysis (which runs parallel to the shaft).'}],
+    [{n:'2nd MT–cuneiform line',v:'Colinear',how:'DP / oblique',why:'Malalignment = Lisfranc injury'},
+     {n:'Calcaneal (Böhler) angle',v:'20–40°',how:'Lateral',why:'Reduced in calcaneal fracture'}],
+    [{t:'Lisfranc is subtle',d:'A tiny “fleck” sign or 1–2 mm of malalignment is all a Lisfranc injury shows — compare with the other foot / weight-bear.'}],
+    [{t:'Apophysis vs fracture',d:'The 5th-metatarsal apophysis is longitudinal; a fracture line is transverse.'}])
+  ];
+})(),
 
 /* ─────────────── SLICE ATLAS: LUMBAR ─────────────── */
 {
