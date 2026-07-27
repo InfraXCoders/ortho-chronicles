@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -46,6 +46,35 @@
   .auth-signout-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#94a3b8;border-radius:14px;padding:5px 13px;font-size:.75rem;font-family:'Poppins',system-ui,sans-serif;cursor:pointer;transition:.2s;}
   .auth-signout-btn:hover{background:rgba(255,255,255,.22);color:#e2e8f0;}
   .sync-badge{font-size:.72rem;color:#34D399;padding:3px 9px;border-radius:10px;background:rgba(52,211,153,.12);white-space:nowrap;}
+  /* ── Auth inside the hamburger drawer ──
+     The mobile drawer is a centered flex overlay, so the auth chrome is
+     absolutely positioned to pin the profile to the top and Sign out to
+     the bottom while the nav links stay centered. */
+  .drawer-user,.drawer-signin-row,.drawer-signout-row{list-style:none;}
+  @media(max-width:768px){
+    .drawer-user{position:absolute;top:66px;left:0;right:0;display:flex;align-items:center;gap:12px;padding:14px 26px;
+      border-bottom:1px solid rgba(255,255,255,.12);}
+    .drawer-avatar{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.4);object-fit:cover;flex-shrink:0;}
+    .drawer-avatar-fallback{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#38BDF8,#2DD4BF);color:#04121f;
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0;}
+    .drawer-user-meta{display:flex;flex-direction:column;line-height:1.25;text-align:left;}
+    .drawer-user-name{font-size:1.05rem;font-weight:700;color:#fff;}
+    .drawer-user-sub{font-size:.72rem;color:#8fe6d8;}
+    .drawer-signin-row{position:absolute;top:66px;left:0;right:0;display:flex;justify-content:center;padding:14px 26px;
+      border-bottom:1px solid rgba(255,255,255,.12);}
+    .drawer-signin-btn{background:#fff;color:#1a1a1a;border:none;border-radius:24px;padding:11px 22px;font-size:.9rem;font-weight:600;
+      font-family:'Poppins',system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+    .drawer-signout-row{position:absolute;bottom:26px;left:0;right:0;display:flex;justify-content:center;padding:0 26px;}
+    .drawer-signout-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.28);color:#fca5a5;border-radius:50px;
+      padding:11px 30px;font-size:.95rem;font-weight:600;font-family:'Poppins',system-ui,sans-serif;cursor:pointer;
+      display:inline-flex;align-items:center;gap:9px;transition:background .2s;}
+    .drawer-signout-btn:hover,.drawer-signout-btn:active{background:rgba(248,113,113,.18);color:#fecaca;}
+  }
+  /* On desktop the drawer auth is redundant (hero auth-bar shows) — hide it. */
+  @media(min-width:769px){ .drawer-user,.drawer-signin-row,.drawer-signout-row{display:none!important;} }
+  /* Remove the duplicate left-side burger/drawer: the standard hamburger
+     (top-right) is now the single menu and the tab bar is already visible. */
+  #ctBurger{display:none!important;}
 
   /* ── HERO ── */
   .ct-hero{background:var(--N);padding:90px 20px 50px;text-align:center;position:relative;overflow:hidden;}
@@ -68,11 +97,119 @@
 
   /* TDEE bar */
   .tdee-bar{max-width:800px;margin:16px auto 0;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
-  .tdee-stat{background:rgba(255,255,255,.1);border-radius:10px;padding:10px 18px;text-align:center;min-width:110px;}
-  .tdee-stat strong{display:block;font-size:1.4rem;font-weight:800;color:var(--GL);}
-  .tdee-stat span{font-size:.72rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;}
+  .tdee-stat{background:#fff;border-radius:12px;padding:12px 18px;text-align:center;min-width:110px;border:2px solid #E2E8F0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .tdee-stat strong{display:block;font-size:1.4rem;font-weight:800;color:#0C4A6E;}
+  .tdee-stat span{font-size:.72rem;color:#0369A1;text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
+  #tdeebar .tdee-stat:nth-child(1){border-color:#0EA5E9;background:linear-gradient(135deg,#F0F9FF,#E0F2FE);}
+  #tdeebar .tdee-stat:nth-child(2){border-color:#10B981;background:linear-gradient(135deg,#ECFDF5,#D1FAE5);}
+  #tdeebar .tdee-stat:nth-child(2) strong{color:#065F46;}
+  #tdeebar .tdee-stat:nth-child(2) span{color:#047857;}
+  #tdeebar .tdee-stat:nth-child(3){border-color:#F59E0B;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);}
+  #tdeebar .tdee-stat:nth-child(3) strong{color:#92400E;}
+  #tdeebar .tdee-stat:nth-child(3) span{color:#B45309;}
+  #tdeebar .tdee-stat:nth-child(4){border-color:#EF4444;background:linear-gradient(135deg,#FFF1F2,#FFE4E6);}
+  #tdeebar .tdee-stat:nth-child(4) strong{color:#991B1B;}
+  #tdeebar .tdee-stat:nth-child(4) span{color:#B91C1C;}
+  #tdeebar .tdee-stat:nth-child(5){border-color:#6366F1;background:linear-gradient(135deg,#EEF2FF,#E0E7FF);}
+  #tdeebar .tdee-stat:nth-child(5) strong{color:#3730A3;}
+  #tdeebar .tdee-stat:nth-child(5) span{color:#4338CA;}
 
   /* ── NAV TABS ── */
+  /* ══ ONBOARDING WIZARD — one question per screen ══ */
+  #wiz{position:fixed;inset:0;z-index:4000;background:linear-gradient(160deg,#0C4A6E,#075985 55%,#0E7490);
+    display:none;flex-direction:column;color:#fff;}
+  #wiz.on{display:flex;}
+  .wz-top{padding:18px 20px 0;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .wz-back{background:rgba(255,255,255,.14);border:0;color:#fff;width:36px;height:36px;border-radius:50%;
+    cursor:pointer;font-size:.9rem;flex-shrink:0;transition:.15s;}
+  .wz-back:hover{background:rgba(255,255,255,.28);}
+  .wz-back[disabled]{opacity:.25;cursor:default;}
+  .wz-bar{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden;}
+  .wz-fill{height:100%;width:0;background:linear-gradient(90deg,#38BDF8,#34D399);border-radius:6px;
+    transition:width .35s cubic-bezier(.4,0,.2,1);}
+  .wz-step{font-size:.76rem;opacity:.85;font-weight:600;white-space:nowrap;}
+  .wz-body{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+  /* each card flashes in as the previous leaves */
+  .wz-card{width:100%;max-width:420px;text-align:center;animation:wzIn .38s cubic-bezier(.34,1.3,.5,1);}
+  @keyframes wzIn{from{opacity:0;transform:translateX(38px) scale(.97);}to{opacity:1;transform:none;}}
+  .wz-card.back{animation:wzInBack .38s cubic-bezier(.34,1.3,.5,1);}
+  @keyframes wzInBack{from{opacity:0;transform:translateX(-38px) scale(.97);}to{opacity:1;transform:none;}}
+  .wz-ico{font-size:2.6rem;margin-bottom:14px;display:block;}
+  .wz-q{font-size:1.5rem;font-weight:800;margin-bottom:6px;line-height:1.25;}
+  .wz-sub{font-size:.86rem;opacity:.8;margin-bottom:26px;line-height:1.5;}
+  .wz-in{width:100%;padding:18px;font-size:1.9rem;font-weight:800;text-align:center;border:0;
+    border-radius:16px;background:rgba(255,255,255,.96);color:#0C4A6E;font-family:inherit;outline:0;
+    box-shadow:0 8px 30px rgba(0,0,0,.22);}
+  .wz-in:focus{box-shadow:0 0 0 4px rgba(56,189,248,.5),0 8px 30px rgba(0,0,0,.22);}
+  .wz-unit{display:block;margin-top:9px;font-size:.8rem;opacity:.75;}
+  .wz-opts{display:grid;gap:10px;}
+  .wz-opt{padding:15px 18px;border-radius:14px;background:rgba(255,255,255,.13);
+    border:2px solid rgba(255,255,255,.22);color:#fff;font-size:.94rem;font-weight:600;
+    cursor:pointer;text-align:left;font-family:inherit;transition:.16s;}
+  .wz-opt:hover{background:rgba(255,255,255,.24);}
+  .wz-opt.sel{background:#fff;color:#0C4A6E;border-color:#fff;}
+  .wz-opt small{display:block;font-weight:500;opacity:.72;font-size:.76rem;margin-top:2px;}
+  .wz-opt.sel small{opacity:.65;}
+  .wz-foot{padding:16px 20px 26px;flex-shrink:0;}
+  .wz-next{width:100%;max-width:420px;margin:0 auto;display:block;padding:16px;border:0;border-radius:14px;
+    background:#34D399;color:#053B2C;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
+    box-shadow:0 8px 24px rgba(52,211,153,.35);transition:.16s;}
+  .wz-next:hover{background:#4ADE80;}
+  .wz-next[disabled]{opacity:.4;cursor:default;box-shadow:none;}
+  .wz-skip{display:block;margin:12px auto 0;background:0;border:0;color:rgba(255,255,255,.7);
+    font-size:.8rem;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  /* summary cards, revealed one after another */
+  .wz-res{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:8px;}
+  .wz-res .r{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);border-radius:14px;
+    padding:14px 10px;opacity:0;transform:translateY(10px);animation:wzPop .4s forwards;}
+  @keyframes wzPop{to{opacity:1;transform:none;}}
+  .wz-res .r strong{display:block;font-size:1.5rem;font-weight:800;}
+  .wz-res .r span{font-size:.7rem;opacity:.82;text-transform:uppercase;letter-spacing:.4px;}
+  .wz-res .r.big{grid-column:1/-1;background:rgba(255,255,255,.96);color:#0C4A6E;border-color:#fff;}
+  .wz-res .r.big strong{font-size:2.5rem;}
+
+  /* ══ LEFT DRAWER for the app tabs ══ */
+  #ctBurger{position:fixed;left:12px;top:70px;z-index:1500;width:44px;height:44px;border-radius:12px;
+    border:1px solid var(--br);background:#fff;color:var(--N);cursor:pointer;font-size:1.05rem;
+    box-shadow:0 4px 14px rgba(0,0,0,.16);display:none;align-items:center;justify-content:center;}
+  #ctBurger.on{display:flex;}
+  #ctDrawer{position:fixed;top:0;left:0;bottom:0;width:270px;max-width:82vw;z-index:3000;background:#fff;
+    box-shadow:6px 0 28px rgba(0,0,0,.24);transform:translateX(-102%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;}
+  #ctDrawer.on{transform:none;}
+  #ctScrim{position:fixed;inset:0;z-index:2900;background:rgba(4,20,36,.5);opacity:0;pointer-events:none;
+    transition:opacity .28s;}
+  #ctScrim.on{opacity:1;pointer-events:auto;}
+  .dw-head{padding:20px 18px 16px;background:var(--N);color:#fff;}
+  .dw-head h4{font-size:1rem;font-weight:800;margin-bottom:3px;}
+  .dw-head p{font-size:.74rem;opacity:.75;}
+  /* signed-in identity block, pinned to the top of the drawer */
+  .dw-user{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .dw-user img{width:44px;height:44px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,.4);
+    object-fit:cover;background:rgba(255,255,255,.15);}
+  .dw-user .nm{font-size:1rem;font-weight:800;line-height:1.25;word-break:break-word;}
+  .dw-user .em{font-size:.7rem;opacity:.7;word-break:break-all;line-height:1.3;}
+  .dw-sync{font-size:.66rem;opacity:.85;margin-top:3px;display:inline-block;}
+  .dw-signout{width:100%;margin-top:8px;padding:11px;border-radius:10px;border:1px solid #FCA5A5;
+    background:#FEF2F2;font-family:inherit;font-size:.84rem;font-weight:700;color:#B91C1C;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;}
+  .dw-signout:hover{background:#FEE2E2;}
+  .dw-signin{width:100%;margin-top:8px;padding:11px;border-radius:10px;border:1px solid var(--br);
+    background:#fff;font-family:inherit;font-size:.84rem;font-weight:700;color:#1a1a1a;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:9px;}
+  .dw-signin:hover{background:#F8FAFC;}
+  .dw-items{padding:10px 0;flex:1;overflow-y:auto;}
+  .dw-item{display:flex;align-items:center;gap:13px;width:100%;padding:14px 18px;border:0;background:0;
+    font-family:inherit;font-size:.92rem;font-weight:600;color:var(--mu);cursor:pointer;text-align:left;
+    border-left:4px solid transparent;transition:.15s;}
+  .dw-item:hover{background:#F1F5F9;}
+  .dw-item.active{color:var(--N);background:#ECFDF5;border-left-color:var(--G);}
+  .dw-item i{width:20px;text-align:center;font-size:1rem;}
+  .dw-foot{padding:14px 18px;border-top:1px solid var(--br);}
+  .dw-edit{width:100%;padding:11px;border-radius:10px;border:1px solid var(--br);background:#fff;
+    font-family:inherit;font-size:.84rem;font-weight:600;color:var(--N);cursor:pointer;}
+  .dw-edit:hover{background:#F8FAFC;}
+
   .ct-tabs{background:#fff;border-bottom:1px solid var(--br);position:sticky;top:60px;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06);}
   .ct-tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
   .ct-tabs-inner::-webkit-scrollbar{display:none;}
@@ -87,7 +224,12 @@
 
   /* ── DAILY LOG ── */
   .log-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;}
-  @media(max-width:900px){.log-layout{grid-template-columns:1fr;}}
+  @media(max-width:900px){
+    .log-layout{grid-template-columns:1fr;}
+    .log-layout>div:first-child{order:2;}
+    .log-layout>div:last-child{order:1;}
+    .macro-card{position:sticky;top:108px;z-index:50;}
+  }
 
   /* Macro summary card */
   .macro-card{background:#fff;border-radius:16px;border:1px solid var(--br);padding:22px;position:sticky;top:120px;}
@@ -324,7 +466,7 @@
   .section-empty{text-align:center;padding:50px 20px;color:var(--mu);}
   .section-empty i{font-size:2.5rem;margin-bottom:12px;display:block;color:var(--br);}
 
-  @media(max-width:600px){.profile-strip{grid-template-columns:repeat(2,1fr);}.tdee-bar{gap:8px;}.macro-card{position:static;}}
+  @media(max-width:600px){.profile-strip{grid-template-columns:repeat(2,1fr);}.tdee-bar{gap:8px;}}
 
   /* ── Mobile typography improvements ── */
   @media(max-width:600px){
@@ -398,6 +540,27 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 <ul class="nav-links" id="navLinks">
   <li class="nav-close-row"><button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu"><i class="fas fa-arrow-left"></i> Back</button></li>
+  <!-- Signed-in profile — pinned to the top of the drawer -->
+  <li class="drawer-user" id="drawerUser" style="display:none">
+    <img class="drawer-avatar" id="drawerAvatar" src="" alt=""/>
+    <span class="drawer-avatar-fallback" id="drawerAvatarFallback" style="display:none"></span>
+    <span class="drawer-user-meta">
+      <span class="drawer-user-name" id="drawerName">User</span>
+      <span class="drawer-user-sub">Signed in</span>
+    </span>
+  </li>
+  <!-- Sign-in prompt — shown only while signed out -->
+  <li class="drawer-signin-row" id="drawerSigninRow">
+    <button class="drawer-signin-btn" onclick="window.signInWithGoogle&&window.signInWithGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Sign in with Google
+    </button>
+  </li>
   <li><a href="index.html#home">Home</a></li>
   <li><a href="index.html#blog">Blog</a></li>
   <li><a href="gym.html">Gym</a></li>
@@ -406,6 +569,10 @@
   <li><a href="index.html#mentor">About Dr. Singh</a></li>
   <li><a href="index.html#contact">Contact</a></li>
   <li><a href="index.html#submit" class="btn-nav">Submit Article</a></li>
+  <!-- Sign-out — pinned to the bottom of the drawer, only while signed in -->
+  <li class="drawer-signout-row" id="drawerSignoutRow" style="display:none">
+    <button class="drawer-signout-btn" onclick="window.signOut&&window.signOut()"><i class="fas fa-right-from-bracket"></i> Sign out</button>
+  </li>
 </ul>
 
 <!-- HERO -->
@@ -464,6 +631,56 @@
     </div>
   </div>
 </section>
+
+<!-- ONBOARDING WIZARD (first run) -->
+<div id="wiz" role="dialog" aria-modal="true" aria-label="Set up your profile">
+  <div class="wz-top">
+    <button class="wz-back" id="wzBack" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <div class="wz-bar"><div class="wz-fill" id="wzFill"></div></div>
+    <span class="wz-step" id="wzStep">1 / 6</span>
+  </div>
+  <div class="wz-body"><div id="wzCard"></div></div>
+  <div class="wz-foot">
+    <button class="wz-next" id="wzNext">Continue</button>
+    <button class="wz-skip" id="wzSkip">Skip for now</button>
+  </div>
+</div>
+
+<!-- LEFT DRAWER (app tabs) -->
+<button id="ctBurger" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+<div id="ctScrim"></div>
+<nav id="ctDrawer" aria-label="Sections">
+  <div class="dw-head">
+    <!-- signed-in identity sits at the very top -->
+    <div class="dw-user" id="dwUser" style="display:none">
+      <img id="dwAvatar" alt=""/>
+      <div>
+        <div class="nm" id="dwName"></div>
+        <div class="em" id="dwEmail"></div>
+        <span class="dw-sync" id="dwSync"></span>
+      </div>
+    </div>
+    <h4 id="dwTitle">Calorie Tracker</h4>
+    <p id="dwGoal">Set up your profile</p>
+  </div>
+  <div class="dw-items" id="dwItems"></div>
+  <div class="dw-foot">
+    <button class="dw-edit" id="dwEdit"><i class="fas fa-sliders-h"></i> Edit my profile</button>
+    <!-- auth control lives at the bottom of the drawer -->
+    <button class="dw-signin" id="dwSignIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Sign in with Google
+    </button>
+    <button class="dw-signout" id="dwSignOut" style="display:none">
+      <i class="fas fa-right-from-bracket"></i> Sign out
+    </button>
+  </div>
+</nav>
 
 <!-- TABS -->
 <div class="ct-tabs">
@@ -1039,7 +1256,7 @@ const FOODS=[
 ];
 
 const CATS=['all','fruit','vegetable','salad','grain','legume','dairy','protein','snack','italian','beverage','supplement','softdrink','alcohol'];
-const CAT_LABELS={all:'All',fruit:'�� Fruits',vegetable:'🥦 Vegetables',salad:'🥗 Salads',grain:'🌾 Grains',legume:'🫘 Legumes',dairy:'🥛 Dairy',protein:'�� Protein',snack:'�� Indian',italian:'�� Italian',beverage:'☕ Beverages',supplement:'💊 Supplements',softdrink:'🥤 Soft Drinks',alcohol:'�� Alcohol'};
+const CAT_LABELS={all:'All',fruit:'🍎 Fruits',vegetable:'🥦 Vegetables',salad:'🥗 Salads',grain:'🌾 Grains',legume:'🫘 Legumes',dairy:'🥛 Dairy',protein:'🍗 Protein',snack:'🤘 Indian',italian:'🍕 Italian',beverage:'☕ Beverages',supplement:'💊 Supplements',softdrink:'🥤 Soft Drinks',alcohol:'🍺 Alcohol'};
 
 /* ── MEAL PLANS ── */
 const PLANS={
@@ -1099,9 +1316,9 @@ const PLANS={
 
 /* ── STATE ── */
 let MEALS_DEF=[
-  {id:'breakfast',label:'Breakfast',icon:'🌅',color:'#FEF3C7'},
-  {id:'lunch',label:'Lunch',icon:'☀�',color:'#DCFCE7'},
-  {id:'snacks',label:'Snacks',icon:'��',color:'#EDE9FE'},
+  {id:'breakfast',label:'Breakfast',icon:'🍳',color:'#FEF3C7'},
+  {id:'lunch',label:'Lunch',icon:'🍱',color:'#DCFCE7'},
+  {id:'snacks',label:'Snacks',icon:'🥪',color:'#EDE9FE'},
   {id:'dinner',label:'Dinner',icon:'🌙',color:'#DBEAFE'},
 ];
 let todayKey=new Date().toISOString().slice(0,10);
@@ -1166,6 +1383,181 @@ function calcTDEE(){
   document.getElementById('fatTarget').textContent=fat+'g';
   document.getElementById('waterTarget').textContent=water+'ml';
   updateMacroCard();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ONBOARDING WIZARD
+   One question per screen on first launch. Each step writes straight into
+   the existing profile inputs, so the final calculation reuses calcTDEE()
+   rather than duplicating the Mifflin-St Jeor maths.
+   ══════════════════════════════════════════════════════════════════ */
+const WZ_STEPS=[
+  {k:'pfAge',    ico:'🎂', q:'How old are you?',     sub:'Age changes how many calories you burn at rest.',
+   type:'num', unit:'years', min:10, max:100, def:28},
+  {k:'pfGender', ico:'⚧',  q:'Your biological sex?', sub:'Male and female bodies burn energy at different baseline rates.',
+   type:'opt', opts:[{v:'m',l:'Male'},{v:'f',l:'Female'}]},
+  {k:'pfHeight', ico:'📏', q:'How tall are you?',    sub:'Used with weight to work out your basal metabolic rate.',
+   type:'num', unit:'centimetres', min:100, max:250, def:170},
+  {k:'pfWeight', ico:'⚖️', q:'What do you weigh?',   sub:'You can log this daily later to watch the trend.',
+   type:'num', unit:'kilograms', min:30, max:250, def:70, step:'0.1'},
+  {k:'pfActivity',ico:'🏃', q:'How active are you?',  sub:'Be honest — most people overestimate this one.',
+   type:'opt', opts:[
+     {v:'1.2',  l:'Sedentary',   d:'Desk job, little exercise'},
+     {v:'1.375',l:'Light',       d:'Exercise 1–3 days a week'},
+     {v:'1.55', l:'Moderate',    d:'Exercise 3–5 days a week'},
+     {v:'1.725',l:'Active',      d:'Exercise 6–7 days a week'},
+     {v:'1.9',  l:'Very active', d:'Physical job or athlete'}]},
+  {k:'pfGoal',   ico:'🎯', q:"What's your goal?",    sub:'This shifts your daily calorie target up or down.',
+   type:'opt', opts:[
+     {v:'lose',    l:'Lose weight',  d:'500 kcal below maintenance'},
+     {v:'maintain',l:'Maintain',     d:'Stay where you are'},
+     {v:'gain',    l:'Build muscle', d:'300 kcal above maintenance'}]}
+];
+let wzI=0, wzDir=1, wzDone=false;
+
+function wzOpen(force){
+  // Only auto-run on a genuinely fresh install
+  if(!force && state.profile && state.profile.tdee) return;
+  wzI=0; wzDir=1; wzDone=false;
+  document.getElementById('wiz').classList.add('on');
+  document.body.style.overflow='hidden';
+  wzRender();
+}
+function wzClose(){
+  document.getElementById('wiz').classList.remove('on');
+  document.body.style.overflow='';
+}
+function wzVal(k){ const el=document.getElementById(k); return el?el.value:''; }
+
+function wzRender(){
+  const total=WZ_STEPS.length;
+  const fill=document.getElementById('wzFill'), stepLbl=document.getElementById('wzStep');
+  const card=document.getElementById('wzCard'), next=document.getElementById('wzNext');
+  const back=document.getElementById('wzBack'), skip=document.getElementById('wzSkip');
+
+  if(wzDone){                                   // summary screen
+    fill.style.width='100%'; stepLbl.textContent='Done';
+    back.disabled=false; skip.style.display='none';
+    const p=state.profile||{};
+    card.className='wz-card';
+    card.innerHTML=`<span class="wz-ico">✅</span>
+      <div class="wz-q">Your daily targets</div>
+      <div class="wz-sub">Based on the Mifflin-St Jeor equation.</div>
+      <div class="wz-res">
+        <div class="r big" style="animation-delay:.05s"><strong>${p.tdee||'—'}</strong><span>Calories / day</span></div>
+        <div class="r" style="animation-delay:.18s"><strong>${p.prot||'—'}g</strong><span>Protein</span></div>
+        <div class="r" style="animation-delay:.28s"><strong>${p.carb||'—'}g</strong><span>Carbs</span></div>
+        <div class="r" style="animation-delay:.38s"><strong>${p.fat||'—'}g</strong><span>Fat</span></div>
+        <div class="r" style="animation-delay:.48s"><strong>${p.water||'—'}</strong><span>Water (ml)</span></div>
+      </div>`;
+    next.textContent='Start tracking';
+    next.disabled=false;
+    return;
+  }
+
+  const s=WZ_STEPS[wzI];
+  fill.style.width=((wzI)/total*100)+'%';
+  stepLbl.textContent=(wzI+1)+' / '+total;
+  back.disabled=wzI===0;
+  skip.style.display='';
+  next.textContent='Continue';
+  card.className='wz-card'+(wzDir<0?' back':'');
+
+  if(s.type==='num'){
+    const cur=wzVal(s.k);
+    card.innerHTML=`<span class="wz-ico">${s.ico}</span>
+      <div class="wz-q">${s.q}</div><div class="wz-sub">${s.sub}</div>
+      <input class="wz-in" id="wzInput" type="number" inputmode="decimal"
+        min="${s.min}" max="${s.max}" ${s.step?`step="${s.step}"`:''}
+        value="${cur||''}" placeholder="${s.def}"/>
+      <span class="wz-unit">${s.unit}</span>`;
+    const inp=document.getElementById('wzInput');
+    const check=()=>{ const v=+inp.value; next.disabled=!(v>=s.min&&v<=s.max); };
+    inp.addEventListener('input',check);
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!next.disabled) wzNext(); });
+    check();
+    setTimeout(()=>inp.focus(),120);
+  }else{
+    const cur=wzVal(s.k);
+    card.innerHTML=`<span class="wz-ico">${s.ico}</span>
+      <div class="wz-q">${s.q}</div><div class="wz-sub">${s.sub}</div>
+      <div class="wz-opts">`+s.opts.map(o=>
+        `<button class="wz-opt${cur===o.v?' sel':''}" data-v="${o.v}">${o.l}${o.d?`<small>${o.d}</small>`:''}</button>`
+      ).join('')+`</div>`;
+    next.disabled=!cur;
+    card.querySelectorAll('.wz-opt').forEach(b=>b.addEventListener('click',()=>{
+      card.querySelectorAll('.wz-opt').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+      document.getElementById(s.k).value=b.dataset.v;
+      next.disabled=false;
+      setTimeout(wzNext,180);            // tapping an option advances on its own
+    }));
+  }
+}
+
+function wzNext(){
+  if(wzDone){ wzFinish(); return; }
+  const s=WZ_STEPS[wzI];
+  if(s.type==='num'){
+    const inp=document.getElementById('wzInput');
+    if(!inp) return;
+    const v=+inp.value;
+    if(!(v>=s.min&&v<=s.max)) return;
+    document.getElementById(s.k).value=v;
+  }
+  wzDir=1;
+  if(wzI<WZ_STEPS.length-1){ wzI++; wzRender(); return; }
+  // last step answered — compute with the existing function, then show results
+  try{ calcTDEE(); }catch(e){ console.error(e); }
+  wzDone=true; wzRender();
+}
+function wzBack(){
+  if(wzDone){ wzDone=false; wzDir=-1; wzI=WZ_STEPS.length-1; wzRender(); return; }
+  if(wzI>0){ wzDir=-1; wzI--; wzRender(); }
+}
+function wzFinish(){
+  wzClose();
+  try{ renderMeals(); updateMacroCard(); }catch(e){}
+  document.getElementById('ctBurger').classList.add('on');
+  dwSync();
+}
+
+/* ══ LEFT DRAWER ══ */
+const DW_TABS=[
+  {id:'log',      i:'fa-utensils',    l:"Today's Log"},
+  {id:'plans',    i:'fa-leaf',        l:'Meal Plans'},
+  {id:'progress', i:'fa-chart-line',  l:'Progress'},
+  {id:'history',  i:'fa-history',     l:'History'}
+];
+function dwBuild(){
+  document.getElementById('dwItems').innerHTML=DW_TABS.map((t,i)=>
+    `<button class="dw-item${i===0?' active':''}" data-tab="${t.id}">
+       <i class="fas ${t.i}"></i>${t.l}</button>`).join('');
+  document.querySelectorAll('.dw-item').forEach(b=>b.addEventListener('click',()=>{
+    // drive the existing tab logic so both bars stay in step
+    const real=[...document.querySelectorAll('.tab-btn')]
+      .find(x=>x.getAttribute('onclick').includes(`'${b.dataset.tab}'`));
+    if(real) real.click();
+    dwSetActive(b.dataset.tab);
+    dwToggle(false);
+  }));
+}
+function dwSetActive(tab){
+  document.querySelectorAll('.dw-item').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+}
+function dwToggle(open){
+  const d=document.getElementById('ctDrawer'), s=document.getElementById('ctScrim');
+  const want = open===undefined ? !d.classList.contains('on') : open;
+  d.classList.toggle('on',want); s.classList.toggle('on',want);
+  document.body.style.overflow = want?'hidden':'';
+}
+function dwSync(){
+  const p=state.profile||{};
+  const el=document.getElementById('dwGoal');
+  if(!el) return;
+  el.textContent = p.tdee
+    ? `${p.tdee} kcal/day · ${p.goal==='lose'?'Losing':p.goal==='gain'?'Gaining':'Maintaining'}`
+    : 'Set up your profile';
 }
 
 /* ── MEALS RENDER ── */
@@ -1308,41 +1700,80 @@ function filterFoods(){
 }
 
 /* Egg IDs and per-unit weights (grams) */
-const EGG_UNITS={
-  pr02:{label:'whole egg',g:50},
-  pr03:{label:'egg white',g:33},
-  pr06:{label:'2-egg omelette',g:100},
-  pr07:{label:'2-egg masala omelette',g:110},
-  pr08:{label:'2-egg bhurji',g:110},
-  pr09:{label:'2-egg bhurji + 2 bread',g:200},
+const COUNTABLE_UNITS={
+  // Eggs & egg dishes
+  pr02:{label:'whole egg',g:50,icon:'🥚'},
+  pr03:{label:'egg white',g:33,icon:'🥚'},
+  pr06:{label:'omelette',g:100,icon:'🍳'},
+  pr07:{label:'masala omelette',g:110,icon:'🍳'},
+  pr08:{label:'egg bhurji',g:110,icon:'🍳'},
+  pr09:{label:'bhurji + bread',g:200,icon:'🍳'},
+  // Fruits
+  fr01:{label:'banana',g:100,icon:'🍌'},
+  fr02:{label:'mango (medium)',g:200,icon:'🥭'},
+  fr03:{label:'apple (medium)',g:150,icon:'🍎'},
+  fr04:{label:'papaya slice',g:150,icon:'🍈'},
+  fr05:{label:'guava',g:100,icon:'🍏'},
+  fr06:{label:'watermelon slice',g:200,icon:'🍉'},
+  fr07:{label:'orange',g:130,icon:'🍊'},
+  fr08:{label:'pomegranate (medium)',g:180,icon:'🍎'},
+  fr09:{label:'handful of grapes',g:80,icon:'🍇'},
+  fr10:{label:'pineapple slice',g:100,icon:'🍍'},
+  fr11:{label:'litchi',g:15,icon:'🍒'},
+  fr12:{label:'chikoo (medium)',g:100,icon:'🟤'},
+  fr14:{label:'coconut piece',g:50,icon:'🥥'},
+  fr15:{label:'date (khajoor)',g:8,icon:'🟫'},
+  // Grains / breads
+  gr01:{label:'chapati / roti',g:40,icon:'🫓'},
+  gr02:{label:'paratha',g:70,icon:'🫓'},
+  gr08:{label:'bajra roti',g:40,icon:'🫓'},
+  gr09:{label:'jowar roti',g:40,icon:'🫓'},
+  gr10:{label:'bread slice',g:30,icon:'🍞'},
+  // Indian snacks
+  sn04:{label:'idli',g:40,icon:'⚪'},
+  sn07:{label:'puri',g:30,icon:'🟡'},
+  // Pizza slices
+  it01:{label:'pizza slice (margherita)',g:100,icon:'🍕'},
+  it02:{label:'pizza slice (pepperoni)',g:100,icon:'🍕'},
+  it03:{label:'pizza slice (veggie)',g:100,icon:'🍕'},
+  it04:{label:'pizza slice (cheese burst)',g:120,icon:'🍕'},
+  // Protein pieces
+  pr11:{label:'chicken tikka piece',g:25,icon:'🍗'},
+  pr16:{label:'chicken wing',g:30,icon:'🍗'},
+  pr17:{label:'chicken leg piece',g:120,icon:'🍗'},
+  pr21:{label:'seekh kebab piece',g:50,icon:'🥩'},
+  pr32:{label:'lamb chop',g:60,icon:'🥩'},
 };
-var _eggCount=1;
-
-function _isEgg(id){return !!EGG_UNITS[id];}
+// backward compat
+const EGG_UNITS=COUNTABLE_UNITS;
+var _countableCount=1;
+function _isCountable(id){return !!COUNTABLE_UNITS[id];}
+function _isEgg(id){return _isCountable(id);}
 
 function changeEggs(delta){
-  _eggCount=Math.max(1,Math.min(20,_eggCount+delta));
-  document.getElementById('eggCount').textContent=_eggCount;
+  _countableCount=Math.max(1,Math.min(50,_countableCount+delta));
+  document.getElementById('eggCount').textContent=_countableCount;
   _updateEggPreview();
 }
 function _updateEggPreview(){
-  if(!pendingFood||!_isEgg(pendingFood.id))return;
-  const eu=EGG_UNITS[pendingFood.id];
-  const r=(_eggCount*eu.g)/100;
+  if(!pendingFood||!_isCountable(pendingFood.id))return;
+  const cu=COUNTABLE_UNITS[pendingFood.id];
+  const r=(_countableCount*cu.g)/100;
   const cal=Math.round(pendingFood.cal*r);
   const prot=Math.round(pendingFood.prot*r*10)/10;
-  document.getElementById('eggPreview').textContent=`${cal} kcal · ${prot}g protein`;
+  const carb=Math.round(pendingFood.carb*r*10)/10;
+  document.getElementById('eggPreview').textContent=`${_countableCount} x ${cu.label} = ${cal} kcal · P:${prot}g C:${carb}g`;
 }
 
 function selectFood(id){
   pendingFood=FOODS.find(f=>f.id===id);
   if(!pendingFood)return;
-  const isEgg=_isEgg(id);
+  const isCountable=_isCountable(id);
   document.getElementById('qtyFoodName').textContent=pendingFood.name;
-  if(isEgg){
-    const eu=EGG_UNITS[id];
-    document.getElementById('qtyFoodInfo').textContent=`${pendingFood.cal} kcal per 100g · 1 ${eu.label} ≈ ${eu.g}g`;
-    _eggCount=1;
+  if(isCountable){
+    const cu=COUNTABLE_UNITS[id];
+    document.getElementById('qtyFoodInfo').textContent=`${cu.icon} 1 ${cu.label} = ${Math.round(pendingFood.cal*cu.g/100)} kcal (${cu.g}g)`;
+    _countableCount=1;
     document.getElementById('eggCount').textContent='1';
     document.getElementById('eggCounter').classList.add('show');
     document.getElementById('eggPreview').classList.add('show');
@@ -1366,8 +1797,8 @@ function closeQtyModal(){
 function confirmAdd(){
   if(!pendingFood||!currentMeal)return;
   let qty;
-  if(_isEgg(pendingFood.id)){
-    qty=_eggCount*EGG_UNITS[pendingFood.id].g;
+  if(_isCountable(pendingFood.id)){
+    qty=_countableCount*COUNTABLE_UNITS[pendingFood.id].g;
   }else{
     qty=+document.getElementById('qtyAmount').value||100;
   }
@@ -1384,6 +1815,7 @@ function confirmAdd(){
   if(!log.meals[currentMeal])log.meals[currentMeal]=[];
   log.meals[currentMeal].push(item);
   saveState();closeQtyModal();closeFoodModal();renderMeals();
+  if(window.AndroidAds) window.AndroidAds.foodAdded();
 }
 
 /* ── BARCODE / QR SCANNER (ZXing multi-format) ── */
@@ -2153,6 +2585,36 @@ function init(){
   restoreProfileUI();
   renderMeals();
   renderPlans();
+
+  /* ── wizard + drawer wiring ── */
+  dwBuild(); dwSync();
+  document.getElementById('wzNext').addEventListener('click',wzNext);
+  document.getElementById('wzBack').addEventListener('click',wzBack);
+  document.getElementById('wzSkip').addEventListener('click',()=>{ wzClose(); wzFinish(); });
+  document.getElementById('ctBurger').addEventListener('click',()=>dwToggle());
+  document.getElementById('ctScrim').addEventListener('click',()=>dwToggle(false));
+  document.getElementById('dwEdit').addEventListener('click',()=>{ dwToggle(false); wzOpen(true); });
+  document.getElementById('dwSignIn').addEventListener('click',()=>{
+    dwToggle(false);
+    if(window.signInWithGoogle) window.signInWithGoogle();
+  });
+  document.getElementById('dwSignOut').addEventListener('click',()=>{
+    dwToggle(false);
+    if(window.signOut) window.signOut();
+  });
+  // keep the drawer in step when the top tab bar is used directly
+  document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
+    const m=/switchTab\('([a-z]+)'/.exec(b.getAttribute('onclick')||'');
+    if(m) dwSetActive(m[1]);
+  }));
+  window.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      if(document.getElementById('ctDrawer').classList.contains('on')) dwToggle(false);
+    }
+  });
+
+  document.getElementById('ctBurger').classList.add('on');
+  wzOpen(false);          // first run only
 }
 init();
 </script>
@@ -2236,22 +2698,87 @@ if(CONFIGURED){
   };
 }
 
+/**
+ * Once signed in the hero auth slab disappears entirely — identity moves to
+ * the top of the left drawer and sign-out to its bottom, so the main screen
+ * stays clear on a phone.
+ */
 function updateAuthUI(user){
+  const bar=document.querySelector('.auth-bar');
   const btn=document.getElementById('signInBtn');
   const info=document.getElementById('authUserInfo');
-  if(!btn)return;
+
   if(user){
-    btn.style.display='none';
-    info.style.display='flex';
-    const av=document.getElementById('authAvatar');
-    if(user.photoURL)av.src=user.photoURL;
-    document.getElementById('authName').textContent=
-      (user.displayName||'User').split(' ')[0];
+    if(bar) bar.style.display='none';          // slab gone
+    if(btn) btn.style.display='none';
+    if(info) info.style.display='none';
   }else{
-    btn.style.display='inline-flex';
-    info.style.display='none';
+    if(bar) bar.style.display='flex';
+    if(btn) btn.style.display='inline-flex';
+    if(info) info.style.display='none';
+  }
+  dwAuth(user);
+  navDrawerAuth(user);
+}
+
+/** Reflect auth state inside the standard hamburger (navLinks): profile on
+ *  top, Sign out at the bottom, Sign-in prompt only while signed out. */
+function navDrawerAuth(user){
+  const prof=document.getElementById('drawerUser');
+  const signinRow=document.getElementById('drawerSigninRow');
+  const signoutRow=document.getElementById('drawerSignoutRow');
+  if(!prof) return;
+  if(user){
+    prof.style.display='flex';
+    if(signinRow) signinRow.style.display='none';
+    if(signoutRow) signoutRow.style.display='flex';
+    const name=(user.displayName||'User');
+    document.getElementById('drawerName').textContent=name;
+    const av=document.getElementById('drawerAvatar');
+    const fb=document.getElementById('drawerAvatarFallback');
+    if(user.photoURL){ av.src=user.photoURL; av.style.display=''; if(fb) fb.style.display='none'; }
+    else { av.style.display='none'; if(fb){ fb.style.display='flex'; fb.textContent=name.trim().charAt(0).toUpperCase()||'U'; } }
+  }else{
+    prof.style.display='none';
+    if(signinRow) signinRow.style.display='flex';
+    if(signoutRow) signoutRow.style.display='none';
   }
 }
+
+/** Reflect auth state inside the drawer: name on top, sign out at the bottom. */
+function dwAuth(user){
+  const blk=document.getElementById('dwUser');
+  if(!blk) return;                              // drawer not built yet
+  const title=document.getElementById('dwTitle');
+  const inBtn=document.getElementById('dwSignIn');
+  const outBtn=document.getElementById('dwSignOut');
+
+  if(user){
+    blk.style.display='flex';
+    const av=document.getElementById('dwAvatar');
+    if(user.photoURL){ av.src=user.photoURL; av.style.display=''; }
+    else av.style.display='none';
+    document.getElementById('dwName').textContent = user.displayName || 'Signed in';
+    document.getElementById('dwEmail').textContent = user.email || '';
+    if(title) title.style.display='none';
+    if(inBtn) inBtn.style.display='none';
+    if(outBtn) outBtn.style.display='flex';
+  }else{
+    blk.style.display='none';
+    if(title) title.style.display='';
+    if(inBtn) inBtn.style.display='flex';
+    if(outBtn) outBtn.style.display='none';
+  }
+}
+
+/** Mirror the sync badge into the drawer so it is visible once the slab is gone. */
+function dwSyncBadge(msg){
+  const el=document.getElementById('dwSync');
+  if(el) el.textContent=msg||'';
+}
+// Exposed so the main (non-module) script can refresh auth chrome, and so the
+// signed-in layout can be exercised without a live Google session.
+window.updateAuthUI=updateAuthUI;
 
 async function cloudLoad(uid){
   setSyncBadge('⏳');
@@ -2290,6 +2817,8 @@ function handleUser(user){
 function setSyncBadge(msg){
   const el=document.getElementById('syncStatus');
   if(el)el.textContent=msg;
+  // the hero slab is hidden once signed in, so mirror it into the drawer
+  if(typeof dwSyncBadge==='function') dwSyncBadge(msg);
 }
 </script>
 
