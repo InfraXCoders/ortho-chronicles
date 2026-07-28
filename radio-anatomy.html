@@ -236,7 +236,9 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
    either side for captions. Zooming scales the image inside this box, so
    the gutters never move. Below 720px there is no room for gutters and the
    script falls back to pins beside the structure. */
-.stagebox{position:relative;overflow:hidden;width:54%;max-width:440px;flex-shrink:0;}
+/* The image fills the stage; labels sit inline on the structures (the
+   thin margins are only so an edge label's text is not clipped). */
+.stagebox{position:relative;overflow:hidden;width:88%;max-width:560px;flex-shrink:0;}
 @media(max-width:720px){ .stagebox{width:100%;max-width:100%;} }
 .stackimg img{display:block;width:100%;height:100%;user-select:none;
   -webkit-user-drag:none;transform-origin:center center;}
@@ -1888,24 +1890,20 @@ SLICE_LABELS.xr_foot = {
   1:[ {x:.20,y:.10,t:'Distal phalanx (great toe)'},   /* Dorsoplantar (great toe = image left) */
       {x:.20,y:.22,t:'Proximal phalanx (great toe)'},
       {x:.20,y:.32,t:'1st MTP joint'},
-      {x:.16,y:.35,t:'Sesamoid'},
       {x:.22,y:.46,t:'1st metatarsal'},
       {x:.48,y:.45,t:'Metatarsals (2nd–5th)'},
       {x:.73,y:.58,t:'5th metatarsal base (tuberosity)'},
       {x:.28,y:.62,t:'Medial cuneiform'},
       {x:.35,y:.73,t:'Navicular'},
       {x:.63,y:.68,t:'Cuboid'},
-      {x:.42,y:.83,t:'Talus'},
-      {x:.35,y:.92,t:'Calcaneus'} ],
+      {x:.42,y:.85,t:'Talus / calcaneus'} ],
   2:[ {x:.72,y:.16,t:'Tibia'},                        /* Lateral (toes = image left) */
       {x:.72,y:.42,t:'Ankle (tibiotalar) joint'},
-      {x:.72,y:.50,t:'Talus'},
-      {x:.72,y:.62,t:'Subtalar joint'},
-      {x:.78,y:.75,t:'Calcaneus'},
-      {x:.93,y:.80,t:'Calcaneal tuberosity'},
+      {x:.72,y:.52,t:'Talus'},
+      {x:.80,y:.76,t:'Calcaneus'},
       {x:.55,y:.55,t:'Navicular'},
-      {x:.42,y:.60,t:'Cuneiforms (superimposed)'},
-      {x:.28,y:.70,t:'Metatarsals (superimposed)'},
+      {x:.42,y:.62,t:'Cuneiforms (superimposed)'},
+      {x:.28,y:.72,t:'Metatarsals (superimposed)'},
       {x:.10,y:.78,t:'Phalanges (toes)'} ],
   3:[ {x:.28,y:.10,t:'Distal phalanx (great toe)'},   /* Oblique */
       {x:.25,y:.28,t:'Proximal phalanx (great toe)'},
@@ -3537,14 +3535,51 @@ function drawSliceLabels(){
   const bx=bb.left-stage.left, by=bb.top-stage.top, W=stage.width, H=stage.height;
   const gutter=Math.min(bx, W-(bx+bb.width));
 
-  // Not enough gutter to be readable — fall back to a pin beside the structure.
+  // Inline labels: a numbered dot on each structure with its name sitting
+  // beside it, on the image. Names are de-collided vertically per side and
+  // joined to their dot by a short connector, so nothing overlaps while
+  // every label stays inline on the anatomy.
   if(gutter<96){
-    const vis=pins.map((p,i)=>({p,i,
-      ax:(ib.left-stage.left)+p.x*ib.width, ay:(ib.top-stage.top)+p.y*ib.height}))
+    const H2=stage.height;
+    const vis=pins.map((p,i)=>({n:i+1,t:p.t,
+        ax:(ib.left-stage.left)+p.x*ib.width, ay:(ib.top-stage.top)+p.y*ib.height,
+        side:p.x<0.5?'L':'R'}))   /* text points OUTWARD to the nearer margin, so left- and right-half labels never cross */
       .filter(o=>o.ax>=bx-1&&o.ax<=bx+bb.width+1&&o.ay>=by-1&&o.ay<=by+bb.height+1);
+    vis.forEach(o=>{
+      // Point outward to the nearer margin; if that margin is too tight for
+      // text, flip inward so the label is never clipped at the frame edge.
+      const leftRoom=o.ax-6, rightRoom=W-o.ax-6;
+      o.side = o.ax < W/2 ? 'L' : 'R';
+      const room=o.side==='L'?leftRoom:rightRoom, other=o.side==='L'?rightRoom:leftRoom;
+      if(room<90 && other>room) o.side = o.side==='L'?'R':'L';
+      o.tx = o.side==='R'? o.ax+13 : o.ax-13;
+      o.max = Math.max(40, (o.side==='R'? (W-o.tx) : o.tx) - 6);
+    });
+    // Pass 1 — render off-layout to measure each (possibly wrapped) height.
     host.innerHTML=vis.map(o=>
-      `<span class="spin${o.p.x>0.52?' flip':''}" style="left:${o.ax.toFixed(1)}px;top:${o.ay.toFixed(1)}px">
-         <b>${o.i+1}</b><em>${esc(o.p.t)}</em></span>`).join('');
+      `<div class="cap ${o.side}" style="left:${o.tx.toFixed(1)}px;top:-999px;max-width:${o.max.toFixed(0)}px"><i>${o.n}</i>${esc(o.t)}</div>`).join('');
+    const nodes=host.querySelectorAll('.cap');
+    vis.forEach((o,k)=>{ o.h=nodes[k].getBoundingClientRect().height||18; });
+    // Pass 2 — de-collide the rows independently on each side, then place.
+    ['L','R'].forEach(s=>stackColumn(vis.filter(o=>o.side===s), 6, H2-6));
+    const paths=vis.map(o=>
+      `<path class="lead-line" d="M${o.ax.toFixed(1)},${o.ay.toFixed(1)} L${o.tx.toFixed(1)},${o.cy.toFixed(1)}"/>`
+      + `<circle class="lead-dot" cx="${o.ax.toFixed(1)}" cy="${o.ay.toFixed(1)}" r="2.4"/>`).join('');
+    const caps=vis.map(o=>
+      `<div class="cap ${o.side}" style="left:${o.tx.toFixed(1)}px;top:${o.cy.toFixed(1)}px;max-width:${o.max.toFixed(0)}px"><i>${o.n}</i>${esc(o.t)}</div>`).join('');
+    host.innerHTML=`<svg viewBox="0 0 ${W.toFixed(1)} ${H2.toFixed(1)}" preserveAspectRatio="none">${paths}</svg>${caps}`;
+    // Final safety pass: nudge any residual (cross-side) overlaps apart. With
+    // ≤ ~12 labels this is cheap and clears the few edge cases the per-side
+    // de-collision can't see.
+    const capEls=[...host.querySelectorAll('.cap')];
+    for(let a=0;a<capEls.length;a++) for(let b=a+1;b<capEls.length;b++){
+      const ra=capEls[a].getBoundingClientRect(), rb=capEls[b].getBoundingClientRect();
+      if(ra.left<rb.right&&rb.left<ra.right&&ra.top<rb.bottom&&rb.top<ra.bottom){
+        const lower = ra.top<=rb.top ? b : a, up = lower===b?a:b;
+        const push = capEls[up].getBoundingClientRect().bottom - capEls[lower].getBoundingClientRect().top + 3;
+        capEls[lower].style.top = (parseFloat(capEls[lower].style.top)+push) + 'px';
+      }
+    }
     if(hint && vis.length<pins.length)
       hint.textContent=' · '+vis.length+' of '+pins.length+' structures in view';
     return;
