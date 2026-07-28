@@ -2802,7 +2802,10 @@ function init(){
   });
 
   document.getElementById('ctBurger').classList.add('on');
-  wzOpen(false);          // first run only
+  // Inside the Android app the native onboarding already collects the profile
+  // (it is injected into localStorage on page load), so don't also pop the web
+  // wizard — that was the duplicate "blue cards". On the website it still runs.
+  if(!window.AndroidAds) wzOpen(false);   // first run only (website)
 }
 init();
 </script>
