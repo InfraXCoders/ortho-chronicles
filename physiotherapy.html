@@ -442,6 +442,20 @@ const exercises=[
  err:["Rotating the hip so toes point toward the ceiling — recruits TFL instead of glute medius","Lifting too high (above 45°) — causes the pelvis to hike — a compensatory movement","Using a swinging momentum — slow, isolated movement is essential"]},
 ];
 
+/* ── Language state ──
+   buildCard references currentLang + getLangData; these were referenced but
+   never defined, which threw inside buildCard and stopped every card (and its
+   video) from rendering. Content is authored in English; translations, when
+   present, live on ex[key+'_'+lang] and fall back to English. */
+let currentLang='en';
+function getLangData(ex,key){ return ex[key+'_'+currentLang] || ex[key] || []; }
+function setLang(l){
+  currentLang=l;
+  const label={en:'English',hi:'हिंदी',pa:'ਪੰਜਾਬੀ'};
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===label[l]));
+  if(typeof applyFilter==='function') applyFilter(); else renderCards(exercises);
+}
+
 function vidId(ex){return VIDEO_MAP[ex.svg]||'kqnua4rHVVA';}
 
 function playVid(el,id){
