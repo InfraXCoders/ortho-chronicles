@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Surgical Case Library — 50 Orthopedic Cases | Dr. Maninder Singh</title>
-  <meta name="description" content="50 real-world orthopedic surgery cases across trauma, joint replacement, spine, paediatric and sports orthopaedics — presentations, decisions, outcomes and teaching points, by Dr. Maninder Singh, GMCH Amritsar." />
+  <title>Surgical Case Library — 51 Orthopedic Cases | Dr. Maninder Singh</title>
+  <meta name="description" content="51 real-world orthopedic surgery cases across trauma, joint replacement, spine, paediatric and sports orthopaedics — presentations, decisions, outcomes and teaching points, by Dr. Maninder Singh, GMCH Amritsar." />
   <link rel="canonical" href="https://www.orthochronicles.info/cases.html" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907"
      crossorigin="anonymous"></script>
@@ -14,6 +14,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .cl-lead{font-size:1.02rem;color:#334155;line-height:1.65;margin:0 0 8px;}
+    .cl-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:22px 0 30px;}
+    .cl-ov-card{display:block;text-decoration:none;border:1px solid #e5e7eb;border-radius:16px;padding:18px;background:#fff;transition:transform .18s,box-shadow .18s;border-top:4px solid var(--c);}
+    .cl-ov-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(2,8,23,.09);}
+    .cl-ov-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;color:#fff;background:var(--c);margin-bottom:11px;}
+    .cl-ov-card h3{font-size:1.02rem;margin:0 0 3px;color:#0f172a;font-family:inherit;}
+    .cl-ov-count{font-size:.76rem;font-weight:800;letter-spacing:.3px;color:var(--c);text-transform:uppercase;}
+    .cl-ov-desc{display:block;font-size:.83rem;color:#64748b;margin-top:7px;line-height:1.5;}
+    .cl-search-wrap{position:relative;margin:0 0 10px;}
+    .cl-search{width:100%;padding:14px 16px 14px 46px;border:1.6px solid #e5e7eb;border-radius:13px;font-size:.98rem;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;background:#fff;color:#0f172a;}
+    .cl-search:focus{border-color:#0EA5E9;box-shadow:0 0 0 4px rgba(14,165,233,.12);}
+    .cl-search-ic{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:#94a3b8;}
+    .cl-count-note{font-size:.82rem;color:#64748b;margin:0 0 30px;}
+    .cl-series{margin:0 0 42px;scroll-margin-top:84px;}
+    .cl-series-head{display:flex;align-items:center;gap:12px;margin-bottom:7px;}
+    .cl-series-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--c);flex-shrink:0;font-size:1.05rem;}
+    .cl-series-head h2{margin:0;font-size:1.4rem;color:#0f172a;}
+    .cl-series-badge{margin-left:auto;background:#f1f5f9;color:var(--c);font-weight:800;font-size:.82rem;padding:4px 12px;border-radius:20px;}
+    .cl-series-desc{color:#475569;font-size:.93rem;margin:0 0 16px;line-height:1.55;}
+    .cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
+    .cl-card{display:flex;gap:13px;text-decoration:none;border:1px solid #e5e7eb;border-radius:15px;padding:15px 16px;background:#fff;transition:transform .16s,box-shadow .16s,border-color .16s;align-items:flex-start;}
+    .cl-card:hover{border-color:var(--c);box-shadow:0 10px 22px rgba(2,8,23,.08);transform:translateY(-2px);}
+    .cl-num{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:var(--c);font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+    .cl-card-body{min-width:0;display:block;}
+    .cl-card-title{display:block;font-weight:700;color:#0f172a;font-size:.95rem;line-height:1.35;}
+    .cl-card-lesson{display:flex;align-items:baseline;gap:7px;margin-top:7px;font-size:.83rem;color:#475569;line-height:1.4;}
+    .cl-card-lesson i{color:var(--c);font-size:.72rem;position:relative;top:1px;}
+    .cl-noresults{text-align:center;color:#64748b;padding:26px;display:none;font-size:.95rem;}
+    @media(max-width:600px){.cl-grid{grid-template-columns:1fr;}.cl-series-head h2{font-size:1.2rem;}}
+  </style>
 </head>
 <body>
 
@@ -46,11 +77,11 @@
       </div>
       <div class="article-tag-row">
         <span class="article-tag">Case Library</span>
-        <span class="article-tag teal">50 Cases</span>
+        <span class="article-tag teal">51 Cases</span>
         <span class="article-tag">5 Specialities</span>
       </div>
       <h1 class="article-title">Surgical Case Library</h1>
-      <p class="article-subtitle">Fifty real-world orthopedic cases — the presentation, the decision-making, the operation (or the decision not to operate), and the lesson each one teaches.</p>
+      <p class="article-subtitle">51 real-world orthopedic cases — the presentation, the decision-making, the operation (or the decision not to operate), and the lesson each one teaches.</p>
       <div class="article-meta-bar">
         <div class="article-author">
           <img src="assets/doctor.jpg" alt="Dr. Maninder Singh" class="author-avatar" />
@@ -61,7 +92,7 @@
         </div>
         <div class="article-meta-right">
           <span><i class="fas fa-calendar-alt"></i> July 2026</span>
-          <span><i class="fas fa-notes-medical"></i> 50 Cases</span>
+          <span><i class="fas fa-notes-medical"></i> 51 Cases</span>
           <span><i class="fas fa-layer-group"></i> 5 Series</span>
         </div>
       </div>
@@ -70,102 +101,473 @@
 
   <main class="article-main">
     <div class="container article-container">
-      <article class="article-content" style="max-width:900px;margin:0 auto;">
+      <article class="article-content" style="max-width:1120px;margin:0 auto;">
         <div class="callout callout-warning">
           <i class="fas fa-user-shield"></i>
           <div><strong>Patient privacy:</strong> All cases are anonymised composites drawn from routine clinical practice. Ages, occupations and identifying details have been altered. Content is educational and is not a substitute for professional medical advice — see our <a href="terms.html">medical disclaimer</a>.</div>
         </div>
 
-        <section class="article-section">
-          <h2><i class="fas fa-truck-medical"></i> Trauma & Fracture Surgery Cases</h2>
-          <p>Ten real fracture-management cases from the trauma OT — road accidents, falls, and the decisions behind each fixation.</p>
-          <ul>
-            <li><a href="trauma-cases.html#case-1">Femoral Shaft Fracture in a Young Motorcyclist — Intramedullary Nailing</a></li>
-            <li><a href="trauma-cases.html#case-2">Open Tibia Fracture (Gustilo II) — Debridement First, Fixation Second</a></li>
-            <li><a href="trauma-cases.html#case-3">Intertrochanteric Hip Fracture in an 82-Year-Old — Fix Within 48 Hours</a></li>
-            <li><a href="trauma-cases.html#case-4">Distal Radius Fracture in a Working Woman — Volar Plating</a></li>
-            <li><a href="trauma-cases.html#case-5">Supracondylar Humerus Fracture in a 6-Year-Old — A True Paediatric Emergency</a></li>
-            <li><a href="trauma-cases.html#case-6">Bimalleolar Ankle Fracture-Dislocation — Reduce First, Image Later</a></li>
-            <li><a href="trauma-cases.html#case-7">Clavicle Fracture in a Cricketer — When to Plate a Collarbone</a></li>
-            <li><a href="trauma-cases.html#case-8">Patella Fracture — Tension Band Wiring That Lets the Knee Move Early</a></li>
-            <li><a href="trauma-cases.html#case-9">Monteggia Fracture-Dislocation — The Injury You Must Not Miss</a></li>
-            <li><a href="trauma-cases.html#case-10">Unstable Pelvic Ring Injury — Damage Control with External Fixation</a></li>
-            <li><a href="trauma-cases.html#case-11">Neglected Both-Bone Forearm Fracture — Plating a Three-Week-Old Injury</a></li>
-          </ul>
-          <p><a href="trauma-cases.html" class="btn-primary" style="display:inline-block;margin-top:8px;"><i class="fas fa-book-open"></i> Read the full series</a></p>
+        <p class="cl-lead">Every case below follows the same honest arc a real clinic does: <strong>who walked in</strong>, <strong>what the imaging and examination showed</strong>, <strong>the decision</strong> — to operate or not, and which technique — and <strong>the single lesson</strong> it leaves behind. Browse a whole specialty, or search across all 51 cases at once.</p>
+
+        <div class="cl-overview">
+        <a class="cl-ov-card" href="#series-trauma" style="--c:#DC2626">
+          <span class="cl-ov-ic"><i class="fas fa-truck-medical"></i></span>
+          <h3>Trauma & Fractures</h3>
+          <span class="cl-ov-count">11 cases</span>
+          <span class="cl-ov-desc">Fixation calls from the trauma OT.</span>
+        </a>
+        <a class="cl-ov-card" href="#series-joint-replacement" style="--c:#0EA5E9">
+          <span class="cl-ov-ic"><i class="fas fa-bone-break"></i></span>
+          <h3>Joint Replacement</h3>
+          <span class="cl-ov-count">10 cases</span>
+          <span class="cl-ov-desc">Knees, hips & shoulders — who needs a new joint.</span>
+        </a>
+        <a class="cl-ov-card" href="#series-spine" style="--c:#7C3AED">
+          <span class="cl-ov-ic"><i class="fas fa-bone"></i></span>
+          <h3>Spine Surgery</h3>
+          <span class="cl-ov-count">10 cases</span>
+          <span class="cl-ov-desc">From cauda equina to spinal TB.</span>
+        </a>
+        <a class="cl-ov-card" href="#series-pediatric-ortho" style="--c:#059669">
+          <span class="cl-ov-ic"><i class="fas fa-child"></i></span>
+          <h3>Paediatric Ortho</h3>
+          <span class="cl-ov-count">10 cases</span>
+          <span class="cl-ov-desc">Where growing bones change the rules.</span>
+        </a>
+        <a class="cl-ov-card" href="#series-sports-hand" style="--c:#EA580C">
+          <span class="cl-ov-ic"><i class="fas fa-person-running"></i></span>
+          <h3>Sports & Hand</h3>
+          <span class="cl-ov-count">10 cases</span>
+          <span class="cl-ov-desc">Torn ligaments, trapped nerves, sore tendons.</span>
+        </a>
+        </div>
+
+        <div class="cl-search-wrap">
+          <i class="fas fa-search cl-search-ic"></i>
+          <input class="cl-search" id="clSearch" type="text" autocomplete="off"
+            placeholder="Search 51 cases — try ‘ACL’, ‘hip fracture’, ‘clubfoot’…"
+            oninput="clFilter(this.value)" aria-label="Search cases" />
+        </div>
+        <p class="cl-count-note" id="clCount">Showing all 51 cases across 5 specialties.</p>
+
+        <section class="cl-series" id="series-trauma" style="--c:#DC2626">
+          <div class="cl-series-head">
+            <span class="cl-series-ic"><i class="fas fa-truck-medical"></i></span>
+            <h2>Trauma & Fracture Surgery Cases</h2>
+            <span class="cl-series-badge">11</span>
+          </div>
+          <p class="cl-series-desc">Ten real fracture-management cases from the trauma OT — road accidents, falls, and the decisions behind each fixation.</p>
+          <div class="cl-grid">
+            <a class="cl-card" href="trauma-cases.html#case-1" data-text="femoral shaft fracture in a young motorcyclist intramedullary nailing">
+              <span class="cl-num">1</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Femoral Shaft Fracture in a Young Motorcyclist</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Intramedullary Nailing</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-2" data-text="open tibia fracture (gustilo ii) debridement first, fixation second">
+              <span class="cl-num">2</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Open Tibia Fracture (Gustilo II)</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Debridement First, Fixation Second</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-3" data-text="intertrochanteric hip fracture in an 82-year-old fix within 48 hours">
+              <span class="cl-num">3</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Intertrochanteric Hip Fracture in an 82-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Fix Within 48 Hours</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-4" data-text="distal radius fracture in a working woman volar plating">
+              <span class="cl-num">4</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Distal Radius Fracture in a Working Woman</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Volar Plating</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-5" data-text="supracondylar humerus fracture in a 6-year-old a true paediatric emergency">
+              <span class="cl-num">5</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Supracondylar Humerus Fracture in a 6-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>A True Paediatric Emergency</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-6" data-text="bimalleolar ankle fracture-dislocation reduce first, image later">
+              <span class="cl-num">6</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Bimalleolar Ankle Fracture-Dislocation</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Reduce First, Image Later</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-7" data-text="clavicle fracture in a cricketer when to plate a collarbone">
+              <span class="cl-num">7</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Clavicle Fracture in a Cricketer</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>When to Plate a Collarbone</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-8" data-text="patella fracture tension band wiring that lets the knee move early">
+              <span class="cl-num">8</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Patella Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Tension Band Wiring That Lets the Knee Move Early</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-9" data-text="monteggia fracture-dislocation the injury you must not miss">
+              <span class="cl-num">9</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Monteggia Fracture-Dislocation</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Injury You Must Not Miss</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-10" data-text="unstable pelvic ring injury damage control with external fixation">
+              <span class="cl-num">10</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Unstable Pelvic Ring Injury</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Damage Control with External Fixation</span>
+              </span>
+            </a>
+            <a class="cl-card" href="trauma-cases.html#case-11" data-text="neglected both-bone forearm fracture plating a three-week-old injury">
+              <span class="cl-num">11</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Neglected Both-Bone Forearm Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Plating a Three-Week-Old Injury</span>
+              </span>
+            </a>
+          </div>
+          <p style="margin-top:18px;"><a href="trauma-cases.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Read the full Trauma & Fracture Surgery series</a></p>
         </section>
 
-        <section class="article-section">
-          <h2><i class="fas fa-joint"></i> Joint Replacement Surgery Cases</h2>
-          <p>Ten arthroplasty cases — knees, hips and shoulders — showing who needs replacement, which implant, and what recovery really looks like.</p>
-          <ul>
-            <li><a href="joint-replacement-cases.html#case-1">Bilateral Varus Knees in a 68-Year-Old — Staged Total Knee Replacement</a></li>
-            <li><a href="joint-replacement-cases.html#case-2">Avascular Necrosis of the Hip in a 42-Year-Old — Uncemented Total Hip</a></li>
-            <li><a href="joint-replacement-cases.html#case-3">Fractured Neck of Femur at 78 — Why We Replaced Instead of Fixing</a></li>
-            <li><a href="joint-replacement-cases.html#case-4">Failed Hip Screw with Cut-Out — Conversion to Total Hip Replacement</a></li>
-            <li><a href="joint-replacement-cases.html#case-5">Rotator Cuff Arthropathy — Reverse Shoulder Replacement at 74</a></li>
-            <li><a href="joint-replacement-cases.html#case-6">Medial Compartment Arthritis at 55 — Unicompartmental (Partial) Knee</a></li>
-            <li><a href="joint-replacement-cases.html#case-7">Rheumatoid Knees at 48 — Replacement in Inflammatory Arthritis</a></li>
-            <li><a href="joint-replacement-cases.html#case-8">Post-Traumatic Arthritis After Tibial Plateau Fracture — Complex Primary TKR</a></li>
-            <li><a href="joint-replacement-cases.html#case-9">Infected TKR — Two-Stage Revision That Saved the Knee</a></li>
-            <li><a href="joint-replacement-cases.html#case-10">Simultaneous Arthritis of Hip and Knee — Which Joint First?</a></li>
-          </ul>
-          <p><a href="joint-replacement-cases.html" class="btn-primary" style="display:inline-block;margin-top:8px;"><i class="fas fa-book-open"></i> Read the full series</a></p>
+        <section class="cl-series" id="series-joint-replacement" style="--c:#0EA5E9">
+          <div class="cl-series-head">
+            <span class="cl-series-ic"><i class="fas fa-bone-break"></i></span>
+            <h2>Joint Replacement Surgery Cases</h2>
+            <span class="cl-series-badge">10</span>
+          </div>
+          <p class="cl-series-desc">Ten arthroplasty cases — knees, hips and shoulders — showing who needs replacement, which implant, and what recovery really looks like.</p>
+          <div class="cl-grid">
+            <a class="cl-card" href="joint-replacement-cases.html#case-1" data-text="bilateral varus knees in a 68-year-old staged total knee replacement">
+              <span class="cl-num">1</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Bilateral Varus Knees in a 68-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Staged Total Knee Replacement</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-2" data-text="avascular necrosis of the hip in a 42-year-old uncemented total hip">
+              <span class="cl-num">2</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Avascular Necrosis of the Hip in a 42-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Uncemented Total Hip</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-3" data-text="fractured neck of femur at 78 why we replaced instead of fixing">
+              <span class="cl-num">3</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Fractured Neck of Femur at 78</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Why We Replaced Instead of Fixing</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-4" data-text="failed hip screw with cut-out conversion to total hip replacement">
+              <span class="cl-num">4</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Failed Hip Screw with Cut-Out</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Conversion to Total Hip Replacement</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-5" data-text="rotator cuff arthropathy reverse shoulder replacement at 74">
+              <span class="cl-num">5</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Rotator Cuff Arthropathy</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Reverse Shoulder Replacement at 74</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-6" data-text="medial compartment arthritis at 55 unicompartmental (partial) knee">
+              <span class="cl-num">6</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Medial Compartment Arthritis at 55</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Unicompartmental (Partial) Knee</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-7" data-text="rheumatoid knees at 48 replacement in inflammatory arthritis">
+              <span class="cl-num">7</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Rheumatoid Knees at 48</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Replacement in Inflammatory Arthritis</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-8" data-text="post-traumatic arthritis after tibial plateau fracture complex primary tkr">
+              <span class="cl-num">8</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Post-Traumatic Arthritis After Tibial Plateau Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Complex Primary TKR</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-9" data-text="infected tkr two-stage revision that saved the knee">
+              <span class="cl-num">9</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Infected TKR</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Two-Stage Revision That Saved the Knee</span>
+              </span>
+            </a>
+            <a class="cl-card" href="joint-replacement-cases.html#case-10" data-text="simultaneous arthritis of hip and knee which joint first?">
+              <span class="cl-num">10</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Simultaneous Arthritis of Hip and Knee</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Which Joint First?</span>
+              </span>
+            </a>
+          </div>
+          <p style="margin-top:18px;"><a href="joint-replacement-cases.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Read the full Joint Replacement Surgery series</a></p>
         </section>
 
-        <section class="article-section">
-          <h2><i class="fas fa-x-ray"></i> Spine Surgery & Spine Care Cases</h2>
-          <p>Ten spine cases — from emergency cauda equina decompression to tuberculosis of the spine — and the reasoning behind operating or not.</p>
-          <ul>
-            <li><a href="spine-cases.html#case-1">Cauda Equina Syndrome — Midnight Decompression</a></li>
-            <li><a href="spine-cases.html#case-2">Sciatica That Would Not Settle — Microdiscectomy After 10 Weeks</a></li>
-            <li><a href="spine-cases.html#case-3">Lumbar Canal Stenosis — The Shopping-Cart Sign</a></li>
-            <li><a href="spine-cases.html#case-4">Pott's Spine — Tuberculosis Treated Without Surgery</a></li>
-            <li><a href="spine-cases.html#case-5">Thoracolumbar Burst Fracture — TLICS Guides the Decision</a></li>
-            <li><a href="spine-cases.html#case-6">Osteoporotic Vertebral Fracture — Kyphoplasty for Unrelenting Pain</a></li>
-            <li><a href="spine-cases.html#case-7">Cervical Myelopathy — ACDF for the Clumsy Hand</a></li>
-            <li><a href="spine-cases.html#case-8">Degenerative Spondylolisthesis — Decompression Plus Fusion</a></li>
-            <li><a href="spine-cases.html#case-9">Adolescent Back Pain — When a Stress Fracture Mimics a Muscle Pull</a></li>
-            <li><a href="spine-cases.html#case-10">Whiplash After a Rear-End Collision — Reassurance, Not a Collar</a></li>
-          </ul>
-          <p><a href="spine-cases.html" class="btn-primary" style="display:inline-block;margin-top:8px;"><i class="fas fa-book-open"></i> Read the full series</a></p>
+        <section class="cl-series" id="series-spine" style="--c:#7C3AED">
+          <div class="cl-series-head">
+            <span class="cl-series-ic"><i class="fas fa-bone"></i></span>
+            <h2>Spine Surgery & Spine Care Cases</h2>
+            <span class="cl-series-badge">10</span>
+          </div>
+          <p class="cl-series-desc">Ten spine cases — from emergency cauda equina decompression to tuberculosis of the spine — and the reasoning behind operating or not.</p>
+          <div class="cl-grid">
+            <a class="cl-card" href="spine-cases.html#case-1" data-text="cauda equina syndrome midnight decompression">
+              <span class="cl-num">1</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Cauda Equina Syndrome</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Midnight Decompression</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-2" data-text="sciatica that would not settle microdiscectomy after 10 weeks">
+              <span class="cl-num">2</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Sciatica That Would Not Settle</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Microdiscectomy After 10 Weeks</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-3" data-text="lumbar canal stenosis the shopping-cart sign">
+              <span class="cl-num">3</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Lumbar Canal Stenosis</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Shopping-Cart Sign</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-4" data-text="pott's spine tuberculosis treated without surgery">
+              <span class="cl-num">4</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Pott's Spine</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Tuberculosis Treated Without Surgery</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-5" data-text="thoracolumbar burst fracture tlics guides the decision">
+              <span class="cl-num">5</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Thoracolumbar Burst Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>TLICS Guides the Decision</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-6" data-text="osteoporotic vertebral fracture kyphoplasty for unrelenting pain">
+              <span class="cl-num">6</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Osteoporotic Vertebral Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Kyphoplasty for Unrelenting Pain</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-7" data-text="cervical myelopathy acdf for the clumsy hand">
+              <span class="cl-num">7</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Cervical Myelopathy</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>ACDF for the Clumsy Hand</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-8" data-text="degenerative spondylolisthesis decompression plus fusion">
+              <span class="cl-num">8</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Degenerative Spondylolisthesis</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Decompression Plus Fusion</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-9" data-text="adolescent back pain when a stress fracture mimics a muscle pull">
+              <span class="cl-num">9</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Adolescent Back Pain</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>When a Stress Fracture Mimics a Muscle Pull</span>
+              </span>
+            </a>
+            <a class="cl-card" href="spine-cases.html#case-10" data-text="whiplash after a rear-end collision reassurance, not a collar">
+              <span class="cl-num">10</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Whiplash After a Rear-End Collision</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Reassurance, Not a Collar</span>
+              </span>
+            </a>
+          </div>
+          <p style="margin-top:18px;"><a href="spine-cases.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Read the full Spine Surgery & Spine Care series</a></p>
         </section>
 
-        <section class="article-section">
-          <h2><i class="fas fa-child"></i> Paediatric Orthopedic Cases</h2>
-          <p>Ten children's orthopaedic cases — clubfoot, hip dysplasia, growth-plate injuries — where growing bones change all the rules.</p>
-          <ul>
-            <li><a href="pediatric-ortho-cases.html#case-1">Clubfoot in a Newborn — The Ponseti Method</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-2">Developmental Dysplasia of the Hip — Caught at 3 Months</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-3">Limping 6-Year-Old — Perthes Disease and the Art of Containment</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-4">Slipped Capital Femoral Epiphysis in an Overweight 13-Year-Old</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-5">Greenstick Forearm Fracture — Bones That Bend</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-6">Pulled Elbow — The 30-Second Cure</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-7">Acute Haematogenous Osteomyelitis — 48 Hours That Saved a Tibia</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-8">Septic Arthritis of the Hip in an Infant — A Same-Day Operation</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-9">Bowlegs at 2 Years — Physiological or Blount Disease?</a></li>
-            <li><a href="pediatric-ortho-cases.html#case-10">Pathological Fracture Through a Bone Cyst — Let It Heal, Then Treat</a></li>
-          </ul>
-          <p><a href="pediatric-ortho-cases.html" class="btn-primary" style="display:inline-block;margin-top:8px;"><i class="fas fa-book-open"></i> Read the full series</a></p>
+        <section class="cl-series" id="series-pediatric-ortho" style="--c:#059669">
+          <div class="cl-series-head">
+            <span class="cl-series-ic"><i class="fas fa-child"></i></span>
+            <h2>Paediatric Orthopedic Cases</h2>
+            <span class="cl-series-badge">10</span>
+          </div>
+          <p class="cl-series-desc">Ten children's orthopaedic cases — clubfoot, hip dysplasia, growth-plate injuries — where growing bones change all the rules.</p>
+          <div class="cl-grid">
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-1" data-text="clubfoot in a newborn the ponseti method">
+              <span class="cl-num">1</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Clubfoot in a Newborn</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Ponseti Method</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-2" data-text="developmental dysplasia of the hip caught at 3 months">
+              <span class="cl-num">2</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Developmental Dysplasia of the Hip</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Caught at 3 Months</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-3" data-text="limping 6-year-old perthes disease and the art of containment">
+              <span class="cl-num">3</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Limping 6-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Perthes Disease and the Art of Containment</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-4" data-text="slipped capital femoral epiphysis in an overweight 13-year-old ">
+              <span class="cl-num">4</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Slipped Capital Femoral Epiphysis in an Overweight 13-Year-Old</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i></span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-5" data-text="greenstick forearm fracture bones that bend">
+              <span class="cl-num">5</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Greenstick Forearm Fracture</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Bones That Bend</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-6" data-text="pulled elbow the 30-second cure">
+              <span class="cl-num">6</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Pulled Elbow</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The 30-Second Cure</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-7" data-text="acute haematogenous osteomyelitis 48 hours that saved a tibia">
+              <span class="cl-num">7</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Acute Haematogenous Osteomyelitis</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>48 Hours That Saved a Tibia</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-8" data-text="septic arthritis of the hip in an infant a same-day operation">
+              <span class="cl-num">8</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Septic Arthritis of the Hip in an Infant</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>A Same-Day Operation</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-9" data-text="bowlegs at 2 years physiological or blount disease?">
+              <span class="cl-num">9</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Bowlegs at 2 Years</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Physiological or Blount Disease?</span>
+              </span>
+            </a>
+            <a class="cl-card" href="pediatric-ortho-cases.html#case-10" data-text="pathological fracture through a bone cyst let it heal, then treat">
+              <span class="cl-num">10</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Pathological Fracture Through a Bone Cyst</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Let It Heal, Then Treat</span>
+              </span>
+            </a>
+          </div>
+          <p style="margin-top:18px;"><a href="pediatric-ortho-cases.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Read the full Paediatric Orthopedic series</a></p>
         </section>
 
-        <section class="article-section">
-          <h2><i class="fas fa-person-running"></i> Sports Injury, Hand & Soft-Tissue Cases</h2>
-          <p>Ten cases from the sports and soft-tissue clinic — torn ligaments, trapped nerves and inflamed tendons, and who actually needs an operation.</p>
-          <ul>
-            <li><a href="sports-hand-cases.html#case-1">ACL Tear in a College Footballer — Arthroscopic Reconstruction</a></li>
-            <li><a href="sports-hand-cases.html#case-2">Bucket-Handle Meniscal Tear — The Locked Knee</a></li>
-            <li><a href="sports-hand-cases.html#case-3">Massive Rotator Cuff Tear in a 56-Year-Old Mason — Arthroscopic Repair</a></li>
-            <li><a href="sports-hand-cases.html#case-4">Tennis Elbow That Failed Injections — Needling and Patience</a></li>
-            <li><a href="sports-hand-cases.html#case-5">Frozen Shoulder in a Diabetic — The Long Thaw</a></li>
-            <li><a href="sports-hand-cases.html#case-6">Carpal Tunnel Syndrome — When Night Tingling Becomes Thumb Weakness</a></li>
-            <li><a href="sports-hand-cases.html#case-7">Trigger Finger — From Clicking to Locked</a></li>
-            <li><a href="sports-hand-cases.html#case-8">Wrist Ganglion — The Bible Cyst That Needed Nothing</a></li>
-            <li><a href="sports-hand-cases.html#case-9">Plantar Fasciitis — First Steps Like Walking on Glass</a></li>
-            <li><a href="sports-hand-cases.html#case-10">Acute Gout Mistaken for Infection — The Crystal Verdict</a></li>
-          </ul>
-          <p><a href="sports-hand-cases.html" class="btn-primary" style="display:inline-block;margin-top:8px;"><i class="fas fa-book-open"></i> Read the full series</a></p>
+        <section class="cl-series" id="series-sports-hand" style="--c:#EA580C">
+          <div class="cl-series-head">
+            <span class="cl-series-ic"><i class="fas fa-person-running"></i></span>
+            <h2>Sports Injury, Hand & Soft-Tissue Cases</h2>
+            <span class="cl-series-badge">10</span>
+          </div>
+          <p class="cl-series-desc">Ten cases from the sports and soft-tissue clinic — torn ligaments, trapped nerves and inflamed tendons, and who actually needs an operation.</p>
+          <div class="cl-grid">
+            <a class="cl-card" href="sports-hand-cases.html#case-1" data-text="acl tear in a college footballer arthroscopic reconstruction">
+              <span class="cl-num">1</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">ACL Tear in a College Footballer</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Arthroscopic Reconstruction</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-2" data-text="bucket-handle meniscal tear the locked knee">
+              <span class="cl-num">2</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Bucket-Handle Meniscal Tear</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Locked Knee</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-3" data-text="massive rotator cuff tear in a 56-year-old mason arthroscopic repair">
+              <span class="cl-num">3</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Massive Rotator Cuff Tear in a 56-Year-Old Mason</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Arthroscopic Repair</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-4" data-text="tennis elbow that failed injections needling and patience">
+              <span class="cl-num">4</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Tennis Elbow That Failed Injections</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>Needling and Patience</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-5" data-text="frozen shoulder in a diabetic the long thaw">
+              <span class="cl-num">5</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Frozen Shoulder in a Diabetic</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Long Thaw</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-6" data-text="carpal tunnel syndrome when night tingling becomes thumb weakness">
+              <span class="cl-num">6</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Carpal Tunnel Syndrome</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>When Night Tingling Becomes Thumb Weakness</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-7" data-text="trigger finger from clicking to locked">
+              <span class="cl-num">7</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Trigger Finger</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>From Clicking to Locked</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-8" data-text="wrist ganglion the bible cyst that needed nothing">
+              <span class="cl-num">8</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Wrist Ganglion</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Bible Cyst That Needed Nothing</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-9" data-text="plantar fasciitis first steps like walking on glass">
+              <span class="cl-num">9</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Plantar Fasciitis</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>First Steps Like Walking on Glass</span>
+              </span>
+            </a>
+            <a class="cl-card" href="sports-hand-cases.html#case-10" data-text="acute gout mistaken for infection the crystal verdict">
+              <span class="cl-num">10</span>
+              <span class="cl-card-body">
+                <span class="cl-card-title">Acute Gout Mistaken for Infection</span>
+                <span class="cl-card-lesson"><i class="fas fa-arrow-right-long"></i>The Crystal Verdict</span>
+              </span>
+            </a>
+          </div>
+          <p style="margin-top:18px;"><a href="sports-hand-cases.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Read the full Sports Injury, Hand & Soft-Tissue series</a></p>
         </section>
+
+        <p class="cl-noresults" id="clNoResults">No cases match your search — try a broader term.</p>
       </article>
     </div>
   </main>
@@ -195,6 +597,25 @@
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
     if (hamburger) hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+    const TOTAL=51;
+    function clFilter(q){
+      q=(q||'').trim().toLowerCase();
+      let shown=0;
+      document.querySelectorAll('.cl-series').forEach(function(sec){
+        var secShown=0;
+        sec.querySelectorAll('.cl-card').forEach(function(c){
+          var match=!q||c.dataset.text.indexOf(q)>-1;
+          c.style.display=match?'':'none';
+          if(match){secShown++;shown++;}
+        });
+        sec.style.display=secShown?'':'none';
+      });
+      var nr=document.getElementById('clNoResults');
+      if(nr)nr.style.display=shown?'none':'block';
+      var cnt=document.getElementById('clCount');
+      if(cnt)cnt.textContent=q?('Showing '+shown+' matching case'+(shown===1?'':'s')+'.'):('Showing all '+TOTAL+' cases across 5 specialties.');
+    }
   </script>
 </body>
 </html>
