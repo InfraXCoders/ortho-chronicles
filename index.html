@@ -1903,7 +1903,10 @@
         if (!Array.isArray(data) || data.length === 0) throw new Error('Empty');
         grid.innerHTML = data.map((s, i) => buildSlideCard(s, i)).join('');
       } catch(e) {
-        grid.innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:40px;">Presentations loading… Please refresh the page.</p>';
+        // Don't show a broken/error state — hide the whole section instead.
+        const sec = document.getElementById('slides');
+        if (sec) sec.style.display = 'none';
+        return;
       }
       attachFilter();
     }
@@ -2646,7 +2649,9 @@
     /* ── Render items ── */
     function renderItems() {
       if (!allItems.length) {
-        list.innerHTML = '<div class="mnw-error"><i class="fas fa-exclamation-circle"></i><span>Could not load news. Please check your connection.</span></div>';
+        // Hide the whole news widget rather than show a broken/error state.
+        const w = document.getElementById('mnwWidget');
+        if (w) w.style.display = 'none';
         return;
       }
       const cap   = Math.min(allItems.length, 25);

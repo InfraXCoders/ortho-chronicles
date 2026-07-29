@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin-slides.html
 
 Sitemap: https://www.orthochronicles.info/sitemap.xml
