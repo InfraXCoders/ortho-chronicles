@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DICOM Scan Reader — CT & MRI Viewer | OrthoChronicles</title>
+  <meta name="description" content="A free browser-based DICOM viewer for CT and MRI scans. Scroll through slices, adjust window/level, zoom, pan, invert and measure — entirely on your device, nothing uploaded. Educational tool by OrthoChronicles." />
+  <link rel="canonical" href="https://www.orthochronicles.info/scan-reader.html" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root{--sr-bg:#0b1220;--sr-panel:#111a2b;--sr-line:#1f2c42;--sr-txt:#e6edf7;--sr-mut:#8fa3bf;--sr-acc:#38BDF8;--sr-accd:#0EA5E9;}
+    .sr-hero{background:linear-gradient(135deg,#0C4A6E,#075985);color:#fff;padding:34px 0 26px;}
+    .sr-hero .container{max-width:1120px;margin:0 auto;padding:0 20px;}
+    .sr-hero h1{font-family:'Playfair Display',serif;font-size:2rem;margin:0 0 8px;}
+    .sr-hero p{color:#cfe8fb;max-width:760px;line-height:1.6;margin:0;font-size:.98rem;}
+    .sr-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+    .sr-badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.74rem;font-weight:700;padding:5px 12px;border-radius:20px;}
+    .sr-privacy{display:flex;gap:10px;align-items:flex-start;background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:12px;padding:12px 15px;margin:16px auto 0;max-width:1120px;font-size:.85rem;line-height:1.5;}
+    .sr-privacy i{color:#059669;margin-top:2px;}
+
+    .sr-app{max-width:1120px;margin:22px auto 40px;padding:0 20px;}
+    .sr-toolbar{display:flex;flex-wrap:wrap;gap:6px;background:var(--sr-panel);border:1px solid var(--sr-line);border-radius:12px 12px 0 0;padding:8px;align-items:center;}
+    .sr-tool{background:#182338;border:1px solid var(--sr-line);color:var(--sr-txt);border-radius:9px;padding:8px 11px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap;}
+    .sr-tool:hover{background:#213150;border-color:var(--sr-acc);}
+    .sr-tool.active{background:var(--sr-accd);border-color:var(--sr-accd);color:#fff;}
+    .sr-tool:disabled{opacity:.4;cursor:not-allowed;}
+    .sr-sep{width:1px;height:26px;background:var(--sr-line);margin:0 4px;}
+    .sr-presets{display:flex;gap:5px;flex-wrap:wrap;}
+    .sr-preset{background:transparent;border:1px solid var(--sr-line);color:var(--sr-mut);border-radius:20px;padding:5px 11px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
+    .sr-preset:hover{color:#fff;border-color:var(--sr-acc);}
+
+    .sr-main{display:grid;grid-template-columns:1fr 260px;gap:0;background:var(--sr-panel);border:1px solid var(--sr-line);border-top:0;border-radius:0 0 12px 12px;overflow:hidden;}
+    .sr-stage{position:relative;background:#000;min-height:64vh;display:flex;align-items:center;justify-content:center;}
+    #dicomImage{width:100%;height:64vh;position:relative;}
+    .sr-hud{position:absolute;left:12px;bottom:10px;color:#cbd5e1;font-size:.74rem;line-height:1.5;text-shadow:0 1px 3px #000;pointer-events:none;font-variant-numeric:tabular-nums;}
+    .sr-hud-tr{position:absolute;right:12px;top:10px;text-align:right;color:#cbd5e1;font-size:.74rem;line-height:1.5;text-shadow:0 1px 3px #000;pointer-events:none;font-variant-numeric:tabular-nums;}
+    .sr-drop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;color:var(--sr-mut);padding:24px;transition:.2s;}
+    .sr-drop.hidden{display:none;}
+    .sr-drop.drag{background:rgba(56,189,248,.08);outline:3px dashed var(--sr-acc);outline-offset:-14px;}
+    .sr-drop i.big{font-size:2.6rem;color:var(--sr-acc);}
+    .sr-drop h3{color:var(--sr-txt);font-size:1.05rem;margin:0;}
+    .sr-openbtn{background:var(--sr-accd);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;gap:8px;align-items:center;}
+    .sr-openbtn.ghost{background:transparent;border:1px solid var(--sr-line);color:var(--sr-txt);}
+    .sr-msg{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:#7f1d1d;color:#fff;padding:9px 16px;border-radius:9px;font-size:.82rem;max-width:80%;text-align:center;display:none;}
+
+    .sr-side{background:var(--sr-panel);border-left:1px solid var(--sr-line);padding:14px;color:var(--sr-txt);display:flex;flex-direction:column;gap:14px;}
+    .sr-scroll{display:flex;flex-direction:column;gap:6px;}
+    .sr-scroll label{font-size:.72rem;color:var(--sr-mut);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+    .sr-slider{width:100%;accent-color:var(--sr-acc);}
+    .sr-meta h4{font-size:.72rem;color:var(--sr-mut);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin:0 0 8px;}
+    .sr-meta table{width:100%;border-collapse:collapse;font-size:.8rem;}
+    .sr-meta td{padding:4px 0;vertical-align:top;}
+    .sr-meta td:first-child{color:var(--sr-mut);width:44%;}
+    .sr-meta td:last-child{color:var(--sr-txt);font-weight:600;}
+    .sr-help{font-size:.76rem;color:var(--sr-mut);line-height:1.55;border-top:1px solid var(--sr-line);padding-top:12px;}
+    .sr-help b{color:var(--sr-txt);}
+    .sr-disclaim{max-width:1120px;margin:16px auto 0;padding:0 20px;font-size:.8rem;color:#64748b;line-height:1.55;}
+    @media(max-width:820px){ .sr-main{grid-template-columns:1fr;} .sr-side{border-left:0;border-top:1px solid var(--sr-line);} #dicomImage,.sr-stage{height:56vh;min-height:56vh;} }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <nav class="navbar">
+      <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="OrthoChronicles Logo" /></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="radio-anatomy.html">Anatomy + Radiology</a></li>
+        <li><a href="scan-reader.html" style="color:#38BDF8;font-weight:700;">Scan Reader</a></li>
+        <li><a href="cases.html">Case Library</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <section class="sr-hero">
+    <div class="container">
+      <div class="sr-badges">
+        <span class="sr-badge">CT &amp; MRI</span>
+        <span class="sr-badge">DICOM (.dcm)</span>
+        <span class="sr-badge">100% on your device</span>
+      </div>
+      <h1>DICOM Scan Reader</h1>
+      <p>Open a CT or MRI scan and read it like a workstation — scroll through the slices, adjust the window/level, zoom, pan, invert and measure. Everything runs inside your browser; your images are never uploaded anywhere.</p>
+    </div>
+    <div class="sr-privacy">
+      <i class="fas fa-user-shield"></i>
+      <div><strong>Private by design.</strong> Files are opened locally in your browser and never sent to any server. This is an educational viewer, not a diagnostic device — it does not interpret scans or replace a radiologist's report.</div>
+    </div>
+  </section>
+
+  <div class="sr-app">
+    <div class="sr-toolbar" id="srToolbar">
+      <button class="sr-tool" id="btnOpen"><i class="fas fa-folder-open"></i> Open files</button>
+      <button class="sr-tool" id="btnOpenDir"><i class="fas fa-folder-tree"></i> Open folder</button>
+      <span class="sr-sep"></span>
+      <button class="sr-tool" id="btnWL" title="Left-drag on the image"><i class="fas fa-adjust"></i> Window/Level</button>
+      <button class="sr-tool" id="btnMeasure" title="Click two points"><i class="fas fa-ruler"></i> Measure</button>
+      <button class="sr-tool" id="btnInvert"><i class="fas fa-circle-half-stroke"></i> Invert</button>
+      <button class="sr-tool" id="btnFit"><i class="fas fa-expand"></i> Fit</button>
+      <button class="sr-tool" id="btnReset"><i class="fas fa-rotate-left"></i> Reset</button>
+      <button class="sr-tool" id="btnClear"><i class="fas fa-eraser"></i> Clear marks</button>
+      <span class="sr-sep"></span>
+      <div class="sr-presets" id="srPresets">
+        <button class="sr-preset" data-ww="80"   data-wc="40">Brain</button>
+        <button class="sr-preset" data-ww="2500" data-wc="480">Bone</button>
+        <button class="sr-preset" data-ww="1500" data-wc="-600">Lung</button>
+        <button class="sr-preset" data-ww="400"  data-wc="40">Soft tissue</button>
+        <button class="sr-preset" data-ww="350"  data-wc="50">Abdomen</button>
+      </div>
+    </div>
+
+    <div class="sr-main">
+      <div class="sr-stage" id="srStage">
+        <div id="dicomImage" oncontextmenu="return false;"></div>
+        <div class="sr-hud" id="srHud"></div>
+        <div class="sr-hud-tr" id="srHudTr"></div>
+        <div class="sr-msg" id="srMsg"></div>
+        <div class="sr-drop" id="srDrop">
+          <i class="fas fa-file-medical big"></i>
+          <h3>Drop DICOM files here</h3>
+          <div style="font-size:.85rem;">or</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+            <button class="sr-openbtn" id="dropOpen"><i class="fas fa-folder-open"></i> Choose .dcm files</button>
+            <button class="sr-openbtn ghost" id="dropOpenDir"><i class="fas fa-folder-tree"></i> Choose a folder</button>
+          </div>
+          <div style="font-size:.76rem;max-width:420px;">A single slice or a whole series. Tip: most scanners export a folder of numbered <b>.dcm</b> files — open the folder to scroll the full stack.</div>
+        </div>
+      </div>
+      <aside class="sr-side">
+        <div class="sr-scroll">
+          <label>Slice <span id="srSliceLbl">— / —</span></label>
+          <input class="sr-slider" id="srSlider" type="range" min="0" max="0" value="0" disabled />
+        </div>
+        <div class="sr-meta">
+          <h4>Scan info</h4>
+          <table id="srMeta"><tr><td>—</td><td>Open a scan to begin</td></tr></table>
+        </div>
+        <div class="sr-help">
+          <b>Controls</b><br>
+          • <b>Scroll wheel</b> — move through slices<br>
+          • <b>Left-drag</b> — window / brightness &amp; contrast<br>
+          • <b>Right-drag</b> — zoom &nbsp;·&nbsp; <b>Shift+drag</b> — pan<br>
+          • <b>Measure</b> — click two points for a distance
+        </div>
+      </aside>
+    </div>
+
+    <input type="file" id="fileInput" accept=".dcm,application/dicom,.DCM" multiple style="display:none" />
+    <input type="file" id="dirInput" webkitdirectory directory multiple style="display:none" />
+
+    <p class="sr-disclaim">Supports standard uncompressed and most compressed DICOM (JPEG, JPEG-LS, JPEG 2000, RLE). Some proprietary or heavily-compressed files may not open. This tool is for education and self-study; clinical decisions must rest on a formal radiology report.</p>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="OrthoChronicles" />
+        <p>An open platform for the orthopedic community — supervised by Dr. Maninder Singh, MS Orthopedics, GMCH Amritsar.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="radio-anatomy.html">Anatomy + Radiology</a></li>
+          <li><a href="scan-reader.html">Scan Reader</a></li>
+          <li><a href="cases.html">Case Library</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 OrthoChronicles. All rights reserved.</p>
+      <p><a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms.html">Terms &amp; Medical Disclaimer</a></p>
+    </div>
+  </footer>
+
+  <!-- DICOM engine -->
+  <script src="https://cdn.jsdelivr.net/npm/cornerstone-core@2.6.1/dist/cornerstone.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dicom-parser@1.8.21/dist/dicomParser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cornerstone-wado-image-loader@4.13.2/dist/cornerstoneWADOImageLoader.bundle.min.js"></script>
+  <script>
+  (function(){
+    const hamburger=document.getElementById('hamburger'), navLinks=document.getElementById('navLinks');
+    if(hamburger) hamburger.addEventListener('click',()=>navLinks.classList.toggle('open'));
+
+    const element=document.getElementById('dicomImage');
+    const stage=document.getElementById('srStage');
+    const drop=document.getElementById('srDrop');
+    const hud=document.getElementById('srHud'), hudTr=document.getElementById('srHudTr');
+    const slider=document.getElementById('srSlider'), sliceLbl=document.getElementById('srSliceLbl');
+    const metaTbl=document.getElementById('srMeta'), msg=document.getElementById('srMsg');
+
+    if(typeof cornerstone==='undefined'||typeof cornerstoneWADOImageLoader==='undefined'){
+      showMsg('Viewer engine failed to load. Check your internet connection and refresh.'); return;
+    }
+
+    // ── configure loader ──
+    cornerstoneWADOImageLoader.external.cornerstone=cornerstone;
+    cornerstoneWADOImageLoader.external.dicomParser=dicomParser;
+    try{
+      cornerstoneWADOImageLoader.webWorkerManager.initialize({
+        maxWebWorkers: Math.max(1,(navigator.hardwareConcurrency||2)-1),
+        startWebWorkersOnDemand:true,
+        taskConfiguration:{ decodeTask:{ initializeCodecsOnStartup:false } }
+      });
+    }catch(e){ /* bundle inlines workers; safe to ignore */ }
+
+    cornerstone.enable(element);
+    requestAnimationFrame(function(){ try{ cornerstone.resize(element); }catch(e){} });
+
+    let imageIds=[], meta=[], idx=0, viewport=null, lastImage=null;
+    let measureMode=false, wlMode=true, pts=[], measurements=[];
+
+    function showMsg(t){ msg.textContent=t; msg.style.display='block'; clearTimeout(showMsg._t); showMsg._t=setTimeout(()=>msg.style.display='none',6000); }
+
+    // ── file handling ──
+    async function handleFiles(fileList){
+      const files=[...fileList];
+      if(!files.length) return;
+      showMsg('Reading '+files.length+' file'+(files.length>1?'s':'')+'…');
+      const entries=[];
+      for(const f of files){
+        try{
+          const buf=await f.arrayBuffer();
+          const ds=dicomParser.parseDicom(new Uint8Array(buf));
+          const inst=parseInt(ds.intString('x00200013')||'',10);
+          const loc=parseFloat(ds.floatString('x00201041'));
+          const frames=parseInt(ds.intString('x00280008')||'1',10)||1;
+          const base=cornerstoneWADOImageLoader.wadouri.fileManager.add(f);
+          const info={ds:ds};
+          if(frames>1){
+            for(let fr=0;fr<frames;fr++) entries.push({imageId:base+'?frame='+fr, inst:isNaN(inst)?0:inst, loc:isNaN(loc)?0:loc, fr, info});
+          }else{
+            entries.push({imageId:base, inst:isNaN(inst)?0:inst, loc:isNaN(loc)?0:loc, fr:0, info});
+          }
+        }catch(e){ /* skip non-dicom */ }
+      }
+      if(!entries.length){ showMsg('No readable DICOM found. Files must be standard .dcm images.'); return; }
+      entries.sort((a,b)=> (a.inst-b.inst) || (a.loc-b.loc) || (a.fr-b.fr));
+      imageIds=entries.map(e=>e.imageId); meta=entries.map(e=>e.info);
+      idx=0; viewport=null; measurements=[]; pts=[];
+      drop.classList.add('hidden');
+      slider.min=0; slider.max=imageIds.length-1; slider.value=0; slider.disabled=imageIds.length<2;
+      msg.style.display='none';
+      show(0,true);
+    }
+
+    function show(i, fit){
+      if(!imageIds.length) return;
+      idx=Math.max(0,Math.min(imageIds.length-1,i));
+      cornerstone.loadImage(imageIds[idx]).then(function(image){
+        lastImage=image;
+        let vp;
+        if(fit || !viewport){ vp=cornerstone.getDefaultViewportForImage(element,image); }
+        else { vp=Object.assign({},viewport); }
+        cornerstone.displayImage(element,image,vp);
+        try{ cornerstone.resize(element,false); }catch(e){}   // keep canvas matched to the element
+        if(fit) cornerstone.fitToWindow(element);
+        viewport=cornerstone.getViewport(element);
+        slider.value=idx;
+        updateHud(image); updateMeta(image);
+      }).catch(function(e){
+        showMsg('Could not decode this slice — it may use an unsupported compression. ('+(e && e.error && e.error.message || e.message || 'decode error')+')');
+      });
+    }
+
+    function updateHud(image){
+      const vp=cornerstone.getViewport(element)||{voi:{}};
+      const mod=(meta[idx]&&meta[idx].ds.string('x00080060'))||'—';
+      hud.innerHTML='Slice '+(idx+1)+' / '+imageIds.length+'<br>WW '+Math.round(vp.voi.windowWidth)+' &nbsp; WL '+Math.round(vp.voi.windowCenter);
+      hudTr.innerHTML=mod+' &nbsp;·&nbsp; '+image.width+'×'+image.height+'<br>Zoom '+Math.round(vp.scale*100)+'%'+(vp.invert?' &nbsp;·&nbsp; INV':'');
+      sliceLbl.textContent=(idx+1)+' / '+imageIds.length;
+    }
+    function tag(ds,t){ try{ return ds.string(t)||'—'; }catch(e){ return '—'; } }
+    function updateMeta(image){
+      const ds=meta[idx]&&meta[idx].ds; if(!ds) return;
+      const rows=[
+        ['Modality', tag(ds,'x00080060')],
+        ['Series', tag(ds,'x0008103e')],
+        ['Body part', tag(ds,'x00180015')],
+        ['Dimensions', image.width+' × '+image.height+' px'],
+        ['Pixel spacing', image.columnPixelSpacing? (round2(image.columnPixelSpacing)+' × '+round2(image.rowPixelSpacing)+' mm'):'—'],
+        ['Slice thickness', ds.floatString('x00180050')? (round2(ds.floatString('x00180050'))+' mm'):'—'],
+        ['Slices', String(imageIds.length)]
+      ];
+      metaTbl.innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
+    }
+    function round2(v){ return Math.round(parseFloat(v)*100)/100; }
+
+    // ── measurements drawn on cornerstone's canvas after each render ──
+    element.addEventListener('cornerstoneimagerendered', function(e){
+      const ctx=e.detail.canvasContext; if(!ctx) return;
+      ctx.save(); ctx.strokeStyle='#38BDF8'; ctx.fillStyle='#38BDF8'; ctx.lineWidth=1.5; ctx.font='13px Inter, sans-serif';
+      const all=measurements.slice(); if(pts.length===1) all.push({a:pts[0],b:pts[0],live:true});
+      all.forEach(function(m){
+        const a=cornerstone.pixelToCanvas(element,m.a), b=cornerstone.pixelToCanvas(element,m.b);
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        [a,b].forEach(function(p){ ctx.beginPath(); ctx.arc(p.x,p.y,3,0,7); ctx.fill(); });
+        if(!m.live){
+          const d=dist(m.a,m.b);
+          ctx.fillStyle='#0b1220'; const txt=d.text, tw=ctx.measureText(txt).width+8;
+          const mx=(a.x+b.x)/2, my=(a.y+b.y)/2-8;
+          ctx.globalAlpha=.85; ctx.fillRect(mx-tw/2,my-15,tw,18); ctx.globalAlpha=1;
+          ctx.fillStyle='#38BDF8'; ctx.fillText(txt,mx-tw/2+4,my-2);
+        }
+      });
+      ctx.restore();
+    });
+    function dist(a,b){
+      const dx=(b.x-a.x), dy=(b.y-a.y);
+      const cs=lastImage&&lastImage.columnPixelSpacing, rs=lastImage&&lastImage.rowPixelSpacing;
+      if(cs&&rs){ const mm=Math.sqrt(Math.pow(dx*cs,2)+Math.pow(dy*rs,2)); return {mm:mm,text:mm.toFixed(1)+' mm'}; }
+      const px=Math.sqrt(dx*dx+dy*dy); return {mm:null,text:px.toFixed(0)+' px'};
+    }
+
+    // ── mouse interaction ──
+    let dragging=false, mode=null, lx=0, ly=0;
+    element.addEventListener('mousedown', function(e){
+      if(!imageIds.length) return;
+      if(measureMode && e.button===0){
+        const p=cornerstone.pageToPixel(element,e.pageX,e.pageY);
+        pts.push({x:p.x,y:p.y});
+        if(pts.length===2){ measurements.push({a:pts[0],b:pts[1]}); pts=[]; }
+        cornerstone.updateImage(element); e.preventDefault(); return;
+      }
+      dragging=true; lx=e.pageX; ly=e.pageY;
+      if(e.button===2) mode='zoom';
+      else if(e.button===1||e.shiftKey) mode='pan';
+      else mode='wl';
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      const dx=e.pageX-lx, dy=e.pageY-ly; lx=e.pageX; ly=e.pageY;
+      const vp=cornerstone.getViewport(element); if(!vp) return;
+      if(mode==='wl'){
+        vp.voi.windowWidth=Math.max(1, vp.voi.windowWidth + dx*Math.max(1,vp.voi.windowWidth/256));
+        vp.voi.windowCenter=vp.voi.windowCenter + dy*Math.max(1,vp.voi.windowWidth/256);
+      }else if(mode==='zoom'){
+        vp.scale=Math.max(0.05, vp.scale * (1 - dy*0.005));
+      }else if(mode==='pan'){
+        vp.translation.x+=dx/vp.scale; vp.translation.y+=dy/vp.scale;
+      }
+      cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage);
+    });
+    window.addEventListener('mouseup', function(){ dragging=false; mode=null; });
+
+    stage.addEventListener('wheel', function(e){
+      if(!imageIds.length) return;
+      e.preventDefault();
+      show(idx + (e.deltaY>0?1:-1), false);
+    }, {passive:false});
+
+    slider.addEventListener('input', function(){ show(parseInt(slider.value,10), false); });
+
+    // ── toolbar ──
+    function setActive(){ document.getElementById('btnWL').classList.toggle('active',wlMode&&!measureMode); document.getElementById('btnMeasure').classList.toggle('active',measureMode); }
+    document.getElementById('btnWL').onclick=function(){ measureMode=false; wlMode=true; setActive(); };
+    document.getElementById('btnMeasure').onclick=function(){ measureMode=!measureMode; wlMode=!measureMode; pts=[]; setActive(); };
+    document.getElementById('btnInvert').onclick=function(){ const vp=cornerstone.getViewport(element); if(!vp)return; vp.invert=!vp.invert; cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage); };
+    document.getElementById('btnFit').onclick=function(){ if(!imageIds.length)return; cornerstone.fitToWindow(element); viewport=cornerstone.getViewport(element); updateHud(lastImage); };
+    document.getElementById('btnReset').onclick=function(){ show(idx,true); };
+    document.getElementById('btnClear').onclick=function(){ measurements=[]; pts=[]; cornerstone.updateImage(element); };
+    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const vp=cornerstone.getViewport(element); if(!vp)return; vp.voi.windowWidth=+b.dataset.ww; vp.voi.windowCenter=+b.dataset.wc; cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage); }; });
+
+    // ── open buttons + drag/drop ──
+    const fileInput=document.getElementById('fileInput'), dirInput=document.getElementById('dirInput');
+    function pickFiles(){ fileInput.value=''; fileInput.click(); }
+    function pickDir(){ dirInput.value=''; dirInput.click(); }
+    document.getElementById('btnOpen').onclick=pickFiles; document.getElementById('dropOpen').onclick=pickFiles;
+    document.getElementById('btnOpenDir').onclick=pickDir; document.getElementById('dropOpenDir').onclick=pickDir;
+    fileInput.onchange=function(){ handleFiles(fileInput.files); };
+    dirInput.onchange=function(){ handleFiles(dirInput.files); };
+
+    ['dragenter','dragover'].forEach(ev=>stage.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(ev=>stage.addEventListener(ev,function(e){ e.preventDefault(); if(ev!=='dragleave'||e.target===drop) drop.classList.remove('drag'); }));
+    stage.addEventListener('drop', function(e){ e.preventDefault(); drop.classList.remove('drag'); if(e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
+
+    window.addEventListener('resize', function(){ if(imageIds.length){ cornerstone.resize(element,true); viewport=cornerstone.getViewport(element); } });
+    setActive();
+    // expose for verification
+    window.__sr={ handleFiles, get state(){ return {slices:imageIds.length, idx, measureMode}; } };
+  })();
+  </script>
+</body>
+</html>
