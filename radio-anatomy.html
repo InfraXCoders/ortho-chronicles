@@ -281,6 +281,7 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
   #note{display:none;}
 }
 </style>
+<script src="slice-roller.js"></script>
 </head>
 <body>
 
@@ -3689,8 +3690,19 @@ function renderStack(wrap, st){
     range.value=i+1;
     count.textContent=(i+1)+' / '+st.slices.length;
     drawSliceLabels();
+    if(stackState.roller) stackState.roller.update();
   }
   stackState.go=go;
+  // joystick slice roller over the film (mouse + touch)
+  if(window.SliceRoller){
+    const rmount=wrap.querySelector('.stackimg');
+    stackState.roller=SliceRoller.create({
+      mount:rmount,
+      getIndex:()=>stackState.i,
+      getCount:()=>st.slices.length,
+      onGo:go
+    });
+  }
   $('sPrev').onclick=()=>go(stackState.i-1);
   $('sNext').onclick=()=>go(stackState.i+1);
   range.oninput=()=>go(+range.value-1);

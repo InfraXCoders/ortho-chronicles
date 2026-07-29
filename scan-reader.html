@@ -183,6 +183,7 @@
   <script src="https://cdn.jsdelivr.net/npm/cornerstone-core@2.6.1/dist/cornerstone.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dicom-parser@1.8.21/dist/dicomParser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cornerstone-wado-image-loader@4.13.2/dist/cornerstoneWADOImageLoader.bundle.min.js"></script>
+  <script src="slice-roller.js"></script>
   <script>
   (function(){
     const hamburger=document.getElementById('hamburger'), navLinks=document.getElementById('navLinks');
@@ -213,7 +214,7 @@
     cornerstone.enable(element);
     requestAnimationFrame(function(){ try{ cornerstone.resize(element); }catch(e){} });
 
-    let imageIds=[], meta=[], idx=0, viewport=null, lastImage=null;
+    let imageIds=[], meta=[], idx=0, viewport=null, lastImage=null, roller=null;
     let measureMode=false, wlMode=true, pts=[], measurements=[];
 
     function showMsg(t){ msg.textContent=t; msg.style.display='block'; clearTimeout(showMsg._t); showMsg._t=setTimeout(()=>msg.style.display='none',6000); }
@@ -264,6 +265,7 @@
         viewport=cornerstone.getViewport(element);
         slider.value=idx;
         updateHud(image); updateMeta(image);
+        if(roller) roller.update();
       }).catch(function(e){
         showMsg('Could not decode this slice — it may use an unsupported compression. ('+(e && e.error && e.error.message || e.message || 'decode error')+')');
       });
@@ -383,6 +385,17 @@
 
     window.addEventListener('resize', function(){ if(imageIds.length){ cornerstone.resize(element,true); viewport=cornerstone.getViewport(element); } });
     setActive();
+
+    // joystick slice roller (mouse + touch) — hidden until a stack is loaded
+    if(window.SliceRoller){
+      roller=SliceRoller.create({
+        mount:stage,
+        getIndex:function(){ return idx; },
+        getCount:function(){ return imageIds.length; },
+        onGo:function(i){ show(i,false); }
+      });
+    }
+
     // expose for verification
     window.__sr={ handleFiles, get state(){ return {slices:imageIds.length, idx, measureMode}; } };
   })();
