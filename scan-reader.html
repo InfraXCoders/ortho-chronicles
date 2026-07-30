@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DICOM Scan Reader — CT & MRI Viewer | OrthoChronicles</title>
+  <script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
   <meta name="description" content="A free browser-based DICOM viewer for CT and MRI scans. Scroll through slices, adjust window/level, zoom, pan, invert and measure — entirely on your device, nothing uploaded. Educational tool by OrthoChronicles." />
   <link rel="canonical" href="https://www.orthochronicles.info/scan-reader.html" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907" crossorigin="anonymous"></script>
@@ -24,6 +25,10 @@
     .sr-privacy{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid #333;color:#cccccc;border-radius:12px;padding:12px 15px;margin:16px auto 0;max-width:1120px;font-size:.85rem;line-height:1.5;}
     .sr-privacy i{color:#c8c8c8;margin-top:2px;}
     .sr-privacy strong{color:#fff;}
+    /* When embedded as the DICOM subsection inside Anatomy + Radiology,
+       drop the site chrome so only the viewer shows. */
+    html.embedded #header, html.embedded .sr-hero, html.embedded .footer, html.embedded .sr-disclaim{display:none!important;}
+    html.embedded .sr-app{margin-top:12px;}
 
     .sr-app{max-width:1120px;margin:22px auto 40px;padding:0 20px;}
     .sr-toolbar{display:flex;flex-wrap:wrap;gap:6px;background:var(--sr-panel);border:1px solid var(--sr-line);border-radius:12px 12px 0 0;padding:8px;align-items:center;}
