@@ -12,24 +12,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    :root{--sr-bg:#0b1220;--sr-panel:#111a2b;--sr-line:#1f2c42;--sr-txt:#e6edf7;--sr-mut:#8fa3bf;--sr-acc:#38BDF8;--sr-accd:#0EA5E9;}
-    .sr-hero{background:linear-gradient(135deg,#0C4A6E,#075985);color:#fff;padding:34px 0 26px;}
+    /* Monochrome black / grey / white — neutral so colour never biases the scan */
+    :root{--sr-bg:#0d0d0d;--sr-panel:#171717;--sr-line:#333;--sr-txt:#ededed;--sr-mut:#9a9a9a;--sr-acc:#e2e2e2;--sr-accd:#565656;}
+    body{background:#0d0d0d;}
+    .sr-hero{background:linear-gradient(135deg,#242424,#0a0a0a);color:#fff;padding:34px 0 26px;border-bottom:1px solid #2b2b2b;}
     .sr-hero .container{max-width:1120px;margin:0 auto;padding:0 20px;}
-    .sr-hero h1{font-family:'Playfair Display',serif;font-size:2rem;margin:0 0 8px;}
-    .sr-hero p{color:#cfe8fb;max-width:760px;line-height:1.6;margin:0;font-size:.98rem;}
+    .sr-hero h1{font-family:'Playfair Display',serif;font-size:2rem;margin:0 0 8px;color:#fff;}
+    .sr-hero p{color:#bdbdbd;max-width:760px;line-height:1.6;margin:0;font-size:.98rem;}
     .sr-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-    .sr-badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.74rem;font-weight:700;padding:5px 12px;border-radius:20px;}
-    .sr-privacy{display:flex;gap:10px;align-items:flex-start;background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:12px;padding:12px 15px;margin:16px auto 0;max-width:1120px;font-size:.85rem;line-height:1.5;}
-    .sr-privacy i{color:#059669;margin-top:2px;}
+    .sr-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);color:#f0f0f0;font-size:.74rem;font-weight:700;padding:5px 12px;border-radius:20px;}
+    .sr-privacy{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid #333;color:#cccccc;border-radius:12px;padding:12px 15px;margin:16px auto 0;max-width:1120px;font-size:.85rem;line-height:1.5;}
+    .sr-privacy i{color:#c8c8c8;margin-top:2px;}
+    .sr-privacy strong{color:#fff;}
 
     .sr-app{max-width:1120px;margin:22px auto 40px;padding:0 20px;}
     .sr-toolbar{display:flex;flex-wrap:wrap;gap:6px;background:var(--sr-panel);border:1px solid var(--sr-line);border-radius:12px 12px 0 0;padding:8px;align-items:center;}
-    .sr-tool{background:#182338;border:1px solid var(--sr-line);color:var(--sr-txt);border-radius:9px;padding:8px 11px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap;}
-    .sr-tool:hover{background:#213150;border-color:var(--sr-acc);}
-    .sr-tool.active{background:var(--sr-accd);border-color:var(--sr-accd);color:#fff;}
+    .sr-tool{background:#1f1f1f;border:1px solid var(--sr-line);color:var(--sr-txt);border-radius:9px;padding:8px 11px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap;}
+    .sr-tool:hover{background:#2b2b2b;border-color:var(--sr-acc);}
+    .sr-tool.active{background:#e6e6e6;border-color:#e6e6e6;color:#111;}
     .sr-tool:disabled{opacity:.4;cursor:not-allowed;}
     .sr-sep{width:1px;height:26px;background:var(--sr-line);margin:0 4px;}
-    .sr-step{display:inline-flex;align-items:center;gap:0;background:#182338;border:1px solid var(--sr-line);border-radius:9px;overflow:hidden;}
+    .sr-step{display:inline-flex;align-items:center;gap:0;background:#1f1f1f;border:1px solid var(--sr-line);border-radius:9px;overflow:hidden;}
     .sr-step>span{font-size:.72rem;font-weight:700;color:var(--sr-mut);padding:0 8px;white-space:nowrap;}
     .sr-step>button{background:transparent;border:0;border-left:1px solid var(--sr-line);color:var(--sr-txt);width:30px;height:32px;cursor:pointer;font-size:.72rem;display:flex;align-items:center;justify-content:center;transition:.12s;}
     .sr-step>button:hover{background:var(--sr-accd);color:#fff;}
@@ -45,10 +48,11 @@
     .sr-hud-tr{position:absolute;right:12px;top:10px;text-align:right;color:#cbd5e1;font-size:.74rem;line-height:1.5;text-shadow:0 1px 3px #000;pointer-events:none;font-variant-numeric:tabular-nums;}
     .sr-drop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;color:var(--sr-mut);padding:24px;transition:.2s;}
     .sr-drop.hidden{display:none;}
-    .sr-drop.drag{background:rgba(56,189,248,.08);outline:3px dashed var(--sr-acc);outline-offset:-14px;}
+    .sr-drop.drag{background:rgba(255,255,255,.07);outline:3px dashed var(--sr-acc);outline-offset:-14px;}
     .sr-drop i.big{font-size:2.6rem;color:var(--sr-acc);}
     .sr-drop h3{color:var(--sr-txt);font-size:1.05rem;margin:0;}
-    .sr-openbtn{background:var(--sr-accd);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;gap:8px;align-items:center;}
+    .sr-openbtn{background:#e6e6e6;color:#111;border:none;border-radius:10px;padding:11px 20px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;gap:8px;align-items:center;}
+    .sr-openbtn:hover{background:#fff;}
     .sr-openbtn.ghost{background:transparent;border:1px solid var(--sr-line);color:var(--sr-txt);}
     .sr-msg{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:#7f1d1d;color:#fff;padding:9px 16px;border-radius:9px;font-size:.82rem;max-width:80%;text-align:center;display:none;}
 
@@ -75,7 +79,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html#home">Home</a></li>
         <li><a href="radio-anatomy.html">Anatomy + Radiology</a></li>
-        <li><a href="scan-reader.html" style="color:#38BDF8;font-weight:700;">Scan Reader</a></li>
+        <li><a href="scan-reader.html" style="font-weight:700;text-decoration:underline;">Scan Reader</a></li>
         <li><a href="cases.html">Case Library</a></li>
         <li><a href="index.html#contact">Contact</a></li>
       </ul>
@@ -314,7 +318,8 @@
     // ── measurements drawn on cornerstone's canvas after each render ──
     element.addEventListener('cornerstoneimagerendered', function(e){
       const ctx=e.detail.canvasContext; if(!ctx) return;
-      ctx.save(); ctx.strokeStyle='#38BDF8'; ctx.fillStyle='#38BDF8'; ctx.lineWidth=1.5; ctx.font='13px Inter, sans-serif';
+      ctx.save(); ctx.strokeStyle='#f5f5f5'; ctx.fillStyle='#f5f5f5'; ctx.lineWidth=1.6; ctx.font='13px Inter, sans-serif';
+      ctx.shadowColor='rgba(0,0,0,.85)'; ctx.shadowBlur=2;
       const all=measurements.slice(); if(pts.length===1) all.push({a:pts[0],b:pts[0],live:true});
       all.forEach(function(m){
         const a=cornerstone.pixelToCanvas(element,m.a), b=cornerstone.pixelToCanvas(element,m.b);
@@ -322,10 +327,12 @@
         [a,b].forEach(function(p){ ctx.beginPath(); ctx.arc(p.x,p.y,3,0,7); ctx.fill(); });
         if(!m.live){
           const d=dist(m.a,m.b);
-          ctx.fillStyle='#0b1220'; const txt=d.text, tw=ctx.measureText(txt).width+8;
+          ctx.shadowBlur=0;
+          ctx.fillStyle='rgba(0,0,0,.85)'; const txt=d.text, tw=ctx.measureText(txt).width+8;
           const mx=(a.x+b.x)/2, my=(a.y+b.y)/2-8;
-          ctx.globalAlpha=.85; ctx.fillRect(mx-tw/2,my-15,tw,18); ctx.globalAlpha=1;
-          ctx.fillStyle='#38BDF8'; ctx.fillText(txt,mx-tw/2+4,my-2);
+          ctx.fillRect(mx-tw/2,my-15,tw,18);
+          ctx.fillStyle='#fff'; ctx.fillText(txt,mx-tw/2+4,my-2);
+          ctx.fillStyle='#f5f5f5'; ctx.shadowColor='rgba(0,0,0,.85)'; ctx.shadowBlur=2;
         }
       });
       ctx.restore();
