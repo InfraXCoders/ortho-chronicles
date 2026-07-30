@@ -29,6 +29,11 @@
     .sr-tool.active{background:var(--sr-accd);border-color:var(--sr-accd);color:#fff;}
     .sr-tool:disabled{opacity:.4;cursor:not-allowed;}
     .sr-sep{width:1px;height:26px;background:var(--sr-line);margin:0 4px;}
+    .sr-step{display:inline-flex;align-items:center;gap:0;background:#182338;border:1px solid var(--sr-line);border-radius:9px;overflow:hidden;}
+    .sr-step>span{font-size:.72rem;font-weight:700;color:var(--sr-mut);padding:0 8px;white-space:nowrap;}
+    .sr-step>button{background:transparent;border:0;border-left:1px solid var(--sr-line);color:var(--sr-txt);width:30px;height:32px;cursor:pointer;font-size:.72rem;display:flex;align-items:center;justify-content:center;transition:.12s;}
+    .sr-step>button:hover{background:var(--sr-accd);color:#fff;}
+    .sr-step>button:active{background:var(--sr-acc);}
     .sr-presets{display:flex;gap:5px;flex-wrap:wrap;}
     .sr-preset{background:transparent;border:1px solid var(--sr-line);color:var(--sr-mut);border-radius:20px;padding:5px 11px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
     .sr-preset:hover{color:#fff;border-color:var(--sr-acc);}
@@ -99,8 +104,16 @@
       <button class="sr-tool" id="btnOpen"><i class="fas fa-folder-open"></i> Open files</button>
       <button class="sr-tool" id="btnOpenDir"><i class="fas fa-folder-tree"></i> Open folder</button>
       <span class="sr-sep"></span>
-      <button class="sr-tool" id="btnWL" title="Left-drag on the image"><i class="fas fa-adjust"></i> Window/Level</button>
-      <button class="sr-tool" id="btnMeasure" title="Click two points"><i class="fas fa-ruler"></i> Measure</button>
+      <button class="sr-tool" id="btnWL" title="Drag to adjust brightness &amp; contrast"><i class="fas fa-adjust"></i> Window/Level</button>
+      <button class="sr-tool" id="btnPan" title="Drag to move the image"><i class="fas fa-up-down-left-right"></i> Pan</button>
+      <button class="sr-tool" id="btnZoomTool" title="Drag up/down to zoom"><i class="fas fa-magnifying-glass"></i> Zoom</button>
+      <button class="sr-tool" id="btnMeasure" title="Tap two points for a distance"><i class="fas fa-ruler"></i> 2-point measure</button>
+      <span class="sr-sep"></span>
+      <div class="sr-step"><span>Zoom</span><button id="btnZoomOut" title="Zoom out"><i class="fas fa-minus"></i></button><button id="btnZoomIn" title="Zoom in"><i class="fas fa-plus"></i></button></div>
+      <div class="sr-step"><span>Bright</span><button id="btnBrightDn" title="Darker"><i class="fas fa-minus"></i></button><button id="btnBrightUp" title="Brighter"><i class="fas fa-plus"></i></button></div>
+      <div class="sr-step"><span>Contrast</span><button id="btnConDn" title="Less contrast"><i class="fas fa-minus"></i></button><button id="btnConUp" title="More contrast"><i class="fas fa-plus"></i></button></div>
+      <span class="sr-sep"></span>
+      <button class="sr-tool" id="btnAuto" title="Auto white balance (window from image)"><i class="fas fa-wand-magic-sparkles"></i> Auto</button>
       <button class="sr-tool" id="btnInvert"><i class="fas fa-circle-half-stroke"></i> Invert</button>
       <button class="sr-tool" id="btnFit"><i class="fas fa-expand"></i> Fit</button>
       <button class="sr-tool" id="btnReset"><i class="fas fa-rotate-left"></i> Reset</button>
@@ -143,10 +156,11 @@
         </div>
         <div class="sr-help">
           <b>Controls</b><br>
-          • <b>Scroll wheel</b> — move through slices<br>
-          • <b>Left-drag</b> — window / brightness &amp; contrast<br>
-          • <b>Right-drag</b> — zoom &nbsp;·&nbsp; <b>Shift+drag</b> — pan<br>
-          • <b>Measure</b> — click two points for a distance
+          • Pick a tool above, then <b>drag the image</b> (works with touch)<br>
+          • <b>Roller / wheel</b> — move through slices<br>
+          • <b>Pinch</b> — zoom on touch &nbsp;·&nbsp; <b>Right-drag</b> — zoom, <b>Shift+drag</b> — pan (mouse)<br>
+          • <b>+/−</b> buttons — step zoom, brightness &amp; contrast<br>
+          • <b>2-point measure</b> — tap two points for a distance in mm
         </div>
       </aside>
     </div>
@@ -215,7 +229,7 @@
     requestAnimationFrame(function(){ try{ cornerstone.resize(element); }catch(e){} });
 
     let imageIds=[], meta=[], idx=0, viewport=null, lastImage=null, roller=null;
-    let measureMode=false, wlMode=true, pts=[], measurements=[];
+    let activeTool='wl', pts=[], measurements=[];   // wl | pan | zoom | measure
 
     function showMsg(t){ msg.textContent=t; msg.style.display='block'; clearTimeout(showMsg._t); showMsg._t=setTimeout(()=>msg.style.display='none',6000); }
 
@@ -320,37 +334,54 @@
       const px=Math.sqrt(dx*dx+dy*dy); return {mm:null,text:px.toFixed(0)+' px'};
     }
 
-    // ── mouse interaction ──
-    let dragging=false, mode=null, lx=0, ly=0;
-    element.addEventListener('mousedown', function(e){
+    // ── pointer interaction (mouse + touch): tool modes + pinch-zoom ──
+    const pointers=new Map(); let pinchPrev=null;
+    function pos(e){ return {x:e.clientX,y:e.clientY}; }
+    function applyTool(tool,dx,dy,vp){
+      if(tool==='wl'){
+        vp.voi.windowWidth=Math.max(1, vp.voi.windowWidth + dx*Math.max(1,vp.voi.windowWidth/256));
+        vp.voi.windowCenter=vp.voi.windowCenter + dy*Math.max(1,vp.voi.windowWidth/256);
+      }else if(tool==='zoom'){
+        vp.scale=Math.max(0.05, vp.scale*(1 - dy*0.005));
+      }else if(tool==='pan'){
+        vp.translation.x+=dx/vp.scale; vp.translation.y+=dy/vp.scale;
+      }
+    }
+    element.addEventListener('pointerdown', function(e){
       if(!imageIds.length) return;
-      if(measureMode && e.button===0){
+      if(activeTool==='measure' && e.isPrimary && pointers.size===0){
         const p=cornerstone.pageToPixel(element,e.pageX,e.pageY);
         pts.push({x:p.x,y:p.y});
         if(pts.length===2){ measurements.push({a:pts[0],b:pts[1]}); pts=[]; }
         cornerstone.updateImage(element); e.preventDefault(); return;
       }
-      dragging=true; lx=e.pageX; ly=e.pageY;
-      if(e.button===2) mode='zoom';
-      else if(e.button===1||e.shiftKey) mode='pan';
-      else mode='wl';
-      e.preventDefault();
+      try{ element.setPointerCapture(e.pointerId); }catch(_){}
+      pointers.set(e.pointerId,pos(e)); pinchPrev=null; e.preventDefault();
     });
-    window.addEventListener('mousemove', function(e){
-      if(!dragging) return;
-      const dx=e.pageX-lx, dy=e.pageY-ly; lx=e.pageX; ly=e.pageY;
+    element.addEventListener('pointermove', function(e){
+      if(!pointers.has(e.pointerId)) return;
+      const prev=pointers.get(e.pointerId), cur=pos(e); pointers.set(e.pointerId,cur);
       const vp=cornerstone.getViewport(element); if(!vp) return;
-      if(mode==='wl'){
-        vp.voi.windowWidth=Math.max(1, vp.voi.windowWidth + dx*Math.max(1,vp.voi.windowWidth/256));
-        vp.voi.windowCenter=vp.voi.windowCenter + dy*Math.max(1,vp.voi.windowWidth/256);
-      }else if(mode==='zoom'){
-        vp.scale=Math.max(0.05, vp.scale * (1 - dy*0.005));
-      }else if(mode==='pan'){
-        vp.translation.x+=dx/vp.scale; vp.translation.y+=dy/vp.scale;
+      if(pointers.size>=2){                       // two-finger pinch-zoom + pan
+        const p=[...pointers.values()], a=p[0], b=p[1];
+        const d=Math.hypot(a.x-b.x,a.y-b.y), mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+        if(pinchPrev && pinchPrev.d>0){
+          vp.scale=Math.max(0.05, vp.scale*(d/pinchPrev.d));
+          vp.translation.x+=(mid.x-pinchPrev.mid.x)/vp.scale;
+          vp.translation.y+=(mid.y-pinchPrev.mid.y)/vp.scale;
+          cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage);
+        }
+        pinchPrev={d,mid}; e.preventDefault(); return;
       }
-      cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage);
+      if(activeTool==='measure') return;
+      let tool=activeTool;                          // desktop shortcuts still work
+      if(e.pointerType==='mouse'){ if(e.buttons&2) tool='zoom'; else if(e.shiftKey||(e.buttons&4)) tool='pan'; }
+      applyTool(tool, cur.x-prev.x, cur.y-prev.y, vp);
+      cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage); e.preventDefault();
     });
-    window.addEventListener('mouseup', function(){ dragging=false; mode=null; });
+    function endPtr(e){ pointers.delete(e.pointerId); if(pointers.size<2) pinchPrev=null; try{ element.releasePointerCapture(e.pointerId); }catch(_){} }
+    element.addEventListener('pointerup',endPtr);
+    element.addEventListener('pointercancel',endPtr);
 
     stage.addEventListener('wheel', function(e){
       if(!imageIds.length) return;
@@ -361,14 +392,31 @@
     slider.addEventListener('input', function(){ show(parseInt(slider.value,10), false); });
 
     // ── toolbar ──
-    function setActive(){ document.getElementById('btnWL').classList.toggle('active',wlMode&&!measureMode); document.getElementById('btnMeasure').classList.toggle('active',measureMode); }
-    document.getElementById('btnWL').onclick=function(){ measureMode=false; wlMode=true; setActive(); };
-    document.getElementById('btnMeasure').onclick=function(){ measureMode=!measureMode; wlMode=!measureMode; pts=[]; setActive(); };
-    document.getElementById('btnInvert').onclick=function(){ const vp=cornerstone.getViewport(element); if(!vp)return; vp.invert=!vp.invert; cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage); };
+    const BTN={wl:'btnWL',pan:'btnPan',zoom:'btnZoomTool',measure:'btnMeasure'};
+    function setActive(){ Object.keys(BTN).forEach(function(t){ const b=document.getElementById(BTN[t]); if(b) b.classList.toggle('active', activeTool===t); }); }
+    function setTool(t){ activeTool=t; if(t!=='measure') pts=[]; setActive(); }
+    document.getElementById('btnWL').onclick=function(){ setTool('wl'); };
+    document.getElementById('btnPan').onclick=function(){ setTool('pan'); };
+    document.getElementById('btnZoomTool').onclick=function(){ setTool('zoom'); };
+    document.getElementById('btnMeasure').onclick=function(){ setTool(activeTool==='measure'?'wl':'measure'); };
+
+    function vp(){ return cornerstone.getViewport(element); }
+    function apply(v){ cornerstone.setViewport(element,v); viewport=v; updateHud(lastImage); }
+    function zoomBy(f){ const v=vp(); if(!v)return; v.scale=Math.max(0.05,Math.min(20,v.scale*f)); apply(v); }
+    function wcBy(sign){ const v=vp(); if(!v)return; v.voi.windowCenter+=sign*Math.max(1,v.voi.windowWidth/16); apply(v); }   // brightness
+    function contrastBy(f){ const v=vp(); if(!v)return; v.voi.windowWidth=Math.max(1,v.voi.windowWidth*f); apply(v); }       // window width
+    document.getElementById('btnZoomIn').onclick =function(){ zoomBy(1.25); };
+    document.getElementById('btnZoomOut').onclick=function(){ zoomBy(1/1.25); };
+    document.getElementById('btnBrightUp').onclick=function(){ wcBy(-1); };   // lower centre = brighter
+    document.getElementById('btnBrightDn').onclick=function(){ wcBy(1); };
+    document.getElementById('btnConUp').onclick =function(){ contrastBy(1/1.15); };  // narrower window = more contrast
+    document.getElementById('btnConDn').onclick =function(){ contrastBy(1.15); };
+    document.getElementById('btnAuto').onclick=function(){ const img=lastImage; if(!img)return; const s=img.slope||1,i=img.intercept||0; const mn=(img.minPixelValue||0)*s+i, mx=(img.maxPixelValue||255)*s+i; const v=vp(); if(!v)return; v.voi.windowWidth=Math.max(1,mx-mn); v.voi.windowCenter=(mx+mn)/2; apply(v); };
+    document.getElementById('btnInvert').onclick=function(){ const v=vp(); if(!v)return; v.invert=!v.invert; apply(v); };
     document.getElementById('btnFit').onclick=function(){ if(!imageIds.length)return; cornerstone.fitToWindow(element); viewport=cornerstone.getViewport(element); updateHud(lastImage); };
     document.getElementById('btnReset').onclick=function(){ show(idx,true); };
     document.getElementById('btnClear').onclick=function(){ measurements=[]; pts=[]; cornerstone.updateImage(element); };
-    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const vp=cornerstone.getViewport(element); if(!vp)return; vp.voi.windowWidth=+b.dataset.ww; vp.voi.windowCenter=+b.dataset.wc; cornerstone.setViewport(element,vp); viewport=vp; updateHud(lastImage); }; });
+    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const v=vp(); if(!v)return; v.voi.windowWidth=+b.dataset.ww; v.voi.windowCenter=+b.dataset.wc; apply(v); }; });
 
     // ── open buttons + drag/drop ──
     const fileInput=document.getElementById('fileInput'), dirInput=document.getElementById('dirInput');
@@ -397,7 +445,7 @@
     }
 
     // expose for verification
-    window.__sr={ handleFiles, get state(){ return {slices:imageIds.length, idx, measureMode}; } };
+    window.__sr={ handleFiles, get state(){ return {slices:imageIds.length, idx, activeTool}; } };
   })();
   </script>
 </body>
