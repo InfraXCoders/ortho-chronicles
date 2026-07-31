@@ -62,25 +62,19 @@ a{color:inherit;}
 body.sec-anatomy #stage{display:none;}
 body.sec-anatomy #anatomyFrame{display:block;}
 
-/* Section landing list — a main tab opens a list of its sub-sections */
-#sectionMenu{position:fixed;top:58px;left:0;right:0;bottom:0;display:none;overflow-y:auto;
-  background:radial-gradient(1200px 600px at 50% -10%,rgba(45,212,191,.08),transparent 60%),var(--bg);}
-body.sec-menu #sectionMenu{display:block;}
-body.sec-menu #stage,body.sec-menu #anatomyFrame,body.sec-menu #dicomFrame{display:none;}
-.menu-inner{max-width:720px;margin:0 auto;padding:46px 20px 60px;}
-.menu-head{margin-bottom:26px;}
-.menu-head h2{font-family:'Playfair Display',Georgia,serif;font-size:2rem;color:var(--txt);margin:0 0 6px;}
-.menu-head p{color:var(--mut);font-size:.95rem;margin:0;}
-.menu-item{display:flex;align-items:center;gap:18px;width:100%;text-align:left;cursor:pointer;
-  background:rgba(11,20,36,.55);border:1px solid var(--line);border-radius:16px;padding:20px 22px;
-  margin-bottom:14px;color:var(--txt);font-family:inherit;transition:.16s;}
-.menu-item:hover{border-color:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.35);}
-.menu-item .mi-icon{flex-shrink:0;width:54px;height:54px;border-radius:14px;display:flex;align-items:center;
-  justify-content:center;font-size:1.4rem;background:rgba(45,212,191,.16);color:#7ff0dd;}
-.menu-item .mi-body{flex:1;min-width:0;}
-.menu-item h3{margin:0 0 4px;font-size:1.1rem;font-weight:800;}
-.menu-item .mi-body p{margin:0;color:var(--mut);font-size:.86rem;line-height:1.45;}
-.menu-item .mi-arrow{color:var(--mut);font-size:1rem;flex-shrink:0;}
+/* Top-bar tab dropdowns: each tab reveals its sub-sections */
+.sec-wrap{position:relative;display:inline-block;}
+.sec-caret{font-size:.66em;opacity:.65;margin-left:1px;}
+.sec-drop{position:absolute;top:calc(100% + 7px);left:0;min-width:186px;max-width:82vw;
+  background:#0e1a2e;border:1px solid var(--line);border-radius:12px;padding:6px;
+  display:none;flex-direction:column;gap:3px;z-index:60;box-shadow:0 14px 34px rgba(0,0,0,.55);}
+.sec-drop.open{display:flex;}
+.sec-drop-item{display:flex;align-items:center;gap:10px;background:transparent;border:0;color:var(--txt);
+  font-family:inherit;font-size:.85rem;font-weight:600;padding:10px 12px;border-radius:8px;cursor:pointer;
+  white-space:nowrap;text-align:left;transition:.14s;}
+.sec-drop-item:hover{background:rgba(45,212,191,.16);color:#eafaf7;}
+.sec-drop-item.on{background:rgba(45,212,191,.24);color:#eafaf7;}
+.sec-drop-item i{width:18px;color:#7ff0dd;flex-shrink:0;}
 
 /* DICOM reader embed (same replaced-element sizing note as the 3D frame) */
 #dicomFrame{position:fixed;top:58px;left:0;border:0;width:100%;
@@ -96,7 +90,6 @@ body.sec-dicom #dicomFrame{display:block;}
   .brand span{display:none;}
   #sectionTabs .lbl{display:none;}
   .sec-tab{padding:8px 11px;}
-  .menu-inner{padding:30px 16px 50px;}
   #btnLines{padding:8px 10px;}
 }
 @media(max-width:420px){
@@ -320,22 +313,23 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
   </a>
   <div class="tb-spacer"></div>
   <div id="sectionTabs">
-    <button class="sec-tab" id="topAnatomy"><i class="fas fa-cube"></i> <span class="lbl">Anatomy</span></button>
-    <button class="sec-tab on" id="topRadiology"><i class="fas fa-x-ray"></i> <span class="lbl">Radiology</span></button>
+    <div class="sec-wrap">
+      <button class="sec-tab" id="topAnatomy" aria-haspopup="true"><i class="fas fa-cube"></i> <span class="lbl">Anatomy</span> <i class="fas fa-caret-down sec-caret"></i></button>
+      <div class="sec-drop" id="dropAnatomy">
+        <button class="sec-drop-item" data-sec="anatomy3d"><i class="fas fa-cube"></i> 3D Anatomy</button>
+        <button class="sec-drop-item" data-sec="diagram"><i class="fas fa-draw-polygon"></i> Diagram Anatomy</button>
+      </div>
+    </div>
+    <div class="sec-wrap">
+      <button class="sec-tab on" id="topRadiology" aria-haspopup="true"><i class="fas fa-x-ray"></i> <span class="lbl">Radiology</span> <i class="fas fa-caret-down sec-caret"></i></button>
+      <div class="sec-drop" id="dropRadiology">
+        <button class="sec-drop-item on" data-sec="radiology"><i class="fas fa-x-ray"></i> Atlas</button>
+        <button class="sec-drop-item" data-sec="dicom"><i class="fas fa-file-medical"></i> DICOM Viewer</button>
+      </div>
+    </div>
   </div>
   <button class="tb-btn on" id="btnLines"><i class="fas fa-ruler-combined"></i> Lines &amp; Angles</button>
   <a class="tb-btn home" href="index.html"><i class="fas fa-house"></i> Site Home</a>
-</div>
-
-<!-- Section landing list: a main tab opens this list of its sub-sections -->
-<div id="sectionMenu">
-  <div class="menu-inner">
-    <div class="menu-head">
-      <h2 id="menuTitle">Radiology</h2>
-      <p id="menuSub">Choose what to open</p>
-    </div>
-    <div id="menuList"></div>
-  </div>
 </div>
 
 <div id="stage">
@@ -3876,47 +3870,17 @@ function syncModeButtons(){
   $('btnLines').disabled = !onDiagram;
 }
 
-/* ---- Anatomy | Radiology, each with a landing list of sub-sections ---- */
+/* ---- Two top-bar tabs, each a dropdown of its sub-sections ----
+   Anatomy → { 3D Anatomy, Diagram Anatomy } · Radiology → { Atlas, DICOM Viewer } */
 const TOP_OF={anatomy3d:'anatomy',diagram:'anatomy',radiology:'radiology',dicom:'radiology'};
-const MENU={
-  anatomy:{ title:'Anatomy', sub:'Explore the body in 3D or as labelled diagrams — pick one to open.', items:[
-    {sec:'anatomy3d', icon:'fa-cube',         name:'3D Anatomy',      desc:'Interactive 3D model you can rotate, zoom and explore by system.'},
-    {sec:'diagram',   icon:'fa-draw-polygon', name:'Diagram Anatomy', desc:'Clean labelled anatomical diagrams, region by region.'}
-  ]},
-  radiology:{ title:'Radiology', sub:'Read teaching films or open your own scans — pick one to open.', items:[
-    {sec:'radiology', icon:'fa-x-ray',        name:'Atlas',          desc:'Normal X-ray, MRI and CT with every structure labelled.'},
-    {sec:'dicom',     icon:'fa-file-medical', name:'DICOM Viewer',   desc:'Open and scroll your own CT/MRI DICOM files, right in the browser.'}
-  ]}
-};
 
-/* Show the landing list for a top section (Anatomy / Radiology). */
-function showMenu(top){
-  section='menu'; currentTop=top;
-  $('topAnatomy').classList.toggle('on',top==='anatomy');
-  $('topRadiology').classList.toggle('on',top==='radiology');
-  document.body.classList.remove('sec-anatomy','sec-dicom');
-  document.body.classList.add('sec-menu');
-  $('btnLines').style.display='none';
-  const m=MENU[top];
-  $('menuTitle').textContent=m.title;
-  $('menuSub').textContent=m.sub;
-  $('menuList').innerHTML=m.items.map(it=>
-    '<button class="menu-item" data-sec="'+it.sec+'">'
-    + '<span class="mi-icon"><i class="fas '+it.icon+'"></i></span>'
-    + '<span class="mi-body"><h3>'+it.name+'</h3><p>'+it.desc+'</p></span>'
-    + '<span class="mi-arrow"><i class="fas fa-chevron-right"></i></span></button>').join('');
-}
-
-/* Open an actual sub-section (from the list, a deep link, or search). */
 function setSection(sec){
-  if(sec==='menu-anatomy'){ return showMenu('anatomy'); }
-  if(sec==='menu-radiology'){ return showMenu('radiology'); }
   section=sec;
   const top=TOP_OF[sec]||'radiology';
-  currentTop=top;
-  document.body.classList.remove('sec-menu');
   $('topAnatomy').classList.toggle('on',top==='anatomy');
   $('topRadiology').classList.toggle('on',top==='radiology');
+  document.querySelectorAll('.sec-drop-item').forEach(b=>b.classList.toggle('on',b.dataset.sec===sec));
+  closeDrops();
 
   if(sec==='dicom'){
     document.body.classList.remove('sec-anatomy');
@@ -3942,11 +3906,15 @@ function setSection(sec){
   const keep = current && list.some(r=>r.id===current.id) ? current.id : (list[0]&&list[0].id);
   if(keep) show(keep);
 }
-let currentTop='radiology';
-// A main tab always shows that section's list; click a list item to open it.
-$('topAnatomy').addEventListener('click',()=>showMenu('anatomy'));
-$('topRadiology').addEventListener('click',()=>showMenu('radiology'));
-$('menuList').addEventListener('click',e=>{ const b=e.target.closest('.menu-item'); if(b) setSection(b.dataset.sec); });
+
+/* Dropdown menus under each top-bar tab */
+function closeDrops(){ document.querySelectorAll('.sec-drop').forEach(d=>d.classList.remove('open')); }
+function toggleDrop(id){ const d=$(id), open=d.classList.contains('open'); closeDrops(); if(!open) d.classList.add('open'); }
+$('topAnatomy').addEventListener('click',e=>{ e.stopPropagation(); toggleDrop('dropAnatomy'); });
+$('topRadiology').addEventListener('click',e=>{ e.stopPropagation(); toggleDrop('dropRadiology'); });
+document.querySelectorAll('.sec-drop-item').forEach(b=>
+  b.addEventListener('click',e=>{ e.stopPropagation(); setSection(b.dataset.sec); }));
+document.addEventListener('click',closeDrops);
 
 /* ---- search across landmarks, measurements and pitfalls ---- */
 /* Strip diacritics so "bohler" finds Böhler and "tonnis" finds Tönnis —
@@ -4002,7 +3970,7 @@ window.addEventListener('keydown',e=>{
     if(e.key==='ArrowUp'){   e.preventDefault(); stackState.go(stackState.i-1); return; }
   }
   // Arrow keys walk the current section's rail, not the full region list.
-  if(section==='anatomy3d'||section==='dicom'||section==='menu') return;
+  if(section==='anatomy3d'||section==='dicom') return;
   const list=REGIONS.filter(SECTION_FILTER[section]);
   const i=list.findIndex(r=>r.id===(current&&current.id));
   if(e.key==='ArrowDown'&&i<list.length-1) show(list[i+1].id);
@@ -4015,13 +3983,11 @@ if(/debug=1/.test(location.search+location.hash)){
     setSection, getSection:()=>section, isRadiology, isDiagram, count:()=>REGIONS.length};
 }
 
-/* Deep links open a specific view; otherwise land on the Radiology list. */
+/* Deep links open a specific view; otherwise open the Radiology atlas. */
 if(/dicom/.test(location.hash))            setSection('dicom');
 else if(/diagram/.test(location.hash))     setSection('diagram');
-else if(/anatomy3d|3d/.test(location.hash))setSection('anatomy3d');
-else if(/atlas|radiograph/.test(location.hash)) setSection('radiology');
-else if(/anatomy/.test(location.hash))     showMenu('anatomy');
-else                                       showMenu('radiology');
+else if(/anatomy/.test(location.hash)||/3d/.test(location.hash)) setSection('anatomy3d');
+else                                       setSection('radiology');
 })();
 </script>
 </body>
