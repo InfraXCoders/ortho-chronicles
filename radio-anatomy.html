@@ -3984,10 +3984,16 @@ if(/debug=1/.test(location.search+location.hash)){
 }
 
 /* Deep links open a specific view; otherwise open the Radiology atlas. */
-if(/dicom/.test(location.hash))            setSection('dicom');
-else if(/diagram/.test(location.hash))     setSection('diagram');
-else if(/anatomy/.test(location.hash)||/3d/.test(location.hash)) setSection('anatomy3d');
-else                                       setSection('radiology');
+function sectionForHash(h){
+  if(/dicom/.test(h)) return 'dicom';
+  if(/diagram/.test(h)) return 'diagram';
+  if(/anatomy|3d/.test(h)) return 'anatomy3d';
+  if(/radiolog|atlas|radiograph/.test(h)) return 'radiology';
+  return null;
+}
+setSection(sectionForHash(location.hash) || 'radiology');
+// React to in-page hash changes too (e.g. the Anatomy/Radiology site-nav links).
+addEventListener('hashchange',()=>{ const s=sectionForHash(location.hash); if(s) setSection(s); });
 })();
 </script>
 </body>
