@@ -42,9 +42,14 @@
     .sr-step>button{background:transparent;border:0;border-left:1px solid var(--sr-line);color:var(--sr-txt);width:30px;height:32px;cursor:pointer;font-size:.72rem;display:flex;align-items:center;justify-content:center;transition:.12s;}
     .sr-step>button:hover{background:var(--sr-accd);color:#fff;}
     .sr-step>button:active{background:var(--sr-acc);}
-    .sr-presets{display:flex;gap:5px;flex-wrap:wrap;}
-    .sr-preset{background:transparent;border:1px solid var(--sr-line);color:var(--sr-mut);border-radius:20px;padding:5px 11px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
+    .sr-presets{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+    .sr-preset-label{font-size:.72rem;font-weight:700;color:var(--sr-mut);margin-right:2px;white-space:nowrap;}
+    .sr-preset-label i{margin-right:4px;}
+    .sr-preset{background:transparent;border:1px solid var(--sr-line);color:var(--sr-mut);border-radius:20px;padding:5px 11px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;}
     .sr-preset:hover{color:#fff;border-color:var(--sr-acc);}
+    .sr-preset.active{background:#e6e6e6;color:#111;border-color:#e6e6e6;}
+    .sr-preset.preset-bone{border-color:var(--sr-acc);color:#f5f5f5;}
+    .sr-preset.preset-bone:hover{background:#e6e6e6;color:#111;}
 
     .sr-main{display:grid;grid-template-columns:1fr 260px;gap:0;background:var(--sr-panel);border:1px solid var(--sr-line);border-top:0;border-radius:0 0 12px 12px;overflow:hidden;}
     .sr-stage{position:relative;background:#000;min-height:64vh;display:flex;align-items:center;justify-content:center;}
@@ -132,11 +137,12 @@
       <button class="sr-tool" id="btnClear"><i class="fas fa-eraser"></i> Clear marks</button>
       <span class="sr-sep"></span>
       <div class="sr-presets" id="srPresets">
-        <button class="sr-preset" data-ww="80"   data-wc="40">Brain</button>
-        <button class="sr-preset" data-ww="2500" data-wc="480">Bone</button>
-        <button class="sr-preset" data-ww="1500" data-wc="-600">Lung</button>
-        <button class="sr-preset" data-ww="400"  data-wc="40">Soft tissue</button>
-        <button class="sr-preset" data-ww="350"  data-wc="50">Abdomen</button>
+        <span class="sr-preset-label"><i class="fas fa-sliders-h"></i> CT Window</span>
+        <button class="sr-preset preset-bone" data-ww="2000" data-wc="400" title="Bone window — WW 2000 / WC 400"><i class="fas fa-bone"></i> Bone</button>
+        <button class="sr-preset" data-ww="80"   data-wc="40"   title="Brain — WW 80 / WC 40">Brain</button>
+        <button class="sr-preset" data-ww="1500" data-wc="-600" title="Lung — WW 1500 / WC -600">Lung</button>
+        <button class="sr-preset" data-ww="400"  data-wc="40"   title="Soft tissue — WW 400 / WC 40">Soft tissue</button>
+        <button class="sr-preset" data-ww="350"  data-wc="50"   title="Abdomen — WW 350 / WC 50">Abdomen</button>
       </div>
     </div>
 
@@ -431,7 +437,7 @@
     document.getElementById('btnFit').onclick=function(){ if(!imageIds.length)return; cornerstone.fitToWindow(element); viewport=cornerstone.getViewport(element); updateHud(lastImage); };
     document.getElementById('btnReset').onclick=function(){ show(idx,true); };
     document.getElementById('btnClear').onclick=function(){ measurements=[]; pts=[]; cornerstone.updateImage(element); };
-    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const v=vp(); if(!v)return; v.voi.windowWidth=+b.dataset.ww; v.voi.windowCenter=+b.dataset.wc; apply(v); }; });
+    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const v=vp(); if(!v)return; v.voi.windowWidth=+b.dataset.ww; v.voi.windowCenter=+b.dataset.wc; apply(v); document.querySelectorAll('.sr-preset').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); }; });
 
     // ── open buttons + drag/drop ──
     const fileInput=document.getElementById('fileInput'), dirInput=document.getElementById('dirInput');
