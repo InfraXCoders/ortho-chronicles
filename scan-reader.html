@@ -144,6 +144,14 @@
         <button class="sr-preset" data-ww="400"  data-wc="40"   title="Soft tissue — WW 400 / WC 40">Soft tissue</button>
         <button class="sr-preset" data-ww="350"  data-wc="50"   title="Abdomen — WW 350 / WC 50">Abdomen</button>
       </div>
+      <span class="sr-sep"></span>
+      <div class="sr-presets" id="mriPresets">
+        <span class="sr-preset-label"><i class="fas fa-magnet"></i> MRI</span>
+        <button class="sr-preset" data-mri="auto"     title="Full intensity range of this image (T1/T2/FLAIR default)">Default</button>
+        <button class="sr-preset" data-mri="contrast" title="Narrow window — more tissue contrast (T2 / PD detail)">High contrast</button>
+        <button class="sr-preset" data-mri="bright"   title="Brighter — lift low signal">Bright</button>
+        <button class="sr-preset" data-mri="dark"     title="Darker — suppress bright signal">Dark</button>
+      </div>
     </div>
 
     <div class="sr-main">
@@ -437,7 +445,26 @@
     document.getElementById('btnFit').onclick=function(){ if(!imageIds.length)return; cornerstone.fitToWindow(element); viewport=cornerstone.getViewport(element); updateHud(lastImage); };
     document.getElementById('btnReset').onclick=function(){ show(idx,true); };
     document.getElementById('btnClear').onclick=function(){ measurements=[]; pts=[]; cornerstone.updateImage(element); };
-    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){ const v=vp(); if(!v)return; v.voi.windowWidth=+b.dataset.ww; v.voi.windowCenter=+b.dataset.wc; apply(v); document.querySelectorAll('.sr-preset').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); }; });
+    // MRI intensities have no fixed units, so MRI presets are computed from the
+    // loaded image's own pixel range (relative brightness/contrast).
+    function applyMri(kind){
+      const img=lastImage; if(!img) return false;
+      const s=img.slope||1, i=img.intercept||0;
+      const mn=(img.minPixelValue||0)*s+i, mx=(img.maxPixelValue||255)*s+i;
+      const range=Math.max(1,mx-mn), mid=(mx+mn)/2;
+      const v=vp(); if(!v) return false;
+      if(kind==='auto')          { v.voi.windowWidth=range;      v.voi.windowCenter=mid; }
+      else if(kind==='contrast') { v.voi.windowWidth=range*0.5;  v.voi.windowCenter=mid; }
+      else if(kind==='bright')   { v.voi.windowWidth=range*0.9;  v.voi.windowCenter=mid-range*0.22; }
+      else if(kind==='dark')     { v.voi.windowWidth=range*0.9;  v.voi.windowCenter=mid+range*0.22; }
+      apply(v); return true;
+    }
+    document.querySelectorAll('.sr-preset').forEach(function(b){ b.onclick=function(){
+      let ok=true;
+      if(b.dataset.ww){ const v=vp(); if(!v)return; v.voi.windowWidth=+b.dataset.ww; v.voi.windowCenter=+b.dataset.wc; apply(v); }
+      else if(b.dataset.mri){ ok=applyMri(b.dataset.mri); }
+      if(ok){ document.querySelectorAll('.sr-preset').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); }
+    }; });
 
     // ── open buttons + drag/drop ──
     const fileInput=document.getElementById('fileInput'), dirInput=document.getElementById('dirInput');
