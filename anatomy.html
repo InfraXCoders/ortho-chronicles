@@ -284,8 +284,10 @@ a{color:inherit;}
 
 /* ---------- Mobile ---------- */
 #mobToggle{display:none;}
+.pn-grab{display:none;}
 @media(max-width:900px){
   #searchWrap{width:min(340px,86vw);top:10px;}
+  .pn-grab{display:block;width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.30);margin:9px auto 0;flex-shrink:0;}
   #rail{top:auto;bottom:12px;left:12px;right:12px;width:auto;display:flex;overflow-x:auto;border-radius:12px;}
   .rail-h,.rail-sub{display:none;}
   .layer{flex-direction:column;gap:5px;padding:9px 12px;border-bottom:0;border-right:1px solid rgba(255,255,255,.06);min-width:74px;}
@@ -344,6 +346,7 @@ a{color:inherit;}
 
   <!-- detail panel -->
   <div id="panel">
+    <div class="pn-grab" id="pnGrab"></div>
     <div class="pn-head">
       <button class="pn-close" id="pnClose"><i class="fas fa-times"></i></button>
       <span class="pn-tag" id="pnTag">Bone</span>
@@ -2386,6 +2389,7 @@ canvas.addEventListener('pointermove',e=>{
     if(landmarkHoverTest(e)){ canvas.classList.add('pickable'); return; }
     hoverTest(e); return;
   }
+  if(pinch) return;                     // two fingers down → pinch owns the gesture, no orbit
   const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
   drag.moved += Math.abs(dx)+Math.abs(dy);
   if(drag.btn===2 || e.shiftKey){                       // pan
@@ -2411,21 +2415,30 @@ canvas.addEventListener('wheel',e=>{
   want.r = Math.max(55, Math.min(620, want.r * (1 + Math.sign(e.deltaY)*0.11)));
 },{passive:false});
 
-// pinch zoom
-let pinch=null;
+// Two-finger pinch = zoom + pan. While two fingers are down we cancel the
+// one-finger orbit so zooming no longer spins the model (the old mobile bug).
+let pinch=null, pinchMid=null;
+const twoFingerMid=e=>({x:(e.touches[0].clientX+e.touches[1].clientX)/2, y:(e.touches[0].clientY+e.touches[1].clientY)/2});
+const twoFingerDist=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
 canvas.addEventListener('touchstart',e=>{
   if(e.touches.length===2){
-    pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    drag=null; canvas.classList.remove('grabbing');   // stop orbiting during pinch
+    pinch=twoFingerDist(e); pinchMid=twoFingerMid(e);
   }
 },{passive:true});
 canvas.addEventListener('touchmove',e=>{
   if(e.touches.length===2 && pinch){
-    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-    want.r = Math.max(55, Math.min(620, want.r * (pinch/d)));
-    pinch=d;
+    const d=twoFingerDist(e), mid=twoFingerMid(e);
+    want.r = Math.max(55, Math.min(620, want.r * (pinch/d)));   // pinch to zoom
+    // two-finger drag pans the view
+    const scale=sph.r*0.0016;
+    const right=V(Math.cos(sph.theta),0,-Math.sin(sph.theta));
+    want.t.addScaledVector(right, -(mid.x-pinchMid.x)*scale);
+    want.t.y += (mid.y-pinchMid.y)*scale;
+    pinch=d; pinchMid=mid;
   }
 },{passive:true});
-canvas.addEventListener('touchend',()=>{pinch=null;});
+canvas.addEventListener('touchend',()=>{ pinch=null; pinchMid=null; });
 
 /* ══════════════════════════════════════════════════════════════════
    5 · PICKING
@@ -2585,6 +2598,20 @@ pnBody.addEventListener('mouseover',e=>{
 });
 pnBody.addEventListener('mouseleave',()=>setHoverLandmark(-1));
 document.getElementById('pnClose').onclick=deselect;
+
+/* Mobile: swipe the detail sheet down to dismiss it (drag from its top area). */
+(function(){
+  let sy=null, dyv=0;
+  const start=e=>{ if(window.innerWidth>900) return; sy=e.touches?e.touches[0].clientY:e.clientY; dyv=0; panel.style.transition='none'; };
+  const move=e=>{ if(sy===null) return; const y=e.touches?e.touches[0].clientY:e.clientY; dyv=Math.max(0,y-sy); panel.style.transform='translateY('+dyv+'px)'; };
+  const end=()=>{ if(sy===null) return; panel.style.transition=''; panel.style.transform=''; if(dyv>90) deselect(); sy=null; };
+  const head=panel.querySelector('.pn-head'), grab=document.getElementById('pnGrab');
+  [head,grab].forEach(el=>{ if(!el)return;
+    el.addEventListener('touchstart',start,{passive:true});
+    el.addEventListener('touchmove',move,{passive:true});
+    el.addEventListener('touchend',end);
+  });
+})();
 
 /* ---- landmark labels ---- */
 
