@@ -220,6 +220,20 @@ a{color:inherit;}
   padding:9px 16px;font-size:.75rem;color:var(--mut);backdrop-filter:blur(10px);
   display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
 }
+#coach{
+  position:absolute;left:50%;bottom:78px;transform:translateX(-50%) translateY(8px);
+  z-index:30;display:none;align-items:flex-start;gap:11px;max-width:min(440px,92vw);
+  background:linear-gradient(180deg,rgba(20,42,74,.97),rgba(12,26,48,.97));
+  border:1px solid var(--teal,#2DD4BF);border-radius:14px;padding:13px 14px;
+  color:#eaf6f4;font-size:.82rem;line-height:1.5;box-shadow:0 14px 40px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .25s,transform .25s;}
+#coach.show{display:flex;opacity:1;transform:translateX(-50%) translateY(0);}
+#coach .coach-ic{color:var(--teal,#2DD4BF);font-size:1.05rem;margin-top:1px;flex-shrink:0;}
+#coach .coach-txt b{color:#fff;}
+#coach #coachX{flex-shrink:0;background:rgba(255,255,255,.12);border:0;color:#cfe;
+  width:24px;height:24px;border-radius:7px;cursor:pointer;font-size:.8rem;}
+#coach #coachX:hover{background:rgba(255,255,255,.22);}
+@media(max-width:900px){ #coach{bottom:88px;} }
 #hint b{color:var(--txt);font-weight:700;}
 #hint kbd{
   background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:5px;
@@ -345,6 +359,15 @@ a{color:inherit;}
     <span><b>Scroll</b> zoom</span>
     <span><b>Right-drag</b> pan</span>
     <span><b>Click</b> a structure for details</span>
+  </div>
+
+  <!-- one-time coach: teaches that systems load on demand -->
+  <div id="coach">
+    <i class="fas fa-hand-pointer coach-ic"></i>
+    <span class="coach-txt">This starts on the <b>skeleton</b>. Tap a system —
+      <b>Muscles · Arteries · Veins · Nerves · Tendons</b> — to reveal it, then tap any
+      part for its details. Or <b>search</b> any structure up top.</span>
+    <button id="coachX" aria-label="Got it"><i class="fas fa-times"></i></button>
   </div>
 
   <div id="loader">
@@ -2656,7 +2679,22 @@ layerList.addEventListener('click',e=>{
   row.classList.toggle('on',g.visible);
   if(g.visible) loadLayerModels(id);          // fetch this layer's meshes on first use
   if(!g.visible && selectedId && STRUCTURES[selectedId].layer===id) deselect();
+  dismissCoach();
 });
+
+/* ── One-time coach: many users open the explorer, see the skeleton and
+   assume the other systems are missing. Show a single hint that they are a
+   tap away. Dismiss on interaction, the close button, or after a while. */
+const coachEl=document.getElementById('coach');
+function dismissCoach(){ if(!coachEl||!coachEl.classList.contains('show'))return;
+  coachEl.classList.remove('show'); try{localStorage.setItem('anat_coached','1');}catch(_){}}
+(function initCoach(){
+  let seen=false; try{ seen=localStorage.getItem('anat_coached')==='1'; }catch(_){}
+  if(seen||!coachEl) return;
+  setTimeout(()=>coachEl.classList.add('show'), 900);   // after the model settles
+  setTimeout(dismissCoach, 15000);                       // auto-hide
+  const x=document.getElementById('coachX'); if(x) x.addEventListener('click',dismissCoach);
+})();
 
 document.getElementById('opacity').addEventListener('input',e=>{
   const o=+e.target.value/100;
