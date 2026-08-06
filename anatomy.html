@@ -293,10 +293,10 @@ a{color:inherit;}
      flush to the bottom edge — it reads as intentional chrome instead of a
      translucent pill floating over the skeleton. */
   #viewport{height:100%;}
-  #rail{top:auto;bottom:0;left:0;right:0;width:auto;display:flex;overflow-x:auto;
-    border-radius:14px 14px 0 0;max-height:76px;
-    background:rgba(9,17,31,.98);border:0;border-top:1px solid rgba(255,255,255,.10);
-    box-shadow:0 -10px 30px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom,0);}
+  #rail{top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:10px;right:10px;
+    width:auto;display:flex;overflow-x:auto;border-radius:14px;max-height:76px;z-index:24;
+    background:rgba(9,17,31,.98);border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 12px 34px rgba(0,0,0,.55);}
   .rail-h,.rail-sub{display:none;}
   .layer{flex-direction:column;gap:5px;padding:9px 12px;border-bottom:0;border-right:1px solid rgba(255,255,255,.06);min-width:74px;}
   .layer .sw{display:none;}

@@ -58,7 +58,7 @@ a{color:inherit;}
    NOT stretch it — its height falls back to the 150px intrinsic default.
    Give it an explicit height that fills below the 58px top bar. */
 #anatomyFrame{position:fixed;top:58px;left:0;border:0;width:100%;
-  height:calc(100vh - 58px);display:none;background:#0a0f18;}
+  height:calc(100vh - 58px);height:calc(100dvh - 58px);display:none;background:#0a0f18;}
 body.sec-anatomy #stage{display:none;}
 body.sec-anatomy #anatomyFrame{display:block;}
 
@@ -78,7 +78,7 @@ body.sec-anatomy #anatomyFrame{display:block;}
 
 /* DICOM reader embed (same replaced-element sizing note as the 3D frame) */
 #dicomFrame{position:fixed;top:58px;left:0;border:0;width:100%;
-  height:calc(100vh - 58px);display:none;background:#0d0d0d;}
+  height:calc(100vh - 58px);height:calc(100dvh - 58px);display:none;background:#0d0d0d;}
 body.sec-dicom #stage{display:none;}
 body.sec-dicom #anatomyFrame{display:none;}
 body.sec-dicom #dicomFrame{display:block;}
