@@ -1092,8 +1092,11 @@ function buildSkeleton(){
   [1,-1].forEach(s=>{
     const side = s>0?'Left':'Right', sfx = s>0?'_l':'_r';
 
-    /* Clavicle */
-    register(tube([[s*1.6,150.2,6.6],[s*7,151.2,4.2],[s*12.5,150.2,0.8],[s*16.2,148.6,-1.6]],0.85,M,false,9),{
+    /* Clavicle — the crude procedural tube looked wrong next to the real
+       bones, so it is dropped; the BodyParts3D clavicle_l/r.glb models supply
+       the geometry. If those ever fail to load the clavicle is simply absent
+       rather than shown as a plain tube. */
+    register(new THREE.Group(),{
       id:'clavicle'+sfx, layer:'skeleton', tag:'Bone · Shoulder Girdle',
       name:side+' Clavicle', latin:'Clavicula', focus:V(s*9,150,2),
       overview:'The clavicle is the only bony strut connecting the upper limb to the axial skeleton, holding the shoulder laterally so the arm can swing free of the trunk. Its S-shape and subcutaneous position make it the most commonly fractured bone in the body, and it is the first bone to ossify and the last to fuse (around age 25).',
