@@ -527,7 +527,7 @@ function muscleMat(){
   const m = new THREE.MeshPhysicalMaterial({
     color:0xB84A44, roughness:0.52, metalness:0.0,
     clearcoat:0.55, clearcoatRoughness:0.28,   // wet fascia glaze over the belly
-    transparent:true, opacity:0.95, depthWrite:false, side:THREE.DoubleSide
+    transparent:false, opacity:1.0, depthWrite:true, side:THREE.DoubleSide
   });
   m.onBeforeCompile = sh=>{
     sh.vertexShader = sh.vertexShader
@@ -1912,9 +1912,11 @@ function buildSoftTissue(){
         // Sheets are pinned to a plane so thickness stays perpendicular to the
         // body wall; bellies keep the Frenet frame and swell in the middle.
         plane: sheet ? V(...(m.plane||[0,0,1])) : null,
-        r  : t => m.r*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
-        fx : () => sheet ? 0.20 : 1.15,     // thickness
-        fy : () => sheet ? 2.40 : 0.86,     // width
+        // MUS_SCALE trims the procedural bellies so they hug the bones rather
+        // than ballooning out of proportion to the skeleton.
+        r  : t => m.r*0.82*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
+        fx : () => sheet ? 0.20 : 0.98,     // thickness (was 1.15 — slimmer)
+        fy : () => sheet ? 2.40 : 0.84,     // width
         seg: 34, radial: 16
       }, mus());
       register(obj,{
