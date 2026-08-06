@@ -83,6 +83,13 @@ body.sec-dicom #stage{display:none;}
 body.sec-dicom #anatomyFrame{display:none;}
 body.sec-dicom #dicomFrame{display:block;}
 
+#practiceFrame{position:fixed;top:58px;left:0;border:0;width:100%;
+  height:calc(100vh - 58px);height:calc(100dvh - 58px);display:none;background:#05070b;}
+body.sec-practice #stage{display:none;}
+body.sec-practice #anatomyFrame{display:none;}
+body.sec-practice #dicomFrame{display:none;}
+body.sec-practice #practiceFrame{display:block;}
+
 /* Tighten the bar so three sections, Lines and Home all fit narrow screens.
    Under 760px the section tabs collapse to icons; the brand text hides too. */
 @media(max-width:760px){
@@ -325,6 +332,7 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
       <div class="sec-drop" id="dropRadiology">
         <button class="sec-drop-item on" data-sec="radiology"><i class="fas fa-x-ray"></i> Atlas</button>
         <button class="sec-drop-item" data-sec="dicom"><i class="fas fa-file-medical"></i> DICOM Viewer</button>
+        <button class="sec-drop-item" data-sec="practice"><i class="fas fa-pen-ruler"></i> Practice CT/MRI</button>
       </div>
     </div>
   </div>
@@ -364,6 +372,7 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 <!-- Anatomy subsection: the 3D explorer, loaded on demand -->
 <iframe id="anatomyFrame" title="3D Anatomy Explorer" loading="lazy"></iframe>
 <iframe id="dicomFrame" title="DICOM CT/MRI Scan Reader" loading="lazy"></iframe>
+<iframe id="practiceFrame" title="Radiology Practice Studio" loading="lazy"></iframe>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
@@ -3872,7 +3881,7 @@ function syncModeButtons(){
 
 /* ---- Two top-bar tabs, each a dropdown of its sub-sections ----
    Anatomy → { 3D Anatomy, Diagram Anatomy } · Radiology → { Atlas, DICOM Viewer } */
-const TOP_OF={anatomy3d:'anatomy',diagram:'anatomy',radiology:'radiology',dicom:'radiology'};
+const TOP_OF={anatomy3d:'anatomy',diagram:'anatomy',radiology:'radiology',dicom:'radiology',practice:'radiology'};
 
 function setSection(sec){
   section=sec;
@@ -3883,13 +3892,22 @@ function setSection(sec){
   closeDrops();
 
   if(sec==='dicom'){
-    document.body.classList.remove('sec-anatomy');
+    document.body.classList.remove('sec-anatomy','sec-practice');
     document.body.classList.add('sec-dicom');
     const f=$('dicomFrame'); if(!f.getAttribute('src')) f.setAttribute('src','scan-reader.html');
     $('btnLines').style.display='none';
     return;
   }
   document.body.classList.remove('sec-dicom');
+
+  if(sec==='practice'){
+    document.body.classList.remove('sec-anatomy');
+    document.body.classList.add('sec-practice');
+    const f=$('practiceFrame'); if(!f.getAttribute('src')) f.setAttribute('src','radiology-practice.html?embed=1');
+    $('btnLines').style.display='none';
+    return;
+  }
+  document.body.classList.remove('sec-practice');
 
   if(sec==='anatomy3d'){
     document.body.classList.add('sec-anatomy');
@@ -3985,6 +4003,7 @@ if(/debug=1/.test(location.search+location.hash)){
 
 /* Deep links open a specific view; otherwise open the Radiology atlas. */
 function sectionForHash(h){
+  if(/practice|label|annotate/.test(h)) return 'practice';
   if(/dicom/.test(h)) return 'dicom';
   if(/diagram/.test(h)) return 'diagram';
   if(/anatomy|3d/.test(h)) return 'anatomy3d';
