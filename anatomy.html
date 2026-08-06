@@ -526,13 +526,12 @@ function muscleMat(){
     transparent:false, opacity:1.0, depthWrite:true, side:THREE.DoubleSide
   });
   m.onBeforeCompile = sh=>{
-    // muscleMat carries no texture map, so three never declares `uv` — declare
-    // it ourselves (guarded, in case a map is ever added) to read length along
-    // the belly for the pale tendon-end fade.
+    // Length along the belly comes from a dedicated `aLen` attribute (safe to
+    // declare — three never auto-declares it), used for the pale tendon-end fade.
     sh.vertexShader = sh.vertexShader
-      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;\nvarying float vLen;\n#ifndef USE_UV\nattribute vec2 uv;\n#endif')
+      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;\nvarying float vLen;\nattribute float aLen;')
       .replace('#include <begin_vertex>',
-               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;\nvLen=uv.y;');
+               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;\nvLen=aLen;');
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
 varying vec3 vMPos;
@@ -697,7 +696,7 @@ function sweep(points, opt){
   const plane = opt.plane || null;
   const _T=new THREE.Vector3(), _N=new THREE.Vector3(), _B=new THREE.Vector3();
   // Rings carry R+1 vertices so the UV seam closes cleanly and bump maps tile
-  const pos=[], idx=[], uvs=[];
+  const pos=[], idx=[], uvs=[], lens=[];
   for(let i=0;i<=S;i++){
     const t=i/S, P=curve.getPointAt(t);
     let N=fr.normals[i], B=fr.binormals[i];
@@ -715,6 +714,7 @@ function sweep(points, opt){
       const cx=Math.cos(a)*rr*ex, cy=Math.sin(a)*rr*ey;
       pos.push(P.x+N.x*cx+B.x*cy, P.y+N.y*cx+B.y*cy, P.z+N.z*cx+B.z*cy);
       uvs.push(j/R, i/S);
+      lens.push(t);                    // 0→1 along the sweep, for tendon-end shading
     }
   }
   const W=R+1;
@@ -725,6 +725,7 @@ function sweep(points, opt){
   const g=new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
   g.setAttribute('uv',       new THREE.Float32BufferAttribute(uvs,2));
+  g.setAttribute('aLen',     new THREE.Float32BufferAttribute(lens,1));
   g.setIndex(idx); g.computeVertexNormals();
   return g;
 }
@@ -2984,6 +2985,21 @@ function swapInModel(d, root, entry, glob){
     if(o.isMesh){
       // Private clone, not the shared M_BONE — see ownMaterial()
       if(entry.keepMaterial !== true) o.material = ownMaterial(d, M_BONE);
+      // The muscle shader reads an `aLen` (0→1 along the belly) for its pale
+      // tendon ends; loaded meshes have no such attribute, so derive one from
+      // the longest local axis. Without it the whole muscle would read as
+      // tendon-pale (aLen defaults to 0).
+      if(d.layer==='muscles' && o.geometry && o.geometry.attributes.position
+         && !o.geometry.attributes.aLen){
+        const p=o.geometry.attributes.position, n=p.count;
+        o.geometry.computeBoundingBox();
+        const bb=o.geometry.boundingBox, sz=new THREE.Vector3(); bb.getSize(sz);
+        const ax = sz.x>=sz.y && sz.x>=sz.z ? 'x' : (sz.y>=sz.z ? 'y':'z');
+        const lo=bb.min[ax], span=Math.max(1e-4, sz[ax]);
+        const arr=new Float32Array(n);
+        for(let k=0;k<n;k++) arr[k]=(p.getComponent(k, ax==='x'?0:ax==='y'?1:2)-lo)/span;
+        o.geometry.setAttribute('aLen', new THREE.BufferAttribute(arr,1));
+      }
       o.userData.sid = d.id;
       pickTargets.push(o);
     }
