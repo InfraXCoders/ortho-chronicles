@@ -2995,9 +2995,10 @@ function swapInModel(d, root, entry, glob){
         o.geometry.computeBoundingBox();
         const bb=o.geometry.boundingBox, sz=new THREE.Vector3(); bb.getSize(sz);
         const ax = sz.x>=sz.y && sz.x>=sz.z ? 'x' : (sz.y>=sz.z ? 'y':'z');
+        const get = ax==='x' ? (k=>p.getX(k)) : ax==='y' ? (k=>p.getY(k)) : (k=>p.getZ(k));
         const lo=bb.min[ax], span=Math.max(1e-4, sz[ax]);
         const arr=new Float32Array(n);
-        for(let k=0;k<n;k++) arr[k]=(p.getComponent(k, ax==='x'?0:ax==='y'?1:2)-lo)/span;
+        for(let k=0;k<n;k++) arr[k]=(get(k)-lo)/span;
         o.geometry.setAttribute('aLen', new THREE.BufferAttribute(arr,1));
       }
       o.userData.sid = d.id;
