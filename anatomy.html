@@ -288,12 +288,15 @@ a{color:inherit;}
 @media(max-width:900px){
   #searchWrap{width:min(340px,86vw);top:10px;}
   .pn-grab{display:block;width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.30);margin:9px auto 0;flex-shrink:0;}
-  /* Shrink the 3D canvas so it ends ABOVE the systems bar — the bar sits in
-     the freed strip at the bottom of the stage and no longer covers the
-     skeleton's legs/feet. (The rail is a child of #stage, so we shorten the
-     canvas rather than the stage.) */
-  #viewport{height:calc(100% - 96px);}
-  #rail{top:auto;bottom:14px;left:10px;right:10px;width:auto;display:flex;overflow-x:auto;border-radius:12px;max-height:74px;}
+  /* Canvas stays FULL height so the whole surface stays touchable (rotate /
+     pinch work everywhere). The systems bar is docked as an opaque toolbar
+     flush to the bottom edge — it reads as intentional chrome instead of a
+     translucent pill floating over the skeleton. */
+  #viewport{height:100%;}
+  #rail{top:auto;bottom:0;left:0;right:0;width:auto;display:flex;overflow-x:auto;
+    border-radius:14px 14px 0 0;max-height:76px;
+    background:rgba(9,17,31,.98);border:0;border-top:1px solid rgba(255,255,255,.10);
+    box-shadow:0 -10px 30px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom,0);}
   .rail-h,.rail-sub{display:none;}
   .layer{flex-direction:column;gap:5px;padding:9px 12px;border-bottom:0;border-right:1px solid rgba(255,255,255,.06);min-width:74px;}
   .layer .sw{display:none;}
