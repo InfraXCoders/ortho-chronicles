@@ -66,6 +66,13 @@ html.embedded #tools{top:8px;}
 #viewctl button:hover{border-color:var(--teal);}
 #zoomlbl{align-self:center;padding:0 8px;font-size:.75rem;color:var(--mut);min-width:52px;text-align:center;}
 
+/* attribution for real Commons scans */
+#credit{position:absolute;right:12px;bottom:12px;z-index:18;display:none;max-width:min(60%,420px);
+  background:rgba(6,10,16,.82);border:1px solid var(--line);border-radius:9px;padding:6px 11px;
+  font-size:.68rem;line-height:1.4;color:var(--mut);backdrop-filter:blur(6px);}
+#credit b{color:#cdd8e4;font-weight:600;}
+#credit a{color:var(--teal);text-decoration:none;}
+
 /* empty-state hint */
 #empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:14px;color:var(--mut);text-align:center;padding:24px;pointer-events:none;}
@@ -190,6 +197,8 @@ input[type=file]{display:none;}
 
     <button id="sideToggle" title="Library & labels"><i class="fas fa-layer-group"></i></button>
 
+    <div id="credit"></div>
+
     <div id="viewctl">
       <button id="zoomOut" title="Zoom out"><i class="fas fa-minus"></i></button>
       <div id="zoomlbl">100%</div>
@@ -240,7 +249,7 @@ input[type=file]{display:none;}
           <b>Tools:</b> V move · L label · A arrow · I line · B pen · H highlighter · T text · M measure.<br><br>
           <b>Edit:</b> click a mark to select it — drag to move, drag its ends to reshape, change colour/size/opacity above, or delete it.<br><br>
           <b>View:</b> scroll or +/− to zoom, Space+drag or the Pan tool to move, Fit to reset.<br><br>
-          <b>Note:</b> sample studies are schematic teaching images for label practice — upload real DICOM/JPEG for true cases.
+          <b>Note:</b> sample studies are real, de-identified scans from Wikimedia Commons (open licences — credit shown on each image). Upload your own DICOM/JPEG for private cases.
         </div>
       </div>
     </div>
@@ -571,18 +580,23 @@ window.addEventListener('keydown',e=>{
 window.addEventListener('keyup',e=>{ if(e.code==='Space'){ spaceDown=false; setTool(tool); } });
 
 /* ───────── loading images ───────── */
-function setImage(canvasOrImg,w,h){
+function setCredit(html){ const e=$('credit'); if(!html){ e.style.display='none'; e.innerHTML=''; return; }
+  e.innerHTML=html; e.style.display='block'; }
+function cleanCredit(s){ return String(s||'').replace(/\s*Author info.*$/i,'').replace(/\s*\(talk\)/i,'')
+  .replace(/^The original uploader was\s*/i,'').replace(/\s+at (English|Turkish|German).*Wikipedia\.?$/i,'').trim(); }
+function setImage(canvasOrImg,w,h,credit){
   img=canvasOrImg; imgW=w; imgH=h; anns=[]; sel=null; pxPerMm=null; invert=false;
   $('empty').classList.add('hidden'); $('calState').innerHTML='Scale: <b>not calibrated</b> — measurements shown in pixels.';
+  setCredit(credit||null);
   syncList(); editPanel(); fit();
 }
 function loadRasterFile(f){
   const url=URL.createObjectURL(f); const im=new Image();
-  im.onload=()=>{ setImage(im,im.naturalWidth,im.naturalHeight); URL.revokeObjectURL(url); };
+  im.onload=()=>{ setImage(im,im.naturalWidth,im.naturalHeight,'<b>Your uploaded image</b>'); URL.revokeObjectURL(url); };
   im.onerror=()=>toast('Could not read that image.');
   im.src=url;
 }
-function loadImageSrc(src,cb){ const im=new Image(); im.onload=()=>{ setImage(im,im.naturalWidth||im.width,im.naturalHeight||im.height); cb&&cb(); };
+function loadImageSrc(src,cb,credit){ const im=new Image(); im.onload=()=>{ setImage(im,im.naturalWidth||im.width,im.naturalHeight||im.height,credit); cb&&cb(); };
   im.onerror=()=>toast('Could not load sample.'); im.src=src; }
 
 /* DICOM (uncompressed) via dicom-parser + manual windowing */
@@ -612,7 +626,7 @@ function loadDicom(f){
       for(let i=0;i<npx;i++){ let v=pix[i]*slope+intercept; let g=((v-lo)/ww)*255; g=g<0?0:g>255?255:g; if(inv)g=255-g;
         const j=i*4; d[j]=d[j+1]=d[j+2]=g; d[j+3]=255; }
       octx.putImageData(out,0,0);
-      setImage(off,cols,rows);
+      setImage(off,cols,rows,'<b>Your uploaded DICOM</b>');
       toast('DICOM loaded ('+cols+'×'+rows+').');
     }catch(err){ console.warn(err); toast('Could not decode this DICOM (compressed transfer syntaxes are not supported — export a JPEG/PNG).'); }
   };
@@ -679,7 +693,10 @@ function buildLibrary(){
       const b=document.createElement('button'); b.className='case';
       const src=cs.svg?('data:image/svg+xml;utf8,'+encodeURIComponent(cs.svg)):cs.src;
       b.innerHTML=`<img class="thumb" src="${src}" alt="" loading="lazy"><span><b>${escapeHtml(cs.name)}</b></span>`;
-      b.onclick=()=>{ loadImageSrc(src,()=>toast('Loaded: '+cs.name)); if(window.innerWidth<=820)$('side').classList.remove('open'); };
+      const credit = cs.credit
+        ? `<b>${escapeHtml(cs.name)}</b> — © ${escapeHtml(cleanCredit(cs.credit))}, ${escapeHtml(cs.license||'')} · <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(cs.source||'')}" target="_blank" rel="noopener">Wikimedia Commons</a>`
+        : `<b>${escapeHtml(cs.name)}</b>`;
+      b.onclick=()=>{ loadImageSrc(src,()=>toast('Loaded: '+cs.name),credit); if(window.innerWidth<=820)$('side').classList.remove('open'); };
       g.appendChild(b);
     });
     c.appendChild(h); c.appendChild(g); body.appendChild(c);
