@@ -310,6 +310,7 @@ table.meas td.val{color:var(--teal);font-weight:700;white-space:nowrap;}
 }
 </style>
 <script src="slice-roller.js"></script>
+<script src="bone-window-atlas.js"></script>
 </head>
 <body>
 
@@ -3697,7 +3698,7 @@ function renderStack(wrap, st){
       <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓
         <span id="sLabHint"></span></div>
       <div class="filmcap">${esc(st.caption)}
-        <div class="filmcred">${esc(st.by)} · ${esc(st.lic)} · via
+        <div class="filmcred" id="sCred">${esc(st.by)} · ${esc(st.lic)} · via
           <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a></div>
       </div>
     </div>`;
@@ -3730,6 +3731,10 @@ function renderStack(wrap, st){
     img.alt=st.caption+' — slice '+(i+1);
     range.value=i+1;
     count.textContent=(i+1)+' / '+st.slices.length;
+    // per-slice attribution when a stack mixes sources (bone-window atlas)
+    if(st.credits && st.credits[i]){ const c=st.credits[i], cr=$('sCred');
+      if(cr) cr.innerHTML=esc(c.by)+' · '+esc(c.lic)+' · via '+
+        '<a href="https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(c.file||'')+'" target="_blank" rel="noopener">Wikimedia Commons</a>'; }
     drawSliceLabels();
     if(stackState.roller) stackState.roller.update();
   }
@@ -3940,6 +3945,13 @@ document.addEventListener('click',closeDrops);
 const fold = s => String(s).toLowerCase()
   .normalize('NFD').replace(/[̀-ͯ]/g,'')
   .replace(/[’']/g,"'");
+
+/* Bone-window CT sectional atlas (loaded from bone-window-atlas.js) — merge its
+   stacks and regions in before the search index and rail are built. */
+if(window.BONE_ATLAS){
+  Object.assign(STACKS, window.BONE_ATLAS.stacks);
+  REGIONS.push(...window.BONE_ATLAS.regions);
+}
 
 const INDEX=[];
 REGIONS.forEach(r=>{
