@@ -346,10 +346,6 @@ a{color:inherit;}
   <div id="rail">
     <div class="rail-h"><i class="fas fa-layer-group"></i> Body Systems</div>
     <div id="layerList"></div>
-    <div class="rail-sub">
-      <label>Overlay opacity</label>
-      <input type="range" id="opacity" min="15" max="100" value="72" />
-    </div>
   </div>
 
   <!-- detail panel -->
@@ -525,37 +521,48 @@ const softMat = (hex,op) => {
  */
 function muscleMat(){
   const m = new THREE.MeshPhysicalMaterial({
-    color:0xB84A44, roughness:0.52, metalness:0.0,
-    clearcoat:0.55, clearcoatRoughness:0.28,   // wet fascia glaze over the belly
+    color:0x9E3125, roughness:0.55, metalness:0.0,   // brick-red meat belly
+    clearcoat:0.42, clearcoatRoughness:0.34,         // faint wet fascia glaze
     transparent:false, opacity:1.0, depthWrite:true, side:THREE.DoubleSide
   });
   m.onBeforeCompile = sh=>{
+    // muscleMat carries no texture map, so three never declares `uv` — declare
+    // it ourselves (guarded, in case a map is ever added) to read length along
+    // the belly for the pale tendon-end fade.
     sh.vertexShader = sh.vertexShader
-      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;')
+      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;\nvarying float vLen;\n#ifndef USE_UV\nattribute vec2 uv;\n#endif')
       .replace('#include <begin_vertex>',
-               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;');
+               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;\nvLen=uv.y;');
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
 varying vec3 vMPos;
+varying float vLen;
 float mh(vec3 p){return fract(sin(dot(p,vec3(12.9898,78.233,37.719)))*43758.5453);}
 float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
  return mix(mix(mix(mh(i),mh(i+vec3(1,0,0)),f.x),mix(mh(i+vec3(0,1,0)),mh(i+vec3(1,1,0)),f.x),f.y),
             mix(mix(mh(i+vec3(0,0,1)),mh(i+vec3(1,0,1)),f.x),mix(mh(i+vec3(0,1,1)),mh(i+vec3(1,1,1)),f.x),f.y),f.z);}`)
       .replace('#include <color_fragment>', `#include <color_fragment>
-{ // broad tissue mottling
+{ // ── belly: brick-red meat with mottling ──
   float t = mn(vMPos*1.5)*0.58 + mn(vMPos*6.5)*0.42;
-  diffuseColor.rgb *= 0.82 + 0.34*t;
-  // Directional muscle-fibre striations: fine parallel bands running roughly
-  // along the belly's long axis (vertical here), warped by noise so they read
-  // as real fascicles rather than a printed grid. This is the fibrous streaking
-  // that distinguishes belly from tendon in high-end anatomy renders.
+  vec3 belly = diffuseColor.rgb * (0.80 + 0.36*t);
+  // Directional muscle-fibre striations: fine parallel fascicle bands running
+  // along the belly's long axis, warped by noise so they read as real fibres.
   float warp   = mn(vMPos*0.9)*2.2;
-  float fibre  = sin((vMPos.y + warp)*3.1 + mn(vMPos*2.4)*1.5);
-  float streak = 0.5 + 0.5*fibre;                 // 0..1
-  diffuseColor.rgb *= 0.88 + 0.20*streak;         // light/dark fascicle bands
-  // paler collagenous glint sitting on the raised fibres
-  diffuseColor.rgb += vec3(0.10,0.06,0.05)*pow(streak,3.0);
-}`);
+  float fibre  = sin((vMPos.y + warp)*3.4 + mn(vMPos*2.4)*1.6);
+  float streak = 0.5 + 0.5*fibre;
+  belly *= 0.82 + 0.30*streak;                       // stronger light/dark fibres
+  belly += vec3(0.09,0.05,0.04)*pow(streak,3.0);     // pale collagen glint on fibres
+  // ── tendon ends / attachments: pale collagen where the belly meets bone ──
+  // vLen runs 0→1 along the muscle; fade to pale tendon near both ends so the
+  // origin and insertion read as distinct, glistening white attachments.
+  float tendon = 1.0 - smoothstep(0.10, 0.26, vLen) * smoothstep(0.90, 0.74, vLen);
+  vec3  pale   = vec3(0.90, 0.86, 0.78);             // tendon / aponeurosis
+  diffuseColor.rgb = mix(belly, pale, tendon*tendon);
+}`)
+      // tendon ends are shinier & smoother than the matt belly
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+{ float tnd = 1.0 - smoothstep(0.10,0.26,vLen)*smoothstep(0.90,0.74,vLen);
+  roughnessFactor = mix(roughnessFactor, 0.28, tnd*tnd); }`);
   };
   return m;
 }
@@ -605,8 +612,8 @@ function meshVolume(obj){
    light plus sRGB output encoding lift midtones hard, so a "correct" dark red
    albedo renders as washed pink. These saturated values land on screen at
    roughly rgb(213,118,126) for bulk and a pale near-white for lean muscle. */
-const MUS_PALE = new THREE.Color(0xE7A594);   // lean / largely tendinous — warm salmon
-const MUS_DEEP = new THREE.Color(0xA01E1C);   // bulky / fleshy — rich crimson
+const MUS_PALE = new THREE.Color(0xB24A38);   // lean / smaller belly — lighter brick
+const MUS_DEEP = new THREE.Color(0x862A20);   // bulky / fleshy — deep brick red
 function colourByMass(mat, volume){
   // Calibrated against the real meshes: subclavius ≈ 15 cm³, quadriceps ≈ 2250
   const lo=Math.log10(14), hi=Math.log10(2300);        // cm³
@@ -2759,13 +2766,6 @@ function dismissCoach(){ if(!coachEl||!coachEl.classList.contains('show'))return
   setTimeout(dismissCoach, 15000);                       // auto-hide
   const x=document.getElementById('coachX'); if(x) x.addEventListener('click',dismissCoach);
 })();
-
-document.getElementById('opacity').addEventListener('input',e=>{
-  const o=+e.target.value/100;
-  ['muscles','arteries','veins','nerves','lymphatics'].forEach(k=>{
-    layerGroups[k].traverse(m=>{ if(m.isMesh&&m.material.transparent) m.material.opacity=o; });
-  });
-});
 
 /* ---- search ---- */
 const searchEl=document.getElementById('search'), resEl=document.getElementById('results');
