@@ -3698,6 +3698,7 @@ function renderStack(wrap, st){
       <div class="stackhint"><i class="fas fa-computer-mouse"></i> Scroll on the image, drag the slider, or use ↑ ↓
         <span id="sLabHint"></span></div>
       <div class="filmcap">${esc(st.caption)}
+        <div class="filmsec" id="sSec" style="margin:3px 0;color:#cfe3ff;font-weight:600;">${st.captions&&st.captions[0]?esc(st.captions[0]):''}</div>
         <div class="filmcred" id="sCred">${esc(st.by)} · ${esc(st.lic)} · via
           <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a></div>
       </div>
@@ -3731,6 +3732,8 @@ function renderStack(wrap, st){
     img.alt=st.caption+' — slice '+(i+1);
     range.value=i+1;
     count.textContent=(i+1)+' / '+st.slices.length;
+    // per-section identification caption (bone-window atlas)
+    if(st.captions){ const se=$('sSec'); if(se) se.textContent=st.captions[i]||''; }
     // per-slice attribution when a stack mixes sources (bone-window atlas)
     if(st.credits && st.credits[i]){ const c=st.credits[i], cr=$('sCred');
       if(cr) cr.innerHTML=esc(c.by)+' · '+esc(c.lic)+' · via '+
