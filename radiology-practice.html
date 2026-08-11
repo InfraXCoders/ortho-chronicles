@@ -154,6 +154,34 @@ input[type=file]{display:none;}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#12463f;border:1px solid var(--teal);
   color:#d7fff7;padding:10px 16px;border-radius:10px;font-size:.82rem;z-index:80;opacity:0;transition:.25s;pointer-events:none;}
 .toast.show{opacity:1;}
+
+/* proofreader results */
+.pr-row{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:7px;background:var(--panel2);
+  border:1px solid var(--line);margin-bottom:5px;font-size:.76rem;line-height:1.35;}
+.pr-row.ok{border-color:#2b6b52;} .pr-row.warn{border-color:#7a6320;} .pr-row.bad{border-color:#7a2f2f;}
+.pr-row i.st{margin-top:2px;flex-shrink:0;}
+.pr-row .ok-i{color:var(--ok);} .pr-row .warn-i{color:var(--gold);} .pr-row .bad-i{color:var(--danger);}
+.pr-row b{color:#eaf3fb;} .pr-row .sug{color:var(--teal);cursor:pointer;text-decoration:underline;}
+.pr-sum{font-size:.74rem;color:var(--mut);margin:2px 0 8px;}
+
+/* report modal */
+#reportModal{position:fixed;inset:0;z-index:90;display:none;background:rgba(3,6,10,.72);backdrop-filter:blur(3px);
+  align-items:center;justify-content:center;padding:20px;}
+#reportModal.open{display:flex;}
+.rpt-card{width:min(760px,96vw);max-height:92vh;display:flex;flex-direction:column;background:var(--panel);
+  border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden;}
+.rpt-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);font-size:.95rem;}
+.rpt-head i{color:var(--teal);} .rpt-head b{color:#fff;}
+.rpt-head select{margin-left:10px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-family:inherit;font-size:.8rem;}
+.rpt-x{background:transparent;border:0;color:var(--mut);font-size:1.1rem;padding:4px 8px;border-radius:6px;}
+.rpt-x:hover{color:var(--danger);background:rgba(242,109,109,.12);}
+.rpt-meta{display:flex;gap:8px;padding:11px 16px 0;flex-wrap:wrap;}
+.rpt-meta input{flex:1;min-width:150px;background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+  border-radius:8px;padding:9px 10px;font-family:inherit;font-size:.82rem;}
+#rptBody{margin:11px 16px;flex:1;min-height:280px;resize:vertical;background:#0c1420;border:1px solid var(--line);
+  color:#e9f1fa;border-radius:10px;padding:13px;font-family:'Consolas','SF Mono',ui-monospace,monospace;font-size:.83rem;line-height:1.55;}
+.rpt-foot{display:flex;align-items:center;gap:8px;padding:0 16px 15px;flex-wrap:wrap;}
+.rpt-foot .btn{width:auto;padding:9px 12px;}
 </style>
 </head>
 <body>
@@ -163,6 +191,7 @@ input[type=file]{display:none;}
   <span class="tb-sp"></span>
   <button class="tb-btn" id="btnUpload"><i class="fas fa-upload"></i> <span>Upload</span></button>
   <button class="tb-btn" id="btnExport"><i class="fas fa-download"></i> <span>Export PNG</span></button>
+  <button class="tb-btn" id="btnReport"><i class="fas fa-file-lines"></i> <span>Report</span></button>
   <button class="tb-btn gold" id="btnClear"><i class="fas fa-eraser"></i> <span>Clear</span></button>
 </div>
 
@@ -237,6 +266,14 @@ input[type=file]{display:none;}
       </div>
     </div>
 
+    <div class="sec open" id="secProof">
+      <div class="sec-h"><i class="fas fa-spell-check" style="color:var(--teal)"></i> Label Proofreader <span class="tag" id="proofTag">—</span></div>
+      <div class="sec-b">
+        <button class="btn teal" id="doProof"><i class="fas fa-spell-check"></i> Check my labels</button>
+        <div id="proofResults" class="note" style="margin-top:10px">Type labels on the image, then check them against a radiology/anatomy term list. Recognised terms are ticked; misspellings get a suggestion.</div>
+      </div>
+    </div>
+
     <div class="sec open" id="secMeasure">
       <div class="sec-h"><i class="fas fa-ruler-combined" style="color:var(--gold)"></i> Calibration &amp; Measure</div>
       <div class="sec-b">
@@ -260,6 +297,43 @@ input[type=file]{display:none;}
           <b>Note:</b> sample studies are real, de-identified scans from Wikimedia Commons (open licences — credit shown on each image). Upload your own DICOM/JPEG for private cases.
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REPORT WRITER ============ -->
+<div id="reportModal">
+  <div class="rpt-card">
+    <div class="rpt-head">
+      <i class="fas fa-file-lines"></i> <b>Radiology Report</b>
+      <select id="rptTemplate" title="Load a modality template">
+        <option value="">Insert template…</option>
+        <option value="ct">CT — generic</option>
+        <option value="cthead">CT Head</option>
+        <option value="mri">MRI — generic</option>
+        <option value="mriknee">MRI Knee</option>
+        <option value="mrispine">MRI Spine</option>
+        <option value="usg">Ultrasound (abdomen)</option>
+        <option value="thyroid">Ultrasound — Thyroid</option>
+        <option value="doppler">Colour Doppler — arterial/venous</option>
+        <option value="xray">X-ray</option>
+        <option value="obs1">Obstetric USG — Level 1</option>
+        <option value="obs2">Obstetric USG — Level 2 (anomaly)</option>
+      </select>
+      <span style="flex:1"></span>
+      <button class="rpt-x" id="rptClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="rpt-meta">
+      <input type="text" id="rptPatient" placeholder="Patient / ID (optional)" />
+      <input type="text" id="rptStudy" placeholder="Study (e.g. MRI Brain)" />
+      <input type="date" id="rptDate" />
+    </div>
+    <textarea id="rptBody" spellcheck="true" placeholder="Type the report here, or load a template above…"></textarea>
+    <div class="rpt-foot">
+      <span class="note" id="rptSaved" style="flex:1">Auto-saved locally on this device.</span>
+      <button class="btn" id="rptInsertFindings"><i class="fas fa-tags"></i> Insert labels as findings</button>
+      <button class="btn" id="rptCopy"><i class="fas fa-copy"></i> Copy</button>
+      <button class="btn teal" id="rptDownload"><i class="fas fa-download"></i> Download .txt</button>
     </div>
   </div>
 </div>
@@ -753,6 +827,110 @@ $('sideToggle').onclick=()=>$('side').classList.toggle('open');
 
 /* embedded mode when inside the radiology iframe */
 if(location.search.indexOf('embed')>-1 || window.self!==window.top){ document.documentElement.classList.add('embedded'); }
+
+/* ═══════════════ LABEL PROOFREADER ═══════════════
+   Validates the user's typed labels against a radiology/anatomy term list.
+   No per-image answer key is needed — it checks terminology and spelling and
+   suggests the closest correct term for likely misspellings. */
+const ANAT_TERMS = `
+liver spleen pancreas gallbladder kidney kidneys renal cortex renal medulla renal pelvis ureter bladder prostate uterus ovary ovaries
+aorta abdominal aorta thoracic aorta inferior vena cava superior vena cava portal vein hepatic vein hepatic artery splenic vein splenic artery
+renal artery renal vein common iliac artery external iliac artery internal iliac artery femoral artery femoral vein popliteal artery
+carotid artery common carotid internal carotid external carotid jugular vein subclavian artery subclavian vein brachial artery radial artery ulnar artery
+heart left ventricle right ventricle left atrium right atrium interventricular septum mitral valve tricuspid valve aortic valve pulmonary valve ascending aorta descending aorta pulmonary artery pulmonary trunk
+trachea carina bronchus main bronchus lung right lung left lung upper lobe middle lobe lower lobe lingula hilum pleura diaphragm oesophagus esophagus mediastinum thymus
+brain cerebrum cerebellum brainstem midbrain pons medulla frontal lobe parietal lobe temporal lobe occipital lobe insula
+lateral ventricle third ventricle fourth ventricle corpus callosum genu splenium septum pellucidum thalamus caudate lentiform putamen globus pallidus internal capsule
+basal ganglia hippocampus amygdala sylvian fissure falx cerebri superior sagittal sinus straight sinus transverse sinus pituitary sella turcica optic chiasm optic nerve
+grey matter white matter centrum semiovale corona radiata choroid plexus temporal horn frontal horn occipital horn atrium cortex
+skull calvaria frontal bone parietal bone temporal bone occipital bone sphenoid ethmoid maxilla mandible zygoma nasal bone orbit petrous temporal bone clivus foramen magnum
+cervical spine thoracic spine lumbar spine sacrum coccyx vertebra vertebral body pedicle lamina spinous process transverse process facet joint intervertebral disc spinal canal spinal cord conus medullaris cauda equina odontoid dens atlas axis
+clavicle scapula glenoid acromion coracoid humerus humeral head greater tuberosity lesser tuberosity radius ulna olecranon carpal scaphoid lunate triquetrum pisiform trapezium trapezoid capitate hamate metacarpal phalanx
+sternum manubrium xiphoid rib ribs costal cartilage costovertebral joint sternoclavicular joint
+pelvis ilium ischium pubis acetabulum sacroiliac joint symphysis pubis femur femoral head femoral neck greater trochanter lesser trochanter
+patella tibia tibial plateau fibula medial malleolus lateral malleolus talus calcaneus navicular cuboid cuneiform metatarsal
+femoral condyle intercondylar notch anterior cruciate ligament posterior cruciate ligament medial meniscus lateral meniscus medial collateral ligament lateral collateral ligament quadriceps tendon patellar tendon
+supraspinatus infraspinatus subscapularis teres minor rotator cuff labrum biceps tendon
+thyroid isthmus parathyroid trachea common bile duct pancreatic duct
+gestational sac yolk sac fetal pole crown rump length nuchal translucency amniotic fluid placenta umbilical cord biparietal diameter femur length abdomen circumference head circumference four chamber view lateral ventricles fetal spine fetal heart fetal kidneys
+plaque stenosis thrombus systolic velocity diastolic velocity resistive index peak systolic velocity flow`.trim();
+const TERMSET = new Set(ANAT_TERMS.split(/[\n ]+/).map(s=>s.trim().toLowerCase()).filter(Boolean));
+const TERMLIST = [...new Set(ANAT_TERMS.split(/\n/).map(l=>l.trim()).flatMap(l=>{ // keep multiword phrases too
+  const words=l.split(' '); const out=[]; for(let n=1;n<=3;n++) for(let i=0;i+n<=words.length;i++) out.push(words.slice(i,i+n).join(' ')); return out;
+}).map(s=>s.toLowerCase()).filter(s=>s.length>2))];
+function lev(a,b){ const m=a.length,n=b.length; if(!m)return n; if(!n)return m; const d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){ d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)); } return d[m][n]; }
+function checkTerm(raw){
+  const t=String(raw||'').toLowerCase().replace(/[^a-z\s-]/g,'').replace(/\s+/g,' ').trim();
+  if(!t) return {status:'bad', note:'empty label'};
+  if(TERMSET.has(t) || TERMLIST.includes(t)) return {status:'ok'};
+  // strip common qualifiers and retry (right/left/proximal…)
+  const core=t.replace(/^(right|left|rt|lt|proximal|distal|superior|inferior|anterior|posterior|medial|lateral|upper|lower|mid)\s+/,'').trim();
+  if(TERMSET.has(core) || TERMLIST.includes(core)) return {status:'ok'};
+  // fuzzy: nearest term
+  let best=null,bd=99; const cand=core||t;
+  TERMLIST.forEach(term=>{ if(Math.abs(term.length-cand.length)>3)return; const d=lev(cand,term); if(d<bd){bd=d;best=term;} });
+  if(best && bd<=Math.max(1,Math.floor(cand.length*0.34))) return {status:'warn', suggest:best};
+  return {status:'bad'};
+}
+function proofread(){
+  const labels = anns.filter(a=>(a.type==='label'||a.type==='text') && (a.text||'').trim());
+  const box=$('proofResults');
+  if(!labels.length){ box.innerHTML='<div class="pr-sum">No text labels to check yet. Use the <b>Label</b> or <b>Text</b> tool first.</div>'; $('proofTag').textContent='—'; return; }
+  labels.forEach(a=>{ if(!a._id) a._id='an'+Math.random().toString(36).slice(2,8); });
+  let ok=0,warn=0,bad=0; const rows=labels.map(a=>{
+    const r=checkTerm(a.text); if(r.status==='ok')ok++; else if(r.status==='warn')warn++; else bad++;
+    const icon = r.status==='ok'?'<i class="fas fa-circle-check st ok-i"></i>' : r.status==='warn'?'<i class="fas fa-triangle-exclamation st warn-i"></i>':'<i class="fas fa-circle-xmark st bad-i"></i>';
+    const msg = r.status==='ok'?'<span style="color:var(--ok)">recognised</span>'
+      : r.status==='warn'?`did you mean <span class="sug" data-fix="${escapeHtml(r.suggest)}" data-for="${a._id}">${escapeHtml(r.suggest)}</span>?`
+      : 'not a recognised term — check spelling or wording';
+    return `<div class="pr-row ${r.status}">${icon}<div><b>${escapeHtml(a.text)}</b><br>${msg}</div></div>`;
+  }).join('');
+  box.innerHTML=`<div class="pr-sum">${ok} recognised · ${warn} to review · ${bad} unrecognised</div>`+rows;
+  $('proofTag').textContent = bad+warn===0 ? 'all ✓' : (warn+bad)+' flag'+(warn+bad>1?'s':'');
+  // click a suggestion to apply it
+  box.querySelectorAll('.sug').forEach(el=>el.onclick=()=>{
+    const a=anns.find(x=>x._id===el.dataset.for); if(a){ a.text=el.dataset.fix; draw(); syncList(); proofread(); toast('Label corrected.'); }
+  });
+}
+document.getElementById('doProof').onclick=proofread;
+
+/* ═══════════════ REPORT WRITER ═══════════════ */
+const RPT_TEMPLATES={
+ ct:`CLINICAL DETAILS:\n\nTECHNIQUE:\nAxial CT images were obtained.\n\nFINDINGS:\n- \n\nIMPRESSION:\n1. `,
+ cthead:`CLINICAL DETAILS:\n\nTECHNIQUE:\nNon-contrast axial CT of the brain.\n\nFINDINGS:\nCerebral parenchyma: No acute territorial infarct or intracranial haemorrhage.\nGrey–white differentiation: Preserved.\nVentricles: Normal in size and configuration; no midline shift.\nExtra-axial spaces: No collection.\nBones / paranasal sinuses / mastoids: Clear.\n\nIMPRESSION:\n1. `,
+ mri:`CLINICAL DETAILS:\n\nTECHNIQUE:\nMulti-sequence, multiplanar MRI.\n\nFINDINGS:\n- \n\nIMPRESSION:\n1. `,
+ mriknee:`CLINICAL DETAILS:\n\nTECHNIQUE:\nMRI of the knee — sagittal PD/T2 FS, coronal, axial.\n\nFINDINGS:\nMenisci: Medial and lateral menisci intact, no tear.\nCruciate ligaments: ACL and PCL intact.\nCollateral ligaments: MCL and LCL intact.\nArticular cartilage: Preserved.\nBones/marrow: No fracture or marrow oedema.\nExtensor mechanism: Intact.\nJoint effusion: None.\n\nIMPRESSION:\n1. `,
+ mrispine:`CLINICAL DETAILS:\n\nTECHNIQUE:\nMRI of the spine — sagittal T1/T2, axial T2.\n\nFINDINGS:\nAlignment: Normal.\nVertebral bodies/marrow: Normal height and signal.\nIntervertebral discs: No significant desiccation or herniation.\nSpinal cord: Normal calibre and signal.\nCanal/exit foramina: No significant stenosis.\n\nIMPRESSION:\n1. `,
+ usg:`CLINICAL DETAILS:\n\nTECHNIQUE:\nGrey-scale ultrasound of the abdomen.\n\nFINDINGS:\nLiver: Normal size and echotexture, no focal lesion. No IHBRD.\nGallbladder: Normal, no calculus.\nCBD: Not dilated.\nPancreas: Normal (as visualised).\nSpleen: Normal size.\nKidneys: Normal size, cortical thickness and CMD; no calculus or hydronephrosis.\nUrinary bladder: Normal.\nNo free fluid.\n\nIMPRESSION:\n1. `,
+ thyroid:`CLINICAL DETAILS:\n\nTECHNIQUE:\nHigh-resolution ultrasound of the thyroid.\n\nFINDINGS:\nRight lobe: __ x __ x __ cm.\nLeft lobe: __ x __ x __ cm.\nIsthmus: __ mm.\nEchotexture: Homogeneous.\nNodule: None / describe (size, composition, echogenicity, margins, calcification) — TIRADS __.\nCervical nodes: No abnormal node.\n\nIMPRESSION:\n1. `,
+ doppler:`CLINICAL DETAILS:\n\nTECHNIQUE:\nColour Doppler and spectral analysis.\n\nFINDINGS:\nArterial: Vessel walls, luminal patency, plaque, stenosis, peak systolic velocity.\nVenous: Compressibility, augmentation, respiratory phasicity, thrombus.\nFlow: Normal triphasic/monophasic waveform as appropriate.\n\nIMPRESSION:\n1. No significant stenosis / thrombosis. `,
+ xray:`CLINICAL DETAILS:\n\nFINDINGS:\n- \n\nIMPRESSION:\n1. `,
+ obs1:`CLINICAL DETAILS:\n\nTECHNIQUE:\nFirst-trimester (Level 1) obstetric ultrasound.\n\nFINDINGS:\nSingle/twin intrauterine gestation.\nFetal cardiac activity: Present, rate __ bpm.\nCRL: __ mm — corresponds to __ weeks __ days.\nNuchal translucency: __ mm.\nYolk sac: Normal.\nPlacenta / liquor: Normal.\n\nIMPRESSION:\n1. `,
+ obs2:`CLINICAL DETAILS:\n\nTECHNIQUE:\nSecond-trimester (Level 2) anomaly scan.\n\nFINDINGS:\nSingle live intrauterine fetus, cephalic/breech.\nBiometry: BPD __, HC __, AC __, FL __ — EFW __ g (__ weeks).\nHead/brain: Normal; ventricles, cavum, cerebellum, cisterna magna normal.\nFace/spine: Normal.\nHeart: Four-chamber and outflow tracts normal; rate __ bpm.\nAbdomen: Stomach, kidneys, bladder, cord insertion normal.\nLimbs: All four limbs seen.\nPlacenta: __, Grade __. Liquor: Adequate (AFI __).\n\nIMPRESSION:\n1. Single live intrauterine fetus of __ weeks, no gross anomaly detected. `
+};
+const RPT_KEY='ortho_radiology_report';
+function openReport(){ $('reportModal').classList.add('open'); const b=$('rptBody'); if(!b.value){ try{const s=JSON.parse(localStorage.getItem(RPT_KEY)||'{}'); b.value=s.body||''; $('rptPatient').value=s.patient||''; $('rptStudy').value=s.study||''; $('rptDate').value=s.date||new Date().toISOString().slice(0,10);}catch(_){ $('rptDate').value=new Date().toISOString().slice(0,10);} } b.focus(); }
+function closeReport(){ $('reportModal').classList.remove('open'); }
+function saveReport(){ try{ localStorage.setItem(RPT_KEY, JSON.stringify({body:$('rptBody').value,patient:$('rptPatient').value,study:$('rptStudy').value,date:$('rptDate').value})); }catch(_){} }
+$('btnReport').onclick=openReport;
+$('rptClose').onclick=closeReport;
+$('reportModal').addEventListener('click',e=>{ if(e.target.id==='reportModal') closeReport(); });
+['rptBody','rptPatient','rptStudy','rptDate'].forEach(id=>$(id).addEventListener('input',saveReport));
+$('rptTemplate').onchange=e=>{ const t=RPT_TEMPLATES[e.target.value]; if(!t)return; const b=$('rptBody');
+  b.value = (b.value.trim()? b.value.replace(/\s*$/,'')+'\n\n':'') + t; e.target.value=''; saveReport(); b.focus(); };
+$('rptInsertFindings').onclick=()=>{ const labs=anns.filter(a=>(a.type==='label'||a.type==='text')&&(a.text||'').trim()).map(a=>a.text.trim());
+  if(!labs.length){ toast('No labels to insert.'); return; }
+  const b=$('rptBody'); const list='\nLabelled structures on the image:\n'+labs.map(t=>'- '+t).join('\n')+'\n';
+  b.value=(b.value.trim()?b.value.replace(/\s*$/,'')+'\n':'')+list; saveReport(); toast(labs.length+' labels added to report.'); };
+$('rptCopy').onclick=async()=>{ const txt=reportText(); try{ await navigator.clipboard.writeText(txt); toast('Report copied.'); }catch(_){ const ta=$('rptBody'); ta.select(); document.execCommand('copy'); toast('Report copied.'); } };
+$('rptDownload').onclick=()=>{ const blob=new Blob([reportText()],{type:'text/plain'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=(($('rptStudy').value||'radiology-report').replace(/[^a-z0-9]+/gi,'-'))+'.txt'; a.click(); URL.revokeObjectURL(url); toast('Report downloaded.'); };
+function reportText(){ const p=$('rptPatient').value.trim(), s=$('rptStudy').value.trim(), d=$('rptDate').value;
+  let head=''; if(s)head+='STUDY: '+s+'\n'; if(p)head+='PATIENT: '+p+'\n'; if(d)head+='DATE: '+d+'\n'; if(head)head+='\n';
+  return head+$('rptBody').value.trimEnd()+'\n'; }
+window.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('reportModal').classList.contains('open')) closeReport(); });
 
 buildLibrary();
 resize();
