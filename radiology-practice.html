@@ -364,6 +364,7 @@ input[type=file]{display:none;}
 
 <script src="https://cdn.jsdelivr.net/npm/dicom-parser@1.8.21/dist/dicomParser.min.js"></script>
 <script src="radiology-samples.js"></script>
+<script src="bone-window-atlas.js"></script>
 <script>
 (function(){
 'use strict';
@@ -818,9 +819,29 @@ $('btnClear').onclick=()=>{ if(anns.length&&confirm('Remove all labels and marks
 let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
 
 /* ───────── sample library ───────── */
+/* Turn the shared bone-window / TCIA atlas (bone-window-atlas.js) into practice
+   sample categories — every atlas section becomes a case you can label. */
+function atlasSamples(){
+  const A=window.BONE_ATLAS; if(!A||!A.regions) return [];
+  return A.regions.map(r=>{
+    const st=A.stacks[r.stack]; if(!st||!st.slices||!st.slices.length) return null;
+    const icon=(r.icon||'fa-bone').replace(/^fa-/,'');
+    const cases=st.slices.map((s,i)=>{
+      const cred=(st.credits&&st.credits[i])||{by:st.by,lic:st.lic,file:s};
+      const nm=(st.captions&&st.captions[i]) || (r.name.split('—')[0].trim()+' — section '+(i+1));
+      const by=cred.by||st.by||'', lic=cred.lic||st.lic||'';
+      const link = (cred.file && !/Cancer Imaging Archive/i.test(by))
+        ? `<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(cred.file)}" target="_blank" rel="noopener">Wikimedia Commons</a>`
+        : 'The Cancer Imaging Archive';
+      const attrib=`<b>${escapeHtml(nm)}</b> — © ${escapeHtml(cleanCredit(by))}, ${escapeHtml(lic)} · ${link}`;
+      return { name:nm, src:'radiographs/stacks/'+r.stack+'/'+s, attrib };
+    });
+    return { name:r.name+' (Atlas)', icon, cases };
+  }).filter(Boolean);
+}
 function buildLibrary(){
   const body=$('libBody'); let n=0;
-  (window.RAD_SAMPLES||[]).forEach(cat=>{
+  (window.RAD_SAMPLES||[]).concat(atlasSamples()).forEach(cat=>{
     const c=document.createElement('div'); c.className='cat';
     const h=document.createElement('div'); h.className='cat-h';
     h.innerHTML=`<i class="fas fa-${cat.icon||'circle-dot'}"></i> ${escapeHtml(cat.name)} <i class="fas fa-chevron-right dd"></i>`;
@@ -830,7 +851,9 @@ function buildLibrary(){
       const b=document.createElement('button'); b.className='case';
       const src=cs.svg?('data:image/svg+xml;utf8,'+encodeURIComponent(cs.svg)):cs.src;
       b.innerHTML=`<img class="thumb" src="${src}" alt="" loading="lazy"><span><b>${escapeHtml(cs.name)}</b></span>`;
-      const credit = cs.credit
+      const credit = cs.attrib
+        ? cs.attrib
+        : cs.credit
         ? `<b>${escapeHtml(cs.name)}</b> — © ${escapeHtml(cleanCredit(cs.credit))}, ${escapeHtml(cs.license||'')} · <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(cs.source||'')}" target="_blank" rel="noopener">Wikimedia Commons</a>`
         : `<b>${escapeHtml(cs.name)}</b>`;
       b.onclick=()=>{ loadImageSrc(src,()=>toast('Loaded: '+cs.name),credit); if(window.innerWidth<=820)$('side').classList.remove('open'); };
