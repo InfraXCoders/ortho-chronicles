@@ -3555,7 +3555,26 @@ function stackColumn(list, top, bottom){
  * a leader line and arrowhead. A slice with no entry shows nothing —
  * never a guessed pin.
  */
+/* Colored ROI overlay — highlights a region (e.g. pathology) on a slice.
+   Data: BONE_ATLAS.sliceRoi[dir][sliceNo] = [{cx,cy,rx,ry,color,label}] (fractions). */
+function drawSliceRoi(){
+  const host=$('sRoi'), lab=$('sLabels'); if(!host||!lab||!stackState) return;
+  const set=(window.BONE_ATLAS&&window.BONE_ATLAS.sliceRoi&&window.BONE_ATLAS.sliceRoi[stackState.st.dir])||null;
+  const rois=(set && set[stackState.i+1]) || null;
+  if(!rois || !sLabelsOn){ host.innerHTML=''; return; }
+  const im=$('sliceImg'); const stage=lab.getBoundingClientRect(), ib=im.getBoundingClientRect();
+  if(!ib.width || !stage.width) return;
+  const ox=ib.left-stage.left, oy=ib.top-stage.top, W=stage.width, H=stage.height;
+  let s='';
+  rois.forEach(r=>{
+    const cx=ox+r.cx*ib.width, cy=oy+r.cy*ib.height, rx=r.rx*ib.width, ry=r.ry*ib.height, col=r.color||'#ff5a5a';
+    s+=`<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="${col}" fill-opacity="0.26" stroke="${col}" stroke-width="2.2" stroke-dasharray="7 4"/>`;
+    if(r.label) s+=`<text x="${cx.toFixed(1)}" y="${(cy-ry-7).toFixed(1)}" text-anchor="middle" fill="${col}" style="font:700 12px 'Segoe UI';paint-order:stroke;stroke:#000;stroke-width:3.2px">${esc(r.label)}</text>`;
+  });
+  host.innerHTML=`<svg viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">${s}</svg>`;
+}
 function drawSliceLabels(){
+  drawSliceRoi();
   const host=$('sLabels'); if(!host||!stackState) return;
   const set=SLICE_LABELS[stackState.st.dir];
   const pins=(set && set[stackState.i+1]) || null;
@@ -3682,6 +3701,7 @@ function renderStack(wrap, st){
         <div class="stagebox" id="sStage">
           <img id="sliceImg" src="${base+st.slices[0]}" alt="${esc(st.caption)} — slice 1"/>
         </div>
+        <div class="slabels" id="sRoi" style="pointer-events:none"></div>
         <div class="slabels" id="sLabels"></div>
       </div>
       <div class="stackctl">
@@ -3954,6 +3974,7 @@ const fold = s => String(s).toLowerCase()
 if(window.BONE_ATLAS){
   Object.assign(STACKS, window.BONE_ATLAS.stacks);
   REGIONS.push(...window.BONE_ATLAS.regions);
+  if(window.BONE_ATLAS.sliceLabels) Object.assign(SLICE_LABELS, window.BONE_ATLAS.sliceLabels);
 }
 
 const INDEX=[];
