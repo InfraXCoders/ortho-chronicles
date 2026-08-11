@@ -182,6 +182,13 @@ input[type=file]{display:none;}
   color:#e9f1fa;border-radius:10px;padding:13px;font-family:'Consolas','SF Mono',ui-monospace,monospace;font-size:.83rem;line-height:1.55;}
 .rpt-foot{display:flex;align-items:center;gap:8px;padding:0 16px 15px;flex-wrap:wrap;}
 .rpt-foot .btn{width:auto;padding:9px 12px;}
+.rpt-letter{margin:11px 16px 0;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:4px 12px;}
+.rpt-letter summary{cursor:pointer;font-size:.82rem;font-weight:600;color:#dfe9f3;padding:7px 0;list-style:none;}
+.rpt-letter summary i{color:var(--gold);margin-right:6px;}
+.rpt-lh-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0 10px;}
+.rpt-lh-grid input[type=text]{background:#0c1420;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:.82rem;width:100%;}
+.rpt-lh-grid .lh-logo{width:auto;justify-self:start;}
+@media(max-width:560px){ .rpt-lh-grid{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -328,12 +335,26 @@ input[type=file]{display:none;}
       <input type="text" id="rptStudy" placeholder="Study (e.g. MRI Brain)" />
       <input type="date" id="rptDate" />
     </div>
+    <details class="rpt-letter" id="rptLetterWrap">
+      <summary><i class="fas fa-stamp"></i> Letterhead &amp; signature <span class="note" style="margin-left:6px">— shown on PDF / Word exports</span></summary>
+      <div class="rpt-lh-grid">
+        <input type="text" id="lhName" placeholder="Institution / Clinic name" />
+        <input type="text" id="lhSub" placeholder="Department / address / phone" />
+        <input type="text" id="lhDoctor" placeholder="Reporting doctor" />
+        <input type="text" id="lhCreds" placeholder="Qualifications (e.g. MD Radiology)" />
+        <input type="text" id="lhRegno" placeholder="Reg. no. (optional)" />
+        <label class="lh-logo btn" for="lhLogoFile"><i class="fas fa-image"></i> <span id="lhLogoLbl">Add logo</span></label>
+        <input type="file" id="lhLogoFile" accept="image/*" style="display:none" />
+      </div>
+    </details>
     <textarea id="rptBody" spellcheck="true" placeholder="Type the report here, or load a template above…"></textarea>
     <div class="rpt-foot">
-      <span class="note" id="rptSaved" style="flex:1">Auto-saved locally on this device.</span>
-      <button class="btn" id="rptInsertFindings"><i class="fas fa-tags"></i> Insert labels as findings</button>
+      <span class="note" id="rptSaved" style="flex:1 1 100%">Auto-saved locally on this device.</span>
+      <button class="btn" id="rptInsertFindings"><i class="fas fa-tags"></i> Insert labels</button>
       <button class="btn" id="rptCopy"><i class="fas fa-copy"></i> Copy</button>
-      <button class="btn teal" id="rptDownload"><i class="fas fa-download"></i> Download .txt</button>
+      <button class="btn" id="rptDownload"><i class="fas fa-file-lines"></i> .txt</button>
+      <button class="btn" id="rptWord"><i class="fas fa-file-word"></i> Word</button>
+      <button class="btn teal" id="rptPdf"><i class="fas fa-file-pdf"></i> PDF</button>
     </div>
   </div>
 </div>
@@ -911,9 +932,21 @@ const RPT_TEMPLATES={
  obs2:`CLINICAL DETAILS:\n\nTECHNIQUE:\nSecond-trimester (Level 2) anomaly scan.\n\nFINDINGS:\nSingle live intrauterine fetus, cephalic/breech.\nBiometry: BPD __, HC __, AC __, FL __ — EFW __ g (__ weeks).\nHead/brain: Normal; ventricles, cavum, cerebellum, cisterna magna normal.\nFace/spine: Normal.\nHeart: Four-chamber and outflow tracts normal; rate __ bpm.\nAbdomen: Stomach, kidneys, bladder, cord insertion normal.\nLimbs: All four limbs seen.\nPlacenta: __, Grade __. Liquor: Adequate (AFI __).\n\nIMPRESSION:\n1. Single live intrauterine fetus of __ weeks, no gross anomaly detected. `
 };
 const RPT_KEY='ortho_radiology_report';
-function openReport(){ $('reportModal').classList.add('open'); const b=$('rptBody'); if(!b.value){ try{const s=JSON.parse(localStorage.getItem(RPT_KEY)||'{}'); b.value=s.body||''; $('rptPatient').value=s.patient||''; $('rptStudy').value=s.study||''; $('rptDate').value=s.date||new Date().toISOString().slice(0,10);}catch(_){ $('rptDate').value=new Date().toISOString().slice(0,10);} } b.focus(); }
+const LH_KEY='ortho_radiology_letterhead';
+let lhLogo='';   // data URL
+function openReport(){ $('reportModal').classList.add('open'); const b=$('rptBody');
+  if(!b.value){ try{const s=JSON.parse(localStorage.getItem(RPT_KEY)||'{}'); b.value=s.body||''; $('rptPatient').value=s.patient||''; $('rptStudy').value=s.study||''; $('rptDate').value=s.date||new Date().toISOString().slice(0,10);}catch(_){ $('rptDate').value=new Date().toISOString().slice(0,10);} }
+  try{ const L=JSON.parse(localStorage.getItem(LH_KEY)||'{}');
+    ['lhName','lhSub','lhDoctor','lhCreds','lhRegno'].forEach(id=>{ if($(id)&&L[id]!=null)$(id).value=L[id]; });
+    lhLogo=L.logo||''; if(lhLogo)$('lhLogoLbl').textContent='Logo ✓'; }catch(_){}
+  b.focus(); }
 function closeReport(){ $('reportModal').classList.remove('open'); }
 function saveReport(){ try{ localStorage.setItem(RPT_KEY, JSON.stringify({body:$('rptBody').value,patient:$('rptPatient').value,study:$('rptStudy').value,date:$('rptDate').value})); }catch(_){} }
+function saveLetterhead(){ try{ localStorage.setItem(LH_KEY, JSON.stringify({
+  lhName:$('lhName').value,lhSub:$('lhSub').value,lhDoctor:$('lhDoctor').value,lhCreds:$('lhCreds').value,lhRegno:$('lhRegno').value,logo:lhLogo })); }catch(_){} }
+['lhName','lhSub','lhDoctor','lhCreds','lhRegno'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('input',saveLetterhead); });
+$('lhLogoFile').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f)return; const rd=new FileReader();
+  rd.onload=()=>{ lhLogo=rd.result; $('lhLogoLbl').textContent='Logo ✓'; saveLetterhead(); }; rd.readAsDataURL(f); });
 $('btnReport').onclick=openReport;
 $('rptClose').onclick=closeReport;
 $('reportModal').addEventListener('click',e=>{ if(e.target.id==='reportModal') closeReport(); });
@@ -930,6 +963,51 @@ $('rptDownload').onclick=()=>{ const blob=new Blob([reportText()],{type:'text/pl
 function reportText(){ const p=$('rptPatient').value.trim(), s=$('rptStudy').value.trim(), d=$('rptDate').value;
   let head=''; if(s)head+='STUDY: '+s+'\n'; if(p)head+='PATIENT: '+p+'\n'; if(d)head+='DATE: '+d+'\n'; if(head)head+='\n';
   return head+$('rptBody').value.trimEnd()+'\n'; }
+function fileBase(){ return (($('rptStudy').value||'radiology-report').replace(/[^a-z0-9]+/gi,'-')).toLowerCase(); }
+
+/* Build a formatted HTML document (letterhead + meta + body + signature) used
+   for both Word (.doc) and PDF (print) exports. */
+function buildReportHtml(){
+  const V=id=>($(id)?$(id).value.trim():'');
+  const name=V('lhName'), sub=V('lhSub'), doc=V('lhDoctor'), creds=V('lhCreds'), reg=V('lhRegno');
+  const p=V('rptPatient'), st=V('rptStudy'), d=V('rptDate');
+  const body=escapeHtml($('rptBody').value.trimEnd()).replace(/\n/g,'<br>');
+  const logo=lhLogo?`<img src="${lhLogo}" style="max-height:64px;max-width:190px;object-fit:contain"/>`:'';
+  const header=(name||sub||logo)?
+    `<table style="width:100%;border-collapse:collapse"><tr>
+       <td style="vertical-align:middle">${logo}</td>
+       <td style="text-align:${logo?'right':'center'};vertical-align:middle">
+         ${name?`<div style="font-size:20px;font-weight:700;color:#0b2540">${escapeHtml(name)}</div>`:''}
+         ${sub?`<div style="font-size:12px;color:#4a5a6a">${escapeHtml(sub)}</div>`:''}
+       </td></tr></table>
+     <hr style="border:0;border-top:2px solid #0b2540;margin:8px 0 14px"/>`:'';
+  const meta=`<table style="width:100%;font-size:13px;margin-bottom:12px;border-collapse:collapse">
+     ${st?`<tr><td style="width:80px;color:#4a5a6a">Study</td><td style="font-weight:600">${escapeHtml(st)}</td></tr>`:''}
+     ${p?`<tr><td style="color:#4a5a6a">Patient</td><td>${escapeHtml(p)}</td></tr>`:''}
+     ${d?`<tr><td style="color:#4a5a6a">Date</td><td>${escapeHtml(d)}</td></tr>`:''}</table>`;
+  const sign=(doc||creds||reg)?
+    `<div style="margin-top:44px;text-align:right;font-size:13px">
+       <div style="border-top:1px solid #333;display:inline-block;padding-top:4px;min-width:230px">
+       ${doc?`<b>${escapeHtml(doc)}</b>`:''}${creds?`<br/>${escapeHtml(creds)}`:''}${reg?`<br/>Reg. No. ${escapeHtml(reg)}`:''}</div></div>`:'';
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(st||'Radiology Report')}</title></head>
+   <body style="font-family:'Segoe UI',Arial,sans-serif;color:#111;max-width:720px;margin:0 auto;padding:26px;line-height:1.55">
+   ${header}${meta}<div style="font-size:13.5px">${body}</div>${sign}</body></html>`;
+}
+function exportWord(){ const blob=new Blob(['﻿'+buildReportHtml()],{type:'application/msword'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=fileBase()+'.doc'; a.click();
+  URL.revokeObjectURL(url); toast('Word document downloaded.'); }
+function exportPdf(){ const html=buildReportHtml();
+  const ifr=document.createElement('iframe'); ifr.setAttribute('aria-hidden','true');
+  ifr.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+  document.body.appendChild(ifr);
+  const d=ifr.contentWindow.document; d.open(); d.write(html); d.close();
+  let done=false; const go=()=>{ if(done)return; done=true;
+    try{ ifr.contentWindow.focus(); ifr.contentWindow.print(); }catch(e){ toast('Use your browser Print dialog → Save as PDF'); }
+    setTimeout(()=>ifr.remove(),2500); };
+  setTimeout(go, lhLogo?450:180);
+  toast('Opening print dialog — choose “Save as PDF”.'); }
+$('rptWord').onclick=exportWord;
+$('rptPdf').onclick=exportPdf;
 window.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('reportModal').classList.contains('open')) closeReport(); });
 
 buildLibrary();
