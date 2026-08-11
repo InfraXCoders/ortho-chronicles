@@ -94,3 +94,8 @@ Curated real bone-window CT sections from Wikimedia Commons, open licences.
 - Section 4 (Coronal reformat — ankle mortise (tibia, fibula, talar dome)) — © Hellerhoff · CC BY-SA 3.0 · [File:Processus lateralis tali Fraktur 002 CT cor.png](https://commons.wikimedia.org/wiki/File:Processus%20lateralis%20tali%20Fraktur%20002%20CT%20cor.png)
 - Section 5 (Sagittal reformat — hindfoot (talus, calcaneus; circled subtalar region)) — © James Heilman, MD · CC BY-SA 3.0 · [File:CalcanealfractCT.png](https://commons.wikimedia.org/wiki/File:CalcanealfractCT.png)
 
+
+## Contiguous series (The Cancer Imaging Archive)
+
+- **Chest — Bone-Window CT (contiguous)** — RIDER Lung CT, The Cancer Imaging Archive, CC BY 3.0. Citation: Zhao B, Schwartz LH, Kris MG. Data From RIDER_Lung CT. TCIA (2015). https://doi.org/10.7937/K9/TCIA.2015.U1X8A5NR
+- **Brain MRI — Axial T2 (contiguous)** — ReMIND (Juvekar P, et al.), The Cancer Imaging Archive, CC BY 4.0. https://doi.org/10.7937/3rag-d070
