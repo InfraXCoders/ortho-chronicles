@@ -111,6 +111,16 @@ input[type=file]{display:none;}
 .toast.show{opacity:1;}
 #inlineEdit{position:absolute;z-index:25;display:none;min-width:70px;font:600 13px 'Segoe UI',sans-serif;padding:2px 7px;
   border-radius:6px;background:rgba(8,12,18,.92);border:1.5px solid var(--teal);color:#fff;outline:none;box-shadow:0 6px 18px rgba(0,0,0,.5);}
+.samp-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.samp{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:6px;text-align:left;color:var(--txt);
+  font-size:.66rem;line-height:1.2;display:flex;flex-direction:column;gap:5px;transition:.14s;}
+.samp:hover{border-color:var(--teal);}
+.samp img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;background:#05080d;border:1px solid #1b2634;}
+.samp b{color:#eaf3fb;font-weight:600;}
+.pred-tbl{width:100%;border-collapse:collapse;margin-top:9px;font-size:.78rem;}
+.pred-tbl td{padding:6px 8px;border-bottom:1px solid var(--line);}
+.pred-tbl td:last-child{text-align:right;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums;}
+.pred-tbl tr:first-child td{color:var(--mut);font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;border-bottom:1px solid var(--line);}
 </style>
 </head>
 <body>
@@ -195,7 +205,21 @@ input[type=file]{display:none;}
       <div class="sec-b">
         <div class="cal-state" id="calState">Not calibrated — lengths shown in pixels.</div>
         <button class="btn teal" id="doCalib" style="margin-top:8px"><i class="fas fa-compass-drafting"></i> Calibrate scale</button>
-        <div class="note">Draw a line over a known distance — a radio-opaque marker ball (usually 25&nbsp;mm), a scale bar, or a ruler in the film — then enter its real length in cm. All lengths then read in centimetres.</div>
+        <div class="note">Draw a line over a known distance — a radio-opaque marker ball (usually 25&nbsp;mm), a scale bar, or a ruler in the film — then enter its real length in cm. A marker at the bone plane already corrects magnification.</div>
+
+        <div style="border-top:1px solid var(--line);margin-top:12px;padding-top:10px">
+          <div class="cal-state" id="magState">Magnification: <b>100%</b> (no correction)</div>
+          <div class="row2" style="margin-top:8px">
+            <div class="field" style="margin:0"><label>Magnification %</label><input type="number" id="magPct" placeholder="e.g. 118" step="0.1" /></div>
+            <button class="btn" id="magApply" style="align-self:flex-end;height:38px"><i class="fas fa-check"></i></button>
+          </div>
+          <div class="row2" style="margin-top:8px">
+            <div class="field" style="margin:0"><label>SID (cm)</label><input type="number" id="magSID" placeholder="e.g. 100" /></div>
+            <div class="field" style="margin:0"><label>OID (cm)</label><input type="number" id="magOID" placeholder="e.g. 14" /></div>
+          </div>
+          <button class="btn" id="magFromSID" style="margin-top:8px"><i class="fas fa-calculator"></i> Compute MF from SID / OID</button>
+          <div class="note">MF = SID / (SID − OID); real length = film length ÷ MF. Use this when your scale is at the <b>detector</b> plane (e.g. DICOM pixel spacing) — it removes the beam-divergence magnification so lengths match true bone size.</div>
+        </div>
       </div>
     </div>
 
@@ -211,6 +235,27 @@ input[type=file]{display:none;}
             <button class="btn" id="clearAll"><i class="fas fa-eraser"></i> Clear all</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="sec" id="secSamples">
+      <div class="sec-h"><i class="fas fa-images" style="color:var(--teal)"></i> Sample X-rays <span class="tag" id="sampTag">0</span></div>
+      <div class="sec-b">
+        <div id="sampGrid" class="samp-grid"></div>
+        <div class="note">Real limb radiographs (Wikimedia Commons, CC BY-SA). Several tibia / forearm films include a radio-opaque marker — good for practising scale calibration. Credit is shown when a film is loaded.</div>
+      </div>
+    </div>
+
+    <div class="sec" id="secPredict">
+      <div class="sec-h"><i class="fas fa-ruler-vertical" style="color:var(--gold)"></i> Predicted Bone Lengths (from height)</div>
+      <div class="sec-b">
+        <div class="row2">
+          <div class="field" style="margin:0"><label>Height (cm)</label><input type="number" id="predH" placeholder="e.g. 170" /></div>
+          <div class="field" style="margin:0"><label>Sex</label><select id="predSex"><option>Male</option><option>Female</option></select></div>
+        </div>
+        <button class="btn teal" id="predCalc" style="margin-top:9px"><i class="fas fa-calculator"></i> Estimate long-bone lengths</button>
+        <div id="predOut"></div>
+        <div class="note">Population-average estimates (bone length ≈ a fixed fraction of stature). Individual bones vary — use these as an expected value to compare against your measured scanogram length, not as a diagnosis.</div>
       </div>
     </div>
 
@@ -272,7 +317,8 @@ function draw(){
   if(editing) positionInline(editing);
 }
 function dist(a,b){ return Math.hypot(a.x-b.x,a.y-b.y); }
-function lenText(px){ if(pxPerCm){ const cm=px/pxPerCm; return cm>=1?cm.toFixed(2)+' cm':(cm*10).toFixed(1)+' mm'; } return Math.round(px)+' px'; }
+let magFactor=1;   // real length = film length / magFactor
+function lenText(px){ if(pxPerCm){ const cm=(px/pxPerCm)/magFactor; return cm>=1?cm.toFixed(2)+' cm':(cm*10).toFixed(1)+' mm'; } return Math.round(px)+' px'; }
 function angleAt(p0,p1,p2){ // angle at p1 between p1->p0 and p1->p2
   const a=Math.atan2(p0.y-p1.y,p0.x-p1.x), b=Math.atan2(p2.y-p1.y,p2.x-p1.x);
   let d=Math.abs(a-b)*180/Math.PI; if(d>180)d=360-d; return d; }
@@ -545,6 +591,56 @@ function loadProject(p){ if(!p||!p.img){ toast('Case file has no image.'); retur
 /* ---------- misc ---------- */
 document.querySelectorAll('.sec-h').forEach(h=>h.onclick=e=>{ if(e.target.closest('.tag'))return; h.parentElement.classList.toggle('open'); });
 $('sideToggle').onclick=()=>$('side').classList.toggle('open');
+/* ---------- magnification correction ---------- */
+function setMag(pct){ pct=parseFloat(pct); if(isNaN(pct)||pct<=0){ magFactor=1; $('magPct').value=''; }
+  else { magFactor=pct/100; $('magPct').value=pct; }
+  $('magState').innerHTML = magFactor===1 ? 'Magnification: <b>100%</b> (no correction)'
+    : 'Magnification: <b>'+(magFactor*100).toFixed(1)+'%</b> — lengths ÷ '+magFactor.toFixed(3);
+  draw(); syncList(); }
+$('magApply').onclick=()=>setMag($('magPct').value);
+$('magPct').addEventListener('keydown',e=>{ if(e.key==='Enter')setMag($('magPct').value); });
+$('magFromSID').onclick=()=>{ const sid=parseFloat($('magSID').value), oid=parseFloat($('magOID').value);
+  if(isNaN(sid)||isNaN(oid)||sid<=oid||oid<0){ toast('Enter SID and OID (SID must exceed OID).'); return; }
+  const mf=sid/(sid-oid); setMag((mf*100).toFixed(1)); toast('MF = '+mf.toFixed(3)+' applied.'); };
+
+/* ---------- sample X-rays (real limb radiographs, Wikimedia Commons CC BY-SA) ---------- */
+const SCAN_SAMPLES=[
+ {name:'Knee AP (distal femur, proximal tibia)',src:'images/scanograms/femur_1.jpg',by:'Hellerhoff',lic:'CC BY-SA 3.0'},
+ {name:'Knee lateral',src:'images/scanograms/femur_2.jpg',by:'Hellerhoff',lic:'CC BY-SA 3.0'},
+ {name:'Hip / proximal femur AP',src:'images/scanograms/femur_3.jpg',by:'Hellerhoff',lic:'CC BY-SA 3.0'},
+ {name:'Tibia–fibula AP (with marker)',src:'images/scanograms/tibia_1.jpg',by:'Wikimedia Commons',lic:'CC BY-SA 3.0'},
+ {name:'Tibia–fibula lateral (with marker)',src:'images/scanograms/tibia_2.jpg',by:'Wikimedia Commons',lic:'CC BY-SA 3.0'},
+ {name:'Tibia–fibula with fixation (marker)',src:'images/scanograms/tibia_3.jpg',by:'Wikimedia Commons',lic:'CC BY-SA 3.0'},
+ {name:'Humerus AP',src:'images/scanograms/humerus_1.jpg',by:'RSJThompson',lic:'CC BY-SA 3.0'},
+ {name:'Forearm AP & lateral',src:'images/scanograms/forearm_1.jpg',by:'Nevit Dilmen',lic:'CC BY-SA 3.0'},
+ {name:'Forearm / hand',src:'images/scanograms/forearm_2.jpg',by:'Nevit Dilmen',lic:'CC BY-SA 3.0'}
+];
+function loadSampleSrc(src,name,credit){ const im=new Image(); im.onload=()=>{ setImage(im,im.naturalWidth,im.naturalHeight); toast('Loaded: '+name); };
+  im.onerror=()=>toast('Could not load sample.'); im.src=src; window._lastCredit=credit; }
+(function buildSamples(){ const grid=$('sampGrid'); if(!grid)return;
+  SCAN_SAMPLES.forEach(s=>{ const b=document.createElement('button'); b.className='samp';
+    b.innerHTML=`<img src="${s.src}" alt="" loading="lazy"><span><b>${esc(s.name)}</b></span>`;
+    const credit=s.name+' — © '+s.by+', '+s.lic+' · Wikimedia Commons';
+    b.onclick=()=>{ loadSampleSrc(s.src,s.name,credit); if(window.innerWidth<=860)$('side').classList.remove('open'); };
+    grid.appendChild(b); });
+  $('sampTag').textContent=SCAN_SAMPLES.length;
+})();
+
+/* ---------- predicted long-bone lengths from stature ----------
+   Bone length ≈ fraction of stature (population-average anthropometric proportions).
+   Coefficients differ slightly by sex; treated as expected values, not diagnosis. */
+const BONE_FRAC={
+  Male:   {Femur:0.2650,Tibia:0.2170,Fibula:0.2150,Humerus:0.1990,Ulna:0.1630,Radius:0.1520},
+  Female: {Femur:0.2630,Tibia:0.2160,Fibula:0.2140,Humerus:0.1960,Ulna:0.1610,Radius:0.1500}
+};
+$('predCalc').onclick=()=>{ const h=parseFloat($('predH').value), sex=$('predSex').value;
+  const out=$('predOut'); if(isNaN(h)||h<50||h>250){ out.innerHTML='<div class="note" style="color:var(--danger)">Enter a height between 50 and 250 cm.</div>'; return; }
+  const f=BONE_FRAC[sex]||BONE_FRAC.Male;
+  let rows='<tr><td>Bone</td><td>Est. length</td></tr>';
+  Object.keys(f).forEach(b=>{ rows+=`<tr><td>${b}</td><td>${(f[b]*h).toFixed(1)} cm</td></tr>`; });
+  out.innerHTML=`<table class="pred-tbl">${rows}</table>`;
+};
+
 let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
 resize(); updateZoom();
 })();
