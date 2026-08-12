@@ -449,7 +449,9 @@ function syncList(){ $('annCount').textContent=anns.length; const box=$('annList
     row.onclick=ev=>{ if(ev.target.closest('button')){ snap(); anns.splice(i,1); if(sel===a)sel=null; draw();syncList();editPanel(); return;} selectAnn(a); draw(); };
     box.appendChild(row); }); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function editPanel(){ const f=$('editField'); if(sel&&(sel.type==='text'||sel.type==='point')){ f.style.display=''; $('editText').value=sel.text||''; } else f.style.display=''; }
+function editPanel(){ const f=$('editField'); if(!sel){ f.style.display='none'; return; } f.style.display='';
+  const et=$('editText'); const editable=(sel.type==='text'||sel.type==='point');
+  et.disabled=!editable; et.placeholder=editable?'label text':'(no text for this mark)'; et.value=editable?(sel.text||''):''; }
 $('editText').addEventListener('input',()=>{ if(sel){ sel.text=$('editText').value; draw(); syncList(); } });
 $('delSel').onclick=()=>{ if(sel){ snap(); anns=anns.filter(a=>a!==sel); sel=null; draw();syncList();editPanel(); } };
 $('clearAll').onclick=()=>{ if(anns.length&&confirm('Remove all marks?')){ snap(); anns=[]; sel=null; draw();syncList();editPanel(); } };
@@ -460,8 +462,12 @@ function finishCalib(a){ const d=dist(a.points[0],a.points[1]); if(d<3){ anns=an
   const v=prompt('Real length of this line in CENTIMETRES (e.g. 2.5 for a 25 mm marker):','2.5');
   if(v===null||isNaN(parseFloat(v))||parseFloat(v)<=0){ anns=anns.filter(x=>x!==a); draw();syncList(); return; }
   pxPerCm=d/parseFloat(v); anns=anns.filter(x=>x!==a);
-  $('calState').innerHTML='Calibrated — <b>'+pxPerCm.toFixed(1)+' px/cm</b>.'; $('scaleTxt').textContent=pxPerCm.toFixed(1)+' px/cm';
-  setTool('ruler'); draw();syncList(); toast('Scale set. Measurements now in cm.'); }
+  // A marker/ruler laid in the film is at (or near) the bone plane, so it already
+  // carries the same magnification as the bone — the scale is true. Reset any
+  // magnification factor so we don't double-correct.
+  magFactor=1; if($('magPct'))$('magPct').value=''; if($('magState'))$('magState').innerHTML='Magnification: <b>100%</b> (marker calibration already corrects it)';
+  $('calState').innerHTML='Calibrated — <b>'+pxPerCm.toFixed(1)+' px/cm</b> (true size).'; $('scaleTxt').textContent=pxPerCm.toFixed(1)+' px/cm';
+  setTool('ruler'); draw();syncList(); toast('Scale set. Measurements now in true cm.'); }
 
 /* ---------- tools ---------- */
 function setTool(t){ tool=t; building=null; document.querySelectorAll('.tool[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));
@@ -483,7 +489,14 @@ window.addEventListener('keydown',e=>{ if(e.target.tagName==='INPUT'||e.target.t
 window.addEventListener('keyup',e=>{ if(e.code==='Space'){spaceDown=false;setTool(tool);} });
 
 /* ---------- image loading ---------- */
-function setImage(o,w,h){ img=o; imgW=w; imgH=h; anns=[]; sel=null; building=null; invert=false; $('empty').classList.add('hidden'); syncList();editPanel(); fit(); }
+function setImage(o,w,h){ img=o; imgW=w; imgH=h; anns=[]; sel=null; building=null; invert=false;
+  // A new image invalidates any previous calibration / magnification.
+  pxPerCm=null; magFactor=1;
+  $('calState').innerHTML='Not calibrated — lengths shown in pixels.'; $('scaleTxt').textContent='not set';
+  if($('magPct'))$('magPct').value=''; if($('magSID'))$('magSID').value=''; if($('magOID'))$('magOID').value='';
+  if($('magState'))$('magState').innerHTML='Magnification: <b>100%</b> (no correction)';
+  undoStack.length=0; redoStack.length=0;
+  $('empty').classList.add('hidden'); syncList();editPanel(); fit(); }
 function loadRaster(f){ const url=URL.createObjectURL(f); const im=new Image(); im.onload=()=>{ setImage(im,im.naturalWidth,im.naturalHeight); URL.revokeObjectURL(url); };
   im.onerror=()=>toast('Could not read that image. Try a JPG or PNG.'); im.src=url; }
 function loadDicom(f){ const rd=new FileReader(); rd.onload=()=>{ try{
