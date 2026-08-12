@@ -124,6 +124,24 @@ input[type=file]{display:none;}
 .pred-tbl td{padding:6px 8px;border-bottom:1px solid var(--line);}
 .pred-tbl td:last-child{text-align:right;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums;}
 .pred-tbl tr:first-child td{color:var(--mut);font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;border-bottom:1px solid var(--line);}
+
+/* patient summary in sidebar */
+.pat-summary{font-size:.78rem;color:var(--txt);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;}
+.pat-summary .muted{color:var(--mut);}
+.pat-summary b{color:#16202c;}
+
+/* patient popup */
+#patientModal{position:fixed;inset:0;z-index:95;display:none;background:rgba(20,30,45,.42);backdrop-filter:blur(3px);
+  align-items:center;justify-content:center;padding:18px;}
+#patientModal.open{display:flex;}
+.pm-card{width:min(460px,96vw);max-height:92vh;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-radius:16px;box-shadow:0 30px 80px rgba(20,30,45,.35);overflow:hidden;}
+.pm-head{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);font-size:.98rem;color:#16202c;}
+.pm-head i{color:var(--gold);}
+.pm-x{background:#f2f5f9;border:1px solid var(--line);color:var(--mut);font-size:.76rem;font-weight:600;padding:6px 11px;border-radius:8px;}
+.pm-x:hover{border-color:var(--teal);color:var(--txt);}
+.pm-body{padding:14px 16px;overflow:auto;}
+.pm-foot{padding:0 16px 15px;} .pm-foot .btn{padding:11px;}
 </style>
 </head>
 <body>
@@ -186,20 +204,8 @@ input[type=file]{display:none;}
     <div class="sec open" id="secPatient">
       <div class="sec-h"><i class="fas fa-user-injured" style="color:var(--gold)"></i> Patient Details <span class="tag" id="patTag">required</span></div>
       <div class="sec-b">
-        <div class="field req"><label>Patient name *</label><input type="text" id="pName" placeholder="Full name" /></div>
-        <div class="row2">
-          <div class="field"><label>Age</label><input type="text" id="pAge" placeholder="e.g. 34 y" /></div>
-          <div class="field"><label>Sex</label><select id="pSex"><option value="">—</option><option>Male</option><option>Female</option><option>Other</option></select></div>
-        </div>
-        <div class="row2">
-          <div class="field"><label>CR / File No.</label><input type="text" id="pCR" placeholder="CR / file no." /></div>
-          <div class="field"><label>Side</label><select id="pSide"><option value="">—</option><option>Right</option><option>Left</option><option>Bilateral</option></select></div>
-        </div>
-        <div class="field"><label>Hospital / Institute</label><input type="text" id="pHosp" placeholder="Hospital / institute name" /></div>
-        <div class="row2">
-          <div class="field"><label>Study</label><input type="text" id="pStudy" placeholder="e.g. Standing scanogram" /></div>
-          <div class="field"><label>Date</label><input type="date" id="pDate" /></div>
-        </div>
+        <div id="patSummary" class="pat-summary">The patient form appears when you upload an image.</div>
+        <button class="btn teal" id="patEdit" style="margin-top:9px"><i class="fas fa-user-pen"></i> Edit patient details</button>
       </div>
     </div>
 
@@ -271,6 +277,35 @@ input[type=file]{display:none;}
         <b>Measure (M):</b> after calibrating, lengths read in cm.<br><br>
         <b>Save</b> stores the case (image + marks + patient) on this device and as a downloadable <b>.ocase</b> file you can share; <b>Open</b> reloads one. <b>Download</b> saves a patient-headed image; <b>Share</b> uses your device share sheet.
       </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PATIENT DETAILS POPUP ============ -->
+<div id="patientModal">
+  <div class="pm-card">
+    <div class="pm-head"><i class="fas fa-user-injured"></i> <b>Patient Details</b>
+      <span style="flex:1"></span>
+      <button class="pm-x" id="patSkip" title="Fill later">Skip</button>
+    </div>
+    <div class="pm-body">
+      <div class="field req"><label>Patient name *</label><input type="text" id="pName" placeholder="Full name" /></div>
+      <div class="row2">
+        <div class="field"><label>Age</label><input type="text" id="pAge" placeholder="e.g. 34 y" /></div>
+        <div class="field"><label>Sex</label><select id="pSex"><option value="">—</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>CR / File No.</label><input type="text" id="pCR" placeholder="CR / file no." /></div>
+        <div class="field"><label>Side</label><select id="pSide"><option value="">—</option><option>Right</option><option>Left</option><option>Bilateral</option></select></div>
+      </div>
+      <div class="field"><label>Hospital / Institute</label><input type="text" id="pHosp" placeholder="Hospital / institute name" /></div>
+      <div class="row2">
+        <div class="field"><label>Study</label><input type="text" id="pStudy" placeholder="e.g. Standing scanogram" /></div>
+        <div class="field"><label>Date</label><input type="date" id="pDate" /></div>
+      </div>
+    </div>
+    <div class="pm-foot">
+      <button class="btn teal" id="patSave"><i class="fas fa-check"></i> Save &amp; continue</button>
     </div>
   </div>
 </div>
@@ -499,7 +534,9 @@ function setImage(o,w,h){ img=o; imgW=w; imgH=h; anns=[]; sel=null; building=nul
   if($('magPct'))$('magPct').value=''; if($('magSID'))$('magSID').value=''; if($('magOID'))$('magOID').value='';
   if($('magState'))$('magState').innerHTML='Magnification: <b>100%</b> (no correction)';
   undoStack.length=0; redoStack.length=0;
-  $('empty').classList.add('hidden'); syncList();editPanel(); fit(); }
+  $('empty').classList.add('hidden'); syncList();editPanel(); fit();
+  openPatient();   // prompt for patient details once the upload is in
+}
 function loadRaster(f){ const url=URL.createObjectURL(f); const im=new Image(); im.onload=()=>{ setImage(im,im.naturalWidth,im.naturalHeight); URL.revokeObjectURL(url); };
   im.onerror=()=>toast('Could not read that image. Try a JPG or PNG.'); im.src=url; }
 function loadDicom(f){ const rd=new FileReader(); rd.onload=()=>{ try{
@@ -522,13 +559,26 @@ $('btnUpload').onclick=()=>$('file').click(); $('btnUpload2').onclick=()=>$('fil
 $('file').addEventListener('change',e=>{ handleFile(e.target.files[0]); e.target.value=''; });
 stage.addEventListener('dragover',e=>e.preventDefault()); stage.addEventListener('drop',e=>{ e.preventDefault(); if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]); });
 
-/* ---------- patient ---------- */
+/* ---------- patient (popup on upload) ---------- */
 const PAT=['pName','pAge','pSex','pCR','pSide','pHosp','pStudy','pDate'];
 function patient(){ const o={}; PAT.forEach(id=>o[id]=$(id).value); return o; }
 function setPatient(o){ o=o||{}; PAT.forEach(id=>{ if($(id)&&o[id]!=null)$(id).value=o[id]; }); patTag(); }
-function patTag(){ $('patTag').textContent = $('pName').value.trim()? '✓' : 'required'; }
+function patTag(){ $('patTag').textContent = $('pName').value.trim()? '✓' : 'required'; updatePatSummary(); }
+function updatePatSummary(){ const p=patient(), el=$('patSummary'); if(!el) return;
+  if(!p.pName.trim()){ el.innerHTML='<span class="muted">The patient form appears when you upload an image — or click Edit.</span>'; return; }
+  const l1='<b>'+esc(p.pName)+'</b>'+(p.pAge?' · '+esc(p.pAge):'')+(p.pSex?' · '+esc(p.pSex):'')+(p.pSide?' · '+esc(p.pSide)+' side':'');
+  const l2=[p.pCR?('CR/File: '+p.pCR):'', p.pHosp||'', p.pStudy||'', p.pDate||''].filter(Boolean).map(esc).join(' · ');
+  el.innerHTML=l1+(l2?'<br><span class="muted">'+l2+'</span>':''); }
+function openPatient(){ $('patientModal').classList.add('open'); setTimeout(()=>{ try{$('pName').focus();}catch(_){}} ,60); }
+function closePatient(){ $('patientModal').classList.remove('open'); patTag(); }
+$('patSave').onclick=()=>{ if(!$('pName').value.trim()){ $('pName').focus(); toast('Enter the patient name (or Skip to fill later).'); return; } closePatient(); toast('Patient details saved.'); };
+$('patSkip').onclick=closePatient;
+$('patEdit').onclick=openPatient;
+$('patientModal').addEventListener('click',e=>{ if(e.target.id==='patientModal') closePatient(); });
+$('pName').addEventListener('keydown',e=>{ if(e.key==='Enter') $('patSave').click(); });
 PAT.forEach(id=>{ const el=$(id); if(el)el.addEventListener('input',patTag); });
 $('pDate').value=new Date().toISOString().slice(0,10);
+updatePatSummary();
 
 /* ---------- render annotated image (with patient header) ---------- */
 function renderExport(){
