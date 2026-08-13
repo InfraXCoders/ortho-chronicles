@@ -113,9 +113,14 @@
     <li><a href="radio-anatomy.html#radiology" style="color:#2DD4BF;font-weight:700;">Radiology <span style="font-size:.62rem;background:#2DD4BF;color:#04201c;padding:2px 6px;border-radius:10px;margin-left:6px;vertical-align:middle;letter-spacing:.5px;">NEW</span></a></li>
     <li><a href="case-planner.html" style="color:#2DD4BF;font-weight:700;">Case Planner <span style="font-size:.62rem;background:#e5b45a;color:#2a1c04;padding:2px 6px;border-radius:10px;margin-left:6px;vertical-align:middle;letter-spacing:.5px;">NEW</span></a></li>
     <li><a href="cases.html">Case Library</a></li>
-    <li><a href="gym.html">Gym</a></li>
-    <li><a href="physiotherapy.html" style="color:#2DD4BF;font-weight:700;">Physiotherapy</a></li>
-    <li><a href="calorie-tracker.html">Calorie Tracker</a></li>
+    <li class="nav-group">
+      <button type="button" class="nav-grp-label" aria-haspopup="true" aria-expanded="false">Fitness &amp; Wellness <i class="fas fa-chevron-down nav-grp-caret"></i></button>
+      <ul class="nav-sub">
+        <li><a href="gym.html"><i class="fas fa-dumbbell"></i> Gym</a></li>
+        <li><a href="physiotherapy.html"><i class="fas fa-hand-holding-medical"></i> Physiotherapy</a></li>
+        <li><a href="calorie-tracker.html"><i class="fas fa-utensils"></i> Calorie Tracker</a></li>
+      </ul>
+    </li>
     <li><a href="#mentor">About Dr. Singh</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#submit" class="btn-nav">Submit Article</a></li>
@@ -3537,5 +3542,8 @@
 
   })();
   </script>
+<script>
+(function(){document.querySelectorAll(".nav-group").forEach(function(g){var b=g.querySelector(".nav-grp-label");if(!b)return;b.addEventListener("click",function(e){e.stopPropagation();var o=g.classList.toggle("open");b.setAttribute("aria-expanded",o);});});document.addEventListener("click",function(e){if(!e.target.closest(".nav-group"))document.querySelectorAll(".nav-group.open").forEach(function(g){g.classList.remove("open");});});})();
+</script>
 </body>
 </html>

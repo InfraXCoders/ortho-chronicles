@@ -201,6 +201,36 @@ img { max-width: 100%; display: block; }
 #header.scrolled ~ .nav-links a:hover { color: var(--teal-dark); }
 #header.scrolled ~ .nav-links { height: 64px; }
 
+/* ---- Bundled nav group (Fitness & Wellness) — expands on hover / tap ---- */
+.nav-group { position: relative; list-style: none; display: flex; align-items: center; }
+.nav-grp-label {
+  background: none; border: 0; cursor: pointer; font-family: inherit;
+  color: rgba(255,255,255,.9); font-weight: 500; font-size: .9rem;
+  display: inline-flex; align-items: center; gap: 6px; padding: 0; white-space: nowrap;
+}
+#header.scrolled ~ .nav-links .nav-grp-label { color: var(--gray-800); }
+.nav-grp-caret { font-size: .62em; transition: transform .2s; }
+.nav-group:hover .nav-grp-caret,
+.nav-group:focus-within .nav-grp-caret,
+.nav-group.open .nav-grp-caret { transform: rotate(180deg); }
+.nav-sub {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(4px);
+  min-width: 210px; background: #fff; border: 1px solid #e4e9ef; border-radius: 12px;
+  padding: 6px; margin: 0; list-style: none; box-shadow: 0 18px 46px rgba(20,30,45,.22);
+  display: none; z-index: 1002;
+}
+.nav-group:hover .nav-sub,
+.nav-group:focus-within .nav-sub,
+.nav-group.open .nav-sub { display: block; }
+.nav-sub li { list-style: none; }
+.nav-sub a {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px;
+  color: #1f2733 !important; font-size: .86rem; font-weight: 600; white-space: nowrap;
+}
+.nav-sub a::after { display: none !important; }
+.nav-sub a i { width: 18px; color: var(--teal); }
+.nav-sub a:hover { background: #eef7f6; color: var(--teal-dark) !important; }
+
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
   background: none; border: none; cursor: pointer; padding: 4px;
@@ -1498,6 +1528,11 @@ img { max-width: 100%; display: block; }
   .nav-links a { font-size: 1.2rem; font-weight: 600; color: #fff; }
   /* Override scrolled sibling rule â€” always white text in mobile overlay */
   #header.scrolled ~ .nav-links a { color: #fff; }
+  /* Bundled group in the mobile overlay */
+  .nav-group { flex-direction: column; }
+  .nav-grp-label,
+  #header.scrolled ~ .nav-links .nav-grp-label { color: #fff; font-size: 1.2rem; font-weight: 600; }
+  .nav-sub a { color: #1f2733 !important; font-size: 1rem; }
   .nav-links .btn-nav { font-size: 1rem; padding: 14px 36px; }
   .navbar { padding: 12px 16px; }
   #header.scrolled .navbar { padding: 10px 16px; }
