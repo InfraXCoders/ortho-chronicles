@@ -521,8 +521,8 @@ const softMat = (hex,op) => {
  */
 function muscleMat(){
   const m = new THREE.MeshPhysicalMaterial({
-    color:0x9E3125, roughness:0.50, metalness:0.0,   // brick-red meat belly
-    clearcoat:0.52, clearcoatRoughness:0.30,         // wet fascia glaze
+    color:0x72281A, roughness:0.60, metalness:0.0,   // reddish-brown meat belly
+    clearcoat:0.30, clearcoatRoughness:0.42,         // faint fascia sheen (matt meat)
     transparent:false, opacity:1.0, depthWrite:true, side:THREE.DoubleSide
   });
   m.onBeforeCompile = sh=>{
@@ -548,15 +548,22 @@ float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
 // The drift is deliberately gentle so fascicles stay longitudinal, not chopped.
 float mFasc(float ring,float len,float w){ return sin(ring*69.115 + (w-0.5)*2.0 + len*1.4); }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
-{ // ── belly: brick-red meat, fascicle striations, pale tendon ends ──
-  float t = mn(vMPos*1.2)*0.62 + mn(vMPos*5.0)*0.38;
-  vec3 belly = diffuseColor.rgb * (0.82 + 0.30*t);
-  float w    = mn(vMPos*0.5);
-  float fasc = 0.5 + 0.5*mFasc(vRing, vLen, w);
-  belly *= 0.84 + 0.28*fasc;                         // light/dark fibre bundles
-  belly += vec3(0.09,0.055,0.045)*pow(fasc,3.0);     // pale perimysium glint
-  float fine = 0.5 + 0.5*sin(vLen*30.0 + mn(vMPos*2.6)*6.2);
-  belly *= 0.972 + 0.028*fine;                       // fine cross-banding (HD detail)
+{ // ── belly: reddish-brown meat, noise two-tone + fascicle striations ──
+  // A noise ramp between a lighter (oxygen-rich) and a deeper (deoxygenated)
+  // reddish-brown — derived from THIS muscle's own tint, so the belly gains
+  // real depth while every muscle keeps its distinctive colour.
+  vec3 mid    = diffuseColor.rgb;                              // per-muscle reddish-brown
+  vec3 lightT = clamp(mid*1.15 + vec3(0.030,0.012,0.004), 0.0, 1.0); // oxygen-rich
+  vec3 deepT  = mid*0.50 + vec3(0.012,0.0,0.010);              // deep, cooler red-brown
+  float ramp  = mn(vMPos*1.1)*0.55 + mn(vMPos*4.2)*0.30 + mn(vMPos*9.0)*0.15;
+  ramp = smoothstep(0.24, 0.80, ramp);                        // ColorRamp-like contrast
+  vec3 belly  = mix(deepT, lightT, ramp);
+  float w     = mn(vMPos*0.5);
+  float fasc  = 0.5 + 0.5*mFasc(vRing, vLen, w);
+  belly *= 0.84 + 0.28*fasc;                                  // light/dark fibre bundles
+  belly += vec3(0.09,0.055,0.045)*pow(fasc,3.0);              // pale perimysium glint
+  float fine  = 0.5 + 0.5*sin(vLen*30.0 + mn(vMPos*2.6)*6.2);
+  belly *= 0.972 + 0.028*fine;                                // fine cross-banding (HD)
   // ── tendon ends: pale collagen where the belly meets bone ──
   float tendon = 1.0 - smoothstep(0.10, 0.26, vLen) * smoothstep(0.90, 0.74, vLen);
   vec3  pale   = vec3(0.90, 0.86, 0.78);
@@ -632,8 +639,8 @@ function meshVolume(obj){
    light plus sRGB output encoding lift midtones hard, so a "correct" dark red
    albedo renders as washed pink. These saturated values land on screen at
    roughly rgb(213,118,126) for bulk and a pale near-white for lean muscle. */
-const MUS_PALE = new THREE.Color(0xB24A38);   // lean / smaller belly — lighter brick
-const MUS_DEEP = new THREE.Color(0x862A20);   // bulky / fleshy — deep brick red
+const MUS_PALE = new THREE.Color(0x883421);   // lean / smaller belly — lighter reddish-brown
+const MUS_DEEP = new THREE.Color(0x501C10);   // bulky / fleshy — deep reddish-brown (mahogany)
 function colourByMass(mat, volume){
   // Calibrated against the real meshes: subclavius ≈ 15 cm³, quadriceps ≈ 2250
   const lo=Math.log10(14), hi=Math.log10(2300);        // cm³
@@ -650,9 +657,9 @@ function tintMuscle(mat,id,amount){
   const c={}; mat.color.getHSL(c);
   const f=(shift)=>((((h>>shift)%1000)/1000)-0.5)*k;
   mat.color.setHSL(
-    (c.h + f(0)*0.024 + 1)%1,
-    Math.min(0.86, Math.max(0.18, c.s + f(9)*0.14)),
-    Math.min(0.72, Math.max(0.22, c.l + f(18)*0.10))
+    (c.h + f(0)*0.018 + 1)%1,                             // ±3° hue: stays in the red-brown family
+    Math.min(0.76, Math.max(0.50, c.s + f(9)*0.12)),      // stays saturated — no washed mauve
+    Math.min(0.32, Math.max(0.19, c.l + f(18)*0.14))      // tight dark reddish-brown band
   );
 }
 
@@ -3065,7 +3072,7 @@ function swapInModel(d, root, entry, glob){
   // Now the true geometry is known, grade muscle colour by its actual bulk
   if(d.layer==='muscles' && d._mat){
     d.massT = colourByMass(d._mat, meshVolume(d.object));
-    tintMuscle(d._mat, d.id, 0.4);     // slight variation so neighbours separate
+    tintMuscle(d._mat, d.id, 0.7);     // per-muscle variation so neighbours separate
   }
   refitLandmarks(d, oldBox);
 }
