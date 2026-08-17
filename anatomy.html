@@ -521,47 +521,68 @@ const softMat = (hex,op) => {
  */
 function muscleMat(){
   const m = new THREE.MeshPhysicalMaterial({
-    color:0x9E3125, roughness:0.55, metalness:0.0,   // brick-red meat belly
-    clearcoat:0.42, clearcoatRoughness:0.34,         // faint wet fascia glaze
+    color:0x9E3125, roughness:0.50, metalness:0.0,   // brick-red meat belly
+    clearcoat:0.52, clearcoatRoughness:0.30,         // wet fascia glaze
     transparent:false, opacity:1.0, depthWrite:true, side:THREE.DoubleSide
   });
   m.onBeforeCompile = sh=>{
-    // Length along the belly comes from a dedicated `aLen` attribute (safe to
-    // declare — three never auto-declares it), used for the pale tendon-end fade.
+    // Two dedicated attributes drive the fibre look, both safe to declare — three
+    // never auto-declares them: `aLen` runs 0→1 along the belly (tendon-end fade),
+    // `aRing` runs 0→1 around the section (the across-fibre axis for fascicles).
     sh.vertexShader = sh.vertexShader
-      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;\nvarying float vLen;\nattribute float aLen;')
+      .replace('#include <common>','#include <common>\nvarying vec3 vMPos;\nvarying float vLen;\nvarying float vRing;\nattribute float aLen;\nattribute float aRing;')
       .replace('#include <begin_vertex>',
-               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;\nvLen=aLen;');
+               '#include <begin_vertex>\nvMPos=(modelMatrix*vec4(transformed,1.0)).xyz;\nvLen=aLen;\nvRing=aRing;');
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
 varying vec3 vMPos;
 varying float vLen;
+varying float vRing;
 float mh(vec3 p){return fract(sin(dot(p,vec3(12.9898,78.233,37.719)))*43758.5453);}
 float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
  return mix(mix(mix(mh(i),mh(i+vec3(1,0,0)),f.x),mix(mh(i+vec3(0,1,0)),mh(i+vec3(1,1,0)),f.x),f.y),
-            mix(mix(mh(i+vec3(0,0,1)),mh(i+vec3(1,0,1)),f.x),mix(mh(i+vec3(0,1,1)),mh(i+vec3(1,1,1)),f.x),f.y),f.z);}`)
+            mix(mix(mh(i+vec3(0,0,1)),mh(i+vec3(1,0,1)),f.x),mix(mh(i+vec3(0,1,1)),mh(i+vec3(1,1,1)),f.x),f.y),f.z);}
+// Fascicle field: ~11 fibre bundles wrapped around the belly (across = vRing),
+// running the length of the muscle (vLen), gently drifting (w) so the bundles
+// read as real fibres. The 2π·11 frequency keeps it seamless at the ring join.
+// The drift is deliberately gentle so fascicles stay longitudinal, not chopped.
+float mFasc(float ring,float len,float w){ return sin(ring*69.115 + (w-0.5)*2.0 + len*1.4); }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
-{ // ── belly: brick-red meat with mottling ──
-  float t = mn(vMPos*1.5)*0.58 + mn(vMPos*6.5)*0.42;
-  vec3 belly = diffuseColor.rgb * (0.80 + 0.36*t);
-  // Directional muscle-fibre striations: fine parallel fascicle bands running
-  // along the belly's long axis, warped by noise so they read as real fibres.
-  float warp   = mn(vMPos*0.9)*2.2;
-  float fibre  = sin((vMPos.y + warp)*3.4 + mn(vMPos*2.4)*1.6);
-  float streak = 0.5 + 0.5*fibre;
-  belly *= 0.82 + 0.30*streak;                       // stronger light/dark fibres
-  belly += vec3(0.09,0.05,0.04)*pow(streak,3.0);     // pale collagen glint on fibres
-  // ── tendon ends / attachments: pale collagen where the belly meets bone ──
-  // vLen runs 0→1 along the muscle; fade to pale tendon near both ends so the
-  // origin and insertion read as distinct, glistening white attachments.
+{ // ── belly: brick-red meat, fascicle striations, pale tendon ends ──
+  float t = mn(vMPos*1.2)*0.62 + mn(vMPos*5.0)*0.38;
+  vec3 belly = diffuseColor.rgb * (0.82 + 0.30*t);
+  float w    = mn(vMPos*0.5);
+  float fasc = 0.5 + 0.5*mFasc(vRing, vLen, w);
+  belly *= 0.84 + 0.28*fasc;                         // light/dark fibre bundles
+  belly += vec3(0.09,0.055,0.045)*pow(fasc,3.0);     // pale perimysium glint
+  float fine = 0.5 + 0.5*sin(vLen*30.0 + mn(vMPos*2.6)*6.2);
+  belly *= 0.972 + 0.028*fine;                       // fine cross-banding (HD detail)
+  // ── tendon ends: pale collagen where the belly meets bone ──
   float tendon = 1.0 - smoothstep(0.10, 0.26, vLen) * smoothstep(0.90, 0.74, vLen);
-  vec3  pale   = vec3(0.90, 0.86, 0.78);             // tendon / aponeurosis
+  vec3  pale   = vec3(0.90, 0.86, 0.78);
   diffuseColor.rgb = mix(belly, pale, tendon*tendon);
 }`)
       // tendon ends are shinier & smoother than the matt belly
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
 { float tnd = 1.0 - smoothstep(0.10,0.26,vLen)*smoothstep(0.90,0.74,vLen);
-  roughnessFactor = mix(roughnessFactor, 0.28, tnd*tnd); }`);
+  roughnessFactor = mix(roughnessFactor, 0.26, tnd*tnd); }`)
+      // Fibre relief — derivative bump so the fascicles physically catch the light.
+      // WebGL2 only (dFdx is core there); WebGL1 falls back to flat fibres.
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+#if __VERSION__ >= 300
+{ float wb = mn(vMPos*0.5);
+  float hb = mFasc(vRing, vLen, wb);
+  vec3  vp = -vViewPosition;
+  vec3  sx = dFdx(vp), sy = dFdy(vp);
+  float hx = dFdx(hb), hy = dFdy(hb);
+  vec3  n0 = normalize(normal);
+  vec3  r1 = cross(sy, n0), r2 = cross(n0, sx);
+  float det = dot(sx, r1);
+  vec3  grad = sign(det) * (hx*r1 + hy*r2);
+  float belly = smoothstep(0.10,0.26,vLen)*smoothstep(0.90,0.74,vLen); // no relief on tendon ends
+  normal = normalize(abs(det)*n0 - (0.20*belly)*grad);
+}
+#endif`);
   };
   return m;
 }
@@ -696,7 +717,7 @@ function sweep(points, opt){
   const plane = opt.plane || null;
   const _T=new THREE.Vector3(), _N=new THREE.Vector3(), _B=new THREE.Vector3();
   // Rings carry R+1 vertices so the UV seam closes cleanly and bump maps tile
-  const pos=[], idx=[], uvs=[], lens=[];
+  const pos=[], idx=[], uvs=[], lens=[], rings=[];
   for(let i=0;i<=S;i++){
     const t=i/S, P=curve.getPointAt(t);
     let N=fr.normals[i], B=fr.binormals[i];
@@ -715,6 +736,8 @@ function sweep(points, opt){
       pos.push(P.x+N.x*cx+B.x*cy, P.y+N.y*cx+B.y*cy, P.z+N.z*cx+B.z*cy);
       uvs.push(j/R, i/S);
       lens.push(t);                    // 0→1 along the sweep, for tendon-end shading
+      rings.push(j/R);                 // 0→1 around the section — across-fibre axis,
+                                       // continuous at the seam for fascicle shading
     }
   }
   const W=R+1;
@@ -726,6 +749,7 @@ function sweep(points, opt){
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
   g.setAttribute('uv',       new THREE.Float32BufferAttribute(uvs,2));
   g.setAttribute('aLen',     new THREE.Float32BufferAttribute(lens,1));
+  g.setAttribute('aRing',    new THREE.Float32BufferAttribute(rings,1));
   g.setIndex(idx); g.computeVertexNormals();
   return g;
 }
@@ -1928,7 +1952,7 @@ function buildSoftTissue(){
         r  : t => m.r*0.82*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
         fx : () => sheet ? 0.20 : 0.98,     // thickness (was 1.15 — slimmer)
         fy : () => sheet ? 2.40 : 0.84,     // width
-        seg: 34, radial: 16
+        seg: sheet ? 40 : 44, radial: sheet ? 18 : 24   // HD: rounder bellies, smoother silhouette
       }, mus());
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
