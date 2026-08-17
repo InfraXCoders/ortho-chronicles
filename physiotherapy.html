@@ -176,12 +176,14 @@
     <button class="mf-btn" data-f="shoulder"><span class="mf-icon">🟢</span>Shoulder</button>
     <button class="mf-btn" data-f="hip"><span class="mf-icon">🩷</span>Hip</button>
     <button class="mf-btn" data-f="knee"><span class="mf-icon">🔴</span>Knee</button>
+    <button class="mf-btn" data-f="ankle"><span class="mf-icon">🦶</span>Ankle &amp; Foot</button>
+    <button class="mf-btn" data-f="wrist"><span class="mf-icon">✋</span>Wrist &amp; Hand</button>
   </div>
 </div>
 
 <section class="pt-main">
   <div class="section-hdr"><h2>Exercise Library</h2></div>
-  <p class="ex-count" id="exCount">Showing all 26 exercises</p>
+  <p class="ex-count" id="exCount">Showing all 33 exercises</p>
   <div class="ex-grid" id="exGrid">
     <div class="no-res" id="noRes"><i class="fas fa-heartbeat"></i><p>No exercises found. Try a different filter or search term.</p></div>
   </div>
@@ -260,6 +262,13 @@ const VIDEO_MAP={
   'hip-9090':'t4Zz6-aG8Iw',
   'hip-abduction':'g9FtnmsIYgI',
   'tke':'W7n9dUiEbLM',
+  'ankle-4way':'g-iXYapbuqk',
+  'calf-stretch':'JSzCfi0wbcA',
+  'plantar-fascia':'0PeVmTMdWhk',
+  'wrist-stretch':'1KRtQppsUHc',
+  'nerve-glide':'Q5G916yCyF0',
+  'rotator-cuff':'WR1W79AWOag',
+  'sciatic-glide':'8oPHrX_oALk',
 };
 
 const REGION={
@@ -269,6 +278,8 @@ const REGION={
   shoulder:{label:'Shoulder',  color:'#047857',bg:'#D1FAE5'},
   hip:     {label:'Hip',       color:'#9D174D',bg:'#FCE7F3'},
   knee:    {label:'Knee',      color:'#B91C1C',bg:'#FEE2E2'},
+  ankle:   {label:'Ankle & Foot',color:'#0E7490',bg:'#CFFAFE'},
+  wrist:   {label:'Wrist & Hand',color:'#4F46E5',bg:'#E0E7FF'},
 };
 
 const ETYPE_BADGE={
@@ -445,6 +456,52 @@ const exercises=[
  steps:["Lie on your side — body in a straight line, lower arm supporting head","Keep the top leg straight — foot neutral (do not turn toes up or down)","Lift the top leg to approximately 30–40° — feel the outer hip engage","Hold 1–2 seconds — lower with control — do not let it crash down","Add a resistance band above the knees to increase load progressively"],
  tips:["Key strengthening exercise for IT band syndrome, hip bursitis, patellofemoral pain, and SIJ dysfunction","The gluteus medius stabilises the pelvis during single-leg stance — weakness causes the Trendelenburg gait","Perform slowly — the eccentric lowering phase is as important as the lift"],
  err:["Rotating the hip so toes point toward the ceiling — recruits TFL instead of glute medius","Lifting too high (above 45°) — causes the pelvis to hike — a compensatory movement","Using a swinging momentum — slow, isolated movement is essential"]},
+
+/* ── ANKLE & FOOT ── */
+{n:"Ankle 4-Way Strengthening",m:"ankle",etype:"Strengthening",eq:"Resistance band",sets:"3",reps:"10–15 each direction",rest:"30s",
+ pri:["Tibialis Anterior","Fibularis (Peroneus) Longus & Brevis","Gastrocnemius","Tibialis Posterior"],sec:["Soleus","Extensor Digitorum Longus"],svg:"ankle-4way",
+ steps:["Sit with the leg extended and a resistance band looped around the forefoot","Dorsiflexion — pull the foot up toward you against the band","Plantarflexion — point the foot down against the band","Inversion — turn the sole inward against the band","Eversion — turn the sole outward against the band, controlling every rep"],
+ tips:["The single best routine for chronic ankle instability and after a sprain","The slow lowering (eccentric) phase builds the most control","Progress band resistance only once 15 clean reps feel easy"],
+ err:["Moving the whole leg instead of isolating the ankle","Rushing eversion/inversion — the peroneals need slow control","Skipping directions — all four are needed for a stable ankle"]},
+
+{n:"Calf Stretch (Gastrocnemius & Soleus)",m:"ankle",etype:"Stretch",eq:"Wall",sets:"3",reps:"Hold 30s each",rest:"20s",
+ pri:["Gastrocnemius","Soleus"],sec:["Plantaris","Achilles Tendon"],svg:"calf-stretch",
+ steps:["Stand facing a wall, hands at shoulder height","Step the leg to stretch back — heel flat, knee straight — feel the upper calf (gastrocnemius)","Hold, keeping the back heel pressed down","Now bend the back knee slightly — the stretch drops to the lower calf (soleus)","Hold, then switch sides"],
+ tips:["Straight knee targets gastrocnemius; bent knee targets soleus — do both","Essential for Achilles tendinopathy, plantar fasciitis and calf tightness","Keep the back foot pointing straight forward, not turned out"],
+ err:["Letting the back heel lift — cancels the stretch","Bouncing — hold a steady stretch instead","Only doing the straight-knee version and missing the soleus"]},
+
+{n:"Plantar Fascia Stretch",m:"ankle",etype:"Stretch",eq:"None",sets:"3",reps:"Hold 20–30s ×10",rest:"20s",
+ pri:["Plantar Fascia","Flexor Digitorum Brevis"],sec:["Gastrocnemius","Soleus","Intrinsic Foot Muscles"],svg:"plantar-fascia",
+ steps:["Sit and cross the affected foot over the opposite knee","Grasp the toes and gently pull them back toward the shin","Feel the stretch along the arch of the foot (plantar fascia)","Hold — with the other hand you can massage the taut band","Release and repeat — ideally before the first steps of the morning"],
+ tips:["The most evidence-backed self-treatment for plantar fasciitis","Do it before getting out of bed to ease first-step morning pain","Combine with calf stretching for the best results"],
+ err:["Stretching the ankle instead of pulling the toes back","Doing it only once — frequent short stretches work better","Ignoring tight calves, which drive plantar fascia strain"]},
+
+/* ── WRIST & HAND ── */
+{n:"Wrist Flexor & Extensor Stretch",m:"wrist",etype:"Stretch",eq:"None",sets:"3",reps:"Hold 20–30s each",rest:"20s",
+ pri:["Wrist Flexors (Flexor Carpi Radialis / Ulnaris)","Wrist Extensors (Extensor Carpi Radialis / Ulnaris)"],sec:["Finger Flexors","Pronator Teres"],svg:"wrist-stretch",
+ steps:["Extend the arm forward with the elbow straight, palm down","Extensor stretch — bend the wrist down and gently pull the hand toward you","Hold — feel the top of the forearm stretch","Flexor stretch — turn the palm up and pull the fingers back and down","Hold — feel the underside of the forearm, then switch arms"],
+ tips:["Key for tennis elbow, golfer's elbow and desk-related wrist pain","Keep the elbow fully straight to load the forearm muscles","Gentle sustained hold — never force into pain"],
+ err:["Bending the elbow — shifts the stretch away from the forearm","Overstretching into pain, especially with lateral epicondylitis","Rushing — connective tissue needs a sustained hold"]},
+
+{n:"Median Nerve Glide (Carpal Tunnel)",m:"wrist",etype:"Mobility",eq:"None",sets:"2–3",reps:"5–10 slow glides",rest:"30s",
+ pri:["Median Nerve"],sec:["Wrist Flexors","Finger Flexors"],svg:"nerve-glide",
+ steps:["Start with a gentle fist, wrist in neutral","Straighten the fingers and thumb, keeping the wrist neutral","Bend the wrist back (extend) with fingers and thumb open","Turn the forearm so the palm faces up, thumb out to the side","Gently take the thumb a little further, then move smoothly back — do not hold long"],
+ tips:["Nerve glides 'floss' the median nerve — useful for carpal-tunnel tingling","Move slowly and smoothly; stop before any pins-and-needles increase","A little tension is fine — this is a glide, not an aggressive stretch"],
+ err:["Holding an end-range stretch — nerves prefer gliding, not a sustained pull","Pushing into strong tingling or pain — back off immediately","Moving too fast to control the range"]},
+
+/* ── SHOULDER (rotator cuff) ── */
+{n:"Rotator Cuff Strengthening (Band)",m:"shoulder",etype:"Strengthening",eq:"Resistance band",sets:"3",reps:"12–15 each",rest:"30s",
+ pri:["Infraspinatus","Teres Minor","Subscapularis","Supraspinatus"],sec:["Posterior Deltoid","Rhomboids"],svg:"rotator-cuff",
+ steps:["Anchor a band at elbow height; keep the elbow tucked to your side, bent 90°","External rotation — keeping the elbow pinned, rotate the forearm outward against the band","Return slowly under control","External rotation strengthens infraspinatus and teres minor","Turn around to pull inward for internal rotation (subscapularis)"],
+ tips:["Keep a rolled towel between elbow and ribs to hold the elbow tucked","Slow, controlled reps beat heavy resistance for the cuff","Core of rehab for impingement and rotator-cuff tendinopathy"],
+ err:["Letting the elbow drift away from the body","Swinging the trunk to move the arm — isolate the shoulder","Too much resistance, so bigger muscles take over from the cuff"]},
+
+/* ── LUMBAR (sciatic nerve) ── */
+{n:"Sciatic Nerve Glide",m:"lumbar",etype:"Mobility",eq:"Chair",sets:"2–3",reps:"8–10 slow glides",rest:"30s",
+ pri:["Sciatic Nerve"],sec:["Hamstrings","Gastrocnemius","Lumbar Nerve Roots"],svg:"sciatic-glide",
+ steps:["Sit tall on a chair, hands resting on the thighs","Straighten one knee and pull the toes up while looking up (extend the neck)","As you lower the leg and point the toes, tuck the chin toward the chest","Move smoothly between the two positions — a gentle sliding motion","Do slow reps, then switch legs"],
+ tips:["Glides mobilise the sciatic nerve rather than stretching it — helpful in sciatica","Combine the ankle and neck movements in opposite phases to 'floss' the nerve","Keep it gentle — mild tension is fine, sharp shooting pain is not"],
+ err:["Holding an aggressive end-range stretch — nerves prefer gliding","Continuing through sharp, radiating leg pain — stop and reassess","Moving too fast to stay smooth and controlled"]},
 ];
 
 /* ── Language state ──
@@ -526,7 +583,7 @@ const grid=document.getElementById('exGrid');
 const countEl=document.getElementById('exCount');
 const noRes=document.getElementById('noRes');
 
-const REGION_ORDER=['cervical','thoracic','lumbar','shoulder','hip','knee'];
+const REGION_ORDER=['cervical','thoracic','lumbar','shoulder','hip','knee','ankle','wrist'];
 
 function renderCards(list){
   [...grid.querySelectorAll('.ex-card,.region-divider')].forEach(c=>c.remove());
