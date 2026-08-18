@@ -1939,6 +1939,61 @@ function buildSoftTissue(){
      detail:{Origin:'Posterior surface of the lower sternum and xiphoid',Insertion:'Inner surfaces of costal cartilages 2–6',Nerve:'Intercostal nerves',Action:'Depresses the ribs in forced expiration'},
      clin:'It forms the plane immediately deep to the internal thoracic artery, and the transversus thoracis plane block that targets that plane is now used for analgesia after sternotomy and in anterior rib fractures.'}
   ];
+  /* Arterial supply, venous drainage and lymphatic drainage, keyed by muscle id.
+     Merged into each muscle's Anatomy panel at registration so the panel shows a
+     complete blood-and-lymph profile alongside origin, insertion, nerve and action. */
+  const MUSCLE_VASC = {
+    deltoid:{Blood_supply:'Posterior circumflex humeral artery (chief), with the deltoid branch of the thoraco-acromial and the anterior circumflex humeral.',Venous_drainage:'Venae comitantes to the axillary vein.',Lymphatic_drainage:'Lateral and apical axillary nodes.'},
+    biceps:{Blood_supply:'Muscular branches of the brachial artery; the long head also from the anterior circumflex humeral.',Venous_drainage:'Venae comitantes to the brachial and axillary veins.',Lymphatic_drainage:'Deltopectoral (infraclavicular) and lateral axillary nodes.'},
+    triceps:{Blood_supply:'Profunda brachii (deep brachial) artery; long head also by the posterior circumflex humeral.',Venous_drainage:'Venae comitantes to the brachial veins.',Lymphatic_drainage:'Lateral axillary nodes.'},
+    pectoralis:{Blood_supply:'Pectoral branch of the thoraco-acromial artery, the lateral thoracic and perforating branches of the internal thoracic.',Venous_drainage:'To the axillary and subclavian veins.',Lymphatic_drainage:'Pectoral (anterior) axillary and parasternal nodes.'},
+    latissimus:{Blood_supply:'Thoracodorsal artery (from the subscapular).',Venous_drainage:'Thoracodorsal vein to the axillary vein.',Lymphatic_drainage:'Posterior (subscapular) axillary nodes.'},
+    trapezius:{Blood_supply:'Superficial branch of the transverse cervical artery, with dorsal scapular and posterior intercostal contributions.',Venous_drainage:'To the external and internal jugular veins.',Lymphatic_drainage:'Occipital and deep cervical nodes.'},
+    gluteusmax:{Blood_supply:'Inferior gluteal artery (chief) and the superior gluteal artery.',Venous_drainage:'Gluteal veins to the internal iliac vein.',Lymphatic_drainage:'Deep gluteal to internal iliac nodes; superficial part to superficial inguinal.'},
+    gluteusmed:{Blood_supply:'Superior gluteal artery.',Venous_drainage:'Superior gluteal vein to the internal iliac vein.',Lymphatic_drainage:'Deep gluteal to internal iliac nodes.'},
+    quadriceps:{Blood_supply:'Femoral artery, profunda femoris, lateral circumflex femoral and descending genicular arteries.',Venous_drainage:'Venae comitantes to the femoral vein.',Lymphatic_drainage:'Deep inguinal nodes; rectus femoris also to superficial inguinal.'},
+    hamstrings:{Blood_supply:'Perforating branches of the profunda femoris, with the inferior gluteal proximally and popliteal distally.',Venous_drainage:'To the profunda femoris and femoral veins.',Lymphatic_drainage:'Deep inguinal and gluteal nodes to the internal iliac.'},
+    gastroc:{Blood_supply:'Sural arteries from the popliteal; soleus also from the posterior tibial and peroneal.',Venous_drainage:'Soleal venous sinuses and venae comitantes to the popliteal vein.',Lymphatic_drainage:'Popliteal nodes to the deep inguinal group.'},
+    tibant:{Blood_supply:'Anterior tibial artery.',Venous_drainage:'Anterior tibial venae comitantes to the popliteal vein.',Lymphatic_drainage:'Popliteal to deep inguinal nodes.'},
+    rectusabd:{Blood_supply:'Superior epigastric (from the internal thoracic) and inferior epigastric (from the external iliac) arteries.',Venous_drainage:'Superior and inferior epigastric veins.',Lymphatic_drainage:'Above the umbilicus to parasternal nodes; below to superficial inguinal.'},
+    scm:{Blood_supply:'Occipital and posterior auricular arteries above; superior thyroid and suprascapular below.',Venous_drainage:'To the external jugular and facial veins.',Lymphatic_drainage:'Deep cervical nodes.'},
+    supraspinatus:{Blood_supply:'Suprascapular artery, with the dorsal scapular.',Venous_drainage:'Suprascapular vein.',Lymphatic_drainage:'Apical axillary and supraclavicular nodes.'},
+    infraspinatus:{Blood_supply:'Suprascapular and circumflex scapular arteries.',Venous_drainage:'Corresponding venae comitantes.',Lymphatic_drainage:'Subscapular (posterior) axillary nodes.'},
+    subscapularis:{Blood_supply:'Subscapular artery and branches of the axillary artery.',Venous_drainage:'To the axillary vein.',Lymphatic_drainage:'Subscapular and central axillary nodes.'},
+    teresminor:{Blood_supply:'Circumflex scapular and posterior circumflex humeral arteries.',Venous_drainage:'Corresponding venae comitantes.',Lymphatic_drainage:'Subscapular (posterior) axillary nodes.'},
+    teresmajor:{Blood_supply:'Circumflex scapular (subscapular) and thoracodorsal arteries.',Venous_drainage:'To the axillary vein.',Lymphatic_drainage:'Subscapular (posterior) axillary nodes.'},
+    brachioradialis:{Blood_supply:'Radial recurrent artery (from the radial artery).',Venous_drainage:'Venae comitantes to the brachial and cephalic veins.',Lymphatic_drainage:'Cubital and lateral axillary nodes.'},
+    flexorgroup:{Blood_supply:'Ulnar and radial arteries with their recurrent and common interosseous branches.',Venous_drainage:'Venae comitantes to the brachial veins.',Lymphatic_drainage:'Cubital (supratrochlear) and axillary nodes.'},
+    extensorgroup:{Blood_supply:'Radial, posterior interosseous and anterior interosseous arteries.',Venous_drainage:'Venae comitantes of the forearm.',Lymphatic_drainage:'Cubital and lateral axillary nodes.'},
+    serratus:{Blood_supply:'Lateral thoracic artery, with the superior thoracic and thoracodorsal.',Venous_drainage:'To the axillary vein.',Lymphatic_drainage:'Central and lateral axillary nodes.'},
+    erectorspinae:{Blood_supply:'Dorsal branches of the posterior intercostal, subcostal and lumbar arteries (deep cervical and occipital above).',Venous_drainage:'Corresponding segmental veins.',Lymphatic_drainage:'Deep para-vertebral to intercostal, lumbar and deep cervical nodes.'},
+    psoas:{Blood_supply:'Lumbar and iliolumbar arteries; iliacus also by the iliac branch of the iliolumbar and the deep circumflex iliac.',Venous_drainage:'To the lumbar and iliac veins.',Lymphatic_drainage:'Common iliac and lumbar (para-aortic) nodes.'},
+    tfl:{Blood_supply:'Ascending branch of the lateral circumflex femoral and the superior gluteal arteries.',Venous_drainage:'Corresponding venae comitantes.',Lymphatic_drainage:'Superficial inguinal and deep gluteal nodes.'},
+    adductors:{Blood_supply:'Profunda femoris (perforating and medial circumflex femoral) and obturator arteries.',Venous_drainage:'To the femoral and obturator veins.',Lymphatic_drainage:'Deep inguinal to external iliac nodes.'},
+    sartorius:{Blood_supply:'Muscular branches of the femoral artery, lateral circumflex femoral and descending genicular.',Venous_drainage:'To the femoral vein.',Lymphatic_drainage:'Superficial and deep inguinal nodes.'},
+    tibpost:{Blood_supply:'Posterior tibial and peroneal arteries.',Venous_drainage:'Posterior tibial venae comitantes to the popliteal vein.',Lymphatic_drainage:'Popliteal to deep inguinal nodes.'},
+    peroneals:{Blood_supply:'Peroneal (fibular) artery with anterior tibial branches.',Venous_drainage:'Corresponding venae comitantes.',Lymphatic_drainage:'Popliteal to deep inguinal nodes.'},
+    hiprotators:{Blood_supply:'Inferior gluteal, internal pudendal and medial circumflex femoral arteries.',Venous_drainage:'To the internal iliac vein.',Lymphatic_drainage:'Internal iliac (deep gluteal) nodes.'},
+    pectminor:{Blood_supply:'Pectoral branch of the thoraco-acromial and the lateral thoracic arteries.',Venous_drainage:'To the axillary vein.',Lymphatic_drainage:'Pectoral (anterior) and apical axillary nodes.'},
+    rhomboids:{Blood_supply:'Dorsal scapular artery (deep branch of the transverse cervical).',Venous_drainage:'To the external jugular and vertebral venous plexus.',Lymphatic_drainage:'Deep cervical and axillary nodes.'},
+    scalenes:{Blood_supply:'Ascending cervical (from the inferior thyroid) and branches of the subclavian artery.',Venous_drainage:'To the vertebral and subclavian veins.',Lymphatic_drainage:'Inferior deep cervical and supraclavicular nodes.'},
+    popliteus:{Blood_supply:'Genicular branches of the popliteal and the posterior tibial recurrent artery.',Venous_drainage:'To the popliteal vein.',Lymphatic_drainage:'Popliteal nodes.'},
+    plantaris:{Blood_supply:'Lateral sural artery from the popliteal.',Venous_drainage:'To the popliteal vein.',Lymphatic_drainage:'Popliteal nodes.'},
+    antextensors:{Blood_supply:'Anterior tibial artery.',Venous_drainage:'Anterior tibial veins.',Lymphatic_drainage:'Popliteal to deep inguinal nodes.'},
+    deepflexors:{Blood_supply:'Posterior tibial artery (flexor digitorum longus) and peroneal artery (flexor hallucis longus).',Venous_drainage:'Posterior tibial and peroneal veins.',Lymphatic_drainage:'Popliteal to deep inguinal nodes.'},
+    splenius:{Blood_supply:'Muscular branches of the occipital and deep cervical (transverse cervical) arteries.',Venous_drainage:'To the deep cervical and vertebral veins.',Lymphatic_drainage:'Occipital and deep cervical nodes.'},
+    semispinalis:{Blood_supply:'Deep cervical, occipital and dorsal branches of the posterior intercostal arteries.',Venous_drainage:'Corresponding segmental veins.',Lymphatic_drainage:'Deep cervical nodes.'},
+    extoblique:{Blood_supply:'Lower posterior intercostal, subcostal and deep circumflex iliac arteries.',Venous_drainage:'Corresponding segmental veins.',Lymphatic_drainage:'Above the umbilicus to axillary (pectoral); below to superficial inguinal nodes.'},
+    subclavius:{Blood_supply:'Clavicular branch of the thoraco-acromial artery, with the suprascapular.',Venous_drainage:'To the subclavian vein.',Lymphatic_drainage:'Apical (infraclavicular) axillary nodes.'},
+    serratusposterior:{Blood_supply:'Posterior intercostal arteries.',Venous_drainage:'Posterior intercostal veins.',Lymphatic_drainage:'Intercostal and para-aortic nodes.'},
+    infrahyoid:{Blood_supply:'Superior and inferior thyroid arteries.',Venous_drainage:'To the thyroid veins and internal jugular.',Lymphatic_drainage:'Infrahyoid, prelaryngeal and deep cervical nodes.'},
+    levatorscap:{Blood_supply:'Dorsal scapular and transverse cervical arteries.',Venous_drainage:'Corresponding venae comitantes.',Lymphatic_drainage:'Deep cervical nodes.'},
+    suboccipital:{Blood_supply:'Muscular branches of the vertebral artery, with the deep cervical and occipital arteries.',Venous_drainage:'Suboccipital venous plexus.',Lymphatic_drainage:'Occipital and deep cervical nodes.'},
+    deepneckflex:{Blood_supply:'Ascending cervical, inferior thyroid and vertebral arteries.',Venous_drainage:'To the vertebral and inferior thyroid veins.',Lymphatic_drainage:'Retropharyngeal and deep cervical nodes.'},
+    deeprotators:{Blood_supply:'Dorsal branches of the posterior intercostal, lumbar and lateral sacral arteries.',Venous_drainage:'Corresponding segmental veins.',Lymphatic_drainage:'Deep para-vertebral to intercostal, lumbar and sacral nodes.'},
+    pelvicfloor:{Blood_supply:'Inferior gluteal, inferior vesical and pudendal branches of the internal iliac artery.',Venous_drainage:'To the internal iliac vein.',Lymphatic_drainage:'Internal iliac and sacral nodes.'},
+    transvthoracis:{Blood_supply:'Internal thoracic (internal mammary) artery.',Venous_drainage:'Internal thoracic veins.',Lymphatic_drainage:'Parasternal (internal thoracic) nodes.'}
+  };
   MUS.forEach(m=>{
     const sides = m.mirror?[1,-1]:[1];
     sides.forEach(s=>{
@@ -1962,7 +2017,7 @@ function buildSoftTissue(){
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
         name:sideName+m.name, latin:m.latin, focus:V(...m.pts(s)[1]),
-        overview:m.o, detail:m.detail,
+        overview:m.o, detail:Object.assign({}, m.detail, (MUSCLE_VASC[m.id]||{})),
         clinical:[{t:'Clinical relevance', d:m.clin}]
       });
     });
@@ -2659,7 +2714,7 @@ function select(id){
   }
   if(d.detail){
     html+=`<div class="pn-pane" data-k="detail">`+
-      Object.keys(d.detail).map(k=>`<h4>${esc(k)}</h4><p>${esc(d.detail[k])}</p>`).join('')+`</div>`;
+      Object.keys(d.detail).map(k=>`<h4>${esc(k).replace(/_/g,' ')}</h4><p>${esc(d.detail[k])}</p>`).join('')+`</div>`;
   }
   if(d.articulations||d.attachments){
     html+=`<div class="pn-pane" data-k="relations">`;
