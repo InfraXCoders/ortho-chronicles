@@ -554,11 +554,11 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   //   ColorRamp between a bright oxygen-rich red and a deep myoglobin red,
   //   mixed ALONG the fibres, anchored to each muscle's own tint ──
   vec3 mid    = diffuseColor.rgb;                             // per-muscle red
-  vec3 oxyRed = clamp(mid*1.10 + vec3(0.05,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
-  vec3 myoRed = mid*0.72;                                     // deep myoglobin red (gentle contrast)
+  vec3 oxyRed = clamp(mid*1.07 + vec3(0.04,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
+  vec3 myoRed = mid*0.78;                                     // deep myoglobin red (gentle contrast)
   float w     = mn(vMPos*0.5);
   float bundle= 0.5 + 0.5*mBundle(vRing, vLen, w);           // broad fascicle bundles (soft tone)
-  float ramp  = smoothstep(0.20, 0.80, bundle);              // oxygen↔myoglobin along fibres
+  float ramp  = smoothstep(0.10, 0.90, bundle);              // oxygen↔myoglobin along fibres (soft)
   vec3 belly  = mix(myoRed, oxyRed, ramp);
   float fibre = 0.5 + 0.5*mFine(vRing, vLen);                // fine fibres within each bundle
   belly *= 0.945 + 0.055*fibre;                            // fine fibres shown as soft colour lines
@@ -1802,6 +1802,15 @@ function buildSoftTissue(){
      clin:'Loss of this muscle — usually through common peroneal nerve palsy at the fibular neck — causes foot drop and a high-stepping gait. It is also the key muscle of the anterior compartment, the compartment most often affected by compartment syndrome after tibial fracture.'},
     {id:'rectusabd', shape:'sheet', name:'Anterior Abdominal Wall', latin:'Musculi abdominis', r:2.3, mirror:true,
      pts:s=>[[s*2.4,135,7.6],[s*2.6,126,8.2],[s*2.6,116,8.4],[s*2.4,105,7.6]],
+     // Rectus abdominis: two columns either side of the linea alba, each divided
+     // by tendinous intersections into the classic segmental bellies (the gaps
+     // between these heads read as the intersection grooves and the midline).
+     heads:[
+       {pts:s=>[[s*3.1,137.5,8.4],[s*3.1,130.0,8.7]], r:1.9, bulge:0.5},   // segment 1 (upper)
+       {pts:s=>[[s*3.1,130.5,8.8],[s*3.1,123.0,8.9]], r:1.9, bulge:0.5},   // segment 2 (overlaps at the intersection)
+       {pts:s=>[[s*3.1,123.5,8.9],[s*3.0,116.0,8.8]], r:1.9, bulge:0.5},   // segment 3 (umbilical)
+       {pts:s=>[[s*2.9,116.5,8.5],[s*2.6,105.0,7.7]], r:1.95, bulge:0.5}   // segment 4 (lower, longer)
+     ],
      o:'The layered muscular wall of the abdomen: rectus abdominis running vertically from ribs to pubis inside the rectus sheath, wrapped by external oblique, internal oblique and transversus abdominis. Together they flex and rotate the trunk and generate the intra-abdominal pressure that braces the lumbar spine.',
      detail:{Origin:'Lower ribs and costal cartilages, thoracolumbar fascia, iliac crest, inguinal ligament',Insertion:'Linea alba, pubic crest and symphysis',Nerve:'Thoracoabdominal nerves (T7–T12), iliohypogastric and ilioinguinal (L1)',Action:'Trunk flexion and rotation; raises intra-abdominal pressure; supports the viscera'},
      clin:'Core strength genuinely matters in low back pain, but training the deep layer — transversus abdominis with multifidus — outperforms sit-ups alone. The aponeuroses of these muscles form the rectus sheath and inguinal canal, the anatomy behind hernia repair, and the layers are the target of the TAP block. Diastasis recti after pregnancy responds to graded core rehabilitation.'},
@@ -1880,11 +1889,20 @@ function buildSoftTissue(){
      clin:'Long thoracic nerve injury — from axillary surgery, trauma or viral neuritis — causes medial winging of the scapula, obvious when the patient pushes against a wall, with loss of overhead elevation. Recovery is often slow but frequently spontaneous.'},
     {id:'erectorspinae', name:'Erector Spinae', latin:'Musculi erector spinae', r:2.2, mirror:true,
      pts:s=>[[s*2.8,98.0,-4.6],[s*3.2,114.0,-5.4],[s*3.2,130.0,-6.0],[s*2.8,148.0,-5.4]],
+     heads:[
+       {pts:s=>[[s*2.2,100,-5.0],[s*2.4,114,-5.6],[s*2.4,130,-6.0],[s*2.2,146,-5.6]], r:0.9, bulge:0.5}, // spinalis (medial)
+       {pts:s=>[[s*3.2,98,-5.0],[s*3.6,114,-5.8],[s*3.6,132,-6.2],[s*3.2,148,-5.6]], r:1.3, bulge:0.5},  // longissimus (middle)
+       {pts:s=>[[s*4.6,98,-4.6],[s*5.0,112,-5.4],[s*4.8,128,-5.8],[s*4.2,142,-5.4]], r:1.1, bulge:0.5}   // iliocostalis (lateral)
+     ],
      o:'The long paraspinal column — iliocostalis, longissimus and spinalis — running from sacrum and iliac crest to ribs, transverse processes and skull. It is the principal extensor and postural guardian of the spine.',
      detail:{Origin:'Sacrum, iliac crest, thoracolumbar fascia and lumbar spinous processes',Insertion:'Ribs, transverse and spinous processes, mastoid process',Nerve:'Posterior rami of the spinal nerves',Action:'Spinal extension; unilaterally, lateral flexion; eccentric control of forward bending'},
      clin:'Protective spasm here accounts for much acute low back pain and the flattened lumbar lordosis seen in disc disease. Preserving the multifidus and its innervation during posterior spinal exposure reduces long-term back pain — the basis of muscle-sparing and minimally invasive approaches.'},
     {id:'psoas', name:'Iliopsoas', latin:'Musculus iliopsoas', r:2.0, mirror:true,
      pts:s=>[[s*2.8,120.0,-1.4],[s*4.4,108.0,0.4],[s*6.6,96.0,2.0],[s*9.2,87.0,0.2],[s*10.3,83.9,-1.5]],
+     heads:[
+       {pts:s=>[[s*2.6,121,-1.6],[s*4.2,109,0.2],[s*6.4,97,1.8],[s*9.0,88,0.2],[s*10.2,84,-1.4]], r:1.2, bulge:0.45}, // psoas major (lumbar spine)
+       {pts:s=>[[s*7.0,101,-1.0],[s*8.2,95,0.6],[s*9.4,89,0.4],[s*10.2,84.5,-1.2]], r:1.1, bulge:0.5}                  // iliacus (iliac fossa)
+     ],
      o:'Psoas major (from the lumbar vertebrae) joins iliacus (from the iliac fossa) to form the iliopsoas, the most powerful hip flexor, inserting on the lesser trochanter.',
      detail:{Origin:'Psoas — bodies and transverse processes of T12–L5; Iliacus — iliac fossa',Insertion:'Lesser trochanter of the femur',Nerve:'Psoas — L1–L3 ventral rami; Iliacus — femoral nerve (L2, L3)',Action:'Hip flexion; with the femur fixed, flexes the trunk; stabilises the lumbar spine'},
      clin:'A psoas abscess (from spinal TB or Crohn disease) causes a flexed, externally rotated hip and a positive psoas stretch test. Snapping of the iliopsoas tendon over the pelvic brim is a common cause of anterior hip pain, and the tendon is a recognised source of groin pain after hip replacement.'},
@@ -1895,6 +1913,11 @@ function buildSoftTissue(){
      clin:'Iliotibial band syndrome causes lateral knee pain in runners and cyclists as the band moves over the lateral femoral epicondyle. A tight band also contributes to lateral patellar tracking and anterior knee pain.'},
     {id:'adductors', name:'Adductor Group', latin:'Musculi adductores', r:2.4, mirror:true,
      pts:s=>[[s*3.2,84.4,3.4],[s*6.0,78.0,1.4],[s*8.2,68.0,-0.6],[s*9.4,56.0,-1.6]],
+     heads:[
+       {pts:s=>[[s*3.0,85,3.6],[s*5.4,78,2.0],[s*7.0,68,0.6],[s*7.8,58,-0.4]], r:1.2, bulge:0.42},  // adductor longus
+       {pts:s=>[[s*3.4,84,2.4],[s*6.2,76,0.2],[s*8.4,64,-1.4],[s*9.6,52,-2.2]], r:1.6, bulge:0.45},  // adductor magnus (large)
+       {pts:s=>[[s*2.8,85,3.0],[s*3.6,74,2.0],[s*4.0,62,1.0],[s*4.4,50,0.2]], r:0.7, bulge:0.5}      // gracilis (thin, to knee)
+     ],
      o:'Adductor longus, brevis and magnus with gracilis and pectineus, running from the pubis to the linea aspera. Adductor magnus also has a hamstring part reaching the adductor tubercle.',
      detail:{Origin:'Body and inferior ramus of the pubis; ischial tuberosity (magnus, hamstring part)',Insertion:'Linea aspera of the femur; adductor tubercle; medial tibia (gracilis)',Nerve:'Obturator nerve (L2–L4); tibial division of sciatic to the hamstring part of magnus',Action:'Hip adduction; assist flexion and rotation; stabilise the pelvis in stance'},
      clin:'Adductor longus strain ("groin strain") is common in football and hockey. The adductor hiatus in adductor magnus transmits the femoral vessels to the popliteal fossa — a site where the artery is tethered and vulnerable.'},
@@ -2091,7 +2114,7 @@ function buildSoftTissue(){
       const buildBelly = (pts,o)=> sweepMesh(pts, {
         plane: o.sheet ? V(...(o.plane||m.plane||[0,0,1])) : null,
         r  : t => (o.r!=null?o.r:m.r)*0.82*(o.sheet ? 1 : bell(t, o.bulge)),
-        fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.20 : 0.98)),
+        fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.45 : 0.98)),   // sheets: rounded slab, not flat card
         fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
         twist: o.twist || (()=>0),
         seg: 46, radial: o.sheet ? 22 : 26   // HD: rounder bellies, smoother silhouette
