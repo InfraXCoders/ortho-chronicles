@@ -1698,16 +1698,30 @@ function buildSoftTissue(){
   const MUS = [
     {id:'deltoid', name:'Deltoid', latin:'Musculus deltoideus', r:3.2, mirror:true,
      pts:s=>[[s*13.5,148,-3],[s*19.5,146,0],[s*20.5,140,1],[s*19.6,131,1.4]],
+     heads:[
+       {pts:s=>[[s*12.5,147,4.0],[s*17.0,143,3.4],[s*19.0,137,2.4],[s*19.6,131,1.6]], r:1.9, bulge:0.42},   // anterior (clavicular) head
+       {pts:s=>[[s*16.2,149,-0.4],[s*20.6,144.5,0.4],[s*21.0,137,0.9],[s*19.8,131,1.2]], r:2.3, bulge:0.46}, // middle (acromial, multipennate) head
+       {pts:s=>[[s*12.5,146,-4.0],[s*17.5,142,-2.4],[s*19.0,136,-0.4],[s*19.6,131,1.0]], r:1.9, bulge:0.42}  // posterior (spinal) head
+     ],
      o:'A thick triangular cap over the shoulder, in three functional parts: anterior (flexion), middle (abduction) and posterior (extension). The middle fibres are multipennate — built for power — and take over abduction from supraspinatus after the first 15°.',
      detail:{Origin:'Lateral clavicle, acromion and spine of scapula',Insertion:'Deltoid tuberosity of the humerus',Nerve:'Axillary nerve (C5, C6)',Action:'Abduction of the arm; anterior fibres flex and medially rotate, posterior fibres extend and laterally rotate'},
      clin:'The axillary nerve is at risk in shoulder dislocation and surgical neck fractures — always test sensation over the "regimental badge" area and deltoid power. In cuff-deficient shoulders, a reverse replacement lets deltoid alone elevate the arm.'},
     {id:'biceps', name:'Biceps Brachii', latin:'Musculus biceps brachii', r:2.2, mirror:true,
      pts:s=>[[s*16,144,2],[s*18.6,130,2.6],[s*20.2,118,1.6],[s*22.4,107,0.6]],
+     heads:[
+       {pts:s=>[[s*17.6,147,1.2],[s*18.8,135,2.0],[s*19.8,124,1.9],[s*20.8,112,1.2]], r:1.6, bulge:0.54},  // long head (lateral, bicipital groove)
+       {pts:s=>[[s*14.6,147,3.2],[s*17.0,135,3.0],[s*18.6,124,2.5],[s*20.2,112,1.6]], r:1.6, bulge:0.54}   // short head (medial, coracoid)
+     ],
      o:'Two-headed flexor of the front of the arm. The long head arises inside the shoulder joint from the supraglenoid tubercle and runs in the bicipital groove; the short head arises from the coracoid. It is the most powerful supinator of the forearm.',
      detail:{Origin:'Long head — supraglenoid tubercle; short head — coracoid process',Insertion:'Radial tuberosity and bicipital aponeurosis',Nerve:'Musculocutaneous nerve (C5, C6)',Action:'Elbow flexion and — most powerfully — forearm supination'},
      clin:'Rupture of the long head produces the classic "Popeye" deformity; in older patients this is usually treated non-operatively with little functional loss. Distal biceps rupture, by contrast, causes major supination weakness and is usually repaired.'},
     {id:'triceps', name:'Triceps Brachii', latin:'Musculus triceps brachii', r:2.4, mirror:true,
      pts:s=>[[s*16.5,144,-3],[s*18.5,130,-2.6],[s*20.5,118,-2.8],[s*22.4,110,-3.6]],
+     heads:[
+       {pts:s=>[[s*15.0,145,-3.6],[s*17.5,132,-3.4],[s*19.5,120,-3.2],[s*21.4,111,-3.6]], r:1.6, bulge:0.44},  // long head (infraglenoid)
+       {pts:s=>[[s*18.6,140,-1.8],[s*19.8,130,-2.0],[s*20.8,120,-2.6],[s*21.7,111,-3.4]], r:1.5, bulge:0.5},   // lateral head
+       {pts:s=>[[s*16.8,127,-3.0],[s*18.6,120,-3.2],[s*20.2,114,-3.4],[s*21.6,110,-3.6]], r:1.25, bulge:0.55}  // medial head (deep, distal)
+     ],
      o:'The sole extensor of the elbow, with three heads. The long head crosses the shoulder from the infraglenoid tubercle; the medial and lateral heads arise from the humeral shaft either side of the radial groove.',
      detail:{Origin:'Long head — infraglenoid tubercle; lateral and medial heads — posterior humerus',Insertion:'Olecranon process of the ulna',Nerve:'Radial nerve (C6–C8)',Action:'Elbow extension; the long head also extends and adducts the shoulder'},
      clin:'Triceps function is essential for crutch walking and for pushing up from a chair — a key consideration in rehabilitation planning after upper limb injury or in tetraplegia.'},
@@ -1728,7 +1742,7 @@ function buildSoftTissue(){
      o:'A large diamond-shaped superficial back muscle in three functional parts: upper fibres elevate the scapula, middle fibres retract it, lower fibres depress it and rotate the glenoid upward during arm elevation.',
      detail:{Origin:'External occipital protuberance, ligamentum nuchae, spinous processes C7–T12',Insertion:'Lateral clavicle, acromion, spine of scapula',Nerve:'Spinal accessory nerve (CN XI), with proprioception from C3–C4',Action:'Elevation, retraction, depression and upward rotation of the scapula'},
      clin:'Injury to the spinal accessory nerve — classically during posterior triangle lymph node biopsy — causes trapezius palsy with shoulder droop, lateral scapular winging and difficulty elevating the arm above shoulder height.'},
-    {id:'gluteusmax', name:'Gluteus Maximus', latin:'Musculus gluteus maximus', r:4.0, mirror:true,
+    {id:'gluteusmax', name:'Gluteus Maximus', latin:'Musculus gluteus maximus', r:4.0, mirror:true, bulge:0.42, fy:1.05,
      pts:s=>[[s*4,99,-6],[s*8,93,-7],[s*11,86,-6],[s*12.5,79,-3.5]],
      o:'The bulkiest muscle in the body, and the principal extensor of the hip. It works hardest in powerful actions — rising from a chair, climbing stairs, sprinting — rather than in level walking.',
      detail:{Origin:'Posterior ilium, sacrum, coccyx, sacrotuberous ligament',Insertion:'Iliotibial tract and gluteal tuberosity of the femur',Nerve:'Inferior gluteal nerve (L5, S1, S2)',Action:'Hip extension and lateral rotation; through the IT band it stabilises the extended knee'},
@@ -1740,6 +1754,11 @@ function buildSoftTissue(){
      clin:'Weakness (or superior gluteal nerve injury) produces a positive Trendelenburg sign — the pelvis drops on the *unsupported* side — and the resulting lurching gait. Protecting this muscle and its nerve is central to the surgical approach chosen for hip replacement.'},
     {id:'quadriceps', name:'Quadriceps Femoris', latin:'Musculus quadriceps femoris', r:3.6, mirror:true,
      pts:s=>[[s*9,88,3],[s*9.4,75,3.6],[s*9,62,3.4],[s*8.5,52,3.4]],
+     heads:[
+       {pts:s=>[[s*8.6,90,4.0],[s*8.9,76,4.5],[s*8.6,64,4.2],[s*8.4,54,3.8]], r:1.85, bulge:0.5},  // rectus femoris (central)
+       {pts:s=>[[s*10.4,85,2.8],[s*11.0,74,3.1],[s*10.5,64,3.4],[s*9.5,55,3.6]], r:2.0, bulge:0.4}, // vastus lateralis
+       {pts:s=>[[s*7.0,80,3.2],[s*7.2,70,3.6],[s*7.0,60,3.9],[s*7.5,53,3.9]], r:1.75, bulge:0.66}   // vastus medialis (VMO teardrop, low bulge)
+     ],
      o:'The great extensor group of the thigh: rectus femoris (which also flexes the hip, crossing two joints) plus the three vasti — lateralis, medialis and intermedius. All converge into the quadriceps tendon, the patella and the patellar tendon.',
      detail:{Origin:'Rectus femoris — anterior inferior iliac spine; vasti — femoral shaft',Insertion:'Tibial tuberosity via the patella and patellar tendon',Nerve:'Femoral nerve (L2, L3, L4)',Action:'Knee extension; rectus femoris also flexes the hip'},
      clin:'Quadriceps strength is the single best predictor of function after knee injury or replacement — and vastus medialis obliquus wastes within days of a knee injury. Rehabilitation begins with static quadriceps work on day one.'},
@@ -1750,6 +1769,11 @@ function buildSoftTissue(){
      clin:'Hamstring strains are the commonest injury in sprinting sports, with high recurrence when rehabilitation is rushed. Eccentric strengthening (Nordic curls) is the best-evidenced prevention. The semitendinosus and gracilis tendons are the standard autograft for ACL reconstruction.'},
     {id:'gastroc', name:'Gastrocnemius & Soleus', latin:'Triceps surae', r:3.0, mirror:true,
      pts:s=>[[s*8.4,48,-3],[s*8.6,38,-4],[s*8.4,26,-3.4],[s*8.3,14,-2.6]],
+     heads:[
+       {pts:s=>[[s*6.9,49,-3.4],[s*7.3,42,-4.3],[s*7.7,32,-4.0],[s*8.0,22,-3.3]], r:1.95, bulge:0.34},       // medial gastrocnemius head (bulges lower)
+       {pts:s=>[[s*9.8,49,-3.2],[s*9.8,42,-4.0],[s*9.4,34,-3.7],[s*8.9,26,-3.2]], r:1.85, bulge:0.34},       // lateral gastrocnemius head
+       {pts:s=>[[s*8.3,40,-3.0],[s*8.6,30,-3.7],[s*8.4,20,-3.2],[s*8.3,12,-2.6]], r:2.15, bulge:0.5, fy:1.1} // soleus (deep, broad, extends lower)
+     ],
      o:'The calf complex: the two-headed gastrocnemius crossing both knee and ankle, and the deeper, broader soleus crossing only the ankle. Together they form the Achilles tendon — the strongest tendon in the body, transmitting forces up to ten times body weight.',
      detail:{Origin:'Gastrocnemius — femoral condyles; soleus — posterior tibia and fibula',Insertion:'Calcaneal tuberosity via the Achilles tendon',Nerve:'Tibial nerve (S1, S2)',Action:'Ankle plantarflexion; gastrocnemius also assists knee flexion'},
      clin:'The soleus is the "peripheral heart", pumping venous blood back from the leg — immobility here is a key factor in deep vein thrombosis. The Achilles has a relatively avascular zone 2–6 cm above its insertion, which is where degeneration and rupture typically occur.'},
@@ -1765,6 +1789,10 @@ function buildSoftTissue(){
      clin:'Core strength genuinely matters in low back pain, but training the deep layer — transversus abdominis with multifidus — outperforms sit-ups alone. The aponeuroses of these muscles form the rectus sheath and inguinal canal, the anatomy behind hernia repair, and the layers are the target of the TAP block. Diastasis recti after pregnancy responds to graded core rehabilitation.'},
     {id:'scm', name:'Sternocleidomastoid', latin:'Musculus sternocleidomastoideus', r:1.5, mirror:true,
      pts:s=>[[s*2,150.5,6.5],[s*4.5,156,4],[s*6.4,160,0.5],[s*7.4,162.4,-2.4]],
+     heads:[
+       {pts:s=>[[s*1.6,150,7.0],[s*4.0,156,4.2],[s*6.2,160,0.8],[s*7.4,162.4,-2.2]], r:0.85, bulge:0.5},  // sternal head (rounded, superficial)
+       {pts:s=>[[s*4.2,149.8,4.6],[s*5.6,155,2.6],[s*6.8,160,-0.2],[s*7.4,162.2,-2.6]], r:0.7, bulge:0.5}  // clavicular head (flatter, deep)
+     ],
      o:'The prominent oblique strap of the neck with two heads (sternal and clavicular), dividing the neck into anterior and posterior triangles — the fundamental surgical map of the neck.',
      detail:{Origin:'Manubrium sterni and medial third of the clavicle',Insertion:'Mastoid process and superior nuchal line',Nerve:'Spinal accessory nerve (CN XI); sensory from C2–C3',Action:'Unilaterally — tilts head to same side, rotates face to opposite side; bilaterally — flexes the neck'},
      clin:'Congenital muscular torticollis presents as a firm lump in the muscle in an infant with a persistently tilted head; most resolve with stretching if started early. In adults, the muscle guides the anterior approach to the cervical spine.'},
@@ -2018,17 +2046,29 @@ function buildSoftTissue(){
          into their tendons; flat muscles (latissimus, the obliques, trapezius)
          are broad thin ribbons. Only used where BodyParts3D has no mesh. */
       const sheet = m.shape==='sheet';
-      const obj = sweepMesh(m.pts(s), {
-        // Sheets are pinned to a plane so thickness stays perpendicular to the
-        // body wall; bellies keep the Frenet frame and swell in the middle.
-        plane: sheet ? V(...(m.plane||[0,0,1])) : null,
-        // MUS_SCALE trims the procedural bellies so they hug the bones rather
-        // than ballooning out of proportion to the skeleton.
-        r  : t => m.r*0.82*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
-        fx : () => sheet ? 0.20 : 0.98,     // thickness (was 1.15 — slimmer)
-        fy : () => sheet ? 2.40 : 0.84,     // width
-        seg: 46, radial: sheet ? 22 : 26   // HD: rounder bellies, smoother silhouette
-      }, mus());
+      const M = mus();                       // one material shared by all heads of a muscle
+      /* Asymmetric fusiform profile: the belly swells to a peak at `b` and
+         tapers into its tendons — b<0.5 puts the bulk proximal (e.g. a calf
+         head), b>0.5 distal (e.g. vastus medialis). b=0.5 is a classic spindle. */
+      const bell = (t,b)=>{ b=(b==null?0.5:b);
+        const u = t<b ? 0.5*t/Math.max(b,1e-3) : 0.5+0.5*(t-b)/Math.max(1-b,1e-3);
+        return 0.40 + 0.60*Math.sin(Math.PI*u); };
+      /* Build one belly (a whole muscle, or one head of a multi-head muscle). */
+      const buildBelly = (pts,o)=> sweepMesh(pts, {
+        plane: o.sheet ? V(...(o.plane||m.plane||[0,0,1])) : null,
+        r  : t => (o.r!=null?o.r:m.r)*0.82*(o.sheet ? 1 : bell(t, o.bulge)),
+        fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.20 : 0.98)),
+        fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
+        twist: o.twist || (()=>0),
+        seg: 46, radial: o.sheet ? 22 : 26   // HD: rounder bellies, smoother silhouette
+      }, M);
+      let obj;
+      if(m.heads){                           // individually sculpted: separate anatomical heads
+        obj = new THREE.Group();
+        m.heads.forEach(h=> obj.add(buildBelly(h.pts(s), h)));
+      } else {                               // single fusiform belly / flat sheet
+        obj = buildBelly(m.pts(s), {r:m.r, bulge:m.bulge, sheet:sheet, plane:m.plane, fx:m.fx, fy:m.fy});
+      }
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
         name:sideName+m.name, latin:m.latin, focus:V(...m.pts(s)[1]),
