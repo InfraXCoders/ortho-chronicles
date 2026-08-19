@@ -542,41 +542,44 @@ float mh(vec3 p){return fract(sin(dot(p,vec3(12.9898,78.233,37.719)))*43758.5453
 float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
  return mix(mix(mix(mh(i),mh(i+vec3(1,0,0)),f.x),mix(mh(i+vec3(0,1,0)),mh(i+vec3(1,1,0)),f.x),f.y),
             mix(mix(mh(i+vec3(0,0,1)),mh(i+vec3(1,0,1)),f.x),mix(mh(i+vec3(0,1,1)),mh(i+vec3(1,1,1)),f.x),f.y),f.z);}
-// Fascicle field: ~11 fibre bundles wrapped around the belly (across = vRing),
-// running the length of the muscle (vLen), gently drifting (w) so the bundles
-// read as real fibres. The 2π·11 frequency keeps it seamless at the ring join.
-// The drift is deliberately gentle so fascicles stay longitudinal, not chopped.
-float mFasc(float ring,float len,float w){ return sin(ring*69.115 + (w-0.5)*2.0 + len*1.4); }`)
+// Fascicle field, two scales for depth: coarse perimysial bundles (~13 around)
+// subdivided into fine muscle fibres (~24). vRing is arc-length normalised so
+// the bands stay an even width; the 2π·N frequencies keep them seamless at the
+// ring join and the gentle w-drift stops them looking machined.
+float mBundle(float ring,float len,float w){ return sin(ring*50.265 + (w-0.5)*1.4 + len*0.9); }
+float mFine(float ring,float len){ return sin(ring*175.929 + len*1.4); }
+float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFine(ring,len)*0.4; }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
 { // ── belly: oxygenated red muscle (reference material) — a wave-striation
   //   ColorRamp between a bright oxygen-rich red and a deep myoglobin red,
   //   mixed ALONG the fibres, anchored to each muscle's own tint ──
   vec3 mid    = diffuseColor.rgb;                             // per-muscle red
-  vec3 oxyRed = clamp(mid*1.06 + vec3(0.05,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
-  vec3 myoRed = mid*0.56;                                     // deep myoglobin red
+  vec3 oxyRed = clamp(mid*1.10 + vec3(0.05,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
+  vec3 myoRed = mid*0.72;                                     // deep myoglobin red (gentle contrast)
   float w     = mn(vMPos*0.5);
-  float wave  = 0.5 + 0.5*mFasc(vRing, vLen, w);              // fibre striations (wave texture)
-  float ramp  = smoothstep(0.18, 0.82, wave);                // ColorRamp along the fibres
+  float bundle= 0.5 + 0.5*mBundle(vRing, vLen, w);           // broad fascicle bundles (soft tone)
+  float ramp  = smoothstep(0.20, 0.80, bundle);              // oxygen↔myoglobin along fibres
   vec3 belly  = mix(myoRed, oxyRed, ramp);
-  belly *= 0.90 + 0.12*(mn(vMPos*1.1)*0.6 + mn(vMPos*4.6)*0.4); // gentle organic mottle
-  belly += vec3(0.06,0.01,0.01)*pow(ramp,3.0);               // wet highlight on fibre ridges
-  float fine  = 0.5 + 0.5*sin(vLen*30.0 + mn(vMPos*2.6)*6.2);
-  belly *= 0.975 + 0.025*fine;                               // fine cross-banding (HD)
+  float fibre = 0.5 + 0.5*mFine(vRing, vLen);                // fine fibres within each bundle
+  belly *= 0.945 + 0.055*fibre;                            // fine fibres shown as soft colour lines
+  belly *= 0.93 + 0.09*(mn(vMPos*1.2)*0.6 + mn(vMPos*4.8)*0.4); // gentle organic mottle
+  belly += vec3(0.04,0.006,0.006)*pow(ramp,3.0);           // wet highlight on fibre ridges
   // ── tendon ends: white fibrous tissue where the belly meets bone ──
-  float tendon = 1.0 - smoothstep(0.10, 0.26, vLen) * smoothstep(0.90, 0.74, vLen);
-  vec3  white  = vec3(0.95, 0.94, 0.92);
+  float tendon = 1.0 - smoothstep(0.05, 0.16, vLen) * smoothstep(0.95, 0.84, vLen);
+  vec3  white  = vec3(0.90, 0.86, 0.80);
   diffuseColor.rgb = mix(belly, white, tendon*tendon);
 }`)
       // tendon ends are shinier & smoother than the matt belly
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
-{ float tnd = 1.0 - smoothstep(0.10,0.26,vLen)*smoothstep(0.90,0.74,vLen);
-  roughnessFactor = mix(roughnessFactor, 0.26, tnd*tnd); }`)
+{ float tnd = 1.0 - smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen);
+  roughnessFactor = mix(roughnessFactor, 0.30, tnd*tnd); }`)
       // Fibre relief — derivative bump so the fascicles physically catch the light.
       // WebGL2 only (dFdx is core there); WebGL1 falls back to flat fibres.
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
 #if __VERSION__ >= 300
-{ float wb = mn(vMPos*0.5);
-  float hb = mFasc(vRing, vLen, wb);
+{ // Relief comes from the FINE fibres only, so the broad colour bands stay flat
+  // instead of corrugating the flat sheet muscles into deep waves.
+  float hb = mFine(vRing, vLen);
   vec3  vp = -vViewPosition;
   vec3  sx = dFdx(vp), sy = dFdy(vp);
   float hx = dFdx(hb), hy = dFdy(hb);
@@ -584,8 +587,8 @@ float mFasc(float ring,float len,float w){ return sin(ring*69.115 + (w-0.5)*2.0 
   vec3  r1 = cross(sy, n0), r2 = cross(n0, sx);
   float det = dot(sx, r1);
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
-  float belly = smoothstep(0.10,0.26,vLen)*smoothstep(0.90,0.74,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.20*belly)*grad);
+  float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
+  normal = normalize(abs(det)*n0 - (0.05*belly)*grad);
 }
 #endif`);
   };
@@ -733,15 +736,27 @@ function sweep(points, opt){
       N=_N; B=_B;
     }
     const rad=rf(t), ex=fx(t), ey=fy(t), rot=tw(t);
+    // First compute this ring's world vertices, so the across-fibre coordinate
+    // can be normalised by ARC LENGTH rather than angle — that keeps fascicle
+    // stripes an even width on flat sheet muscles (pec, obliques) instead of
+    // stretching into broad corrugated waves.
+    const rvx=[], rvy=[], rvz=[];
     for(let j=0;j<=R;j++){
       const jj=j%R;                                   // wrap so the seam matches exactly
       const a=jj/R*Math.PI*2 + rot;
       const rr = rug ? rad*(1 + rug*(_vn(i*0.85, jj*0.85, seed)-0.5)) : rad;
       const cx=Math.cos(a)*rr*ex, cy=Math.sin(a)*rr*ey;
-      pos.push(P.x+N.x*cx+B.x*cy, P.y+N.y*cx+B.y*cy, P.z+N.z*cx+B.z*cy);
+      rvx.push(P.x+N.x*cx+B.x*cy); rvy.push(P.y+N.y*cx+B.y*cy); rvz.push(P.z+N.z*cx+B.z*cy);
+    }
+    let acc=0; const arc=[0];
+    for(let j=1;j<=R;j++){ const dx=rvx[j]-rvx[j-1], dy=rvy[j]-rvy[j-1], dz=rvz[j]-rvz[j-1];
+      acc+=Math.sqrt(dx*dx+dy*dy+dz*dz); arc.push(acc); }
+    const per = acc||1;
+    for(let j=0;j<=R;j++){
+      pos.push(rvx[j], rvy[j], rvz[j]);
       uvs.push(j/R, i/S);
       lens.push(t);                    // 0→1 along the sweep, for tendon-end shading
-      rings.push(j/R);                 // 0→1 around the section — across-fibre axis,
+      rings.push(arc[j]/per);          // arc-length-normalised across-fibre axis,
                                        // continuous at the seam for fascicle shading
     }
   }
@@ -2012,7 +2027,7 @@ function buildSoftTissue(){
         r  : t => m.r*0.82*(sheet ? 1 : (0.40 + 0.60*Math.sin(Math.PI*t))),
         fx : () => sheet ? 0.20 : 0.98,     // thickness (was 1.15 — slimmer)
         fy : () => sheet ? 2.40 : 0.84,     // width
-        seg: sheet ? 40 : 44, radial: sheet ? 18 : 24   // HD: rounder bellies, smoother silhouette
+        seg: 46, radial: sheet ? 22 : 26   // HD: rounder bellies, smoother silhouette
       }, mus());
       register(obj,{
         id:m.id+sfx, layer:'muscles', tag:'Muscle · Musculoskeletal',
