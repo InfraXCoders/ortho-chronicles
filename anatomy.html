@@ -574,6 +574,14 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   float tendon = 1.0 - smoothstep(0.05, 0.16, vLen) * smoothstep(0.95, 0.84, vLen);
   vec3  white  = vec3(0.90, 0.86, 0.80);
   diffuseColor.rgb = mix(belly, white, tendon*tendon);
+  // ── pale fascial border: a faded epimysial line down each muscle's two
+  //    longitudinal edges (its silhouette), so neighbouring muscles read as
+  //    separate bellies. Restricted to the belly, softened, and paler on the
+  //    deeper (steeper) edge only. ──
+  float ndv  = abs(dot(normalize(vViewPosition), normalize(vNormal)));
+  float bmask = smoothstep(0.06,0.18,vLen)*smoothstep(0.95,0.83,vLen);
+  float septum = smoothstep(0.60, 0.92, 1.0 - ndv) * bmask;
+  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.88,0.82,0.74), septum*0.55);
 }`)
       // tendon ends are shinier & smoother than the matt belly
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
