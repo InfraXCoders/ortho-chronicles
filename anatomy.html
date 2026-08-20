@@ -547,21 +547,27 @@ float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
 // the bands stay an even width; the 2π·N frequencies keep them seamless at the
 // ring join and the gentle w-drift stops them looking machined.
 float mBundle(float ring,float len,float w){ return sin(ring*50.265 + (w-0.5)*1.4 + len*0.9); }
-float mFine(float ring,float len){ return sin(ring*175.929 + len*1.4); }
+float mFine(float ring,float len){ return sin(ring*100.531 + len*1.1); }
 float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFine(ring,len)*0.4; }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
 { // ── belly: oxygenated red muscle (reference material) — a wave-striation
   //   ColorRamp between a bright oxygen-rich red and a deep myoglobin red,
   //   mixed ALONG the fibres, anchored to each muscle's own tint ──
   vec3 mid    = diffuseColor.rgb;                             // per-muscle red
-  vec3 oxyRed = clamp(mid*1.07 + vec3(0.04,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
-  vec3 myoRed = mid*0.78;                                     // deep myoglobin red (gentle contrast)
+  vec3 oxyRed = clamp(mid*1.05 + vec3(0.03,0.0,0.0), 0.0, 1.0); // bright oxygen-rich red
+  vec3 myoRed = mid*0.82;                                     // deep myoglobin red (gentle contrast)
+  // Fade fibre/band detail out as it packs tighter than a pixel, so distant or
+  // grazing muscle stops shimmering into a moiré/cross-hatch weave.
+  float faa = 1.0;
+  #if __VERSION__ >= 300
+    faa = clamp(1.0 - smoothstep(0.010, 0.038, fwidth(vRing)), 0.0, 1.0);
+  #endif
   float w     = mn(vMPos*0.5);
-  float bundle= 0.5 + 0.5*mBundle(vRing, vLen, w);           // broad fascicle bundles (soft tone)
-  float ramp  = smoothstep(0.10, 0.90, bundle);              // oxygen↔myoglobin along fibres (soft)
+  float bundle= 0.5 + 0.5*mBundle(vRing, vLen, w)*mix(0.4,1.0,faa); // soften bands when packed
+  float ramp  = smoothstep(0.08, 0.92, bundle);             // oxygen↔myoglobin along fibres (soft)
   vec3 belly  = mix(myoRed, oxyRed, ramp);
-  float fibre = 0.5 + 0.5*mFine(vRing, vLen);                // fine fibres within each bundle
-  belly *= 0.945 + 0.055*fibre;                            // fine fibres shown as soft colour lines
+  float fibre = mFine(vRing, vLen);                         // fine fibres within each bundle
+  belly *= 0.972 + 0.028*fibre*faa;                        // fine fibres as soft colour lines (AA)
   belly *= 0.93 + 0.09*(mn(vMPos*1.2)*0.6 + mn(vMPos*4.8)*0.4); // gentle organic mottle
   belly += vec3(0.04,0.006,0.006)*pow(ramp,3.0);           // wet highlight on fibre ridges
   // ── tendon ends: white fibrous tissue where the belly meets bone ──
@@ -587,8 +593,9 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   vec3  r1 = cross(sy, n0), r2 = cross(n0, sx);
   float det = dot(sx, r1);
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
+  float aa = clamp(1.0 - smoothstep(0.010,0.038,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
   float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.05*belly)*grad);
+  normal = normalize(abs(det)*n0 - (0.022*belly*aa)*grad);
 }
 #endif`);
   };
@@ -1806,10 +1813,10 @@ function buildSoftTissue(){
      // by tendinous intersections into the classic segmental bellies (the gaps
      // between these heads read as the intersection grooves and the midline).
      heads:[
-       {pts:s=>[[s*3.1,137.5,8.4],[s*3.1,130.0,8.7]], r:1.9, bulge:0.5},   // segment 1 (upper)
-       {pts:s=>[[s*3.1,130.5,8.8],[s*3.1,123.0,8.9]], r:1.9, bulge:0.5},   // segment 2 (overlaps at the intersection)
-       {pts:s=>[[s*3.1,123.5,8.9],[s*3.0,116.0,8.8]], r:1.9, bulge:0.5},   // segment 3 (umbilical)
-       {pts:s=>[[s*2.9,116.5,8.5],[s*2.6,105.0,7.7]], r:1.95, bulge:0.5}   // segment 4 (lower, longer)
+       {plane:[0,0,1], fx:0.62, fy:1.55, r:1.7, bulge:0.5, pts:s=>[[s*3.2,137.5,8.0],[s*3.2,130.0,8.2]]},  // segment 1 (upper)
+       {plane:[0,0,1], fx:0.62, fy:1.55, r:1.7, bulge:0.5, pts:s=>[[s*3.2,130.5,8.3],[s*3.2,123.0,8.4]]},  // segment 2 (overlaps at the intersection)
+       {plane:[0,0,1], fx:0.62, fy:1.55, r:1.7, bulge:0.5, pts:s=>[[s*3.2,123.5,8.4],[s*3.1,116.0,8.3]]},  // segment 3 (umbilical)
+       {plane:[0,0,1], fx:0.62, fy:1.60, r:1.8, bulge:0.5, pts:s=>[[s*3.0,116.5,8.1],[s*2.7,105.0,7.5]]}   // segment 4 (lower, longer)
      ],
      o:'The layered muscular wall of the abdomen: rectus abdominis running vertically from ribs to pubis inside the rectus sheath, wrapped by external oblique, internal oblique and transversus abdominis. Together they flex and rotate the trunk and generate the intra-abdominal pressure that braces the lumbar spine.',
      detail:{Origin:'Lower ribs and costal cartilages, thoracolumbar fascia, iliac crest, inguinal ligament',Insertion:'Linea alba, pubic crest and symphysis',Nerve:'Thoracoabdominal nerves (T7–T12), iliohypogastric and ilioinguinal (L1)',Action:'Trunk flexion and rotation; raises intra-abdominal pressure; supports the viscera'},
@@ -2112,7 +2119,7 @@ function buildSoftTissue(){
         return 0.40 + 0.60*Math.sin(Math.PI*u); };
       /* Build one belly (a whole muscle, or one head of a multi-head muscle). */
       const buildBelly = (pts,o)=> sweepMesh(pts, {
-        plane: o.sheet ? V(...(o.plane||m.plane||[0,0,1])) : null,
+        plane: (o.plane||o.sheet) ? V(...(o.plane||m.plane||[0,0,1])) : null,
         r  : t => (o.r!=null?o.r:m.r)*0.82*(o.sheet ? 1 : bell(t, o.bulge)),
         fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.45 : 0.98)),   // sheets: rounded slab, not flat card
         fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
