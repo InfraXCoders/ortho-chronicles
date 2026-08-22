@@ -27,9 +27,28 @@ canvas{display:block;position:fixed;top:0;left:0;will-change:transform;transform
   font-weight:800;cursor:pointer;letter-spacing:2px;font-family:Georgia,serif;
   box-shadow:0 5px 20px rgba(0,0,0,.4);pointer-events:all;}
 #playBtn:active{transform:scale(.97);}
+.mBtn2{width:100%;padding:12px;margin-top:10px;background:linear-gradient(150deg,#a8853a,#785a1e);
+  color:#fff6d8;border:2px solid #c8a050;border-radius:12px;font-size:.98rem;font-weight:800;
+  cursor:pointer;letter-spacing:1.5px;font-family:Georgia,serif;box-shadow:0 4px 14px rgba(0,0,0,.35);pointer-events:all;}
+.mBtn2:active{transform:scale(.97);}
+/* About */
+#about{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.85);z-index:45;pointer-events:all;}
+#aboutBox{background:linear-gradient(155deg,#f5e8cc,#e8d4a8);border:2px solid #c8a050;
+  border-radius:16px;padding:30px 26px;text-align:center;max-width:300px;width:88%;box-shadow:0 12px 55px rgba(0,0,0,.65);}
+#aboutBox h2{color:#6a2808;font-size:1.35rem;font-family:Georgia,serif;margin-bottom:12px;}
+#aboutBox p{color:#5a3818;font-size:.82rem;line-height:1.65;font-family:Georgia,serif;margin-bottom:14px;}
+#aboutBox a{color:#0a66c2;font-weight:800;text-decoration:none;}
+#aboutBox button{padding:11px 26px;background:#6a3010;color:#f8e090;border:2px solid #c87830;
+  border-radius:8px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:Georgia,serif;margin-top:6px;}
+/* Vibrate toggle */
+#vibeBtn{position:fixed;top:52px;right:14px;z-index:30;background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.2);border-radius:50%;width:36px;height:36px;
+  font-size:1.05rem;cursor:pointer;display:none;align-items:center;justify-content:center;
+  pointer-events:all;color:#fff;line-height:1;}
 /* HUD */
 #hud{position:fixed;top:0;left:0;right:0;display:none;pointer-events:none;
-  justify-content:space-between;align-items:center;padding:10px 18px;
+  justify-content:space-between;align-items:center;padding:10px 58px 10px 18px;
   background:rgba(0,0,0,.62);border-bottom:1px solid rgba(255,255,255,.12);z-index:20;}
 #hud span{color:#ffffff;font-size:.88rem;font-weight:800;
   text-shadow:0 0 6px rgba(0,0,0,1),0 1px 3px rgba(0,0,0,1),0 -1px 3px rgba(0,0,0,.8);
@@ -66,17 +85,31 @@ canvas{display:block;position:fixed;top:0;left:0;will-change:transform;transform
 <body>
 <canvas id="c"></canvas>
 
-<div id="splash" style="position:fixed;inset:0;background:#1a0e04;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.6s ease;">
-  <img src="assets/egg-logo.png" style="width:72%;max-width:320px;border-radius:28px;box-shadow:0 8px 40px rgba(0,0,0,0.7);" />
-  <div style="color:#d8a838;font-family:Georgia,serif;font-size:.8rem;margin-top:24px;letter-spacing:3px;opacity:0.7;">LOADING…</div>
+<div id="splash" style="position:fixed;inset:0;background:radial-gradient(circle at 50% 38%,#2a180a,#160c03 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.6s ease;">
+  <img src="assets/egg-logo.png" width="1024" height="1024" style="width:80%;max-width:360px;height:auto;border-radius:30px;box-shadow:0 10px 46px rgba(0,0,0,0.75);image-rendering:auto;" />
+  <div style="color:#f4c25e;font-family:Georgia,serif;font-size:1.5rem;font-weight:900;letter-spacing:4px;margin-top:22px;text-shadow:0 2px 8px rgba(0,0,0,.6);">EGG CLIMB</div>
+  <div style="color:#c99a48;font-family:Georgia,serif;font-size:.74rem;margin-top:10px;letter-spacing:.5px;opacity:.92;">developed by <b style="color:#f0c060;">orthochronicles.info</b></div>
+  <div style="color:#7a5824;font-family:Georgia,serif;font-size:.64rem;margin-top:26px;letter-spacing:4px;opacity:0.6;">LOADING…</div>
 </div>
 
 <div id="menu">
   <div id="menuBox">
     <div class="mTitle">🥚 EGG CLIMB</div>
-    <div class="mSub">Tap to toss the egg into the bowl.<br>Time it right — bowls keep moving!</div>
+    <div class="mSub">Tap to toss the egg into the bucket.<br>Time it right — buckets keep moving!</div>
     <div class="mScore" id="menuHi"></div>
-    <button id="playBtn" onclick="startGame()">▶ PLAY</button>
+    <button id="playBtn" onclick="startGame(false)">▶ PLAY</button>
+    <button class="mBtn2" onclick="startGame(true)">🎲 ARCADE MODE</button>
+    <button class="mBtn2" onclick="showAbout()">ℹ️ ABOUT</button>
+  </div>
+</div>
+
+<div id="about">
+  <div id="aboutBox">
+    <h2>🥚 Egg Climb</h2>
+    <p>Guide the egg up the moving buckets — time each toss so it drops in as the bucket slides underneath. Climb as high as you can!</p>
+    <p><b>Arcade Mode</b> throws a fresh random world at you every level.</p>
+    <p>Developed by <b>Dr. Maninder Singh</b> for<br><a href="https://www.orthochronicles.info" target="_blank" rel="noopener">orthochronicles.info</a> — free orthopaedic &amp; anatomy learning tools.</p>
+    <button onclick="hideAbout()">Close</button>
   </div>
 </div>
 
@@ -100,6 +133,7 @@ canvas{display:block;position:fixed;top:0;left:0;will-change:transform;transform
 </div>
 <div id="toast"></div>
 <button id="muteBtn" onclick="toggleMute()">🔊</button>
+<button id="vibeBtn" onclick="toggleVibe()">📳</button>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
@@ -126,9 +160,8 @@ let _eggGlowFly=null,_eggGlowSit=null;
 // The accumulator runs update() the right number of 24 Hz steps for the real
 // elapsed time, so the game always plays at the intended speed; rendering is
 // throttled separately (≈32fps) to spare phone fill-rate.
-let _acc=0, _prevTs=0, _lastDraw=0;
-const STEP_MS=1000/24;    // logic step — keeps the original tuning/feel
-const DRAW_MS=1000/32;    // render cap (independent of game speed)
+let _acc=0, _prevTs=0;
+const STEP_MS=1000/24;    // fixed logic step — keeps the original tuning/feel
 const MAX_STEPS=5;        // clamp catch-up so a stall can't spiral
 
 function initCv(){
@@ -298,12 +331,7 @@ function _bakeBowlFullSprite(bright){
   bp();c.fillStyle=lh;c.fill();
   c.fillStyle='rgba(0,0,0,.14)';
   c.beginPath();c.ellipse(bcx,by+bh+4,bw*.28,3,0,0,Math.PI*2);c.fill();
-  // Wings baked into sprite (no per-frame rotation)
-  if(wsp){
-    const lwy=by+bh*.35;
-    c.save();c.translate(bx-1,lwy);c.drawImage(wsp.canvas,-wsp.ox,-wsp.oy);c.restore();
-    c.save();c.translate(bx+bw+1,lwy);c.scale(-1,1);c.drawImage(wsp.canvas,-wsp.ox,-wsp.oy);c.restore();
-  }
+  // (Wings removed — plain bowls/buckets)
   return {canvas:oc,bx,by};
 }
 
@@ -391,7 +419,7 @@ async function watchAdContinue(){
       // AudioContext may have been suspended by the ad
       if(_ac&&_ac.state==='suspended') _ac.resume().catch(()=>{});
       document.getElementById('gameover').style.display='none';
-      document.getElementById('muteBtn').style.display='flex';
+      document.getElementById('muteBtn').style.display='flex'; { const _vb=document.getElementById('vibeBtn'); if(_vb){ _vb.style.display='flex'; _vb.textContent=_vibeOn?'📳':'📴'; } }
       updateHUD();
       running=true;
       _prevTs=0; _acc=0;
@@ -440,8 +468,8 @@ let squishT=0;        // landing squish countdown
 /* ── Speed helpers ───────────────────────────────────────────────────── */
 const SPD_MULTS=[0.4, 0.55, 0.75, 0.95, 1.2, 1.55, 1.95, 2.4];
 function randSpd(base){ return base*SPD_MULTS[Math.floor(Math.random()*SPD_MULTS.length)]; }
-// Speed grows until L500 (cap 3.5), beyond that stays constant
-function baseSpd(l){ return l<=5 ? 0.9 : Math.min(0.9+(l-5)*0.006, 3.5); }
+// Speed grows with level (faster buckets), capping at the high end
+function baseSpd(l){ return l<=5 ? 1.4 : Math.min(1.4+(l-5)*0.010, 5.0); }
 
 function mkBowl(y, stat){
   const spd = stat ? 0 : randSpd(baseSpd(level));
@@ -456,7 +484,16 @@ function mkBowl(y, stat){
 function seatY(b){ return b.y; }
 
 /* ── Theme / egg ─────────────────────────────────────────────────────── */
+// Arcade mode: instead of themes unlocking by level, a random background is
+// picked each level from the full set.
+let arcadeMode=false, _arcadeTheme='beigewood';
+const ALL_THEMES=['beigewood','stones','forest','flowers','mountains','clouds','fog','snow','rain','space','moon','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','sun','universe'];
+function pickArcadeTheme(){
+  let n; do{ n=ALL_THEMES[Math.floor(Math.random()*ALL_THEMES.length)]; }while(n===_arcadeTheme && ALL_THEMES.length>1);
+  _arcadeTheme=n;
+}
 function getTheme(l){
+  if(arcadeMode) return _arcadeTheme;
   if(l<10)   return 'beigewood';
   if(l<25)   return 'stones';
   if(l<50)   return 'forest';
@@ -503,6 +540,16 @@ function toggleMute(){
   _muted=!_muted;
   document.getElementById('muteBtn').textContent=_muted?'🔇':'🔊';
 }
+/* Haptics — vibrate when the egg lands (toggleable, remembered) */
+let _vibeOn = (function(){ try{ return localStorage.getItem('ec_vibe')!=='0'; }catch(e){ return true; } })();
+function toggleVibe(){
+  _vibeOn=!_vibeOn;
+  try{ localStorage.setItem('ec_vibe', _vibeOn?'1':'0'); }catch(e){}
+  const b=document.getElementById('vibeBtn'); if(b) b.textContent=_vibeOn?'📳':'📴';
+  if(_vibeOn && navigator.vibrate){ try{ navigator.vibrate(20); }catch(e){} }
+}
+function showAbout(){ document.getElementById('about').style.display='flex'; }
+function hideAbout(){ document.getElementById('about').style.display='none'; }
 function startMusic(){}
 function stopMusic(){}
 
@@ -546,7 +593,9 @@ function sfxMiss(){
   });
 }
 
-function startGame(){
+function startGame(arcade){
+  if(arcade!==undefined) arcadeMode=!!arcade;   // PLAY=false, ARCADE=true, Retry keeps current
+  if(arcadeMode) pickArcadeTheme();
   initCv();
   if(score>hiScore) hiScore=score;
   _adUsedThisRun=false;
@@ -558,7 +607,7 @@ function startGame(){
   document.getElementById('menu').style.display='none';
   document.getElementById('gameover').style.display='none';
   document.getElementById('hud').style.display='flex';
-  document.getElementById('muteBtn').style.display='flex';
+  document.getElementById('muteBtn').style.display='flex'; { const _vb=document.getElementById('vibeBtn'); if(_vb){ _vb.style.display='flex'; _vb.textContent=_vibeOn?'📳':'📴'; } }
   stopMusic(); startMusic();
 
   bowls=[
@@ -587,22 +636,32 @@ function showMenu(){
   document.getElementById('menuHi').textContent=hiScore>0?'Best: '+hiScore:'';
   document.getElementById('gameover').style.display='none';
   document.getElementById('hud').style.display='none';
-  document.getElementById('muteBtn').style.display='none';
+  document.getElementById('muteBtn').style.display='none'; { const _vb=document.getElementById('vibeBtn'); if(_vb) _vb.style.display='none'; }
   document.getElementById('menu').style.display='flex';
 }
 
 /* ── Main loop ───────────────────────────────────────────────────────── */
+// Snapshot the moving objects' positions before a logic step, so render() can
+// interpolate between the last step and the current one — smooth motion at the
+// display's native rate (60/90/120/144 Hz) even though physics stays a fixed 24 Hz.
+function _snap(){
+  egg.px=egg.x; egg.py=egg.y; egg.pa=egg.angle;
+  for(const b of bowls){ b.px=b.x; b.py=b.y; }
+}
 function loop(ts){
   if(!running) return;
   animId=requestAnimationFrame(loop);
-  if(!_prevTs){ _prevTs=ts; _lastDraw=ts-DRAW_MS; }
+  if(!_prevTs) _prevTs=ts;
   let dt=ts-_prevTs; _prevTs=ts;
   if(dt>200) dt=200;                     // after a tab/app suspend, don't fast-forward
   _acc+=dt;
   let steps=0;
-  while(_acc>=STEP_MS && steps<MAX_STEPS){ try{update();}catch(e){console.error(e);} _acc-=STEP_MS; steps++; }
+  while(_acc>=STEP_MS && steps<MAX_STEPS){ _snap(); try{update();}catch(e){console.error(e);} _acc-=STEP_MS; steps++; }
   if(steps>=MAX_STEPS) _acc=0;           // drop a backlog we couldn't catch up on
-  if(ts-_lastDraw>=DRAW_MS){ _lastDraw=ts; try{render();}catch(e){console.error(e);} }
+  // Render every animation frame (uncapped → up to 144 Hz), interpolated by how
+  // far we are into the next logic step.
+  const alpha = Math.min(1, _acc/STEP_MS);
+  try{ render(alpha); }catch(e){console.error(e);}
 }
 
 /* ── Update ──────────────────────────────────────────────────────────── */
@@ -613,7 +672,7 @@ function update(){
 
   // ── Hen intro animation ──
   if(henAnim){
-    henAnim.t++;
+    henAnim.t+=2.4;                       // hen lays the egg faster (was 1×)
     if(henAnim.t>=200){ henAnim=null; eggState='sitting'; }
     return; // freeze game during intro
   }
@@ -711,6 +770,7 @@ function easeOut(t){return 1-(1-t)*(1-t)*(1-t);}
 /* ── Catch ───────────────────────────────────────────────────────────── */
 function catchBowl(){
   sfxLand();
+  if(_vibeOn && navigator.vibrate){ try{ navigator.vibrate(28); }catch(e){} }
   const tb=bowls[tgtIdx];
   const cx=tb.x+BOWL_W/2;
   const off=Math.abs(egg.x-cx)/(BOWL_W/2-7);  // 0=center,1=edge
@@ -798,7 +858,7 @@ function onMiss(){
         adBtn.style.display='none';
       }
       document.getElementById('gameover').style.display='flex';
-      document.getElementById('muteBtn').style.display='none';
+      document.getElementById('muteBtn').style.display='none'; { const _vb=document.getElementById('vibeBtn'); if(_vb) _vb.style.display='none'; }
       running=false;
     },900);
   }
@@ -816,10 +876,11 @@ function checkMilestones(){
   }
 }
 function themeCheck(force){
+  if(arcadeMode) pickArcadeTheme();      // fresh random background each level
   const t=getTheme(level);
   if(t!==curTheme||force){
     curTheme=t;
-    document.getElementById('themeLabel').textContent=THEME_LABELS[t]||t;
+    document.getElementById('themeLabel').textContent=(arcadeMode?'🎲 ':'')+(THEME_LABELS[t]||t);
     spawnParticles(t);
     if(!bgCache[t]) bgCache[t]=makeBg(t);
   }
@@ -1007,8 +1068,25 @@ function bClouds(bx,w,h,col){for(let i=0;i<6;i++){const cx=Math.random()*w,cy=h*
 function bStars(bx,w,h,n){for(let i=0;i<n;i++){bx.fillStyle=`rgba(255,255,255,${.14+Math.random()*.86})`;bx.beginPath();bx.arc(Math.random()*w,Math.random()*h,.3+Math.random()*1.4,0,Math.PI*2);bx.fill();}}
 
 /* ── Render ──────────────────────────────────────────────────────────── */
-function render(){
+function render(alpha){
   if(!ctx) return;
+  alpha = alpha||0;
+  // ── Interpolate moving objects between fixed logic steps for smooth high-Hz
+  //    rendering. Big jumps (teleports/resets) are left un-tweened. ──
+  const _iX=egg.x,_iY=egg.y,_iA=egg.angle;
+  if(egg.px!==undefined){
+    if(Math.abs(_iX-egg.px)<W*0.5) egg.x=egg.px+(_iX-egg.px)*alpha;
+    if(Math.abs(_iY-egg.py)<H*0.5) egg.y=egg.py+(_iY-egg.py)*alpha;
+    egg.angle=egg.pa+(_iA-egg.pa)*alpha;
+  }
+  const _ib=[];
+  for(const b of bowls){
+    const cx=b.x, cy=b.y; _ib.push([cx,cy]);
+    if(b.px!==undefined){
+      if(Math.abs(cx-b.px)<W*0.5) b.x=b.px+(cx-b.px)*alpha;
+      if(Math.abs(cy-b.py)<H*0.5) b.y=b.py+(cy-b.py)*alpha;
+    }
+  }
   // No clearRect — background drawImage covers the full canvas
 
   // Background — static W×H blit (no scroll, no offset math)
@@ -1073,6 +1151,9 @@ function render(){
     ctx.fillText('COMBO ×'+combo,W-8,bowls[tgtIdx]?bowls[tgtIdx].y-12:H*.18);
     ctx.restore();
   }
+  // ── restore authoritative positions after interpolated draw ──
+  egg.x=_iX; egg.y=_iY; egg.angle=_iA;
+  for(let i=0;i<_ib.length;i++){ if(bowls[i]){ bowls[i].x=_ib[i][0]; bowls[i].y=_ib[i][1]; } }
 }
 
 function renderParticles(){
