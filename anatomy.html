@@ -547,7 +547,7 @@ float mn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
 // the bands stay an even width; the 2π·N frequencies keep them seamless at the
 // ring join and the gentle w-drift stops them looking machined.
 float mBundle(float ring,float len,float w){ return sin(ring*50.265 + (w-0.5)*1.4 + len*0.9); }
-float mFine(float ring,float len){ return sin(ring*100.531 + len*1.1); }
+float mFine(float ring,float len){ return sin(ring*113.097 + len*1.15); }
 float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFine(ring,len)*0.4; }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
 { // ── belly: oxygenated red muscle (reference material) — a wave-striation
@@ -567,7 +567,7 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   float ramp  = smoothstep(0.08, 0.92, bundle);             // oxygen↔myoglobin along fibres (soft)
   vec3 belly  = mix(myoRed, oxyRed, ramp);
   float fibre = mFine(vRing, vLen);                         // fine fibres within each bundle
-  belly *= 0.972 + 0.028*fibre*faa;                        // fine fibres as soft colour lines (AA)
+  belly *= 0.965 + 0.035*fibre*faa;                        // fine fibres as soft colour lines (AA)
   belly *= 0.93 + 0.09*(mn(vMPos*1.2)*0.6 + mn(vMPos*4.8)*0.4); // gentle organic mottle
   belly += vec3(0.04,0.006,0.006)*pow(ramp,3.0);           // wet highlight on fibre ridges
   // ── tendon ends: white fibrous tissue where the belly meets bone ──
@@ -603,7 +603,7 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
   float aa = clamp(1.0 - smoothstep(0.010,0.038,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
   float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.022*belly*aa)*grad);
+  normal = normalize(abs(det)*n0 - (0.028*belly*aa)*grad);
 }
 #endif`);
   };
@@ -1749,19 +1749,19 @@ function buildSoftTissue(){
      o:'The broad fan of the anterior chest wall, with clavicular, sternocostal and abdominal heads whose fibres twist 180° before inserting — which is why it can both flex and extend the shoulder depending on starting position.',
      detail:{Origin:'Medial clavicle, sternum, upper six costal cartilages',Insertion:'Lateral lip of the bicipital groove of the humerus',Nerve:'Medial and lateral pectoral nerves (C5–T1)',Action:'Adduction, medial rotation and flexion of the arm; accessory muscle of respiration'},
      clin:'Rupture occurs typically in weight-trainers during bench press, producing a sudden tearing sensation, bruising and loss of the anterior axillary fold. Surgical repair is recommended in active individuals.'},
-    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:2.3, mirror:true,
+    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:2.7, fy:2.9, mirror:true,
      // Hugs the posterior chest wall, then converges sharply to the bicipital
      // groove — keeping z shallow stops the sheet ballooning off the back.
-     pts:s=>[[s*2.6,101,-5.6],[s*6.4,114,-6.2],[s*9.8,127,-6.0],[s*13.2,137,-4.4],[s*16.2,141.5,-0.8]],
+     pts:s=>[[s*3.0,100,-5.2],[s*7.2,113,-6.2],[s*10.8,126,-6.2],[s*14.0,137,-4.6],[s*16.6,141.5,-0.8]],
      o:'The largest muscle of the back, sweeping from the lower spine and iliac crest up to the humerus — the "climbing muscle" that pulls the body up toward a fixed arm.',
      detail:{Origin:'Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower ribs',Insertion:'Floor of the bicipital groove of the humerus',Nerve:'Thoracodorsal nerve (C6–C8)',Action:'Extension, adduction and medial rotation of the arm'},
      clin:'Its reliable pedicle makes the latissimus dorsi flap a workhorse in reconstructive surgery — for breast reconstruction and for covering large soft-tissue defects, including around the shoulder and chest wall.'},
     {id:'trapezius', shape:'sheet', name:'Trapezius', latin:'Musculus trapezius', r:2.9, mirror:true,
      pts:s=>[[s*0.6,166,-6],[s*5,155,-6.5],[s*10,149,-6],[s*14,147,-5]],
      heads:[
-       {sheet:true, r:2.2, fy:1.4, pts:s=>[[s*0.8,167,-5.8],[s*5,158,-6.2],[s*10,151,-5.6],[s*14,148,-4.6]]},   // upper (descending) part
-       {sheet:true, r:2.2, fy:1.6, pts:s=>[[s*0.8,150,-6.6],[s*5,149,-6.4],[s*10,148,-5.8],[s*14,147.5,-5.0]]}, // middle (transverse) part
-       {sheet:true, r:2.2, fy:1.6, pts:s=>[[s*0.8,133,-6.2],[s*4.5,137,-6.4],[s*9,142,-6.0],[s*13,146,-5.2]]}   // lower (ascending) part
+       {sheet:true, r:2.5, fy:2.7, pts:s=>[[s*1.4,167,-5.4],[s*6,159,-6.0],[s*11,152,-5.4],[s*14.5,148,-4.4]]},   // upper (descending) part
+       {sheet:true, r:2.7, fy:3.6, pts:s=>[[s*1.0,150,-6.6],[s*5.5,149,-6.4],[s*10,148,-5.8],[s*13.5,147.5,-5.0]]}, // middle (transverse) — broad interscapular cover
+       {sheet:true, r:2.6, fy:3.0, pts:s=>[[s*1.0,121,-6.0],[s*4.5,129,-6.4],[s*8,138,-6.3],[s*11.5,145,-5.4]]}    // lower (ascending) part
      ],
      o:'A large diamond-shaped superficial back muscle in three functional parts: upper fibres elevate the scapula, middle fibres retract it, lower fibres depress it and rotate the glenoid upward during arm elevation.',
      detail:{Origin:'External occipital protuberance, ligamentum nuchae, spinous processes C7–T12',Insertion:'Lateral clavicle, acromion, spine of scapula',Nerve:'Spinal accessory nerve (CN XI), with proprioception from C3–C4',Action:'Elevation, retraction, depression and upward rotation of the scapula'},
@@ -1844,8 +1844,8 @@ function buildSoftTissue(){
      o:'The uppermost rotator cuff muscle, running from the supraspinous fossa beneath the acromion to the greater tubercle. It initiates the first 15° of abduction and, throughout elevation, compresses the humeral head into the glenoid so deltoid can work.',
      detail:{Origin:'Supraspinous fossa of the scapula',Insertion:'Superior facet of the greater tubercle',Nerve:'Suprascapular nerve (C5, C6)',Action:'Initiates abduction; a primary dynamic stabiliser of the glenohumeral joint'},
      clin:'By far the most commonly torn cuff tendon. It passes through the narrow subacromial space, so a hooked (Bigliani III) acromion causes impingement. A painful arc between 60° and 120°, a positive empty-can test and night pain are the classic findings; repaired tendon needs about three months before loaded work.'},
-    {id:'infraspinatus', name:'Infraspinatus', latin:'Musculus infraspinatus', r:1.8, mirror:true,
-     pts:s=>[[s*9.6,140.6,-7.2],[s*13.4,141.6,-6.0],[s*16.8,142.6,-3.4],[s*19.2,143.0,-1.2]],
+    {id:'infraspinatus', name:'Infraspinatus', latin:'Musculus infraspinatus', r:2.2, plane:[0,0,-1], fx:0.6, fy:1.9, mirror:true,
+     pts:s=>[[s*9.2,139.4,-7.2],[s*13.0,140.4,-6.0],[s*16.4,141.6,-3.4],[s*19.0,142.6,-1.2]],
      o:'The main external rotator of the shoulder, filling the infraspinous fossa below the scapular spine and inserting on the middle facet of the greater tubercle.',
      detail:{Origin:'Infraspinous fossa of the scapula',Insertion:'Middle facet of the greater tubercle',Nerve:'Suprascapular nerve (C5, C6)',Action:'External rotation of the arm; posterior stabiliser of the humeral head'},
      clin:'Infraspinatus wasting is visible as a hollow below the scapular spine and is a sign of suprascapular nerve entrapment (at the spinoglenoid notch) or a massive cuff tear. Loss of external rotation strength predicts poor overhead function.'},
@@ -1962,8 +1962,8 @@ function buildSoftTissue(){
      o:'A small triangular muscle deep to pectoralis major, running from the third to fifth ribs up to the coracoid process. It is the surgical key to the axilla, dividing the axillary artery and the axillary nodes into three levels.',
      detail:{Origin:'Anterior surfaces of ribs 3–5',Insertion:'Coracoid process of the scapula',Nerve:'Medial pectoral nerve (C8, T1)',Action:'Protracts and depresses the scapula; assists forced inspiration'},
      clin:'It divides the axillary artery into its three parts and the axillary lymph nodes into levels I–III, the framework used in breast cancer surgery. A tight pectoralis minor tilts the scapula anteriorly, contributing to shoulder impingement, and can compress the neurovascular bundle in pectoralis minor (thoracic outlet) syndrome.'},
-    {id:'rhomboids', shape:'sheet', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:1.4, mirror:true,
-     pts:s=>[[s*1.6,143.0,-6.0],[s*5.0,141.0,-6.5],[s*8.0,138.0,-6.5],[s*10.4,135.0,-6.0]],
+    {id:'rhomboids', shape:'sheet', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:1.9, fy:2.8, mirror:true,
+     pts:s=>[[s*1.4,147.0,-6.0],[s*5.0,143.0,-6.4],[s*8.2,139.0,-6.4],[s*10.6,134.5,-5.8]],
      o:'Two parallel straps running obliquely from the lower cervical and upper thoracic spinous processes down to the medial border of the scapula, retracting and downwardly rotating it.',
      detail:{Origin:'Rhomboid minor — C7–T1 spinous processes; major — T2–T5 spinous processes',Insertion:'Medial border of the scapula, from the spine to the inferior angle',Nerve:'Dorsal scapular nerve (C5)',Action:'Retraction, elevation and downward rotation of the scapula'},
      clin:'Dorsal scapular nerve injury causes a subtle lateral drift of the scapula, weaker than trapezius palsy and easily missed. Rhomboid weakness allows the scapula to wing medially during a slow, controlled push-up and is a common driver of scapular dyskinesis in overhead athletes.'},
@@ -2132,7 +2132,7 @@ function buildSoftTissue(){
         fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.45 : 0.98)),   // sheets: rounded slab, not flat card
         fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
         twist: o.twist || (()=>0),
-        seg: 46, radial: o.sheet ? 22 : 26   // HD: rounder bellies, smoother silhouette
+        seg: 54, radial: o.sheet ? 26 : 30   // HD: rounder bellies, smoother silhouette
       }, M);
       let obj;
       if(m.heads){                           // individually sculpted: separate anatomical heads
