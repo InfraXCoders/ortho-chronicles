@@ -2128,8 +2128,10 @@ function buildSoftTissue(){
       /* Build one belly (a whole muscle, or one head of a multi-head muscle). */
       const buildBelly = (pts,o)=> sweepMesh(pts, {
         plane: (o.plane||o.sheet) ? V(...(o.plane||m.plane||[0,0,1])) : null,
-        r  : t => (o.r!=null?o.r:m.r)*0.82*(o.sheet ? 1 : bell(t, o.bulge)),
-        fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.45 : 0.98)),   // sheets: rounded slab, not flat card
+        // Sheets get a gentle fusiform swell too now (fuller belly, tapered
+        // attachments) so they read as shaped muscles, not flat rectangles.
+        r  : t => (o.r!=null?o.r:m.r)*0.82*(o.sheet ? (0.72+0.28*Math.sin(Math.PI*t)) : bell(t, o.bulge)),
+        fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.58 : 0.98)),   // sheets: rounded slab, not flat card
         fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
         twist: o.twist || (()=>0),
         seg: 54, radial: o.sheet ? 26 : 30   // HD: rounder bellies, smoother silhouette
