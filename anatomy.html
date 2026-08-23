@@ -1821,10 +1821,10 @@ function buildSoftTissue(){
      // by tendinous intersections into the classic segmental bellies (the gaps
      // between these heads read as the intersection grooves and the midline).
      heads:[
-       {plane:[0,0,1], fx:0.6, fy:1.9, r:1.9, bulge:0.5, pts:s=>[[s*3.2,137.5,8.6],[s*3.2,130.0,9.2]]},  // segment 1 (upper)
-       {plane:[0,0,1], fx:0.6, fy:1.9, r:1.9, bulge:0.5, pts:s=>[[s*3.2,130.5,9.4],[s*3.2,123.0,9.5]]},  // segment 2 (overlaps at the intersection)
-       {plane:[0,0,1], fx:0.6, fy:1.9, r:1.9, bulge:0.5, pts:s=>[[s*3.2,123.5,9.5],[s*3.1,116.0,9.3]]},  // segment 3 (umbilical)
-       {plane:[0,0,1], fx:0.6, fy:1.95, r:2.0, bulge:0.5, pts:s=>[[s*3.0,116.5,9.0],[s*2.7,105.0,8.0]]}   // segment 4 (lower, longer)
+       {plane:[0,0,1], fx:0.6, fy:2.0, r:1.9, bulge:0.5, pts:s=>[[s*2.9,137.5,8.6],[s*2.9,130.0,9.2]]},  // segment 1 (upper)
+       {plane:[0,0,1], fx:0.6, fy:2.0, r:1.9, bulge:0.5, pts:s=>[[s*2.9,130.5,9.4],[s*2.9,123.0,9.5]]},  // segment 2 (overlaps at the intersection)
+       {plane:[0,0,1], fx:0.6, fy:2.0, r:1.9, bulge:0.5, pts:s=>[[s*2.9,123.5,9.5],[s*2.8,116.0,9.3]]},  // segment 3 (umbilical)
+       {plane:[0,0,1], fx:0.6, fy:2.05, r:2.0, bulge:0.5, pts:s=>[[s*2.7,116.5,9.0],[s*2.5,105.0,8.0]]}   // segment 4 (lower, longer)
      ],
      o:'The layered muscular wall of the abdomen: rectus abdominis running vertically from ribs to pubis inside the rectus sheath, wrapped by external oblique, internal oblique and transversus abdominis. Together they flex and rotate the trunk and generate the intra-abdominal pressure that braces the lumbar spine.',
      detail:{Origin:'Lower ribs and costal cartilages, thoracolumbar fascia, iliac crest, inguinal ligament',Insertion:'Linea alba, pubic crest and symphysis',Nerve:'Thoracoabdominal nerves (T7–T12), iliohypogastric and ilioinguinal (L1)',Action:'Trunk flexion and rotation; raises intra-abdominal pressure; supports the viscera'},
@@ -1839,13 +1839,13 @@ function buildSoftTissue(){
      detail:{Origin:'Manubrium sterni and medial third of the clavicle',Insertion:'Mastoid process and superior nuchal line',Nerve:'Spinal accessory nerve (CN XI); sensory from C2–C3',Action:'Unilaterally — tilts head to same side, rotates face to opposite side; bilaterally — flexes the neck'},
      clin:'Congenital muscular torticollis presents as a firm lump in the muscle in an infant with a persistently tilted head; most resolve with stretching if started early. In adults, the muscle guides the anterior approach to the cervical spine.'},
     /* ---- Rotator cuff ---- */
-    {id:'supraspinatus', name:'Supraspinatus', latin:'Musculus supraspinatus', r:1.5, mirror:true,
-     pts:s=>[[s*9.0,146.4,-6.6],[s*13.0,147.0,-5.0],[s*16.6,146.0,-2.2],[s*19.5,143.6,0.4]],
+    {id:'supraspinatus', name:'Supraspinatus', latin:'Musculus supraspinatus', r:1.7, plane:[0,0,-1], fx:0.6, fy:1.5, mirror:true,
+     pts:s=>[[s*9.0,146.4,-8.8],[s*13.0,147.0,-7.0],[s*16.6,146.0,-3.2],[s*19.5,143.6,-0.2]],
      o:'The uppermost rotator cuff muscle, running from the supraspinous fossa beneath the acromion to the greater tubercle. It initiates the first 15° of abduction and, throughout elevation, compresses the humeral head into the glenoid so deltoid can work.',
      detail:{Origin:'Supraspinous fossa of the scapula',Insertion:'Superior facet of the greater tubercle',Nerve:'Suprascapular nerve (C5, C6)',Action:'Initiates abduction; a primary dynamic stabiliser of the glenohumeral joint'},
      clin:'By far the most commonly torn cuff tendon. It passes through the narrow subacromial space, so a hooked (Bigliani III) acromion causes impingement. A painful arc between 60° and 120°, a positive empty-can test and night pain are the classic findings; repaired tendon needs about three months before loaded work.'},
-    {id:'infraspinatus', name:'Infraspinatus', latin:'Musculus infraspinatus', r:2.2, plane:[0,0,-1], fx:0.6, fy:1.9, mirror:true,
-     pts:s=>[[s*9.2,139.4,-7.2],[s*13.0,140.4,-6.0],[s*16.4,141.6,-3.4],[s*19.0,142.6,-1.2]],
+    {id:'infraspinatus', name:'Infraspinatus', latin:'Musculus infraspinatus', r:2.4, plane:[0,0,-1], fx:0.55, fy:2.4, mirror:true,
+     pts:s=>[[s*8.6,137.8,-9.9],[s*12.4,139.0,-9.1],[s*15.6,140.6,-6.0],[s*18.8,142.0,-1.8]],
      o:'The main external rotator of the shoulder, filling the infraspinous fossa below the scapular spine and inserting on the middle facet of the greater tubercle.',
      detail:{Origin:'Infraspinous fossa of the scapula',Insertion:'Middle facet of the greater tubercle',Nerve:'Suprascapular nerve (C5, C6)',Action:'External rotation of the arm; posterior stabiliser of the humeral head'},
      clin:'Infraspinatus wasting is visible as a hollow below the scapular spine and is a sign of suprascapular nerve entrapment (at the spinoglenoid notch) or a massive cuff tear. Loss of external rotation strength predicts poor overhead function.'},
@@ -1854,13 +1854,13 @@ function buildSoftTissue(){
      o:'The only rotator cuff muscle on the anterior (costal) surface of the scapula, and the sole internal rotator of the cuff. It is the anterior restraint against dislocation.',
      detail:{Origin:'Subscapular fossa (costal surface of the scapula)',Insertion:'Lesser tubercle of the humerus',Nerve:'Upper and lower subscapular nerves (C5–C6)',Action:'Internal rotation; primary anterior stabiliser of the glenohumeral joint'},
      clin:'Tears are under-diagnosed. Test with the lift-off and belly-press tests. Subscapularis integrity is essential for anterior stability and must be repaired or managed carefully during the deltopectoral approach and shoulder replacement.'},
-    {id:'teresminor', name:'Teres Minor', latin:'Musculus teres minor', r:1.1, mirror:true,
-     pts:s=>[[s*11.0,137.4,-6.8],[s*14.4,139.4,-5.0],[s*17.4,141.6,-2.8],[s*19.0,142.4,-1.6]],
+    {id:'teresminor', name:'Teres Minor', latin:'Musculus teres minor', r:1.2, mirror:true,
+     pts:s=>[[s*11.0,136.4,-8.8],[s*14.4,138.4,-6.6],[s*17.4,141.0,-3.2],[s*19.0,142.4,-1.8]],
      o:'The smallest cuff muscle, running from the lateral scapular border to the inferior facet of the greater tubercle, assisting external rotation.',
      detail:{Origin:'Upper lateral (axillary) border of the scapula',Insertion:'Inferior facet of the greater tubercle',Nerve:'Axillary nerve (C5, C6)',Action:'External rotation and inferior stabilisation of the humeral head'},
      clin:'Usually spared in cuff tears, which matters: intact teres minor preserves external rotation and is a favourable factor before reverse shoulder replacement, whereas fatty infiltration of it predicts a poorer result.'},
-    {id:'teresmajor', name:'Teres Major', latin:'Musculus teres major', r:1.5, mirror:true,
-     pts:s=>[[s*10.4,134.0,-6.4],[s*13.6,136.4,-4.2],[s*16.4,138.8,-0.8],[s*17.6,140.2,1.4]],
+    {id:'teresmajor', name:'Teres Major', latin:'Musculus teres major', r:1.6, mirror:true,
+     pts:s=>[[s*10.2,133.0,-8.4],[s*13.4,135.4,-5.4],[s*16.2,138.4,-1.6],[s*17.6,140.2,1.2]],
      o:'A thick strap from the inferior angle of the scapula to the humerus, functioning with latissimus dorsi as "lat\'s little helper" and forming the lower border of the axilla.',
      detail:{Origin:'Inferior angle and lower lateral border of the scapula',Insertion:'Medial lip of the bicipital groove',Nerve:'Lower subscapular nerve (C6, C7)',Action:'Adduction, extension and internal rotation of the arm'},
      clin:'Its lower border marks where the axillary artery becomes the brachial artery — a key landmark in vascular assessment and in surgical exposure of the upper arm.'},
