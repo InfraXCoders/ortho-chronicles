@@ -2309,12 +2309,12 @@ function buildSoftTissue(){
      detail:{Origin:'Right — brachiocephalic trunk; left — directly from the aortic arch',Course:'Ascends within the carotid sheath with the internal jugular vein and vagus nerve',Termination:'Divides at C4 into internal and external carotid arteries',Surface:'Pulse palpable anterior to sternocleidomastoid at the level of the thyroid cartilage'},
      clin:'The carotid pulse is the primary check for circulation in adult resuscitation. Atherosclerotic plaque at the bifurcation is a leading cause of embolic stroke, and blunt cervical injury can cause carotid dissection — consider it in neck trauma with delayed neurological signs.'},
     {id:'subclav_art', name:'Subclavian, Axillary & Brachial Artery', latin:'A. subclavia / axillaris / brachialis', r:0.46, mirror:true,
-     pts:s=>[[s*1.8,148.5,1.4],[s*8,149,1.6],[s*14,146,1.4],[s*17.5,138,1.8],[s*18.6,126,2],[s*19.8,113,1.8],[s*20.6,108,1.4]],
+     pts:s=>[[s*1.8,148.5,1.4],[s*8,149,1.6],[s*14,146,1.4],[s*17.5,138,1.8],[s*18.8,126,2],[s*20.6,114,1.4],[s*22.8,107.5,0.6]],
      o:'The continuous arterial highway of the upper limb, renamed as it passes each landmark: subclavian (to the first rib), axillary (to the lower border of teres major), then brachial down the arm to the cubital fossa.',
      detail:{Course:'Subclavian → axillary (at the outer border of the first rib) → brachial (at teres major)',Relations:'Travels with the cords of the brachial plexus in the axilla; lies medial to the biceps tendon in the cubital fossa',Termination:'Divides into radial and ulnar arteries in the cubital fossa',Surface:'Brachial pulse — medial to the biceps tendon; the standard site for blood pressure measurement'},
      clin:'The brachial artery is at risk in supracondylar humeral fractures in children — a pale, pulseless hand demands immediate reduction. Compression of the subclavian vessels between the clavicle and first rib produces thoracic outlet syndrome.'},
     {id:'radial_art', name:'Radial & Ulnar Arteries', latin:'A. radialis et A. ulnaris', r:0.3, mirror:true,
-     pts:s=>[[s*20.6,107.5,1.4],[s*21.6,98,1.8],[s*22.4,88,2],[s*22.6,83,2.2]],
+     pts:s=>[[s*23.4,107.0,0.2],[s*25.2,98.0,2.2],[s*26.2,88.0,3.2],[s*26.6,83.0,3.8]],
      o:'The paired arteries of the forearm arising from the brachial artery in the cubital fossa. They anastomose in the hand through the superficial and deep palmar arches, giving the hand a rich dual blood supply.',
      detail:{Origin:'Brachial artery bifurcation in the cubital fossa',Course:'Radial — lateral forearm, crossing the anatomical snuffbox; Ulnar — medial forearm, passing through Guyon canal with the ulnar nerve',Termination:'Superficial (mainly ulnar) and deep (mainly radial) palmar arches',Surface:'Radial pulse — lateral to the flexor carpi radialis tendon at the wrist'},
      clin:'Allen test confirms a patent dual supply before radial artery harvest (for coronary bypass) or arterial line placement. The radial artery is also the standard access route for coronary angiography.'},
@@ -2385,7 +2385,7 @@ function buildSoftTissue(){
      detail:{Origin:'Continuation of the sigmoid sinus at the jugular foramen',Course:'Within the carotid sheath, lateral to the carotid artery and vagus nerve',Termination:'Joins the subclavian vein to form the brachiocephalic vein',Surface:'Runs between the two heads of sternocleidomastoid'},
      clin:'The standard site for central venous catheterisation — the right side is preferred as it offers a straighter path to the heart. Jugular venous pressure, assessed at 45°, is a bedside index of right heart filling and fluid status.'},
     {id:'cephalic', name:'Cephalic & Basilic Veins', latin:'Vena cephalica et basilica', r:0.35, mirror:true,
-     pts:s=>[[s*15.5,146,3],[s*18,136,3.4],[s*19.6,122,3.2],[s*21,110,2.4],[s*22,92,2.6]],
+     pts:s=>[[s*15.5,146,3],[s*18,136,3.4],[s*20.2,122,2.6],[s*23.4,110,0.8],[s*26.4,92,3.6]],
      o:'The main superficial veins of the upper limb, running in the subcutaneous tissue: the cephalic on the lateral (radial) side and the basilic medially. They are connected at the elbow by the median cubital vein.',
      detail:{Course:'Cephalic — lateral arm, then through the deltopectoral groove; Basilic — medial arm, piercing the deep fascia to become the axillary vein',Connection:'Median cubital vein crosses the cubital fossa',Termination:'Cephalic → axillary vein; Basilic → axillary vein',Surface:'Median cubital vein is the standard venepuncture site'},
      clin:'The median cubital vein is the workhorse of blood sampling and IV access — but it lies directly over the brachial artery and median nerve, separated only by the bicipital aponeurosis ("the grace of God" fascia). The cephalic vein is used for arteriovenous fistula formation in dialysis.'},
@@ -2436,17 +2436,17 @@ function buildSoftTissue(){
      detail:{Roots:'Ventral rami of C5, C6, C7, C8 and T1',Organisation:'Roots → trunks (upper, middle, lower) → divisions → cords (lateral, posterior, medial) → terminal branches',Terminal:'Musculocutaneous, axillary, radial, median and ulnar nerves',Relations:'Passes between anterior and middle scalene, over the first rib, posterior to the clavicle'},
      clin:'Erb palsy (C5–C6, upper trunk) produces the "waiter\'s tip" posture and follows shoulder dystocia or a fall onto the shoulder. Klumpke palsy (C8–T1) affects the hand intrinsics and may include Horner syndrome. In trauma, the presence of Horner syndrome or winged scapula suggests a poor-prognosis root avulsion rather than a distal lesion.'},
     {id:'median', name:'Median Nerve', latin:'Nervus medianus', r:0.32, mirror:true,
-     pts:s=>[[s*17,140,2.4],[s*18.4,128,2.8],[s*19.6,116,2.8],[s*20.6,104,2.6],[s*21.4,88,2.8],[s*21.6,82,2.6]],
+     pts:s=>[[s*17,140,2.4],[s*18.4,128,2.8],[s*20.6,116,1.8],[s*24.0,104,1.4],[s*26.0,88,3.4],[s*26.4,82,3.8]],
      o:'The "labourer\'s nerve" — the principal nerve of forearm flexion and precision grip. It arises from the lateral and medial cords, runs down the arm without branching, and passes through the carpal tunnel into the hand.',
      detail:{Roots:'C6–T1, from the lateral and medial cords',Motor:'Most forearm flexors and pronators; thenar muscles and the lateral two lumbricals',Sensory:'Palmar aspect of the thumb, index, middle and half the ring finger',Course:'Medial to the brachial artery in the arm; between the heads of pronator teres; through the carpal tunnel'},
      clin:'Carpal tunnel syndrome is the commonest entrapment neuropathy: night tingling in the radial three and a half digits, later thenar wasting and loss of thumb opposition. Splints and injection help early symptoms; weakness or wasting means the nerve is dying and warrants release. High lesions produce the "hand of benediction" on attempted fist closure.'},
     {id:'ulnar', name:'Ulnar Nerve', latin:'Nervus ulnaris', r:0.3, mirror:true,
-     pts:s=>[[s*16.4,140,0],[s*17.2,128,0.4],[s*17.6,116,-0.6],[s*18,104,1.4],[s*18.2,88,2],[s*18.4,82,2.2]],
+     pts:s=>[[s*16.4,140,0],[s*17.2,128,0.4],[s*19.6,116,-1.0],[s*23.2,104,0.6],[s*25.0,88,2.6],[s*25.4,82,3.0]],
      o:'The nerve of fine finger control, arising from the medial cord. It passes behind the medial epicondyle in the cubital tunnel — the "funny bone" — then along the medial forearm into Guyon canal at the wrist.',
      detail:{Roots:'C8–T1, from the medial cord',Motor:'Flexor carpi ulnaris, medial half of flexor digitorum profundus, and almost all intrinsic hand muscles',Sensory:'Little finger and the medial half of the ring finger, both surfaces',Course:'Behind the medial epicondyle (cubital tunnel), then Guyon canal at the wrist'},
      clin:'Cubital tunnel syndrome is the second commonest entrapment neuropathy. Damage causes clawing of the ring and little fingers and a positive Froment sign (thumb IP flexion when pinching). The "ulnar paradox": a higher lesion causes *less* clawing because the profundus to those fingers is also paralysed.'},
     {id:'radial', name:'Radial Nerve', latin:'Nervus radialis', r:0.32, mirror:true,
-     pts:s=>[[s*16.8,140,-1.6],[s*18,130,-2],[s*19,122,-1.2],[s*20.4,112,0.6],[s*21.6,102,1.6],[s*22.4,90,1.4]],
+     pts:s=>[[s*16.8,140,-1.6],[s*18,130,-2],[s*20,122,-1.8],[s*24.0,112,-2.4],[s*26.4,102,-0.6],[s*27.0,90,0.8]],
      o:'The great extensor nerve of the upper limb and the largest branch of the brachial plexus, from the posterior cord. It spirals around the back of the humerus in the radial groove before winding forward to the front of the lateral epicondyle.',
      detail:{Roots:'C5–T1, from the posterior cord',Motor:'Triceps; brachioradialis; all wrist and finger extensors; supinator',Sensory:'Posterior arm and forearm; dorsum of the lateral hand and first web space',Course:'Radial (spiral) groove of the humerus → anterior to lateral epicondyle → divides into superficial and posterior interosseous branches'},
      clin:'Wrist drop after a mid-shaft humeral fracture occurs in roughly 10–15% of cases; most are neurapraxias that recover in 3–4 months with a cock-up splint. "Saturday night palsy" follows prolonged compression of the nerve against the humerus. Test the first web space sensation and thumb extension.'},
@@ -2690,9 +2690,9 @@ function buildSoftTissue(){
       /* Vessels and nerves narrow as they give off branches, and are ovoid
          rather than perfectly round — a uniform cylinder reads as plumbing. */
       register(sweepMesh(pts, {
-        r  : t => d.r*(1 - 0.42*t),
+        r  : t => d.r*1.55*(1 - 0.30*t),   // thicker & less tapered — proportionate to the skeleton
         fx : () => 1.12, fy : () => 0.88,
-        seg: 36, radial: 12
+        seg: 40, radial: 14
       }, matFn()),{
         id:d.id+sfx, layer:layer, tag:tag,
         name:sideName+d.name, latin:d.latin, focus:V(...pts[Math.floor(pts.length/2)]),
