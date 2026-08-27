@@ -1794,8 +1794,8 @@ function buildSoftTissue(){
     {id:'biceps', name:'Biceps Brachii', latin:'Musculus biceps brachii', r:2.2, mirror:true,
      pts:s=>[[s*16,144,2],[s*18.6,130,2.6],[s*20.2,118,1.6],[s*22.4,107,0.6]],
      heads:[
-       {pts:s=>[[s*17.6,147,1.2],[s*18.8,135,2.0],[s*19.8,124,1.9],[s*20.8,112,1.2]], r:1.6, bulge:0.54},  // long head (lateral, bicipital groove)
-       {pts:s=>[[s*14.6,147,3.2],[s*17.0,135,3.0],[s*18.6,124,2.5],[s*20.2,112,1.6]], r:1.6, bulge:0.54}   // short head (medial, coracoid)
+       {pts:s=>[[s*17.6,147,1.4],[s*18.8,135,2.3],[s*19.8,124,2.1],[s*20.8,112,1.3]], r:1.95, bulge:0.54},  // long head (lateral, bicipital groove)
+       {pts:s=>[[s*14.4,147,3.4],[s*16.8,135,3.2],[s*18.5,124,2.7],[s*20.1,112,1.7]], r:1.95, bulge:0.54}   // short head (medial, coracoid)
      ],
      o:'Two-headed flexor of the front of the arm. The long head arises inside the shoulder joint from the supraglenoid tubercle and runs in the bicipital groove; the short head arises from the coracoid. It is the most powerful supinator of the forearm.',
      detail:{Origin:'Long head — supraglenoid tubercle; short head — coracoid process',Insertion:'Radial tuberosity and bicipital aponeurosis',Nerve:'Musculocutaneous nerve (C5, C6)',Action:'Elbow flexion and — most powerfully — forearm supination'},
@@ -1803,9 +1803,9 @@ function buildSoftTissue(){
     {id:'triceps', name:'Triceps Brachii', latin:'Musculus triceps brachii', r:2.4, mirror:true,
      pts:s=>[[s*16.5,144,-3],[s*18.5,130,-2.6],[s*20.5,118,-2.8],[s*22.4,110,-3.6]],
      heads:[
-       {pts:s=>[[s*15.0,145,-3.6],[s*17.5,132,-3.4],[s*19.5,120,-3.2],[s*21.4,111,-3.6]], r:1.6, bulge:0.44},  // long head (infraglenoid)
-       {pts:s=>[[s*18.6,140,-1.8],[s*19.8,130,-2.0],[s*20.8,120,-2.6],[s*21.7,111,-3.4]], r:1.5, bulge:0.5},   // lateral head
-       {pts:s=>[[s*16.8,127,-3.0],[s*18.6,120,-3.2],[s*20.2,114,-3.4],[s*21.6,110,-3.6]], r:1.25, bulge:0.55}  // medial head (deep, distal)
+       {pts:s=>[[s*14.8,145,-3.8],[s*17.4,132,-3.6],[s*19.5,120,-3.4],[s*21.4,111,-3.7]], r:2.0, bulge:0.44},  // long head (infraglenoid)
+       {pts:s=>[[s*18.7,140,-1.6],[s*19.9,130,-1.9],[s*20.9,120,-2.5],[s*21.8,111,-3.3]], r:1.85, bulge:0.5},   // lateral head
+       {pts:s=>[[s*16.6,127,-3.0],[s*18.5,120,-3.2],[s*20.2,114,-3.4],[s*21.6,110,-3.6]], r:1.55, bulge:0.55}  // medial head (deep, distal)
      ],
      o:'The sole extensor of the elbow, with three heads. The long head crosses the shoulder from the infraglenoid tubercle; the medial and lateral heads arise from the humeral shaft either side of the radial groove.',
      detail:{Origin:'Long head — infraglenoid tubercle; lateral and medial heads — posterior humerus',Insertion:'Olecranon process of the ulna',Nerve:'Radial nerve (C6–C8)',Action:'Elbow extension; the long head also extends and adducts the shoulder'},
@@ -1853,9 +1853,9 @@ function buildSoftTissue(){
     {id:'quadriceps', name:'Quadriceps Femoris', latin:'Musculus quadriceps femoris', r:3.6, mirror:true,
      pts:s=>[[s*9,88,3],[s*9.4,75,3.6],[s*9,62,3.4],[s*8.5,52,3.4]],
      heads:[
-       {pts:s=>[[s*8.6,90,4.0],[s*8.9,76,4.5],[s*8.6,64,4.2],[s*8.4,54,3.8]], r:1.85, bulge:0.5},  // rectus femoris (central)
-       {pts:s=>[[s*10.4,85,2.8],[s*11.0,74,3.1],[s*10.5,64,3.4],[s*9.5,55,3.6]], r:2.0, bulge:0.4}, // vastus lateralis
-       {pts:s=>[[s*7.0,80,3.2],[s*7.2,70,3.6],[s*7.0,60,3.9],[s*7.5,53,3.9]], r:1.75, bulge:0.66}   // vastus medialis (VMO teardrop, low bulge)
+       {pts:s=>[[s*8.6,90,4.2],[s*8.9,76,4.8],[s*8.6,64,4.4],[s*8.4,54,3.9]], r:2.45, bulge:0.5},  // rectus femoris (central)
+       {pts:s=>[[s*11.2,85,2.4],[s*11.9,74,2.8],[s*11.0,63,3.2],[s*9.8,55,3.5]], r:2.8, bulge:0.4}, // vastus lateralis (fuller, more lateral)
+       {pts:s=>[[s*6.6,80,3.0],[s*6.5,70,3.5],[s*6.4,60,3.9],[s*7.2,53,4.0]], r:2.4, bulge:0.66}   // vastus medialis (VMO teardrop, fuller/lower)
      ],
      o:'The great extensor group of the thigh: rectus femoris (which also flexes the hip, crossing two joints) plus the three vasti — lateralis, medialis and intermedius. All converge into the quadriceps tendon, the patella and the patellar tendon.',
      detail:{Origin:'Rectus femoris — anterior inferior iliac spine; vasti — femoral shaft',Insertion:'Tibial tuberosity via the patella and patellar tendon',Nerve:'Femoral nerve (L2, L3, L4)',Action:'Knee extension; rectus femoris also flexes the hip'},
@@ -1863,9 +1863,9 @@ function buildSoftTissue(){
     {id:'hamstrings', name:'Hamstrings', latin:'Musculi ischiocrurales', r:3.2, mirror:true,
      pts:s=>[[s*6.8,82,-2.5],[s*8,72,-3.2],[s*8.6,60,-3],[s*9,50,-2]],
      heads:[
-       {pts:s=>[[s*6.5,83,-3.0],[s*8.0,72,-3.6],[s*9.2,61,-3.4],[s*10.2,50,-2.6]], r:1.6, bulge:0.42}, // biceps femoris (lateral → fibular head)
-       {pts:s=>[[s*6.4,83,-2.6],[s*7.0,72,-3.2],[s*7.4,61,-3.0],[s*7.8,50,-2.2]], r:1.3, bulge:0.40},  // semitendinosus (medial, superficial)
-       {pts:s=>[[s*7.0,82,-2.0],[s*7.6,71,-2.8],[s*7.8,60,-2.6],[s*8.2,50,-1.8]], r:1.5, bulge:0.52}   // semimembranosus (medial, deep)
+       {pts:s=>[[s*6.4,83,-3.2],[s*8.0,72,-3.8],[s*9.3,61,-3.6],[s*10.3,50,-2.7]], r:2.15, bulge:0.42}, // biceps femoris (lateral → fibular head)
+       {pts:s=>[[s*6.2,83,-2.6],[s*6.8,72,-3.2],[s*7.2,61,-3.0],[s*7.6,50,-2.2]], r:1.75, bulge:0.40},  // semitendinosus (medial, superficial)
+       {pts:s=>[[s*6.9,82,-1.9],[s*7.5,71,-2.7],[s*7.7,60,-2.5],[s*8.1,50,-1.7]], r:2.05, bulge:0.52}   // semimembranosus (medial, deep)
      ],
      o:'Three muscles — biceps femoris, semitendinosus and semimembranosus — spanning hip and knee. They extend the hip and flex the knee, and act as important dynamic protectors of the ACL by resisting anterior tibial translation.',
      detail:{Origin:'Ischial tuberosity (short head of biceps femoris from the linea aspera)',Insertion:'Head of the fibula (biceps femoris); medial tibia (semitendinosus, semimembranosus)',Nerve:'Sciatic nerve — tibial division (short head of biceps: common peroneal division)',Action:'Hip extension and knee flexion'},
@@ -1873,9 +1873,9 @@ function buildSoftTissue(){
     {id:'gastroc', name:'Gastrocnemius & Soleus', latin:'Triceps surae', r:3.0, mirror:true,
      pts:s=>[[s*8.4,48,-3],[s*8.6,38,-4],[s*8.4,26,-3.4],[s*8.3,14,-2.6]],
      heads:[
-       {pts:s=>[[s*6.9,49,-3.4],[s*7.3,42,-4.3],[s*7.7,32,-4.0],[s*8.0,22,-3.3]], r:1.95, bulge:0.34},       // medial gastrocnemius head (bulges lower)
-       {pts:s=>[[s*9.8,49,-3.2],[s*9.8,42,-4.0],[s*9.4,34,-3.7],[s*8.9,26,-3.2]], r:1.85, bulge:0.34},       // lateral gastrocnemius head
-       {pts:s=>[[s*8.3,40,-3.0],[s*8.6,30,-3.7],[s*8.4,20,-3.2],[s*8.3,12,-2.6]], r:2.15, bulge:0.5, fy:1.1} // soleus (deep, broad, extends lower)
+       {pts:s=>[[s*6.7,49,-3.4],[s*7.1,42,-4.4],[s*7.6,32,-4.1],[s*8.0,22,-3.3]], r:2.25, bulge:0.34},       // medial gastrocnemius head (bulges lower)
+       {pts:s=>[[s*9.9,49,-3.2],[s*9.9,42,-4.1],[s*9.5,34,-3.8],[s*8.9,26,-3.2]], r:2.1, bulge:0.34},        // lateral gastrocnemius head
+       {pts:s=>[[s*8.3,40,-2.9],[s*8.6,30,-3.7],[s*8.4,20,-3.1],[s*8.3,12,-2.5]], r:2.45, bulge:0.5, fy:1.12} // soleus (deep, broad, extends lower)
      ],
      o:'The calf complex: the two-headed gastrocnemius crossing both knee and ankle, and the deeper, broader soleus crossing only the ankle. Together they form the Achilles tendon — the strongest tendon in the body, transmitting forces up to ten times body weight.',
      detail:{Origin:'Gastrocnemius — femoral condyles; soleus — posterior tibia and fibula',Insertion:'Calcaneal tuberosity via the Achilles tendon',Nerve:'Tibial nerve (S1, S2)',Action:'Ankle plantarflexion; gastrocnemius also assists knee flexion'},
@@ -2001,9 +2001,9 @@ function buildSoftTissue(){
     {id:'adductors', name:'Adductor Group', latin:'Musculi adductores', r:2.4, mirror:true,
      pts:s=>[[s*3.2,84.4,3.4],[s*6.0,78.0,1.4],[s*8.2,68.0,-0.6],[s*9.4,56.0,-1.6]],
      heads:[
-       {pts:s=>[[s*3.0,85,3.6],[s*5.4,78,2.0],[s*7.0,68,0.6],[s*7.8,58,-0.4]], r:1.2, bulge:0.42},  // adductor longus
-       {pts:s=>[[s*3.4,84,2.4],[s*6.2,76,0.2],[s*8.4,64,-1.4],[s*9.6,52,-2.2]], r:1.6, bulge:0.45},  // adductor magnus (large)
-       {pts:s=>[[s*2.8,85,3.0],[s*3.6,74,2.0],[s*4.0,62,1.0],[s*4.4,50,0.2]], r:0.7, bulge:0.5}      // gracilis (thin, to knee)
+       {pts:s=>[[s*3.0,85,3.6],[s*5.4,78,2.2],[s*7.0,68,0.8],[s*7.8,58,-0.4]], r:1.7, bulge:0.42},  // adductor longus
+       {pts:s=>[[s*3.4,84,2.2],[s*6.3,76,-0.2],[s*8.6,64,-1.8],[s*9.8,52,-2.4]], r:2.35, bulge:0.45}, // adductor magnus (large)
+       {pts:s=>[[s*2.7,85,3.0],[s*3.5,74,2.0],[s*3.9,62,1.0],[s*4.3,50,0.2]], r:0.95, bulge:0.5}     // gracilis (thin, to knee)
      ],
      o:'Adductor longus, brevis and magnus with gracilis and pectineus, running from the pubis to the linea aspera. Adductor magnus also has a hamstring part reaching the adductor tubercle.',
      detail:{Origin:'Body and inferior ramus of the pubis; ischial tuberosity (magnus, hamstring part)',Insertion:'Linea aspera of the femur; adductor tubercle; medial tibia (gracilis)',Nerve:'Obturator nerve (L2–L4); tibial division of sciatic to the hamstring part of magnus',Action:'Hip adduction; assist flexion and rotation; stabilise the pelvis in stance'},
@@ -2074,8 +2074,8 @@ function buildSoftTissue(){
      o:'The largest muscle mass of the posterior neck, part of the transversospinalis group, spanning about five segments from transverse processes to spinous processes and the occiput.',
      detail:{Origin:'Transverse processes of the lower cervical and thoracic vertebrae',Insertion:'Spinous processes 4–6 segments above; semispinalis capitis onto the occipital bone',Nerve:'Posterior rami of the spinal nerves',Action:'Extension and contralateral rotation of the head and vertebral column'},
      clin:'The greater occipital nerve pierces semispinalis capitis before supplying the back of the scalp — entrapment here is a recognised cause of occipital neuralgia. Preserving the semispinalis attachment to C2 during posterior cervical surgery measurably reduces post-operative kyphosis and axial neck pain.'},
-    {id:'extoblique', shape:'sheet', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:1.8, mirror:true,
-     pts:s=>[[s*9.0,133.0,3.0],[s*10.6,124.0,4.2],[s*9.0,113.0,5.0],[s*5.0,105.0,5.6]],
+    {id:'extoblique', shape:'sheet', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:2.6, fy:2.9, fx:0.66, mirror:true,
+     pts:s=>[[s*9.4,133.0,2.6],[s*11.0,124.0,3.8],[s*9.4,113.0,4.8],[s*5.2,104.5,5.6]],
      o:'The largest and most superficial of the flat abdominal muscles, its fibres running downward and forward — "hands in pockets" — from the lower ribs to the iliac crest and linea alba.',
      detail:{Origin:'External surfaces of ribs 5–12',Insertion:'Iliac crest, pubic tubercle and linea alba via its aponeurosis',Nerve:'Thoracoabdominal nerves (T7–T11), subcostal and iliohypogastric nerves',Action:'Compresses the abdomen; flexes and contralaterally rotates the trunk'},
      clin:'Its aponeurosis forms the inguinal ligament and the anterior wall of the inguinal canal — the anatomy behind inguinal hernia repair. Together with the other abdominal muscles it generates the intra-abdominal pressure that unloads the lumbar spine, which is why core training genuinely helps chronic low back pain.'},
