@@ -2433,31 +2433,38 @@ function buildSoftTissue(){
   (function addVascularNetwork(){
     const gA=layerGroups.arteries, gV=layerGroups.veins; if(!gA||!gV) return;
     const aM=art(), vM=vei();
-    const twig=(g,m,pts,r0)=>{ g.add(sweepMesh(pts,{r:t=>r0*(1-0.62*t), fx:()=>1.0, fy:()=>0.9, seg:14, radial:7}, m)); };
-    // Segmental branches (intercostal + lumbar): pairs sweeping from the aorta/IVC
-    // around the trunk wall toward the front, following the ribs.
-    const rows=[]; for(let i=0;i<9;i++) rows.push({y:117+i*2.7,r:0.14}); for(let i=0;i<4;i++) rows.push({y:104+i*3.0,r:0.13});
-    rows.forEach(rw=>[1,-1].forEach(s=>{
-      const pa=[[-0.6,rw.y,-2.7],[s*3.6,rw.y+0.3,-1.4],[s*7.6,rw.y+0.4,1.6],[s*10.4,rw.y,4.8],[s*8,rw.y-0.7,7.0]];
-      twig(gA,aM,pa,rw.r);
-      twig(gV,vM,pa.map(p=>[p[0]+s*0.7,p[1]-0.5,p[2]-0.4]),rw.r*1.06);
+    const twig=(g,m,pts,r0)=>{ g.add(sweepMesh(pts,{r:t=>r0*(1-0.55*t), fx:()=>1.0, fy:()=>0.9, seg:26, radial:7}, m)); };
+    // --- Segmental branches that WRAP the trunk wall along the ribs. Each arises
+    // near the aorta/IVC (posterior midline), curves posterolaterally around the
+    // rib angle, then forward toward the sternum — so it hugs the cage instead of
+    // projecting into space. Small per-row jitter avoids a stack of identical rings.
+    const thoracic=[]; for(let i=0;i<8;i++) thoracic.push(118+i*3.0);
+    thoracic.forEach((y,i)=>[1,-1].forEach(s=>{
+      const j=(i%2?0.4:-0.3), r0=0.125-i*0.004;
+      // slopes downward toward the sternum like a real rib, so a lateral view
+      // reads it as a rib-following curve rather than a horizontal stub
+      const pa=[[s*1.4,y,-2.8],[s*7.0,y-0.3+j,-2.4],[s*12.6,y-1.0+j,-0.4],[s*11.6,y-2.4,3.4],[s*6.0,y-3.4,6.0],[s*3.0,y-4.0,7.0]];
+      twig(gA,aM,pa,r0);
+      twig(gV,vM,pa.map(p=>[p[0]+s*0.6,p[1]-0.5,p[2]-0.4]),r0*1.05);
     }));
-    // Muscular twigs — short spurs off the main limb vessels
-    const spots=[[19.5,131,2,0.10],[21,118,1.6,0.09],[24.5,100,2.4,0.08],[26,90,3,0.07],
-                 [6.5,82,3.6,0.11],[8.4,66,0.5,0.10],[8.6,52,-2,0.09],[9.4,38,-2,0.08]];
+    // --- Lumbar segmentals around the abdominal wall (no ribs) ---
+    [112,106,100,94].forEach((y,i)=>[1,-1].forEach(s=>{
+      const pa=[[s*1.2,y,-2.6],[s*6.0,y+0.2,-2.2],[s*10.4,y-0.3,0.4],[s*10.0,y-0.8,3.2],[s*5.2,y-1.2,5.2]];
+      twig(gA,aM,pa,0.11); twig(gV,vM,pa.map(p=>[p[0]+s*0.6,p[1]-0.4,p[2]-0.3]),0.116);
+    }));
+    // --- Muscular twigs off the limb trunks (thigh, leg, and forearm ON the bone,
+    // never in the gap between the trunk and the hanging arm) ---
+    const spots=[[6.5,82,3.6],[8.4,66,0.5],[8.6,52,-2],[9.4,38,-2],[8.4,24,1],[24.0,104,-0.6]];
     spots.forEach(sp=>[1,-1].forEach(s=>{ for(let k=0;k<3;k++){
-      const a=-0.5+k*0.5, dx=Math.cos(a)*3.0, dz=Math.sin(a)*2.0;
-      const p0=[s*sp[0],sp[1],sp[2]];
-      twig(gA,aM,[p0,[s*(sp[0]+dx*0.5),sp[1]-1.4,sp[2]+dz*0.5],[s*(sp[0]+dx),sp[1]-3,sp[2]+dz]],sp[3]);
-      twig(gV,vM,[[p0[0]+s*0.5,p0[1],p0[2]-0.3],[s*(sp[0]+dx*0.5)+s*0.5,sp[1]-1.4,sp[2]+dz*0.5-0.3],[s*(sp[0]+dx),sp[1]-3,sp[2]+dz-0.3]],sp[3]);
+      const a=-0.6+k*0.6, dx=Math.cos(a)*2.6, dz=Math.sin(a)*1.8, p0=[s*sp[0],sp[1],sp[2]];
+      const pts=[p0,[s*(sp[0]+dx*0.5),sp[1]-1.3,sp[2]+dz*0.5],[s*(sp[0]+dx),sp[1]-2.8,sp[2]+dz]];
+      twig(gA,aM,pts,0.07); twig(gV,vM,pts.map(p=>[p[0]+s*0.4,p[1],p[2]-0.3]),0.075);
     }}));
-    // Terminal digital fans at the hand and the foot
-    const fans=[[26.5,84,3.6, 4],[8,10,3, 3.5]];  // [wristX, y, z, spread]
-    fans.forEach(fn=>[1,-1].forEach(s=>{ for(let d=0;d<4;d++){
-      const off=(d-1.5)*fn[3]*0.6;
-      const p0=[s*fn[0],fn[1],fn[2]];
+    // --- Terminal digital fans at hands and feet ---
+    [[26.5,84,3.6,4],[8,10,3,3.5]].forEach(fn=>[1,-1].forEach(s=>{ for(let d=0;d<4;d++){
+      const off=(d-1.5)*fn[3]*0.6, p0=[s*fn[0],fn[1],fn[2]];
       const pts=[p0,[s*(fn[0]+off*0.5),fn[1]-3,fn[2]+1.6],[s*(fn[0]+off),fn[1]-7,fn[2]+2.6]];
-      twig(gA,aM,pts,0.06); twig(gV,vM,pts.map(p=>[p[0]+s*0.5,p[1],p[2]-0.3]),0.06);
+      twig(gA,aM,pts,0.055); twig(gV,vM,pts.map(p=>[p[0]+s*0.5,p[1],p[2]-0.3]),0.055);
     }}));
   })();
 
@@ -2525,7 +2532,7 @@ function buildSoftTissue(){
      detail:{Roots:'C5, C6, C7 (from the roots, before the trunks)',Course:'Pierces scalenus medius, descends on the outer surface of serratus anterior',Motor:'Serratus anterior only',Relations:'Runs on the medial wall of the axilla, at risk in axillary dissection'},
      clin:'Injury causes medial winging of the scapula and loss of overhead elevation. Classic causes are axillary node dissection, chest tube placement, backpack straps and viral brachial neuritis. Most traction injuries recover spontaneously over 12–24 months.'},
     {id:'post_interosseous', name:'Posterior Interosseous Nerve', latin:'Nervus interosseus posterior', r:0.20, mirror:true,
-     pts:s=>[[s*21.6,109.0,0.8],[s*22.0,105.0,0.0],[s*22.4,98.0,-0.4],[s*22.4,90.0,-0.4]],
+     pts:s=>[[s*23.0,109.0,-0.2],[s*23.6,105.0,-0.8],[s*24.2,98.0,-1.1],[s*24.4,90.0,-1.1]],
      o:'The deep motor branch of the radial nerve, passing between the two heads of supinator through the arcade of Frohse to supply the extensor compartment of the forearm.',
      detail:{Origin:'Deep branch of the radial nerve at the elbow',Course:'Between the superficial and deep heads of supinator (arcade of Frohse)',Motor:'Extensor carpi ulnaris, finger and thumb extensors, abductor pollicis longus',Sensory:'No cutaneous supply — wrist joint proprioception only'},
      clin:'Palsy causes finger drop with *preserved* wrist extension (because ECRL is supplied more proximally) and no sensory loss — distinguishing it from a high radial nerve lesion. It is at direct risk during the anterior approach to the proximal radius and in radial head/neck fracture fixation, so forearm pronation is used to move it away.'},
@@ -2580,7 +2587,7 @@ function buildSoftTissue(){
      detail:{Roots:'C6, C7, C8 — posterior cord',Course:'Down the posterior wall of the axilla on subscapularis, with the thoracodorsal artery',Motor:'Latissimus dorsi',Sensory:'None'},
      clin:'It is at risk during axillary lymph node clearance, and its integrity is essential for the pedicled latissimus dorsi flap used in breast and chest-wall reconstruction. Loss weakens the pull-up and the push off from a chair, which matters greatly to wheelchair users.'},
     {id:'antinterosseous', name:'Anterior Interosseous Nerve', latin:'Nervus interosseus anterior', r:0.16, mirror:true,
-     pts:s=>[[s*19.0,110.0,2.0],[s*19.6,103.0,1.2],[s*20.0,95.0,0.6],[s*20.0,89.0,0.6]],
+     pts:s=>[[s*22.2,110.0,1.8],[s*22.8,103.0,1.2],[s*23.4,95.0,0.8],[s*23.6,89.0,0.8]],
      o:'A purely motor branch of the median nerve arising just below the elbow and running down the interosseous membrane with the anterior interosseous artery.',
      detail:{Origin:'Median nerve, about 5–8 cm distal to the lateral epicondyle',Motor:'Flexor pollicis longus, the radial half of flexor digitorum profundus, pronator quadratus',Sensory:'None — wrist joint proprioception only',Course:'On the anterior interosseous membrane, deep to the long flexors'},
      clin:'Anterior interosseous syndrome gives a pure motor palsy with no sensory loss: the patient cannot make an "OK" sign, pinching with a straight thumb and index tip instead. Because there is no numbness it is often dismissed as tendon rupture — nerve conduction studies settle it.'},
@@ -2724,7 +2731,7 @@ function buildSoftTissue(){
       /* Vessels and nerves narrow as they give off branches, and are ovoid
          rather than perfectly round — a uniform cylinder reads as plumbing. */
       register(sweepMesh(pts, {
-        r  : t => d.r*(layer==='nerves'?2.1:1.55)*(1 - 0.30*t),   // thicker & less tapered — proportionate (nerves are stout)
+        r  : t => d.r*(layer==='nerves'?1.7:1.55)*(1 - 0.30*t),   // stout but proportionate to the bones
         fx : () => 1.12, fy : () => 0.88,
         seg: 40, radial: 14
       }, matFn()),{
