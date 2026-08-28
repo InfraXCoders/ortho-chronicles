@@ -1821,19 +1821,29 @@ function buildSoftTissue(){
      o:'The broad fan of the anterior chest wall, with clavicular, sternocostal and abdominal heads whose fibres twist 180° before inserting — which is why it can both flex and extend the shoulder depending on starting position.',
      detail:{Origin:'Medial clavicle, sternum, upper six costal cartilages',Insertion:'Lateral lip of the bicipital groove of the humerus',Nerve:'Medial and lateral pectoral nerves (C5–T1)',Action:'Adduction, medial rotation and flexion of the arm; accessory muscle of respiration'},
      clin:'Rupture occurs typically in weight-trainers during bench press, producing a sudden tearing sensation, bruising and loss of the anterior axillary fold. Surgical repair is recommended in active individuals.'},
-    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:2.9, fy:2.9, fx:0.62, mirror:true,
+    {id:'latissimus', shape:'sheet', name:'Latissimus Dorsi', latin:'Musculus latissimus dorsi', r:2.9, mirror:true,
      // Superficial over the lower ribs (which reach z≈-8..-10), so it must sit
      // that far back to cover them; converges anteriorly to the bicipital groove.
+     // Built as a fanned set of fibre bands (like the deltoid's heads) so it reads
+     // as a rounded, sculpted muscle rather than a flat pale drape.
      pts:s=>[[s*3.0,100,-7.9],[s*7.2,113,-8.8],[s*10.8,126,-8.7],[s*14.0,137,-6.6],[s*16.6,141.5,-1.4]],
+     heads:[
+       // lower fibres — from the iliac crest, sweeping steeply up to the humerus
+       {sheet:true, r:2.3, fy:3.0, fx:0.92, pts:s=>[[s*3.0,99,-7.4],[s*7.2,111,-8.6],[s*11.6,125,-8.4],[s*14.8,136,-5.6],[s*16.6,141.4,-1.5]]},
+       // middle fibres
+       {sheet:true, r:2.1, fy:2.5, fx:0.88, pts:s=>[[s*4.8,105,-7.9],[s*8.8,117,-8.7],[s*12.6,128,-8.0],[s*15.2,136,-4.8],[s*16.6,141.4,-1.5]]},
+       // upper fibres — more horizontal, from the lower thoracic spine
+       {sheet:true, r:1.9, fy:2.1, fx:0.84, pts:s=>[[s*6.4,121,-8.2],[s*10.2,128,-8.5],[s*13.4,133,-7.0],[s*15.4,137,-4.0],[s*16.6,141.4,-1.5]]}
+     ],
      o:'The largest muscle of the back, sweeping from the lower spine and iliac crest up to the humerus — the "climbing muscle" that pulls the body up toward a fixed arm.',
      detail:{Origin:'Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower ribs',Insertion:'Floor of the bicipital groove of the humerus',Nerve:'Thoracodorsal nerve (C6–C8)',Action:'Extension, adduction and medial rotation of the arm'},
      clin:'Its reliable pedicle makes the latissimus dorsi flap a workhorse in reconstructive surgery — for breast reconstruction and for covering large soft-tissue defects, including around the shoulder and chest wall.'},
     {id:'trapezius', shape:'sheet', name:'Trapezius', latin:'Musculus trapezius', r:2.9, mirror:true,
      pts:s=>[[s*0.6,166,-6],[s*5,155,-6.5],[s*10,149,-6],[s*14,147,-5]],
      heads:[
-       {sheet:true, r:2.5, fy:2.7, fx:0.6,  pts:s=>[[s*1.4,167,-7.4],[s*6,159,-8.0],[s*11,152,-7.6],[s*14.5,148,-6.2]]},   // upper (descending) part
-       {sheet:true, r:2.7, fy:3.6, fx:0.62, pts:s=>[[s*1.0,150,-8.6],[s*5.5,149,-8.4],[s*10,148,-7.8],[s*13.5,147.5,-6.8]]}, // middle (transverse) — broad interscapular cover
-       {sheet:true, r:2.6, fy:3.0, fx:0.6,  pts:s=>[[s*1.0,121,-8.2],[s*4.5,129,-8.4],[s*8,138,-8.3],[s*11.5,145,-7.2]]}    // lower (ascending) part
+       {sheet:true, r:2.7, fy:2.7, fx:0.84, pts:s=>[[s*1.4,167,-7.4],[s*6,159,-8.0],[s*11,152,-7.6],[s*14.5,148,-6.2]]},   // upper (descending) part
+       {sheet:true, r:2.9, fy:3.6, fx:0.86, pts:s=>[[s*1.0,150,-8.6],[s*5.5,149,-8.4],[s*10,148,-7.8],[s*13.5,147.5,-6.8]]}, // middle (transverse) — broad interscapular cover
+       {sheet:true, r:2.8, fy:3.0, fx:0.84, pts:s=>[[s*1.0,121,-8.2],[s*4.5,129,-8.4],[s*8,138,-8.3],[s*11.5,145,-7.2]]}    // lower (ascending) part
      ],
      o:'A large diamond-shaped superficial back muscle in three functional parts: upper fibres elevate the scapula, middle fibres retract it, lower fibres depress it and rotate the glenoid upward during arm elevation.',
      detail:{Origin:'External occipital protuberance, ligamentum nuchae, spinous processes C7–T12',Insertion:'Lateral clavicle, acromion, spine of scapula',Nerve:'Spinal accessory nerve (CN XI), with proprioception from C3–C4',Action:'Elevation, retraction, depression and upward rotation of the scapula'},
@@ -1979,9 +1989,9 @@ function buildSoftTissue(){
     {id:'erectorspinae', name:'Erector Spinae', latin:'Musculi erector spinae', r:2.2, mirror:true,
      pts:s=>[[s*2.8,98.0,-4.6],[s*3.2,114.0,-5.4],[s*3.2,130.0,-6.0],[s*2.8,148.0,-5.4]],
      heads:[
-       {pts:s=>[[s*2.2,100,-6.6],[s*2.4,114,-7.2],[s*2.4,130,-7.4],[s*2.2,146,-7.0]], r:1.0, bulge:0.5}, // spinalis (medial)
-       {pts:s=>[[s*3.2,98,-6.6],[s*3.6,114,-7.4],[s*3.6,132,-7.6],[s*3.2,148,-7.0]], r:1.4, bulge:0.5},  // longissimus (middle)
-       {pts:s=>[[s*4.6,98,-6.2],[s*5.0,112,-7.0],[s*4.8,128,-7.2],[s*4.2,142,-6.8]], r:1.2, bulge:0.5}   // iliocostalis (lateral)
+       {pts:s=>[[s*2.2,100,-6.6],[s*2.4,114,-7.2],[s*2.4,130,-7.4],[s*2.2,146,-7.0]], r:1.4, bulge:0.5}, // spinalis (medial)
+       {pts:s=>[[s*3.4,98,-6.6],[s*3.8,114,-7.4],[s*3.8,132,-7.6],[s*3.4,148,-7.0]], r:1.9, bulge:0.5},  // longissimus (middle)
+       {pts:s=>[[s*5.0,98,-6.2],[s*5.4,112,-7.0],[s*5.2,128,-7.2],[s*4.6,142,-6.8]], r:1.6, bulge:0.5}   // iliocostalis (lateral)
      ],
      o:'The long paraspinal column — iliocostalis, longissimus and spinalis — running from sacrum and iliac crest to ribs, transverse processes and skull. It is the principal extensor and postural guardian of the spine.',
      detail:{Origin:'Sacrum, iliac crest, thoracolumbar fascia and lumbar spinous processes',Insertion:'Ribs, transverse and spinous processes, mastoid process',Nerve:'Posterior rami of the spinal nerves',Action:'Spinal extension; unilaterally, lateral flexion; eccentric control of forward bending'},
@@ -2036,7 +2046,7 @@ function buildSoftTissue(){
      o:'A small triangular muscle deep to pectoralis major, running from the third to fifth ribs up to the coracoid process. It is the surgical key to the axilla, dividing the axillary artery and the axillary nodes into three levels.',
      detail:{Origin:'Anterior surfaces of ribs 3–5',Insertion:'Coracoid process of the scapula',Nerve:'Medial pectoral nerve (C8, T1)',Action:'Protracts and depresses the scapula; assists forced inspiration'},
      clin:'It divides the axillary artery into its three parts and the axillary lymph nodes into levels I–III, the framework used in breast cancer surgery. A tight pectoralis minor tilts the scapula anteriorly, contributing to shoulder impingement, and can compress the neurovascular bundle in pectoralis minor (thoracic outlet) syndrome.'},
-    {id:'rhomboids', shape:'sheet', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:1.9, fy:2.8, fx:0.55, mirror:true,
+    {id:'rhomboids', shape:'sheet', name:'Rhomboid Major & Minor', latin:'Musculi rhomboidei', r:2.1, fy:2.8, fx:0.78, mirror:true,
      pts:s=>[[s*1.4,147.0,-7.8],[s*5.0,143.0,-8.2],[s*8.2,139.0,-8.2],[s*10.6,134.5,-7.4]],
      o:'Two parallel straps running obliquely from the lower cervical and upper thoracic spinous processes down to the medial border of the scapula, retracting and downwardly rotating it.',
      detail:{Origin:'Rhomboid minor — C7–T1 spinous processes; major — T2–T5 spinous processes',Insertion:'Medial border of the scapula, from the spine to the inferior angle',Nerve:'Dorsal scapular nerve (C5)',Action:'Retraction, elevation and downward rotation of the scapula'},
@@ -2076,7 +2086,7 @@ function buildSoftTissue(){
      o:'The largest muscle mass of the posterior neck, part of the transversospinalis group, spanning about five segments from transverse processes to spinous processes and the occiput.',
      detail:{Origin:'Transverse processes of the lower cervical and thoracic vertebrae',Insertion:'Spinous processes 4–6 segments above; semispinalis capitis onto the occipital bone',Nerve:'Posterior rami of the spinal nerves',Action:'Extension and contralateral rotation of the head and vertebral column'},
      clin:'The greater occipital nerve pierces semispinalis capitis before supplying the back of the scalp — entrapment here is a recognised cause of occipital neuralgia. Preserving the semispinalis attachment to C2 during posterior cervical surgery measurably reduces post-operative kyphosis and axial neck pain.'},
-    {id:'extoblique', shape:'sheet', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:2.6, fy:2.9, fx:0.66, mirror:true,
+    {id:'extoblique', shape:'sheet', name:'External Oblique', latin:'Musculus obliquus externus abdominis', r:2.7, fy:2.9, fx:0.82, mirror:true,
      pts:s=>[[s*9.4,133.0,2.6],[s*11.0,124.0,3.8],[s*9.4,113.0,4.8],[s*5.2,104.5,5.6]],
      o:'The largest and most superficial of the flat abdominal muscles, its fibres running downward and forward — "hands in pockets" — from the lower ribs to the iliac crest and linea alba.',
      detail:{Origin:'External surfaces of ribs 5–12',Insertion:'Iliac crest, pubic tubercle and linea alba via its aponeurosis',Nerve:'Thoracoabdominal nerves (T7–T11), subcostal and iliohypogastric nerves',Action:'Compresses the abdomen; flexes and contralaterally rotates the trunk'},
