@@ -635,7 +635,7 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   float ramp  = smoothstep(0.08, 0.92, bundle);             // oxygen↔myoglobin along fibres (soft)
   vec3 belly  = mix(myoRed, oxyRed, ramp);
   float fibre = mFine(vRing, vLen);                         // fine fibres within each bundle
-  belly *= 0.965 + 0.035*fibre*faa;                        // fine fibres as soft colour lines (AA)
+  belly *= 0.945 + 0.055*fibre*faa;                        // fine fibres as colour lines (AA)
   belly *= 0.93 + 0.09*(mn(vMPos*1.2)*0.6 + mn(vMPos*4.8)*0.4); // gentle organic mottle
   belly += vec3(0.04,0.006,0.006)*pow(ramp,3.0);           // wet highlight on fibre ridges
   // ── tendon ends: white fibrous tissue where the belly meets bone. Kept short
@@ -661,9 +661,12 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
       // WebGL2 only (dFdx is core there); WebGL1 falls back to flat fibres.
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
 #if __VERSION__ >= 300
-{ // Relief comes from the FINE fibres only, so the broad colour bands stay flat
-  // instead of corrugating the flat sheet muscles into deep waves.
-  float hb = mFine(vRing, vLen);
+{ // Fascicle relief — the coarse perimysial BUNDLES (the grooves that give
+  // dissected muscle its sculpted look) plus the fine fibres on top. The bundle
+  // frequency is low enough that it sculpts flat sheets without corrugating them
+  // into deep waves, and the fwidth fade still tames moiré at grazing distance.
+  float wv = mn(vMPos*0.5);
+  float hb = mBundle(vRing, vLen, wv)*0.62 + mFine(vRing, vLen)*0.38;
   vec3  vp = -vViewPosition;
   vec3  sx = dFdx(vp), sy = dFdy(vp);
   float hx = dFdx(hb), hy = dFdy(hb);
@@ -671,9 +674,9 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   vec3  r1 = cross(sy, n0), r2 = cross(n0, sx);
   float det = dot(sx, r1);
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
-  float aa = clamp(1.0 - smoothstep(0.010,0.038,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
+  float aa = clamp(1.0 - smoothstep(0.012,0.044,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
   float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.028*belly*aa)*grad);
+  normal = normalize(abs(det)*n0 - (0.072*belly*aa)*grad);
 }
 #endif`);
   };
@@ -804,6 +807,8 @@ function sweep(points, opt){
   const fy = opt.fy || (()=>1);
   const tw = opt.twist || (()=>0);
   const rug = opt.rug || 0;          // surface rugosity (muscle attachment roughness)
+  const ridgeA = opt.ridge || 0;     // longitudinal fascicle ridges (fraction of radius)
+  const ridgeN = opt.ridgeN || 13;   // number of fascicle bundles around the section
   const seed= opt.seed || 3.1;
   /* opt.plane pins the cross-section to a fixed reference direction instead of
      the Frenet frame. Frenet normals rotate as a curve bends, which made flat
@@ -831,7 +836,12 @@ function sweep(points, opt){
     for(let j=0;j<=R;j++){
       const jj=j%R;                                   // wrap so the seam matches exactly
       const a=jj/R*Math.PI*2 + rot;
-      const rr = rug ? rad*(1 + rug*(_vn(i*0.85, jj*0.85, seed)-0.5)) : rad;
+      let rr = rug ? rad*(1 + rug*(_vn(i*0.85, jj*0.85, seed)-0.5)) : rad;
+      // Longitudinal fascicle ridges: a scalloped radius around the section that
+      // runs the length of the belly, so even a flat sheet carries the sculpted
+      // bundle relief of dissected muscle. Uses jj/R (not the rotated angle) so
+      // the ridges stay put and the seam closes exactly.
+      if(ridgeA) rr *= 1 + ridgeA*Math.cos(jj/R*Math.PI*2*ridgeN);
       const cx=Math.cos(a)*rr*ex, cy=Math.sin(a)*rr*ey;
       rvx.push(P.x+N.x*cx+B.x*cy); rvy.push(P.y+N.y*cx+B.y*cy); rvz.push(P.z+N.z*cx+B.z*cy);
     }
@@ -2220,7 +2230,10 @@ function buildSoftTissue(){
         fx : () => (o.fx!=null?o.fx : (o.sheet ? 0.58 : 0.98)),   // sheets: rounded slab, not flat card
         fy : () => (o.fy!=null?o.fy : (o.sheet ? 2.40 : 0.84)),
         twist: o.twist || (()=>0),
-        seg: 54, radial: o.sheet ? 26 : 30   // HD: rounder bellies, smoother silhouette
+        // Longitudinal fascicle ridges baked into the mesh so every belly — flat
+        // sheet included — carries the sculpted bundle relief of dissected muscle.
+        ridge: (o.ridge!=null?o.ridge : 0.05), ridgeN: o.sheet ? 15 : 11,
+        seg: 54, radial: o.sheet ? 44 : 40   // HD: rounder bellies, enough segments for smooth ridges
       }, M);
       let obj;
       if(m.heads){                           // individually sculpted: separate anatomical heads
