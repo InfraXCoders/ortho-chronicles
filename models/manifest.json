@@ -249,12 +249,6 @@
     "dorsalis_pedis_r": {
       "file": "dorsalis_pedis_r.glb"
     },
-    "erectorspinae_l": {
-      "file": "erectorspinae_l.glb"
-    },
-    "erectorspinae_r": {
-      "file": "erectorspinae_r.glb"
-    },
     "extensorgroup_l": {
       "file": "extensorgroup_l.glb"
     },
@@ -486,12 +480,6 @@
     "deepflexors_r": {
       "file": "deepflexors_r.glb"
     },
-    "extoblique_l": {
-      "file": "extoblique_l.glb"
-    },
-    "extoblique_r": {
-      "file": "extoblique_r.glb"
-    },
     "hiprotators_l": {
       "file": "hiprotators_l.glb"
     },
@@ -581,12 +569,6 @@
     },
     "pelvicfloor_r": {
       "file": "pelvicfloor_r.glb"
-    },
-    "rectusabd_l": {
-      "file": "rectusabd_l.glb"
-    },
-    "rectusabd_r": {
-      "file": "rectusabd_r.glb"
     },
     "suboccipital_l": {
       "file": "suboccipital_l.glb"

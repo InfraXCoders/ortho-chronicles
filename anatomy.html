@@ -667,8 +667,12 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   // dissected muscle its sculpted look) plus the fine fibres on top. The bundle
   // frequency is low enough that it sculpts flat sheets without corrugating them
   // into deep waves, and the fwidth fade still tames moiré at grazing distance.
+  // Kept gentle and fine-dominant: procedural bellies carry their fascicle ridges
+  // in the GEOMETRY now, so the shader only needs a light fibre grain. A strong
+  // bump here shattered the loaded striated meshes (rectus, erector, trapezius)
+  // whose ribbon geometry it amplified into shards.
   float wv = mn(vMPos*0.5);
-  float hb = mBundle(vRing, vLen, wv)*0.62 + mFine(vRing, vLen)*0.38;
+  float hb = mBundle(vRing, vLen, wv)*0.3 + mFine(vRing, vLen)*0.7;
   vec3  vp = -vViewPosition;
   vec3  sx = dFdx(vp), sy = dFdy(vp);
   float hx = dFdx(hb), hy = dFdy(hb);
@@ -678,7 +682,7 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
   float aa = clamp(1.0 - smoothstep(0.012,0.044,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
   float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.072*belly*aa)*grad);
+  normal = normalize(abs(det)*n0 - (0.02*belly*aa)*grad);
 }
 #endif`);
   };
@@ -2250,6 +2254,12 @@ function buildSoftTissue(){
         overview:m.o, detail:Object.assign({}, m.detail, (MUSCLE_VASC[m.id]||{})),
         clinical:[{t:'Clinical relevance', d:m.clin}]
       });
+      // Grade procedural muscles by their bulk on the SAME colour pipeline the
+      // loaded models use (colourByMass + a lighter per-muscle tint), so a
+      // procedural muscle (e.g. latissimus) matches its GLTF neighbours instead
+      // of reading a different red.
+      const _d = STRUCTURES[m.id+sfx];
+      if(_d && _d._mat){ colourByMass(_d._mat, meshVolume(obj)); tintMuscle(_d._mat, m.id, 0.7); }
     });
   });
 
