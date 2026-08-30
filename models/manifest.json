@@ -207,12 +207,6 @@
     "brachiocephalic_v_r": {
       "file": "brachiocephalic_v_r.glb"
     },
-    "brachioradialis_l": {
-      "file": "brachioradialis_l.glb"
-    },
-    "brachioradialis_r": {
-      "file": "brachioradialis_r.glb"
-    },
     "calfpump_l": {
       "file": "calfpump_l.glb"
     },
@@ -249,12 +243,6 @@
     "dorsalis_pedis_r": {
       "file": "dorsalis_pedis_r.glb"
     },
-    "extensorgroup_l": {
-      "file": "extensorgroup_l.glb"
-    },
-    "extensorgroup_r": {
-      "file": "extensorgroup_r.glb"
-    },
     "femoral_art_l": {
       "file": "femoral_art_l.glb"
     },
@@ -266,12 +254,6 @@
     },
     "femoral_v_r": {
       "file": "femoral_v_r.glb"
-    },
-    "flexorgroup_l": {
-      "file": "flexorgroup_l.glb"
-    },
-    "flexorgroup_r": {
-      "file": "flexorgroup_r.glb"
     },
     "gastroc_l": {
       "file": "gastroc_l.glb"
@@ -369,12 +351,6 @@
     "sartorius_r": {
       "file": "sartorius_r.glb"
     },
-    "scm_l": {
-      "file": "scm_l.glb"
-    },
-    "scm_r": {
-      "file": "scm_r.glb"
-    },
     "serratus_l": {
       "file": "serratus_l.glb"
     },
@@ -441,12 +417,6 @@
     "tibpost_r": {
       "file": "tibpost_r.glb"
     },
-    "trapezius_l": {
-      "file": "trapezius_l.glb"
-    },
-    "trapezius_r": {
-      "file": "trapezius_r.glb"
-    },
     "triceps_l": {
       "file": "triceps_l.glb"
     },
@@ -468,35 +438,11 @@
     "achilles_r": {
       "file": "achilles_r.glb"
     },
-    "antextensors_l": {
-      "file": "antextensors_l.glb"
-    },
-    "antextensors_r": {
-      "file": "antextensors_r.glb"
-    },
-    "deepflexors_l": {
-      "file": "deepflexors_l.glb"
-    },
-    "deepflexors_r": {
-      "file": "deepflexors_r.glb"
-    },
     "hiprotators_l": {
       "file": "hiprotators_l.glb"
     },
     "hiprotators_r": {
       "file": "hiprotators_r.glb"
-    },
-    "infrahyoid_l": {
-      "file": "infrahyoid_l.glb"
-    },
-    "infrahyoid_r": {
-      "file": "infrahyoid_r.glb"
-    },
-    "pectminor_l": {
-      "file": "pectminor_l.glb"
-    },
-    "pectminor_r": {
-      "file": "pectminor_r.glb"
     },
     "plantaris_l": {
       "file": "plantaris_l.glb"
@@ -510,71 +456,11 @@
     "popliteus_r": {
       "file": "popliteus_r.glb"
     },
-    "rhomboids_l": {
-      "file": "rhomboids_l.glb"
-    },
-    "rhomboids_r": {
-      "file": "rhomboids_r.glb"
-    },
-    "scalenes_l": {
-      "file": "scalenes_l.glb"
-    },
-    "scalenes_r": {
-      "file": "scalenes_r.glb"
-    },
-    "semispinalis_l": {
-      "file": "semispinalis_l.glb"
-    },
-    "semispinalis_r": {
-      "file": "semispinalis_r.glb"
-    },
-    "serratusposterior_l": {
-      "file": "serratusposterior_l.glb"
-    },
-    "serratusposterior_r": {
-      "file": "serratusposterior_r.glb"
-    },
-    "splenius_l": {
-      "file": "splenius_l.glb"
-    },
-    "splenius_r": {
-      "file": "splenius_r.glb"
-    },
-    "subclavius_l": {
-      "file": "subclavius_l.glb"
-    },
-    "subclavius_r": {
-      "file": "subclavius_r.glb"
-    },
-    "deepneckflex_l": {
-      "file": "deepneckflex_l.glb"
-    },
-    "deepneckflex_r": {
-      "file": "deepneckflex_r.glb"
-    },
-    "deeprotators_l": {
-      "file": "deeprotators_l.glb"
-    },
-    "deeprotators_r": {
-      "file": "deeprotators_r.glb"
-    },
-    "levatorscap_l": {
-      "file": "levatorscap_l.glb"
-    },
-    "levatorscap_r": {
-      "file": "levatorscap_r.glb"
-    },
     "pelvicfloor_l": {
       "file": "pelvicfloor_l.glb"
     },
     "pelvicfloor_r": {
       "file": "pelvicfloor_r.glb"
-    },
-    "suboccipital_l": {
-      "file": "suboccipital_l.glb"
-    },
-    "suboccipital_r": {
-      "file": "suboccipital_r.glb"
     },
     "transvthoracis_l": {
       "file": "transvthoracis_l.glb"

@@ -681,8 +681,13 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   float det = dot(sx, r1);
   vec3  grad = sign(det) * (hx*r1 + hy*r2);
   float aa = clamp(1.0 - smoothstep(0.012,0.044,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
+  // Kill relief where the GEOMETRY itself is noisy (fast per-pixel normal change) —
+  // the loaded deep striated meshes have crinkled ribbon surfaces the bump turns
+  // to shards, whereas smooth bellies (procedural + clean loaded ones) keep it.
+  float gvar = length(fwidth(n0));
+  float gaa  = clamp(1.0 - gvar*16.0, 0.0, 1.0);
   float belly = smoothstep(0.05,0.16,vLen)*smoothstep(0.95,0.84,vLen); // no relief on tendon ends
-  normal = normalize(abs(det)*n0 - (0.02*belly*aa)*grad);
+  normal = normalize(abs(det)*n0 - (0.034*belly*aa*gaa)*grad);
 }
 #endif`);
   };
