@@ -1937,8 +1937,8 @@ function buildSoftTissue(){
     {id:'scm', name:'Sternocleidomastoid', latin:'Musculus sternocleidomastoideus', r:1.5, mirror:true,
      pts:s=>[[s*2,150.5,6.5],[s*4.5,156,4],[s*6.4,160,0.5],[s*7.4,162.4,-2.4]],
      heads:[
-       {pts:s=>[[s*1.6,150,7.0],[s*4.0,156,4.2],[s*6.2,160,0.8],[s*7.4,162.4,-2.2]], r:0.85, bulge:0.5},  // sternal head (rounded, superficial)
-       {pts:s=>[[s*4.2,149.8,4.6],[s*5.6,155,2.6],[s*6.8,160,-0.2],[s*7.4,162.2,-2.6]], r:0.7, bulge:0.5}  // clavicular head (flatter, deep)
+       {pts:s=>[[s*1.6,150,7.0],[s*4.0,156,4.2],[s*6.2,160,0.8],[s*7.4,162.4,-2.2]], r:1.15, bulge:0.5},  // sternal head (rounded, superficial)
+       {pts:s=>[[s*4.2,149.8,4.6],[s*5.6,155,2.6],[s*6.8,160,-0.2],[s*7.4,162.2,-2.6]], r:0.98, bulge:0.5}  // clavicular head (flatter, deep)
      ],
      o:'The prominent oblique strap of the neck with two heads (sternal and clavicular), dividing the neck into anterior and posterior triangles — the fundamental surgical map of the neck.',
      detail:{Origin:'Manubrium sterni and medial third of the clavicle',Insertion:'Mastoid process and superior nuchal line',Nerve:'Spinal accessory nerve (CN XI); sensory from C2–C3',Action:'Unilaterally — tilts head to same side, rotates face to opposite side; bilaterally — flexes the neck'},
@@ -1970,17 +1970,17 @@ function buildSoftTissue(){
      detail:{Origin:'Inferior angle and lower lateral border of the scapula',Insertion:'Medial lip of the bicipital groove',Nerve:'Lower subscapular nerve (C6, C7)',Action:'Adduction, extension and internal rotation of the arm'},
      clin:'Its lower border marks where the axillary artery becomes the brachial artery — a key landmark in vascular assessment and in surgical exposure of the upper arm.'},
     /* ---- Forearm groups ---- */
-    {id:'brachioradialis', name:'Brachioradialis', latin:'Musculus brachioradialis', r:1.75, mirror:true,
-     pts:s=>[[s*23.7,118.0,-2.4],[s*25.1,110.0,-0.8],[s*26.8,100.0,1.9],[s*27.9,90.0,3.8],[s*27.7,85.0,4.6]],
+    {id:'brachioradialis', name:'Brachioradialis', latin:'Musculus brachioradialis', r:2.1, bulge:0.35, mirror:true,
+     pts:s=>[[s*23.6,118.0,-2.4],[s*25.0,110.0,-0.8],[s*26.7,100.0,1.9],[s*27.8,90.0,3.8],[s*27.6,85.0,4.6]],
      o:'A long superficial forearm muscle running from the lateral supracondylar ridge to the radial styloid — the "beer-raising muscle", most efficient with the forearm in mid-pronation.',
      detail:{Origin:'Lateral supracondylar ridge of the humerus',Insertion:'Base of the radial styloid process',Nerve:'Radial nerve (C5, C6) — unusual for a flexor',Action:'Elbow flexion, strongest in the neutral (thumb-up) position'},
      clin:'It is the anatomical guide to the radial nerve in the forearm and forms the lateral border of the cubital fossa. Its pull is a deforming force in distal radius fractures, drawing the fragment proximally and into radial deviation.'},
     {id:'flexorgroup', name:'Common Flexor Group', latin:'Compartimentum antebrachii flexorium', r:2.0, mirror:true,
      pts:s=>[[s*21.4,112.0,-1.0],[s*24.0,104.0,1.6],[s*25.6,96.0,4.0],[s*26.6,88.0,4.8],[s*27.2,84.0,5.4]],
      heads:[
-       {pts:s=>[[s*20.4,112,-0.8],[s*23.1,104,1.8],[s*24.7,96,3.8],[s*25.8,89,4.4]], r:1.5, bulge:0.35},                     // radial flexors (pronator teres, FCR)
-       {pts:s=>[[s*21.5,111,-0.7],[s*24.1,103,2.0],[s*25.8,95,4.2],[s*26.8,88,4.8],[s*27.2,84,5.4]], r:1.5, bulge:0.40},     // superficial digital flexors
-       {pts:s=>[[s*22.7,111,-1.8],[s*24.9,103,0.7],[s*26.3,95,3.0],[s*27.1,89,4.0]], r:1.35, bulge:0.40}                     // ulnar flexor (FCU)
+       {pts:s=>[[s*20.4,112,-0.8],[s*23.1,104,1.8],[s*24.7,96,3.8],[s*25.8,89,4.4]], r:1.95, bulge:0.32},                    // radial flexors (pronator teres, FCR)
+       {pts:s=>[[s*21.5,111,-0.7],[s*24.1,103,2.0],[s*25.8,95,4.2],[s*26.8,88,4.8],[s*27.2,84,5.4]], r:1.9, bulge:0.34},     // superficial digital flexors
+       {pts:s=>[[s*22.7,111,-1.8],[s*24.9,103,0.7],[s*26.3,95,3.0],[s*27.1,89,4.0]], r:1.75, bulge:0.34}                     // ulnar flexor (FCU)
      ],
      o:'The anterior forearm compartment — pronator teres, the wrist and finger flexors and the deep flexor layer — arising largely from the common flexor origin on the medial epicondyle.',
      detail:{Origin:'Medial epicondyle (common flexor origin), radius, ulna and interosseous membrane',Insertion:'Carpal bones, metacarpals and the flexor tendons of the digits',Nerve:'Median nerve, except FCU and the ulnar half of FDP (ulnar nerve)',Action:'Wrist and finger flexion; forearm pronation'},
@@ -1988,9 +1988,9 @@ function buildSoftTissue(){
     {id:'extensorgroup', name:'Common Extensor Group', latin:'Compartimentum antebrachii extensorium', r:1.9, mirror:true,
      pts:s=>[[s*24.6,112.0,-4.2],[s*25.6,104.0,-3.2],[s*26.9,96.0,-1.2],[s*27.4,88.0,0.6],[s*27.7,84.0,2.4]],
      heads:[
-       {pts:s=>[[s*24.9,112,-3.6],[s*25.9,104,-2.6],[s*27.1,96,-0.8],[s*27.6,88,0.8]], r:1.45, bulge:0.35},                  // radial extensors (ECRL/ECRB)
-       {pts:s=>[[s*24.3,111,-4.6],[s*25.3,103,-3.6],[s*26.6,96,-1.8],[s*27.3,89,0.2],[s*27.6,84,2.0]], r:1.45, bulge:0.40}, // digital extensors (EDC)
-       {pts:s=>[[s*23.6,110,-5.0],[s*24.9,103,-4.2],[s*26.1,96,-2.6],[s*27.0,89,-0.6]], r:1.3, bulge:0.40}                  // ulnar extensor (ECU)
+       {pts:s=>[[s*24.9,112,-3.6],[s*25.9,104,-2.6],[s*27.1,96,-0.8],[s*27.6,88,0.8]], r:1.85, bulge:0.32},                 // radial extensors (ECRL/ECRB)
+       {pts:s=>[[s*24.3,111,-4.6],[s*25.3,103,-3.6],[s*26.6,96,-1.8],[s*27.3,89,0.2],[s*27.6,84,2.0]], r:1.85, bulge:0.34}, // digital extensors (EDC)
+       {pts:s=>[[s*23.6,110,-5.0],[s*24.9,103,-4.2],[s*26.1,96,-2.6],[s*27.0,89,-0.6]], r:1.65, bulge:0.34}                 // ulnar extensor (ECU)
      ],
      o:'The posterior forearm compartment — the wrist and finger extensors plus supinator and the thumb outcropping muscles — largely from the common extensor origin on the lateral epicondyle.',
      detail:{Origin:'Lateral epicondyle (common extensor origin), radius, ulna and interosseous membrane',Insertion:'Metacarpal bases and the extensor expansions of the digits',Nerve:'Radial nerve and its posterior interosseous branch (C7, C8)',Action:'Wrist and finger extension; forearm supination'},
@@ -2072,7 +2072,7 @@ function buildSoftTissue(){
      o:'Two parallel straps running obliquely from the lower cervical and upper thoracic spinous processes down to the medial border of the scapula, retracting and downwardly rotating it.',
      detail:{Origin:'Rhomboid minor — C7–T1 spinous processes; major — T2–T5 spinous processes',Insertion:'Medial border of the scapula, from the spine to the inferior angle',Nerve:'Dorsal scapular nerve (C5)',Action:'Retraction, elevation and downward rotation of the scapula'},
      clin:'Dorsal scapular nerve injury causes a subtle lateral drift of the scapula, weaker than trapezius palsy and easily missed. Rhomboid weakness allows the scapula to wing medially during a slow, controlled push-up and is a common driver of scapular dyskinesis in overhead athletes.'},
-    {id:'scalenes', name:'Scalene Muscles', latin:'Musculi scaleni', r:1.0, mirror:true,
+    {id:'scalenes', name:'Scalene Muscles', latin:'Musculi scaleni', r:1.35, mirror:true,
      pts:s=>[[s*2.6,158.0,-1.0],[s*4.0,154.0,0.2],[s*5.4,151.0,1.0],[s*6.0,149.2,1.6]],
      o:'Anterior, middle and posterior scalenes descend from the cervical transverse processes to the first and second ribs. The gap between anterior and middle scalene — the interscalene triangle — transmits the brachial plexus and subclavian artery.',
      detail:{Origin:'Transverse processes of C2–C7',Insertion:'First rib (anterior and middle) and second rib (posterior)',Nerve:'Ventral rami of the cervical spinal nerves (C3–C8)',Action:'Elevate the upper ribs in inspiration; lateral flexion of the neck'},
@@ -2097,12 +2097,12 @@ function buildSoftTissue(){
      o:'The deep posterior compartment toe flexors, passing with tibialis posterior behind the medial malleolus into the sole of the foot.',
      detail:{Origin:'Posterior tibia (FDL) and posterior fibula (FHL)',Insertion:'Distal phalanges — FDL to toes 2–5, FHL to the great toe',Nerve:'Tibial nerve (S1–S3)',Action:'Toe flexion; assist plantarflexion and inversion; stabilise the arch at toe-off'},
      clin:'Their tendons run behind the medial malleolus in the tarsal tunnel with the tibial nerve — the mnemonic "Tom, Dick and a Very Nervous Harry" gives the order. FDL is the standard tendon transfer used to reconstruct a failed tibialis posterior in adult flatfoot.'},
-    {id:'splenius', name:'Splenius Capitis & Cervicis', latin:'Musculi splenii', r:1.1, mirror:true,
+    {id:'splenius', name:'Splenius Capitis & Cervicis', latin:'Musculi splenii', r:1.5, mirror:true,
      pts:s=>[[s*1.6,148.0,-5.2],[s*4.0,155.0,-4.6],[s*6.0,160.0,-3.6],[s*7.0,163.0,-2.6]],
      o:'Strap-like muscles wrapping the deeper neck muscles like a bandage (splenion, Greek for bandage), running from the midline down-and-back up to the mastoid and cervical transverse processes.',
      detail:{Origin:'Ligamentum nuchae and spinous processes of C7–T6',Insertion:'Mastoid process and superior nuchal line (capitis); transverse processes of C1–C3 (cervicis)',Nerve:'Posterior rami of the middle and lower cervical spinal nerves',Action:'Bilaterally extend the head and neck; unilaterally rotate and side-bend to the same side'},
      clin:'A frequent source of cervicogenic headache and of the trigger points that refer pain to the vertex and behind the eye. Chronic overload from forward-head posture at a screen is the commonest provocation seen in clinic.'},
-    {id:'semispinalis', name:'Semispinalis Group', latin:'Musculi semispinales', r:1.2, mirror:true,
+    {id:'semispinalis', name:'Semispinalis Group', latin:'Musculi semispinales', r:1.6, mirror:true,
      pts:s=>[[s*2.0,138.0,-5.6],[s*2.6,148.0,-5.6],[s*3.0,158.0,-5.0],[s*3.0,165.0,-4.0]],
      o:'The largest muscle mass of the posterior neck, part of the transversospinalis group, spanning about five segments from transverse processes to spinous processes and the occiput.',
      detail:{Origin:'Transverse processes of the lower cervical and thoracic vertebrae',Insertion:'Spinous processes 4–6 segments above; semispinalis capitis onto the occipital bone',Nerve:'Posterior rami of the spinal nerves',Action:'Extension and contralateral rotation of the head and vertebral column'},
@@ -2128,7 +2128,7 @@ function buildSoftTissue(){
      detail:{Origin:'Manubrium, clavicle and scapula (omohyoid)',Insertion:'Hyoid bone and thyroid cartilage',Nerve:'Ansa cervicalis (C1–C3); thyrohyoid by C1 via the hypoglossal nerve',Action:'Depress the hyoid and larynx after swallowing; stabilise the hyoid for suprahyoid action'},
      clin:'They are split in the midline and retracted laterally in the anterior approach to the cervical spine — the internervous plane that makes that exposure so clean. The omohyoid crosses the field at about C6 and is often divided.'},
     /* ---- Deep segmental and postural muscles ---- */
-    {id:'levatorscap', name:'Levator Scapulae', latin:'Musculus levator scapulae', r:1.0, mirror:true,
+    {id:'levatorscap', name:'Levator Scapulae', latin:'Musculus levator scapulae', r:1.35, mirror:true,
      pts:s=>[[s*3.4,159.0,-3.4],[s*5.6,154.0,-4.4],[s*8.0,149.0,-5.4],[s*9.6,145.4,-6.0]],
      o:'A strap running from the upper cervical transverse processes down to the superior angle of the scapula, elevating the scapula and, with the rhomboids, rotating the glenoid downward.',
      detail:{Origin:'Transverse processes of C1–C4',Insertion:'Superior angle and upper medial border of the scapula',Nerve:'Dorsal scapular nerve (C5) and direct branches from C3–C4',Action:'Elevates the scapula; downwardly rotates the glenoid; side-bends the neck'},
