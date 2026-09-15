@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Radiology Practice Studio — Label · Measure · Annotate | OrthoChronicles</title>
+  <meta name="description" content="Practise musculoskeletal radiograph interpretation — label, measure and annotate real X-rays with a systematic ABCs approach. A free radiology learning studio for students and residents."/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <style>
 :root{
@@ -1014,7 +1015,8 @@ function buildReportHtml(){
        ${doc?`<b>${escapeHtml(doc)}</b>`:''}${creds?`<br/>${escapeHtml(creds)}`:''}${reg?`<br/>Reg. No. ${escapeHtml(reg)}`:''}</div></div>`:'';
   return `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(st||'Radiology Report')}</title></head>
    <body style="font-family:'Segoe UI',Arial,sans-serif;color:#111;max-width:720px;margin:0 auto;padding:26px;line-height:1.55">
-   ${header}${meta}<div style="font-size:13.5px">${body}</div>${sign}</body></html>`;
+   ${header}${meta}<div style="font-size:13.5px">${body}</div>${sign}
+</body></html>`;
 }
 function exportWord(){ const blob=new Blob(['﻿'+buildReportHtml()],{type:'application/msword'});
   const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=fileBase()+'.doc'; a.click();
@@ -1038,5 +1040,14 @@ resize();
 updateZoom();
 })();
 </script>
+
+<section class="oc-seo" style="background:#fff;border-top:1px solid #e5e7eb;padding:52px 20px;">
+  <div style="max-width:820px;margin:0 auto;font-family:'Inter',system-ui,-apple-system,sans-serif;color:#1f2937;line-height:1.72;font-size:1rem;">
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.7rem;color:#0D4D47;margin:0 0 14px;">About the Radiology Practice Studio</h2><p style="margin:0 0 13px;">Interpreting a radiograph is a skill that improves with deliberate practice. This studio lets students and residents label, measure and annotate real musculoskeletal X-rays, so you can rehearse a systematic search pattern instead of jumping straight to the obvious abnormality — the habit that leads to missed injuries.</p><h3 style="font-size:1.16rem;color:#0D4D47;margin:24px 0 8px;">A systematic approach: the ABCs</h3><p style="margin:0 0 13px;">A reliable way to read a bone radiograph is to work through it in the same order every time. A common scheme is <strong>ABCs — Alignment, Bone, Cartilage (joints) and Soft tissues</strong>. First check that the bones line up normally; then trace every cortex for a break or a lesion; then inspect the joint spaces and their symmetry; and finally look at the soft tissues for swelling, an effusion or a fat pad sign that hints at a subtle fracture. Reviewing at least two views taken at right angles is essential, because many fractures and dislocations are invisible on a single projection.</p><h3 style="font-size:1.16rem;color:#0D4D47;margin:24px 0 8px;">Measuring what matters</h3><ul style="margin:6px 0 14px 22px;"><li style="margin:4px 0;">Angles such as the Cobb angle in scoliosis or the femoral neck&ndash;shaft angle quantify deformity.</li><li style="margin:4px 0;">Lengths and joint spaces help track arthritis, growth or healing over time.</li><li style="margin:4px 0;">Annotating and labelling forces you to name each structure, which is how radiographic anatomy is learned.</li></ul><h3 style="font-size:1.16rem;color:#0D4D47;margin:24px 0 8px;">Build the underlying anatomy first</h3><p style="margin:0 0 13px;">Confident interpretation rests on knowing normal anatomy cold. Pair this studio with our interactive <a href="radio-anatomy.html" style="color:#0D4D47;">radiographic anatomy atlas</a> and the <a href="scan-reader.html" style="color:#0D4D47;">DICOM scan reader</a>, then test yourself against real examples in the <a href="cases.html" style="color:#0D4D47;">case library</a>. This studio is for education and self-assessment only and does not provide clinical diagnoses.</p>
+    <p style="font-size:.82rem;color:#6b7280;margin-top:26px;border-top:1px solid #e5e7eb;padding-top:14px;">
+      <strong>Medical disclaimer:</strong> This page and its tools are provided by OrthoChronicles for general education only and are not a substitute for professional medical advice, diagnosis or treatment. Always consult a qualified orthopaedic surgeon, physician or physiotherapist about your own condition. Reviewed under the guidance of <a href="dr-maninder-singh.html" style="color:#0D4D47;">Dr. Maninder Singh, MS Orthopaedics</a>. Last updated September 2026.
+    </p>
+  </div>
+</section>
 </body>
 </html>
