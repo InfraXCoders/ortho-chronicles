@@ -80,6 +80,46 @@
     .sr-disclaim{max-width:1120px;margin:16px auto 0;padding:0 20px;font-size:.8rem;color:#64748b;line-height:1.55;}
     @media(max-width:820px){ .sr-main{grid-template-columns:1fr;} .sr-side{border-left:0;border-top:1px solid var(--sr-line);} #dicomImage,.sr-stage{height:56vh;min-height:56vh;} }
   </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my scan uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The viewer opens and renders your images entirely inside your own browser. The files are not sent to OrthoChronicles or to any third party, which keeps your medical images private to your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What files can I open?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard DICOM files (.dcm) exported from CT and MRI studies, as well as ordinary image formats such as JPEG and PNG. You can scroll through a stack of slices and adjust how each image is displayed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do the window and level controls do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The \"window\" sets the range of tissue densities shown and the \"level\" sets its midpoint; together they control brightness and contrast. Adjusting them lets you bring out bone, soft tissue or lung — a skill at the heart of reading CT and MRI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can this tell me what is wrong with my scan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is an educational viewer, not a diagnostic device. Only a qualified radiologist or your treating doctor should interpret your images and make a diagnosis or treatment decision."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -206,6 +246,29 @@
     </p>
   </div>
 </section>
+
+<section class="oc-faq" style="background:#f8fafc;border-top:1px solid #e5e7eb;padding:48px 20px;">
+  <div style="max-width:820px;margin:0 auto;font-family:'Inter',system-ui,-apple-system,sans-serif;color:#1f2937;line-height:1.72;font-size:1rem;">
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.65rem;color:#0D4D47;margin:0 0 20px;">Frequently Asked Questions</h2>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">Is my scan uploaded to a server?</h3>
+        <p style="margin:0;">No. The viewer opens and renders your images entirely inside your own browser. The files are not sent to OrthoChronicles or to any third party, which keeps your medical images private to your device.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">What files can I open?</h3>
+        <p style="margin:0;">Standard DICOM files (.dcm) exported from CT and MRI studies, as well as ordinary image formats such as JPEG and PNG. You can scroll through a stack of slices and adjust how each image is displayed.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">What do the window and level controls do?</h3>
+        <p style="margin:0;">The "window" sets the range of tissue densities shown and the "level" sets its midpoint; together they control brightness and contrast. Adjusting them lets you bring out bone, soft tissue or lung — a skill at the heart of reading CT and MRI.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">Can this tell me what is wrong with my scan?</h3>
+        <p style="margin:0;">No. It is an educational viewer, not a diagnostic device. Only a qualified radiologist or your treating doctor should interpret your images and make a diagnosis or treatment decision.</p>
+      </div>
+  </div>
+</section>
+
 <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">

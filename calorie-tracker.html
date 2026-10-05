@@ -569,6 +569,46 @@
   .dw-expert:hover{background:#D1FAE5;}
   .dw-expert i{color:#059669;}
   </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many calories do I need each day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It varies with your age, sex, weight, height and activity level. The tracker estimates your maintenance needs and then adjusts for your goal — a modest deficit to lose weight or a small surplus to gain. As a rough guide many adults fall between 1,800 and 2,600 kcal a day, but your own calculated figure is what matters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is my calorie and macro target calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool computes your basal metabolic rate using the Mifflin–St Jeor equation, multiplies it by an activity factor to estimate total daily energy expenditure, and then splits your target into protein, carbohydrate and fat. Protein is set relative to your body weight to help preserve muscle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the Indian food values accurate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The database uses standard published values per 100 g for common Indian foods, fruits, vegetables and dishes. Home portions vary from one kitchen to another, so treat the numbers as a reliable guide rather than a laboratory measurement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data private, and is this medical advice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your log is stored locally in your own browser and only synced if you choose to sign in. It is a personal tracking aid, not medical or dietary prescription — anyone with a condition such as diabetes, kidney disease or an eating disorder should follow a plan set by their doctor or a registered dietitian."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -816,7 +856,7 @@
   <!-- MEAL PLANS -->
   <div class="ct-panel" id="panel-plans">
     <div class="plans-header">
-      <h2>── Indian Diet Plans</h2>
+      <h2>🍽️ Indian Diet Plans</h2>
       <div class="plan-toggle" id="goalToggle">
         <button class="ptog active" data-goal="lose" onclick="showPlanType('lose')">Weight Loss</button>
         <button class="ptog" data-goal="maintain" onclick="showPlanType('maintain')">Maintain</button>
@@ -3177,5 +3217,28 @@ function setSyncBadge(msg){
     </p>
   </div>
 </section>
+
+<section class="oc-faq" style="background:#f8fafc;border-top:1px solid #e5e7eb;padding:48px 20px;">
+  <div style="max-width:820px;margin:0 auto;font-family:'Inter',system-ui,-apple-system,sans-serif;color:#1f2937;line-height:1.72;font-size:1rem;">
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.65rem;color:#0D4D47;margin:0 0 20px;">Frequently Asked Questions</h2>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">How many calories do I need each day?</h3>
+        <p style="margin:0;">It varies with your age, sex, weight, height and activity level. The tracker estimates your maintenance needs and then adjusts for your goal — a modest deficit to lose weight or a small surplus to gain. As a rough guide many adults fall between 1,800 and 2,600 kcal a day, but your own calculated figure is what matters.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">How is my calorie and macro target calculated?</h3>
+        <p style="margin:0;">The tool computes your basal metabolic rate using the Mifflin–St Jeor equation, multiplies it by an activity factor to estimate total daily energy expenditure, and then splits your target into protein, carbohydrate and fat. Protein is set relative to your body weight to help preserve muscle.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">Are the Indian food values accurate?</h3>
+        <p style="margin:0;">The database uses standard published values per 100 g for common Indian foods, fruits, vegetables and dishes. Home portions vary from one kitchen to another, so treat the numbers as a reliable guide rather than a laboratory measurement.</p>
+      </div>
+      <div style="margin:0 0 18px;">
+        <h3 style="font-size:1.1rem;color:#0D4D47;margin:0 0 6px;">Is my data private, and is this medical advice?</h3>
+        <p style="margin:0;">Your log is stored locally in your own browser and only synced if you choose to sign in. It is a personal tracking aid, not medical or dietary prescription — anyone with a condition such as diabetes, kidney disease or an eating disorder should follow a plan set by their doctor or a registered dietitian.</p>
+      </div>
+  </div>
+</section>
+
 </body>
 </html>
