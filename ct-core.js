@@ -6,7 +6,7 @@ const MEALS=[
   {id:'snacks',n:'Snacks',e:'🥪',bg:'#EDE9FE'},
   {id:'dinner',n:'Dinner',e:'🌙',bg:'#DBEAFE'}
 ];
-const CAT_EMOJI={fruit:'🍎',vegetable:'🥦',salad:'🥗',grain:'🌾',legume:'🫘',dairy:'🥛',protein:'🍗',snack:'🍛',italian:'🍕',beverage:'☕',supplement:'💪',softdrink:'🥤',alcohol:'🍺',custom:'⭐'};
+const CAT_EMOJI={fruit:'🍎',vegetable:'🥦',salad:'🥗',grain:'🌾',legume:'🫘',dairy:'🥛',protein:'🍗',snack:'🍛',italian:'🍕',southindian:'🥥',northindian:'🫓',asian:'🥢',western:'🍔',european:'🥐',seafood:'🦐',beverage:'☕',supplement:'💪',softdrink:'🥤',alcohol:'🍺',custom:'⭐'};
 const GLASS_ML=300;
 const IN_APP=!!window.AndroidApp;
 let state={}, selDate='', curTab='home';

@@ -22,7 +22,7 @@ function loadScript(src){
 
 /* ── open / close ── */
 async function openScanner(mode,onPickMeal){
-  SC.on=true;SC.result=null;SC.hits=0;SC.last='';
+  mode='photo';SC.on=true;SC.result=null;SC.hits=0;SC.last='';
   $('scan').classList.add('on');document.body.style.overflow='hidden';
   setScanMode(mode||'barcode',true);
   await startCamera();
@@ -74,7 +74,7 @@ function setScanMode(mode,silent){
   $('scShut').classList.toggle('hide',mode!=='photo');
   $('scSnap').style.display='none';$('scVideo').style.display='';
   $('scHint').textContent=mode==='barcode'?'Fit the barcode inside the frame · hold steady':'Frame your plate or food item, then tap the shutter';
-  $('scManual').classList.toggle('hide',mode!=='barcode');
+  if($('scManual'))$('scManual').classList.toggle('hide',mode!=='barcode');
   if(!silent&&SC.stream){mode==='barcode'?startBarcodeLoop():setScanStatus('scanning','Point at your food and tap the shutter');}
 }
 

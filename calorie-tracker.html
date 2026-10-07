@@ -27,7 +27,7 @@ if(window.AndroidApp)document.documentElement.classList.add('in-app');</script>
 <style>html{background:#0B6B5E}body{margin:0;background:#F2F7F6}#boot{position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0B6B5E,#10B981)}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="ct-app.css?v=4"/>
+<link rel="stylesheet" href="ct-app.css?v=5"/>
 <script>/* AdSense only on the website — never inside the app WebView */
 if(!window.AndroidApp){var s=document.createElement("script");s.async=true;s.crossOrigin="anonymous";s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7931867777885907";document.head.appendChild(s);}</script>
 <script type="application/ld+json">
@@ -94,18 +94,18 @@ if(!window.AndroidApp){var s=document.createElement("script");s.async=true;s.cro
 <div id="wiz" role="dialog" aria-modal="true" aria-label="Set up your profile"></div>
 
 <div id="scan" role="dialog" aria-modal="true" aria-label="Scanner">
-  <div class="sc-top"><div class="seg"><button data-act="scMode" data-mode="barcode" class="on">▮▯ Barcode</button><button data-act="scMode" data-mode="photo">🍽️ Food photo</button></div><button class="sc-x" data-act="scClose" aria-label="Close">✕</button></div>
+  <div class="sc-top"><div class="seg"><button data-act="scMode" data-mode="photo" class="on">🍽️ Scan your food</button></div><button class="sc-x" data-act="scClose" aria-label="Close">✕</button></div>
   <div class="sc-cam">
     <video id="scVideo" playsinline muted autoplay></video><canvas id="scSnap" class="snap"></canvas>
     <div id="scErr" class="hide" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;background:#06201C"></div>
     <div class="frame" id="scFrame"><i></i></div>
-    <div class="sc-tools"><button id="scTorch" class="hide" data-act="scTorch" aria-label="Torch">🔦</button><button id="scZoom" class="hide" data-act="scZoom" aria-label="Zoom">🔍</button><button data-act="scFile" aria-label="Scan from photo">🖼️</button></div>
+    <div class="sc-tools"><button id="scTorch" class="hide" data-act="scTorch" aria-label="Torch">🔦</button><button id="scZoom" class="hide" data-act="scZoom" aria-label="Zoom">🔍</button></div>
     <div class="sc-hint" id="scHint"></div>
   </div>
   <div class="sc-bot">
     <div class="sc-stat"><span class="d" id="scDot"></span><span id="scMsg">Starting…</span></div>
     <button class="shut hide" id="scShut" data-act="scShut" aria-label="Take photo"></button>
-    <div id="scManual" class="manual"><input class="inp" id="scCode" inputmode="numeric" placeholder="…or type the barcode number"><button class="btn sm" data-act="scManualGo">Go</button></div>
+    
     <div id="scRes"></div>
   </div>
   <input type="file" id="scFileIn" accept="image/*" hidden>
@@ -146,14 +146,14 @@ if(!window.AndroidApp){var s=document.createElement("script");s.async=true;s.cro
   </div>
 </section></div>
 
-<script src="ct-data.js?v=4"></script>
-<script src="ct-fotd.js?v=4"></script>
-<script src="ct-core.js?v=4"></script>
-<script src="ct-plan.js?v=4"></script>
-<script src="ct-charts.js?v=4"></script>
-<script src="ct-scan-ai.js?v=4"></script>
-<script src="ct-scan.js?v=4"></script>
-<script src="ct-app.js?v=4"></script>
+<script src="ct-data.js?v=5"></script>
+<script src="ct-fotd.js?v=5"></script>
+<script src="ct-core.js?v=5"></script>
+<script src="ct-plan.js?v=5"></script>
+<script src="ct-charts.js?v=5"></script>
+<script src="ct-scan-ai.js?v=5"></script>
+<script src="ct-scan.js?v=5"></script>
+<script src="ct-app.js?v=5"></script>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
 import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,signOut as fbSignOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
