@@ -69,7 +69,7 @@ function moreSheet(){
   h+=row('weight','⚖️','#F3E8FF','Log weight','');
   h+=row('shareApp','📤','#E0F2FE','Share with friends','Help others eat better');
   if(!IN_APP&&/Android/i.test(navigator.userAgent))h+=row('getApp','📲','#DCFCE7','Get the Android app','Best experience + background reminders');
-  h+=row('consult','👨‍⚕️','#ECFDF5','Ask a nutrition expert','Email Dr. Maninder Singh');
+  h+=row('consult','👨‍⚕️','#ECFDF5','Ask a nutrition expert','Email homenet5523@gmail.com');
   h+=row('feedback','💬','#FFEDD5','Send feedback','');
   h+=row('site','🌐','#E0E7FF','OrthoChronicles.info','Free ortho & health tools');
   h+=row('privacy','🔒','#F1F5F9','Privacy policy','');
@@ -165,7 +165,7 @@ const ACT={
   signOut(){if(window.signOutApp)window.signOutApp();closeAllSheets();},
   shareApp(){shareApp();},
   getApp(){openExternal(PLAY_URL);},
-  consult(){openExternal('mailto:gaganrai5523@gmail.com?subject='+encodeURIComponent('Nutrition query — Calorie Tracker'));},
+  consult(){openExternal('mailto:homenet5523@gmail.com?subject='+encodeURIComponent('Nutrition query — Calorie Tracker'));},
   feedback(){openExternal('mailto:gaganrai5523@gmail.com?subject='+encodeURIComponent('Calorie Tracker feedback'));},
   site(){openExternal('https://www.orthochronicles.info');},
   privacy(){openExternal('https://www.orthochronicles.info/privacy-policy.html');},
