@@ -1,5 +1,5 @@
 /* OrthoChronicles Calorie Tracker — Service Worker */
-const CACHE = 'ct-v2';
+const CACHE = 'ct-v3';
 const PRECACHE = [
   '/calorie-tracker.html',
   '/assets/ct-icon-192.png',
@@ -28,6 +28,17 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
+
+  // HTML: network-first so users always get the latest app when online
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if (res && res.status === 200) { const c2 = res.clone(); caches.open(CACHE).then(c => c.put(e.request, c2)); }
+        return res;
+      }).catch(() => caches.match(e.request).then(m => m || caches.match('/calorie-tracker.html')))
+    );
+    return;
+  }
 
   e.respondWith(
     caches.match(e.request).then(cached => {

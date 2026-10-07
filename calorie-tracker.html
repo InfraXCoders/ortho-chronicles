@@ -9,6 +9,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Calorie Tracker"/>
   <link rel="manifest" href="ct-manifest.json"/>
+  <link rel="canonical" href="https://www.orthochronicles.info/calorie-tracker.html"/>
+  <meta name="robots" content="index,follow,max-image-preview:large"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Free Indian Calorie Counter & Diet Tracker"/>
+  <meta property="og:description" content="Scan food, log Indian meals, track macros & water, get weight-loss or muscle-gain plans. Free, works offline."/>
+  <meta property="og:image" content="https://www.orthochronicles.info/assets/ct-icon-512.png"/>
+  <meta property="og:url" content="https://www.orthochronicles.info/calorie-tracker.html"/>
+  <meta name="twitter:card" content="summary"/>
   <link rel="apple-touch-icon" href="/assets/ct-icon-192.png"/>
   <link rel="apple-touch-icon" sizes="192x192" href="/assets/ct-icon-192.png"/>
   <link rel="apple-touch-icon" sizes="512x512" href="/assets/ct-icon-512.png"/>
@@ -609,6 +617,46 @@
   ]
 }
 </script>
+<style id="ct-boost-css">
+/* ── Android / touch compatibility ── */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{-webkit-tap-highlight-color:transparent;}
+button,a,.tab-btn,.wg,select,label{touch-action:manipulation;}
+input,select,textarea{font-size:max(16px,1em);} /* stops Android/iOS zoom-on-focus */
+img{max-width:100%;height:auto;}
+@media (display-mode:standalone){body{overscroll-behavior-y:none;-webkit-user-select:none;user-select:none;}
+  input,textarea{-webkit-user-select:text;user-select:text;}}
+#pwa-fab{bottom:calc(92px + env(safe-area-inset-bottom,0px))!important;}
+#pwa-banner{bottom:calc(90px + env(safe-area-inset-bottom,0px))!important;}
+.ct-main{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));}
+/* ── Polish: smoother, crisper, livelier ── */
+button,.tab-btn{transition:transform .12s ease,box-shadow .2s ease,background-color .2s ease;}
+button:active:not(:disabled),.tab-btn:active{transform:scale(.97);}
+.macro-card,.meal-card,.prog-stat-card,.plan-card{box-shadow:0 6px 22px rgba(12,74,110,.08);border-radius:16px;}
+.tab-btn.active{box-shadow:0 4px 14px rgba(14,165,233,.35);}
+.wg{transition:transform .15s ease;display:inline-block;}
+.wg.filled{animation:ctDrop .35s ease;}
+@keyframes ctDrop{0%{transform:scale(.6) translateY(-8px)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes ctPop{0%{transform:scale(.96);opacity:.5}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+.ct-pop{animation:ctPop .4s ease;}
+#calRingFill{filter:drop-shadow(0 0 4px rgba(14,165,233,.55));}
+/* ── Streak / share / get-app chips ── */
+#ctBoost{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px auto 0;max-width:640px;padding:0 12px;}
+.ctb-chip{display:inline-flex;align-items:center;gap:6px;border-radius:22px;padding:8px 14px;font-weight:800;font-size:.8rem;
+  border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.14);color:#fff;cursor:pointer;text-decoration:none;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.ctb-chip.fire{background:linear-gradient(135deg,#ff9a3c,#ff5e3a);border-color:transparent;box-shadow:0 4px 14px rgba(255,94,58,.4);}
+.ctb-chip.play{background:linear-gradient(135deg,#34d399,#059669);border-color:transparent;box-shadow:0 4px 14px rgba(5,150,105,.4);}
+.ctb-chip.fire.hot{animation:ctPulse 1.6s ease-in-out infinite;}
+@keyframes ctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+/* ── Celebration ── */
+#ctConfetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:100000;}
+#ctToast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:100001;
+  background:#0C4A6E;color:#fff;border:1.5px solid #38BDF8;border-radius:22px;padding:11px 20px;font-weight:800;font-size:.88rem;
+  box-shadow:0 8px 28px rgba(0,0,0,.4);transition:opacity .25s,transform .25s;pointer-events:none;max-width:90vw;text-align:center;}
+#ctToast.show{opacity:1;transform:translate(-50%,0);}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
 </head>
 <body>
 
@@ -3099,7 +3147,7 @@ function setSyncBadge(msg){
 </div>
 
 <!-- ── INSTALL BANNER (Android / Windows / Desktop) ── -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0C4A6E;border:1.5px solid #0EA5E9;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
+<div id="pwa-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0C4A6E;border:1.5px solid #0EA5E9;border-radius:16px;padding:14px 18px;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.55);max-width:360px;width:calc(100% - 32px);">
   <img src="/assets/ct-icon-192.png" width="44" height="44" style="border-radius:12px;flex-shrink:0;" alt="" onerror="this.style.display='none'"/>
   <div style="flex:1;min-width:0;">
     <div style="color:#38BDF8;font-weight:700;font-size:.92rem;">Add Calorie Tracker Shortcut</div>
@@ -3240,5 +3288,117 @@ function setSyncBadge(msg){
   </div>
 </section>
 
+<canvas id="ctConfetti"></canvas><div id="ctToast" role="status" aria-live="polite"></div>
+<script id="ct-boost-js">
+(function(){
+  var PLAY='https://play.google.com/store/apps/details?id=info.orthochronicles.calorietracker';
+  var SITE='https://www.orthochronicles.info/calorie-tracker.html';
+  var ua=navigator.userAgent||'';
+  var isAndroid=/Android/i.test(ua);
+  var inApp=(document.referrer||'').indexOf('android-app://')===0||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||!!window.AndroidAds;
+  function $(i){return document.getElementById(i);}
+  function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+  function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+  function dayKey(){return new Date().toISOString().slice(0,10);}
+  function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
+
+  /* toast */
+  var _tt;
+  function toast(m){var t=$('ctToast');if(!t)return;t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
+  window.ctToast=toast;
+
+  /* confetti (canvas, ~1.6s, auto-scaled to screen density) */
+  var _cp=[],_raf=0;
+  function confetti(n){
+    var c=$('ctConfetti');if(!c||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    var dpr=Math.min(window.devicePixelRatio||1,2),w=window.innerWidth,h=window.innerHeight;
+    c.width=w*dpr;c.height=h*dpr;var x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
+    var cols=['#0EA5E9','#38BDF8','#34D399','#FBBF24','#F472B6','#FB923C','#A78BFA'];
+    for(var i=0;i<(n||90);i++)_cp.push({x:w/2+(Math.random()-.5)*w*.3,y:h*.55,vx:(Math.random()-.5)*11,vy:-6-Math.random()*9,
+      r:3+Math.random()*4,c:cols[i%cols.length],rot:Math.random()*6,vr:(Math.random()-.5)*.4,life:100+Math.random()*40});
+    if(_raf)return;
+    (function step(){
+      x.clearRect(0,0,w,h);
+      _cp=_cp.filter(function(p){return p.life>0&&p.y<h+20;});
+      _cp.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.28;p.vx*=.99;p.rot+=p.vr;p.life--;
+        x.save();x.translate(p.x,p.y);x.rotate(p.rot);x.globalAlpha=Math.min(1,p.life/30);x.fillStyle=p.c;x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore();});
+      if(_cp.length)_raf=requestAnimationFrame(step);else{_raf=0;x.clearRect(0,0,w,h);}
+    })();
+  }
+  window.ctConfetti=confetti;
+
+  function streakNow(){try{return typeof calcStreak==='function'?calcStreak():0;}catch(e){return 0;}}
+  function todayCal(){
+    try{var l=state.log[todayKey];if(!l)return 0;return Object.values(l.meals||{}).flat().reduce(function(a,i){return a+(i.cal||0);},0);}catch(e){return 0;}
+  }
+  function once(key){var k='ct_cel_'+key+'_'+dayKey();if(lsGet(k))return false;lsSet(k,'1');return true;}
+
+  /* chips: streak · share · get app */
+  function renderBoost(){
+    var host=$('ctBoost');
+    if(!host){
+      var bar=$('tdeebar');if(!bar||!bar.parentNode)return;
+      host=document.createElement('div');host.id='ctBoost';bar.parentNode.appendChild(host);
+    }
+    var s=streakNow(),h='';
+    h+='<span class="ctb-chip fire'+(s>=3?' hot':'')+'">🔥 '+(s>0?s+'-day streak':'Start your streak today')+'</span>';
+    h+='<button class="ctb-chip" id="ctShareBtn" type="button">📤 Share</button>';
+    if(isAndroid&&!inApp)h+='<a class="ctb-chip play" href="'+PLAY+'" target="_blank" rel="noopener">📲 Get the Android app</a>';
+    host.innerHTML=h;
+    var b=$('ctShareBtn');if(b)b.onclick=share;
+  }
+  async function share(){
+    var s=streakNow();
+    var text='🍛 I use this free Indian Calorie Tracker'+(s>1?' — '+s+'-day streak!':'!')+' Scan food, track macros & water, get diet plans. Try it 👇';
+    var url=inApp&&isAndroid?PLAY:SITE;
+    try{if(navigator.share){await navigator.share({title:'Calorie Tracker',text:text,url:url});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+    try{await navigator.clipboard.writeText(text+' '+url);toast('Link copied — paste it to friends 📋');return;}catch(e){}
+    window.open('https://wa.me/?text='+encodeURIComponent(text+' '+url),'_blank');
+  }
+
+  /* hook: food logged */
+  function hook(){
+    if(typeof window.confirmAdd==='function'&&!window.confirmAdd._w){
+      var orig=window.confirmAdd;
+      window.confirmAdd=function(){
+        var before=todayCal();var had=streakNow();
+        var r=orig.apply(this,arguments);
+        var after=todayCal();
+        if(after>before){
+          buzz(18);toast('Logged ✓  +'+(after-before)+' kcal');
+          var mc=document.getElementById('mealsContainer');if(mc){mc.classList.remove('ct-pop');void mc.offsetWidth;mc.classList.add('ct-pop');}
+          var tgt=(state.profile&&state.profile.tdee)||0;
+          if(tgt&&after>=tgt*.9&&after<=tgt*1.08&&once('goal')){setTimeout(function(){confetti(120);buzz([30,40,60]);toast('🎯 Daily calorie goal reached!');},500);}
+          var st=streakNow();
+          if(st>had&&st%7===0){setTimeout(function(){confetti(140);toast('🔥 '+st+'-day streak! Keep going');},900);}
+          renderBoost();
+        }
+        return r;
+      };
+      window.confirmAdd._w=1;
+    }
+    if(typeof window.setWater==='function'&&!window.setWater._w){
+      var ow=window.setWater;
+      window.setWater=function(n){
+        var r=ow.apply(this,arguments);
+        try{
+          buzz(10);
+          var tgtMl=(state.profile&&state.profile.water)||2400;
+          var glasses=Math.max(6,Math.round(tgtMl/(typeof GLASS_ML!=='undefined'?GLASS_ML:250)));
+          if(waterCount>=glasses&&once('water')){confetti(80);toast('💧 Water goal hit — great job!');}
+        }catch(e){}
+        return r;
+      };
+      window.setWater._w=1;
+    }
+  }
+  function init(){hook();renderBoost();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  window.addEventListener('load',function(){hook();renderBoost();
+    /* On Android web we steer people to the Play Store app; keep the PWA shortcut for everyone else */
+    if(isAndroid&&!inApp){var f=$('pwa-fab');if(f)f.style.display='none';}
+  });
+})();
+</script>
 </body>
 </html>
