@@ -228,6 +228,7 @@ function renderHome(){
      '<div class="chip"><span style="font-size:1.3rem">💧</span><div><b>'+Math.round(Math.min(1,wp)*100)+'%</b> hydrated</div></div>'+
      '<div class="chip"><span style="font-size:1.3rem">📅</span><div><b>'+logged+'</b> days logged</div></div>'+
      '<div class="chip"><span style="font-size:1.3rem">🥗</span><div><b>'+t.items+'</b> items today</div></div></div>';
+  if(!IN_APP&&/Android/i.test(navigator.userAgent))h+='<div class="card" style="background:linear-gradient(135deg,#ECFDF5,#D1FAE5);display:flex;align-items:center;gap:12px"><div style="font-size:2rem">📲</div><div style="flex:1"><b>Get the Android app</b><div class="sub">Background meal & water reminders with one-tap replies.</div></div><button class="btn sm" data-act="getApp">Install</button></div>';
   // food of the day (bottom)
   const f=fotdToday();
   h+='<div class="card fotd" style="margin-top:12px"><span class="tag">🌟 FOOD OF THE DAY</span><div class="fh"><div class="em">'+f.e+'</div><div><h4>'+esc(f.n)+'</h4><div class="sub" style="color:#047857">Per 100 g · typical serving: '+esc(f.s)+'</div></div></div>'+

@@ -252,7 +252,7 @@ function boot(){
   document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
   $('navScan').addEventListener('click',()=>openScanner('barcode'));
   const first=!state.profile.tdee;
-  go(lsGet('ct_tab')&&!first?(lsGet('ct_tab')==='plan'||lsGet('ct_tab')==='progress'||lsGet('ct_tab')==='diary'?lsGet('ct_tab'):'home'):'home');
+  go('home');
   if(first)openWizard();else maybeAskNotif();
   const hh=(location.hash||"").slice(1);if(!first&&hh){if(["plan","progress","diary","home"].includes(hh))go(hh);else if(hh==="scan")setTimeout(()=>openScanner("barcode"),600);}
   applyUrlReply();drainNative();syncReminders();
@@ -266,7 +266,8 @@ function boot(){
   lsSet('ct_lastopen',today());
   if(!IN_APP&&'serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.register('/ct-sw.js',{scope:'/'}).catch(()=>{});
     navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.ctReply){applyResponses([e.data.ctReply]);}});}
-  // reveal app, tell native we're ready (hides native splash)
+  // reveal app, tell native we're ready (hides native splash) — timer fallback in case rAF is throttled
+  setTimeout(()=>{$('boot').classList.add('off');try{if(IN_APP&&AndroidApp.ready)AndroidApp.ready();}catch(e){}},1400);
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     $('boot').classList.add('off');
     try{if(IN_APP&&AndroidApp.ready)AndroidApp.ready();}catch(e){}

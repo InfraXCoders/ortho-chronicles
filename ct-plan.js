@@ -20,7 +20,10 @@ function mealForTime(time){const m=tmin(time);return m<630?'breakfast':m<930?'lu
 function hhmm(min){min=Math.max(0,Math.min(1439,min));return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0');}
 function uid(){return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
 function defaultSlots(n){
-  const presets={3:[['Breakfast','08:00'],['Lunch','13:00'],['Dinner','20:00']],
+  const presets={1:[['Main meal','13:00']],2:[['Lunch','13:00'],['Dinner','20:00']],
+    3:[['Breakfast','08:00'],['Lunch','13:00'],['Dinner','20:00']],
+    4:[['Breakfast','08:00'],['Lunch','13:00'],['Evening snack','17:00'],['Dinner','20:00']],
+    7:[['Early morning','07:00'],['Breakfast','08:30'],['Mid-morning','11:00'],['Lunch','13:30'],['Evening snack','16:30'],['Dinner','19:30'],['Bedtime','21:30']],
     5:[['Breakfast','08:00'],['Mid-morning','11:00'],['Lunch','13:30'],['Evening snack','17:00'],['Dinner','20:00']],
     6:[['Early morning','07:00'],['Breakfast','08:30'],['Mid-morning','11:00'],['Lunch','13:30'],['Evening snack','16:30'],['Dinner','19:30']]};
   let arr=presets[n];

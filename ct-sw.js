@@ -5,8 +5,8 @@
 const CACHE = 'ct-v4';
 const PRECACHE = [
   '/calorie-tracker.html',
-  '/ct-app.css?v=3','/ct-data.js?v=3','/ct-fotd.js?v=3','/ct-core.js?v=3','/ct-plan.js?v=3',
-  '/ct-charts.js?v=3','/ct-scan-ai.js?v=3','/ct-scan.js?v=3','/ct-app.js?v=3',
+  '/ct-app.css?v=4','/ct-data.js?v=4','/ct-fotd.js?v=4','/ct-core.js?v=4','/ct-plan.js?v=4',
+  '/ct-charts.js?v=4','/ct-scan-ai.js?v=4','/ct-scan.js?v=4','/ct-app.js?v=4',
   '/assets/ct-icon-192.png','/assets/ct-icon-512.png'
 ];
 
