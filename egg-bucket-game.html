@@ -123,6 +123,30 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 #pauseBox{background:linear-gradient(160deg,#fff4d6,#f0d6a0);border:3px solid #e0b25a;border-radius:22px;padding:24px 22px;text-align:center;max-width:300px;width:100%;animation:popIn .3s ease both;}
 #pauseBox h2{color:#6a2808;font-size:1.5rem;margin-bottom:6px;letter-spacing:2px;}
 #pauseBox p{color:#7a4820;font-size:.82rem;margin-bottom:6px;}
+.gbtn.purple{background:linear-gradient(180deg,#e2c8ff,#a874f0 55%,#7a3fd0);color:#2a0a52;box-shadow:0 5px 0 #4a208a,0 8px 18px rgba(0,0,0,.35);font-size:.9rem;padding:12px 6px;}
+.gbtn.purple:active{box-shadow:0 1px 0 #4a208a;}
+#coinContBtn{margin-top:10px;}
+#panel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,4,1,.86);z-index:46;pointer-events:all;padding:14px;}
+#panelBox{background:linear-gradient(160deg,#fff4d6,#f0d6a0);border:3px solid #e0b25a;border-radius:22px;padding:16px 16px 18px;width:100%;max-width:360px;max-height:88vh;display:flex;flex-direction:column;animation:popIn .3s ease both;}
+.pTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#6a2808;font-size:1.05rem;}
+.pX{border:0;background:rgba(74,34,8,.12);color:#5a2c0a;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;}
+.pTabs{display:flex;gap:8px;margin-bottom:10px;}
+.pTabs button{flex:1;border:1.5px solid rgba(74,34,8,.25);background:rgba(74,34,8,.08);color:#5a2c0a;border-radius:12px;padding:9px 4px;font-weight:900;font-size:.82rem;cursor:pointer;}
+.pTabs button.on{background:linear-gradient(180deg,#ffe58a,#f6b93b);border-color:#c8821a;}
+#pBody{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.pHint{font-size:.74rem;color:#7a4a1e;margin-bottom:8px;font-weight:700;}
+.mis{background:rgba(255,255,255,.55);border:1.5px solid rgba(74,34,8,.15);border-radius:14px;padding:10px 12px;margin-bottom:9px;}
+.mis.done{background:rgba(120,220,100,.28);border-color:rgba(60,150,40,.4);}
+.misT{font-weight:900;color:#4a2208;font-size:.88rem;margin-bottom:6px;}
+.misBar{height:9px;background:rgba(74,34,8,.15);border-radius:6px;overflow:hidden;}
+.misBar i{display:block;height:100%;background:linear-gradient(90deg,#ffd23a,#ff8a1c);border-radius:6px;}
+.misR{font-size:.72rem;color:#7a4a1e;font-weight:800;margin-top:5px;}
+.skGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.sk{background:rgba(255,255,255,.55);border:2px solid rgba(74,34,8,.15);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;}
+.sk.eq{border-color:#3f9a1c;background:rgba(150,230,110,.35);}
+.skEgg{width:40px;height:50px;margin:0 auto 6px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;box-shadow:0 4px 8px rgba(0,0,0,.25);}
+.sk b{display:block;color:#4a2208;font-size:.8rem;}
+.sk span{display:block;font-size:.72rem;color:#7a4a1e;font-weight:800;margin-top:2px;}
 #rot{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:200;
   background:#1a0e04;color:#ffe9b0;font-weight:800;text-align:center;font-size:1.05rem;letter-spacing:1px;padding:20px;pointer-events:all;}
 #rot span{font-size:3rem;animation:bob 2s ease-in-out infinite;}
@@ -151,6 +175,10 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
       <button class="gbtn green" onclick="shareGame()">📤 SHARE</button>
     </div>
     <div class="row">
+      <button class="gbtn purple" id="missBtn" onclick="showPanel('m')">🎯 MISSIONS</button>
+      <button class="gbtn purple" onclick="showPanel('s')">🎨 SKINS</button>
+    </div>
+    <div class="row">
       <button class="gbtn ghost" id="installBtn" style="display:none" onclick="installApp()">⬇ INSTALL APP</button>
       <button class="gbtn ghost" id="rateBtn" onclick="rateGame()">⭐ RATE</button>
       <button class="gbtn ghost" onclick="showAbout()">ℹ ABOUT</button>
@@ -162,7 +190,8 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 <div id="about">
   <div id="aboutBox">
     <h2>🥚 Egg Climb</h2>
-    <p>Time each toss so the egg drops into the bowl as it slides underneath. Land PERFECT catches to build combos — every 10-combo earns a bonus life!</p>
+    <p>Time each toss so the egg drops into the bowl as it slides underneath. Land PERFECT catches to build combos — every 5-combo triggers SLOW-MO and every 10-combo earns a bonus life!</p>
+    <p>🟡 Golden bowls pay ×3 and 10 coins. Spend 🪙 on egg skins, finish daily missions, or continue a run for 50 coins.</p>
     <p><b>Arcade Mode</b> throws a fresh random world at you every level. Come back daily to grow your streak 🔥</p>
     <p>Developed by <b>Dr. Maninder Singh</b> for<br><a href="https://www.orthochronicles.info" target="_blank" rel="noopener">orthochronicles.info</a> — free orthopaedic &amp; anatomy learning tools.</p>
     <p><a href="egg-climb-privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a></p>
@@ -195,12 +224,21 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
     <p id="goMsg"></p>
     <p class="goScore" id="goScore"></p>
     <p id="goBestLine" style="font-size:.8rem"></p>
+    <p id="goCoins" style="font-size:.9rem;color:#a06a00"></p>
     <button class="gbtn alt" id="watchAdBtn" onclick="watchAdContinue()" style="display:none;">📺 Watch Ad to Continue</button>
+    <button class="gbtn purple" id="coinContBtn" onclick="continueWithCoins()" style="display:none;">🪙 Continue (50 coins)</button>
     <button class="gbtn big" onclick="startGame()">↺ TRY AGAIN</button>
     <div class="row">
       <button class="gbtn green" onclick="shareGame(true)">📤 SHARE</button>
       <button class="gbtn ghost" onclick="showMenu()">☰ MENU</button>
     </div>
+  </div>
+</div>
+<div id="panel">
+  <div id="panelBox">
+    <div class="pTop"><b id="pCoins">🪙 0</b><button class="pX" onclick="hidePanel()" aria-label="Close">✕</button></div>
+    <div class="pTabs"><button id="pTabM" onclick="showPanel('m')">🎯 Missions</button><button id="pTabS" onclick="showPanel('s')">🎨 Egg Skins</button></div>
+    <div id="pBody"></div>
   </div>
 </div>
 <div id="rot"><span>📱</span>Rotate your phone to portrait<br>to play Egg Climb</div>
@@ -307,9 +345,10 @@ const BOWL_PALS=[
   ['#deb0ff','#a468e4','#6c38ab','#3e1a6e'],
   ['#ffa3a3','#e34a54','#a32233','#661020'],
   ['#bff593','#70c840','#418d20','#245010'],
-  ['#a2ceff','#4e94e6','#2d5fb3','#183a78']
+  ['#a2ceff','#4e94e6','#2d5fb3','#183a78'],
+  ['#fff6b0','#ffd23a','#d8960a','#8a5a00']   // golden bowl (index 6, never used for level rotation)
 ];
-function curPal(){ return Math.floor((level-1)/5)%BOWL_PALS.length; }
+function curPal(){ return Math.floor((level-1)/5)%6; }
 function _mk(w,h){
   const oc=document.createElement('canvas');
   oc.width=Math.ceil(w*DPR); oc.height=Math.ceil(h*DPR);
@@ -402,6 +441,7 @@ function _bakeEggBodySprite(type){
   return {canvas:oc,w:OW,h:OH};
 }
 function _eggColorsStatic(type){
+  if(SKIN_DEFS[type]) return SKIN_DEFS[type].c;
   return ({
     white:   ['#ffffff','#f5f5f2','#dddbd4','#b0aea8'],
     bronze:  ['#faba6e','#d87e2c','#9a5010','#5a2802'],
@@ -412,6 +452,7 @@ function _eggColorsStatic(type){
   })[type]||['#fff','#f0ead0','#c0b898','#888068'];
 }
 function _eggGlowColorStatic(type){
+  if(SKIN_DEFS[type]) return SKIN_DEFS[type].g;
   return ({white:'rgba(255,248,205,.26)',bronze:'rgba(215,128,48,.55)',
     silver:'rgba(198,198,255,.40)',gold:'rgba(255,215,0,.56)',
     platinum:'rgba(198,222,240,.44)',diamond:'rgba(0,244,255,.62)'})[type]||'rgba(255,255,255,.24)';
@@ -475,6 +516,105 @@ let streak=0, streakBonus=0;
   }
   streak=Math.max(1,st); streakBonus=streak>=7?2:(streak>=3?1:0);
 })();
+/* ── Coins, skins, daily missions ───────────────────────────────────── */
+let coins=(+lsGet('ec_coins')||0), runCoins=0, slowT=0, _coinUsed=false;
+let owned=[]; try{ owned=JSON.parse(lsGet('ec_owned')||'[]'); }catch(e){ owned=[]; } if(!Array.isArray(owned)) owned=[];
+let skin=lsGet('ec_skin')||'auto';
+function addCoins(n){ coins+=n; runCoins+=n; lsSet('ec_coins',String(coins)); }
+const SKINS=[
+  {id:'auto',name:'Classic (by level)',price:0,c:['#ffffff','#f5f5f2','#dddbd4','#b0aea8']},
+  {id:'pink',name:'Blush',price:60,c:['#fff5fa','#ffc4de','#ee6aa7','#a02f6c'],g:'rgba(255,120,190,.5)',t:'255,150,205'},
+  {id:'ocean',name:'Ocean',price:120,c:['#effcff','#9be3ff','#2f9be0','#195aa0'],g:'rgba(80,190,255,.5)',t:'110,200,255'},
+  {id:'lime',name:'Lime',price:120,c:['#f6ffe6','#c3f078','#6cc23c','#3b7a1c'],g:'rgba(150,240,90,.5)',t:'170,240,110'},
+  {id:'lava',name:'Lava',price:250,c:['#fff6b0','#ffa02e','#e0381a','#7a1208'],g:'rgba(255,110,40,.6)',t:'255,130,50'},
+  {id:'gold',name:'Golden',price:300,c:['#fffaaa','#ffd600','#c88000','#7a4600']},
+  {id:'galaxy',name:'Galaxy',price:400,c:['#f4e8ff','#a97bff','#5a2ec0','#241060'],g:'rgba(150,100,255,.6)',t:'170,120,255'},
+  {id:'diamond',name:'Diamond',price:500,c:['#e6fcff','#aeecff','#44bef5','#1878c0']},
+  {id:'rainbow',name:'Rainbow',price:700,c:['#ffe0f0','#ff9ad0','#a066ff','#4a8aff']},
+  {id:'cosmic',name:'Cosmic',price:1000,c:['#f0e0ff','#b070ff','#ff60b0','#401880']}
+];
+const SKIN_DEFS={}; SKINS.forEach(s=>{ if(s.g) SKIN_DEFS[s.id]=s; });
+const MPOOL=[
+  {k:'perfect',t:'Land {n} PERFECT catches',n:[8,15,25]},
+  {k:'level',t:'Reach level {n} in one run',n:[8,15,25]},
+  {k:'combo',t:'Hit a ×{n} combo',n:[4,7,12]},
+  {k:'score',t:'Score {n} points in one run',n:[2500,7000,15000]},
+  {k:'gold',t:'Catch {n} golden bowl(s) 🟡',n:[1,2,3]},
+  {k:'plays',t:'Play {n} games',n:[2,3,5]}
+];
+function dayNum(){ return Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5); }
+function missionsToday(){
+  const d=dayNum(), key='ec_ms_'+d; let st=null;
+  try{ st=JSON.parse(lsGet(key)||'null'); }catch(e){}
+  if(!st||!st.list){
+    const idx=[0,1,2,3,4,5]; let r=d*9301+49297; const pick=[];
+    while(pick.length<3){ r=(r*9301+49297)%233280; pick.push(idx.splice(r%idx.length,1)[0]); }
+    st={list:pick.map((pi,j)=>({k:MPOOL[pi].k,n:MPOOL[pi].n[(d+j)%3],p:0,done:0,rw:[25,40,60][j]}))};
+    lsSet(key,JSON.stringify(st));
+  }
+  return {key:key,st:st};
+}
+function mProg(k,v,add){
+  const m0=missionsToday(); let ch=false;
+  m0.st.list.forEach(m=>{
+    if(m.k!==k||m.done) return;
+    m.p=add?m.p+v:Math.max(m.p,v); ch=true;
+    if(m.p>=m.n){ m.p=m.n; m.done=1; addCoins(m.rw); showToast('✅ Mission complete!  +'+m.rw+' 🪙'); try{ sfxLevel(); }catch(e){} }
+  });
+  if(ch) lsSet(m0.key,JSON.stringify(m0.st));
+}
+let _ptab='m';
+function showPanel(t){ _ptab=t||'m'; $('panel').style.display='flex'; renderPanel(); }
+function hidePanel(){ $('panel').style.display='none'; renderChips(); }
+function renderPanel(){
+  $('pCoins').textContent='🪙 '+coins.toLocaleString();
+  $('pTabM').className=_ptab==='m'?'on':''; $('pTabS').className=_ptab==='s'?'on':'';
+  let h='';
+  if(_ptab==='m'){
+    h+='<p class="pHint">Daily missions reset at midnight. Finish all 3 for bonus coins!</p>';
+    missionsToday().st.list.forEach(m=>{
+      const def=MPOOL.find(x=>x.k===m.k), pct=Math.round(m.p/m.n*100);
+      h+='<div class="mis'+(m.done?' done':'')+'"><div class="misT">'+def.t.replace('{n}',m.n.toLocaleString())+'</div>'+
+         '<div class="misBar"><i style="width:'+pct+'%"></i></div>'+
+         '<div class="misR">'+(m.done?'✅ Done':m.p.toLocaleString()+' / '+m.n.toLocaleString())+'  ·  🪙 '+m.rw+'</div></div>';
+    });
+    h+='<p class="pHint" style="margin-top:12px">💡 Earn 🪙 from every catch (PERFECT = 3). Golden bowls pay ×3 score +10 🪙. Combos of 5 trigger SLOW-MO!</p>';
+  } else {
+    h+='<div class="skGrid">';
+    SKINS.forEach(sk=>{
+      const own=sk.id==='auto'||owned.indexOf(sk.id)>=0, eq=skin===sk.id;
+      h+='<div class="sk'+(eq?' eq':'')+'" data-id="'+sk.id+'"><div class="skEgg" style="background:radial-gradient(circle at 35% 30%,'+sk.c[0]+','+sk.c[1]+' 30%,'+sk.c[2]+' 65%,'+sk.c[3]+')"></div><b>'+sk.name+'</b><span>'+(eq?'✔ Equipped':(own?'Tap to use':'🪙 '+sk.price))+'</span></div>';
+    });
+    h+='</div>';
+  }
+  $('pBody').innerHTML=h;
+}
+window.addEventListener('load',()=>{ $('pBody').addEventListener('click',e=>{ const el=e.target.closest&&e.target.closest('.sk'); if(el) skinTap(el.dataset.id); }); });
+function skinTap(id){
+  const sk=SKINS.find(s=>s.id===id); if(!sk) return;
+  const own=id==='auto'||owned.indexOf(id)>=0;
+  if(!own){
+    if(coins<sk.price){ showToast('Need '+(sk.price-coins)+' more 🪙 — keep climbing!'); return; }
+    coins-=sk.price; owned.push(id); lsSet('ec_coins',String(coins)); lsSet('ec_owned',JSON.stringify(owned));
+    showToast('Unlocked '+sk.name+'! 🎉'); try{ sfxLevel(); }catch(e){}
+  }
+  skin=id; lsSet('ec_skin',id); _eggBodyType=null; renderPanel();
+}
+function continueWithCoins(){
+  if(coins<50||_coinUsed) return;
+  coins-=50; lsSet('ec_coins',String(coins)); _coinUsed=true;
+  lives=1; dying=false; slideAnim=null; combo=0;
+  const safeIdx=Math.max(0,Math.min(curIdx,bowls.length-2));
+  curIdx=safeIdx; tgtIdx=safeIdx+1;
+  egg.x=bowls[safeIdx].x+BOWL_W/2; egg.y=seatY(bowls[safeIdx]);
+  egg.vx=0; egg.vy=0; egg.angV=0; egg.angle=0; egg.offsetX=0; egg.missed=false; eggState='sitting';
+  document.getElementById('gameover').style.display='none';
+  showCtl(true); updateHUD();
+  running=true; _prevTs=0; _acc=0;
+  if(animId) cancelAnimationFrame(animId);
+  animId=requestAnimationFrame(loop);
+  startMusic();
+}
 function saveStats(){
   if(score>hiScore) hiScore=score;
   if(level>bestLevel) bestLevel=level;
@@ -485,10 +625,12 @@ function renderChips(){
   let h='';
   if(hiScore>0) h+='<span class="chip">🏆 Best '+hiScore.toLocaleString()+'</span>';
   if(bestLevel>0) h+='<span class="chip">🪜 Level '+bestLevel+'</span>';
+  h+='<span class="chip">🪙 '+coins.toLocaleString()+'</span>';
   h+='<span class="chip">🔥 '+streak+'-day streak</span>';
   if(streakBonus>0) h+='<span class="chip">🎁 +'+streakBonus+' bonus '+(streakBonus>1?'lives':'life')+'</span>';
   else h+='<span class="chip">🎁 3-day streak = +1 life</span>';
   el.innerHTML=h;
+  try{ const ml=missionsToday().st.list, dn=ml.filter(m=>m.done).length, mb=$('missBtn'); if(mb) mb.textContent='🎯 MISSIONS '+dn+'/'+ml.length; }catch(e){}
 }
 window.addEventListener('pagehide',saveStats);
 let milestonesEarned=new Set();
@@ -531,7 +673,8 @@ function mkBowl(y, stat){
   return{
     x: stat ? FL+FW/2-BOWL_W/2 : FL+Math.random()*(FW-BOWL_W),
     y, w:BOWL_W, h:BOWL_H,
-    speed:spd, dir:Math.random()<.5?1:-1
+    speed:spd, dir:Math.random()<.5?1:-1,
+    gold:(level>=3 && Math.random()<0.12)
   };
 }
 
@@ -572,6 +715,7 @@ const THEME_LABELS={
   jupiter:'🪐 Jupiter',saturn:'🪐 Saturn',uranus:'🪐 Uranus',neptune:'🔵 Neptune'
 };
 function getEggType(l){
+  if(skin!=='auto' && owned.indexOf(skin)>=0) return skin;
   if(l>=5000) return 'cosmic';
   if(l>=2000) return 'rainbow';
   if(l>=1000) return 'diamond';
@@ -687,7 +831,8 @@ function startGame(arcade){
   if(arcadeMode) pickArcadeTheme();
   initCv();
   saveStats(); _bestAtStart=hiScore;
-  _adUsedThisRun=false;
+  _adUsedThisRun=false; _coinUsed=false; runCoins=0; slowT=0;
+  mProg('plays',1,true);
   level=1; lives=3+streakBonus; score=0; combo=0; _lastScore=-1;
   milestonesEarned=new Set();
   bgCache={}; particles=[]; curTheme='';
@@ -799,9 +944,12 @@ function update(){
   }
 
   // ── All bowls move ──
+  if(slowT>0) slowT--;
+  const _tg=bowls[tgtIdx];
+  if(_tg&&_tg.gold&&Math.random()<.3) fx.push({t:'star',x:_tg.x+Math.random()*_tg.w,y:_tg.y-4,vx:0,vy:-.7,g:0,life:20,max:20,r:4,col:'#fff6a8',rot:0,vr:.2});
   bowls.forEach(b=>{
     if(!b.speed) return;
-    b.x+=b.speed*b.dir;
+    b.x+=b.speed*b.dir*(slowT>0?.45:1);
     if(b.x+b.w>FL+FW){b.x=FL+FW-b.w;b.dir=-1;}
     if(b.x<FL){b.x=FL;b.dir=1;}
   });
@@ -884,12 +1032,18 @@ function catchBowl(){
   const off=Math.abs(egg.x-cx)/(BOWL_W/2-7*GS);  // 0=center,1=edge
   combo++;
   if(combo%10===0 && lives<10){ lives++; showToast('🔥 '+combo+'-combo! +1 life ❤'); }
+  if(combo%10===5){ slowT=170; showToast('⏱ SLOW-MO! Bowls slow down'); try{ sfxLevel(); }catch(e){} }
   let pts, label, col;
   if(off<=0.25){pts=150;label='PERFECT ✦';col='#7af08a';}
   else if(off<=0.60){pts=80;label='GOOD ✓';col='#ffe46a';}
   else{pts=30;label='NICE';col='#f8c858';}
-  const earned=pts*combo;
+  let earned=pts*combo;
+  if(tb.gold){ earned*=3; label='GOLDEN ✦'; col='#ffd23a'; addCoins(10); }
+  addCoins(off<=0.25?3:(off<=0.60?2:1));
   score+=earned;
+  mProg('score',score); mProg('combo',combo);
+  if(off<=0.25) mProg('perfect',1,true);
+  if(tb.gold){ mProg('gold',1,true); addScoreFx('GOLDEN BOWL ×3  +10 🪙','#ffd23a',W/2,tb.y-100); burst(tb.x+BOWL_W/2,tb.y-8,26,['#fff6a8','#ffd23a','#fff'],'star'); }
   hiScore=Math.max(hiScore,score);
   // Flash HUD colour based on catch quality
   if(off<=0.25)      flashHUD('#7af08a','rgba(100,255,120,0.8)');
@@ -939,6 +1093,7 @@ function finishSlide(){
   const b1spd=b1moves?randSpd(baseSpd(nextL)):0;
   const b1x=b1moves?FL+Math.random()*(FW-BOWL_W):FL+FW/2-BOWL_W/2;
   const b1={y:YPOS[1],w:BOWL_W,h:BOWL_H,x:b1x,speed:b1spd,dir:Math.random()<.5?1:-1};
+  b1.gold=!!(bowls[2]&&bowls[2].gold);
   const b2=mkBowl(YPOS[2],!b2moves);
   bowls=[b0,b1,b2];
   curIdx=1; tgtIdx=2;
@@ -978,6 +1133,9 @@ function onMiss(){
       } else {
         adBtn.style.display='none';
       }
+      $('goCoins').textContent='+'+runCoins+' 🪙 earned  ·  Total '+coins.toLocaleString();
+      const _cb=$('coinContBtn');
+      if(_cb){ _cb.style.display=(coins>=50&&!_coinUsed)?'block':'none'; }
       document.getElementById('gameover').style.display='flex';
       showCtl(false);
       running=false;
@@ -1077,7 +1235,7 @@ function renderTrail(){
   }
 }
 function levelUpFx(){
-  sfxLevel();
+  sfxLevel(); mProg('level',level);
   const b=$('lvlBanner'); if(!b) return;
   b.innerHTML='LEVEL '+level+'<small>'+(THEME_LABELS[curTheme]||'')+'</small>';
   b.style.display='block'; b.style.animation='none'; void b.offsetWidth;
@@ -1401,7 +1559,7 @@ function render(alpha){
     // Draw egg freely, then overdraw bowl body on top to hide the submerged bottom half
     drawEgg(egg.x,egg.y);
     const cb=bowls[curIdx];
-    blit(curBowlSp,cb.x-curBowlSp.ox,cb.y-curBowlSp.oy);
+    { const _s=cb.gold?bowlSprite(6):curBowlSp; blit(_s,cb.x-_s.ox,cb.y-_s.oy); }
   } else if(!henAnim){
     if(egg.missed && egg.y > H - 55){
       // Splat on the floor — squish flat and stay put
@@ -1440,6 +1598,11 @@ function render(alpha){
     ctx.fillText('COMBO ×'+combo,W-8,bowls[tgtIdx]?bowls[tgtIdx].y-12:H*.18);
     ctx.restore();
   }
+  if(slowT>0){
+    ctx.fillStyle='rgba(90,170,255,'+(.10+.04*Math.sin(Date.now()*.01)).toFixed(3)+')'; ctx.fillRect(-20,-20,W+40,H+40);
+    ctx.font='900 '+Math.round(15*Math.min(GS,1.3))+'px "Trebuchet MS",Roboto,sans-serif'; ctx.textAlign='center';
+    ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillText('⏱ SLOW-MO',W/2+1,H*.13+2); ctx.fillStyle='#bfe3ff'; ctx.fillText('⏱ SLOW-MO',W/2,H*.13);
+  }
   ctx.restore(); // end shake
   // ── restore authoritative positions after interpolated draw ──
   egg.x=_iX; egg.y=_iY; egg.angle=_iA;
@@ -1460,7 +1623,7 @@ function renderParticles(){
 function drawBowlBody(b,isTarget){
   const{x,y,w,h}=b, cx=x+w/2;
   // Single drawImage: bowl body + wings pre-baked into one sprite
-  if(curBowlSp) blit(curBowlSp,x-curBowlSp.bx,y-curBowlSp.by);
+  const _sp=b.gold?bowlSprite(6):curBowlSp; if(_sp) blit(_sp,x-_sp.bx,y-_sp.by);
   // Target-only: pulsing glow + gold rim shimmer (2 ellipses, no save/restore needed)
   if(isTarget){
     const p=.5+.5*Math.sin(Date.now()*.007);
@@ -1730,6 +1893,7 @@ function eggGlowColor(){
     gold:'rgba(255,215,0,.56)',platinum:'rgba(198,222,240,.44)',diamond:'rgba(0,244,255,.62)'})[getEggType(level)]||'rgba(255,255,255,.24)';
 }
 function eggTrailRGB(){
+  if(SKIN_DEFS[getEggType(level)]) return SKIN_DEFS[getEggType(level)].t;
   if(getEggType(level)==='rainbow') return '255,128,255';
   if(getEggType(level)==='cosmic')  return '180,80,255';
   return ({white:'255,248,205',bronze:'215,128,48',silver:'195,195,228',
@@ -1884,7 +2048,7 @@ function updateHUD(){
   if(score!==_lastScore && _lastScore>=0){ st.classList.add('bump'); setTimeout(()=>st.classList.remove('bump'),140); }
   _lastScore=score;
   $('livesTxt').innerHTML = lives<=5 ? HEART_ON.repeat(Math.max(0,lives)) : HEART_ON+'<b style="color:#fff;font-size:.9rem;margin-left:3px;text-shadow:0 1px 2px #000">×'+lives+'</b>';
-  const bt=$('bestTxt'); if(bt) bt.textContent='BEST '+Math.max(hiScore,score).toLocaleString();
+  const bt=$('bestTxt'); if(bt) bt.textContent='BEST '+Math.max(hiScore,score).toLocaleString()+'  ·  🪙 '+coins.toLocaleString();
 }
 function showToast(m){
   const el=document.getElementById('toast');
