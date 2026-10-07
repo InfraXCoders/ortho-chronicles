@@ -1,0 +1,21 @@
+{
+  "id": "/egg-bucket-game.html",
+  "name": "Egg Climb",
+  "short_name": "Egg Climb",
+  "description": "Toss the egg into moving bowls — how high can you climb?",
+  "start_url": "/egg-bucket-game.html",
+  "scope": "/egg-bucket-game",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#1a0e04",
+  "theme_color": "#1a0e04",
+  "icons": [
+    { "src": "/assets/egg-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/egg-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/egg-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/egg-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "categories": ["games", "entertainment"],
+  "lang": "en"
+}
