@@ -147,6 +147,16 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 .skEgg{width:40px;height:50px;margin:0 auto 6px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;box-shadow:0 4px 8px rgba(0,0,0,.25);}
 .sk b{display:block;color:#4a2208;font-size:.8rem;}
 .sk span{display:block;font-size:.72rem;color:#7a4a1e;font-weight:800;margin-top:2px;}
+#coach{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 64px);transform:translateX(-50%);z-index:24;display:none;max-width:86vw;text-align:center;
+  background:rgba(15,8,2,.82);color:#fff;border:2px solid #ffd36a;border-radius:20px;padding:12px 18px;font-weight:800;font-size:.9rem;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+#coach .hand{display:block;font-size:1.9rem;animation:bob 1s ease-in-out infinite;}
+#daily{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,4,1,.86);z-index:60;pointer-events:all;padding:14px;}
+#dailyBox{background:linear-gradient(160deg,#fff4d6,#f0d6a0);border:3px solid #e0b25a;border-radius:24px;padding:22px 18px;text-align:center;max-width:330px;width:100%;animation:popIn .4s ease both;}
+#dailyBox .dgift{font-size:3.4rem;animation:bob 1.6s ease-in-out infinite;}
+#dailyBox h2{color:#8a2a08;margin:2px 0 4px;letter-spacing:1px;}#dailyBox p{color:#7a4820;font-weight:700;font-size:.85rem;margin-bottom:12px;}
+#dailyDays{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:14px;}
+#dailyDays div{background:rgba(74,34,8,.1);border-radius:10px;padding:6px 0;font-size:.62rem;font-weight:800;color:#5a2c0a;}
+#dailyDays div b{display:block;font-size:.8rem;}#dailyDays div.done{background:#9be07a;}#dailyDays div.now{background:linear-gradient(180deg,#ffe58a,#f6b93b);outline:2px solid #c8821a;transform:scale(1.12);}
 #rot{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:200;
   background:#1a0e04;color:#ffe9b0;font-weight:800;text-align:center;font-size:1.05rem;letter-spacing:1px;padding:20px;pointer-events:all;}
 #rot span{font-size:3rem;animation:bob 2s ease-in-out infinite;}
@@ -225,6 +235,7 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
     <p class="goScore" id="goScore"></p>
     <p id="goBestLine" style="font-size:.8rem"></p>
     <p id="goCoins" style="font-size:.9rem;color:#a06a00"></p>
+    <button class="gbtn green" id="dblBtn" onclick="doubleCoins()" style="display:none;">📺 Double coins</button>
     <button class="gbtn alt" id="watchAdBtn" onclick="watchAdContinue()" style="display:none;">📺 Watch Ad to Continue</button>
     <button class="gbtn purple" id="coinContBtn" onclick="continueWithCoins()" style="display:none;">🪙 Continue (50 coins)</button>
     <button class="gbtn big" onclick="startGame()">↺ TRY AGAIN</button>
@@ -241,6 +252,8 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
     <div id="pBody"></div>
   </div>
 </div>
+<div id="daily"><div id="dailyBox"><div class="dgift">🎁</div><h2>Daily reward!</h2><p id="dailyTxt"></p><div id="dailyDays"></div><button class="gbtn big" onclick="claimDaily()">CLAIM 🪙</button></div></div>
+<div id="coach"></div>
 <div id="rot"><span>📱</span>Rotate your phone to portrait<br>to play Egg Climb</div>
 <div id="toast"></div>
 <button class="ctl" id="muteBtn" onclick="toggleMute()" aria-label="Sound">🔊</button>
@@ -518,6 +531,34 @@ let streak=0, streakBonus=0;
 })();
 /* ── Coins, skins, daily missions ───────────────────────────────────── */
 let coins=(+lsGet('ec_coins')||0), runCoins=0, slowT=0, _coinUsed=false;
+let puWide=0, puX2=0, tutOn=(lsGet('ec_tut')!=='1'), tutCatches=0;
+function coachShow(t,hand){ const c=$('coach'); if(!c) return; c.innerHTML=(hand?'<span class="hand">👆</span>':'')+t; c.style.display='block'; }
+function coachHide(){ const c=$('coach'); if(c) c.style.display='none'; }
+const DAILY=[10,15,20,30,40,50,100];
+function showDaily(){
+  if(lsGet('ec_claimed')===lsGet('ec_day')) return;
+  const idx=Math.min(streak,7)-1;
+  $('dailyTxt').textContent='Day '+streak+' of your streak — come back every day for bigger rewards!';
+  $('dailyDays').innerHTML=DAILY.map((v,i)=>'<div class="'+(i<idx?'done':i===idx?'now':'')+'">D'+(i+1)+'<b>'+v+'</b>🪙</div>').join('');
+  $('daily').style.display='flex';
+}
+function claimDaily(){
+  const v=DAILY[Math.min(streak,7)-1]; coins+=v; lsSet('ec_coins',String(coins)); lsSet('ec_claimed',lsGet('ec_day'));
+  $('daily').style.display='none'; showToast('🎁 +'+v+' coins!'); try{ sfxLevel(); }catch(e){}
+  try{ renderChips(); }catch(e){}
+}
+let _dblUsed=false;
+async function doubleCoins(){
+  const b=$('dblBtn');
+  try{
+    const {AdMob}=Capacitor.Plugins; if(!AdMob||_dblUsed) return;
+    b.disabled=true; b.textContent='Loading…';
+    const r=await AdMob.showRewarded();
+    if(r&&r.rewarded){ coins+=runCoins; lsSet('ec_coins',String(coins)); _dblUsed=true; b.style.display='none';
+      $('goCoins').textContent='+'+(runCoins*2)+' 🪙 (doubled!) · Total '+coins.toLocaleString(); showToast('🪙 Coins doubled!'); }
+    else { b.disabled=false; b.textContent='📺 Double coins (+'+runCoins+')'; }
+  }catch(e){ if(b){ b.disabled=false; b.textContent='📺 Double coins (+'+runCoins+')'; } }
+}
 let owned=[]; try{ owned=JSON.parse(lsGet('ec_owned')||'[]'); }catch(e){ owned=[]; } if(!Array.isArray(owned)) owned=[];
 let skin=lsGet('ec_skin')||'auto';
 function addCoins(n){ coins+=n; runCoins+=n; lsSet('ec_coins',String(coins)); }
@@ -674,7 +715,8 @@ function mkBowl(y, stat){
     x: stat ? FL+FW/2-BOWL_W/2 : FL+Math.random()*(FW-BOWL_W),
     y, w:BOWL_W, h:BOWL_H,
     speed:spd, dir:Math.random()<.5?1:-1,
-    gold:(level>=3 && Math.random()<0.12)
+    gold:(level>=3 && Math.random()<0.12),
+    pu:(level>=2 && Math.random()<0.11)?['life','wide','x2'][Math.floor(Math.random()*3)]:null
   };
 }
 
@@ -831,7 +873,9 @@ function startGame(arcade){
   if(arcadeMode) pickArcadeTheme();
   initCv();
   saveStats(); _bestAtStart=hiScore;
-  _adUsedThisRun=false; _coinUsed=false; runCoins=0; slowT=0;
+  _adUsedThisRun=false; _coinUsed=false; runCoins=0; slowT=0; puWide=0; puX2=0; tutCatches=0; _dblUsed=false;
+  tutOn=(lsGet('ec_tut')!=='1');
+  if(tutOn) coachShow('TAP anywhere to toss the egg into the glowing bowl',true); else coachHide();
   mProg('plays',1,true);
   level=1; lives=3+streakBonus; score=0; combo=0; _lastScore=-1;
   milestonesEarned=new Set();
@@ -949,7 +993,7 @@ function update(){
   if(_tg&&_tg.gold&&Math.random()<.3) fx.push({t:'star',x:_tg.x+Math.random()*_tg.w,y:_tg.y-4,vx:0,vy:-.7,g:0,life:20,max:20,r:4,col:'#fff6a8',rot:0,vr:.2});
   bowls.forEach(b=>{
     if(!b.speed) return;
-    b.x+=b.speed*b.dir*(slowT>0?.45:1);
+    b.x+=b.speed*b.dir*(slowT>0?.45:1)*(tutOn?.6:1);
     if(b.x+b.w>FL+FW){b.x=FL+FW-b.w;b.dir=-1;}
     if(b.x<FL){b.x=FL;b.dir=1;}
   });
@@ -978,8 +1022,10 @@ function update(){
     if(egg.x+EGG_R>FL+FW){egg.x=FL+FW-EGG_R;egg.vx=-Math.abs(egg.vx)*0.45;}
 
     // ── Catch: egg falling into bowl ──
-    const catchW=tb.w-14*GS;
-    const catchL=tb.x+7*GS;
+    const _base=tb.w-14*GS;
+    const _len=(level<=5?1.35:level<=15?1.2:1.08)*(puWide>0?1.5:1);   // forgiving early on, tighter later
+    const catchW=_base*_len;
+    const catchL=tb.x+7*GS-(catchW-_base)/2;
     const inX=egg.x>=catchL && egg.x<=catchL+catchW;
     const inY=egg.y+EGG_R>=tb.y-4 && egg.y-EGG_R<=tb.y+tb.h*.5;
     if(inX && inY && egg.vy>0){ catchBowl(); return; }
@@ -1037,13 +1083,28 @@ function catchBowl(){
   if(off<=0.25){pts=150;label='PERFECT ✦';col='#7af08a';}
   else if(off<=0.60){pts=80;label='GOOD ✓';col='#ffe46a';}
   else{pts=30;label='NICE';col='#f8c858';}
-  let earned=pts*combo;
+  let earned=pts*combo*(puX2>0?2:1);
   if(tb.gold){ earned*=3; label='GOLDEN ✦'; col='#ffd23a'; addCoins(10); }
   addCoins(off<=0.25?3:(off<=0.60?2:1));
   score+=earned;
   mProg('score',score); mProg('combo',combo);
   if(off<=0.25) mProg('perfect',1,true);
   if(tb.gold){ mProg('gold',1,true); addScoreFx('GOLDEN BOWL ×3  +10 🪙','#ffd23a',W/2,tb.y-100); burst(tb.x+BOWL_W/2,tb.y-8,26,['#fff6a8','#ffd23a','#fff'],'star'); }
+  if(puWide>0) puWide--; if(puX2>0) puX2--;
+  if(tb.pu){
+    const k=tb.pu; tb.pu=null;
+    if(k==='life'){ if(lives<10) lives++; showToast('❤️ Extra life!'); }
+    else if(k==='wide'){ puWide=3; showToast('🧲 Wide bowls for the next 3 catches'); }
+    else { puX2=5; showToast('✖2 Double points for 5 catches'); }
+    try{ sfxLevel(); }catch(e){}
+    burst(cx,tb.y-10,22,['#ffffff','#a5b4fc','#fde68a'],'star');
+  }
+  if(tutOn){
+    tutCatches++;
+    if(tutCatches===1) coachShow('🎯 Land in the MIDDLE of the bowl for PERFECT!');
+    else if(tutCatches===2) coachShow('🔥 Chain perfect catches to build combos & coins!');
+    else { coachHide(); tutOn=false; lsSet('ec_tut','1'); showToast('You\'re a pro! Bowls speed up now 🚀'); }
+  }
   hiScore=Math.max(hiScore,score);
   // Flash HUD colour based on catch quality
   if(off<=0.25)      flashHUD('#7af08a','rgba(100,255,120,0.8)');
@@ -1134,6 +1195,8 @@ function onMiss(){
         adBtn.style.display='none';
       }
       $('goCoins').textContent='+'+runCoins+' 🪙 earned  ·  Total '+coins.toLocaleString();
+      { const db=$('dblBtn'); if(db){ db.style.display=(_adReady&&runCoins>=5&&!_dblUsed)?'block':'none'; db.disabled=false; db.textContent='📺 Double coins (+'+runCoins+')'; } }
+      coachHide();
       const _cb=$('coinContBtn');
       if(_cb){ _cb.style.display=(coins>=50&&!_coinUsed)?'block':'none'; }
       document.getElementById('gameover').style.display='flex';
@@ -1176,6 +1239,7 @@ document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='ArrowUp'
 
 function tap(){
   if(eggState!=='sitting'||slideAnim||dying||henAnim) return;
+  if(tutOn && tutCatches===0) coachHide();
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
   // Arc ABOVE bowl — egg goes straight up, bowl must be aligned at landing
@@ -1603,6 +1667,11 @@ function render(alpha){
     ctx.font='900 '+Math.round(15*Math.min(GS,1.3))+'px "Trebuchet MS",Roboto,sans-serif'; ctx.textAlign='center';
     ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillText('⏱ SLOW-MO',W/2+1,H*.13+2); ctx.fillStyle='#bfe3ff'; ctx.fillText('⏱ SLOW-MO',W/2,H*.13);
   }
+  if(puWide>0||puX2>0){
+    const t=(puWide>0?'🧲 '+puWide+'   ':'')+(puX2>0?'✖2 · '+puX2:'');
+    ctx.font='900 '+Math.round(13*Math.min(GS,1.3))+'px "Trebuchet MS",Roboto,sans-serif'; ctx.textAlign='center';
+    ctx.fillStyle='rgba(0,0,0,.45)'; ctx.fillText(t,W/2+1,H*.175+2); ctx.fillStyle='#fff'; ctx.fillText(t,W/2,H*.175);
+  }
   ctx.restore(); // end shake
   // ── restore authoritative positions after interpolated draw ──
   egg.x=_iX; egg.y=_iY; egg.angle=_iA;
@@ -1624,6 +1693,13 @@ function drawBowlBody(b,isTarget){
   const{x,y,w,h}=b, cx=x+w/2;
   // Single drawImage: bowl body + wings pre-baked into one sprite
   const _sp=b.gold?bowlSprite(6):curBowlSp; if(_sp) blit(_sp,x-_sp.bx,y-_sp.by);
+  if(b.pu){
+    const bob=Math.sin(Date.now()*.006+x)*3, px=cx, py=y-30*GS+bob, col=b.pu==='life'?'#F43F5E':b.pu==='wide'?'#6366F1':'#F59E0B';
+    ctx.fillStyle='rgba(255,255,255,.96)'; ctx.beginPath(); ctx.arc(px,py,13*GS,0,Math.PI*2); ctx.fill();
+    ctx.lineWidth=2.2; ctx.strokeStyle=col; ctx.stroke();
+    ctx.font=(b.pu==='x2'?'900 ':'')+Math.round(13*GS)+'px "Trebuchet MS",sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle=col;
+    ctx.fillText(b.pu==='life'?'❤️':b.pu==='wide'?'🧲':'×2',px,py+1); ctx.textBaseline='alphabetic';
+  }
   // Target-only: pulsing glow + gold rim shimmer (2 ellipses, no save/restore needed)
   if(isTarget){
     const p=.5+.5*Math.sin(Date.now()*.007);
@@ -2075,6 +2151,7 @@ window.addEventListener('load',()=>{
     splash.style.opacity='0';
     setTimeout(()=>{ splash.style.display='none'; },650);
   },1600);
+  setTimeout(()=>{ try{ if($('menu').style.display!=='none') showDaily(); }catch(e){} },2400);
 });
 </script>
 </body>
