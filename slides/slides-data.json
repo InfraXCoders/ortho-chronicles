@@ -232,5 +232,31 @@
     "status": "available",
     "file": "total-hip-arthroplasty.pptx",
     "date": "2026-06-08"
+  },
+  {
+    "id": "cpam-antenatal-case",
+    "title": "Antenatal Diagnosis of Bilateral CPAM with Mediastinal Shift — Case Report",
+    "category": "radiology",
+    "author": "Dr. Ramandeep Kaur",
+    "institution": "Dept. of Radiodiagnosis, GMC Patiala",
+    "description": "Rare case of bilateral congenital pulmonary airway malformation on antenatal ultrasound and fetal MRI: differentials, CVR prognosis and the complementary roles of USG and MRI.",
+    "slideCount": 12,
+    "cover": "orange",
+    "status": "available",
+    "file": "CPAM_ePaper_CaseReport.pptx",
+    "date": "2026-10-14"
+  },
+  {
+    "id": "calcaneum-fractures",
+    "title": "Calcaneum Fractures — Anatomy, Classification & Management",
+    "category": "trauma",
+    "author": "Dr. Pawanpreet Singh",
+    "institution": "Orthopaedics, GMC Amritsar",
+    "description": "PG seminar: applied anatomy, pathoanatomy, imaging, Sanders / Essex-Lopresti classifications, operative vs non-operative management, complications and viva points.",
+    "slideCount": 43,
+    "cover": "orange",
+    "status": "available",
+    "file": "Calcaneum_Fractures.pptx",
+    "date": "2026-10-14"
   }
 ]
