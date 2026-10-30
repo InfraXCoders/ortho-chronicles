@@ -78,7 +78,7 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 .ctl{position:fixed;left:12px;z-index:30;background:rgba(20,10,2,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   border:1px solid rgba(255,255,255,.25);border-radius:50%;width:38px;height:38px;font-size:1.05rem;cursor:pointer;display:none;
   align-items:center;justify-content:center;pointer-events:all;color:#fff;line-height:1;padding:0;}
-#muteBtn{top:calc(env(safe-area-inset-top,0px) + 58px);}
+#muteBtn{top:calc(env(safe-area-inset-top,0px) + 62px);}
 #vibeBtn{top:calc(env(safe-area-inset-top,0px) + 104px);}
 #pauseBtn{top:calc(env(safe-area-inset-top,0px) + 150px);}
 /* HUD */
@@ -91,7 +91,8 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 #scoreTxt{color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:1px;text-shadow:0 2px 0 rgba(0,0,0,.55),0 0 14px rgba(255,200,80,.5);
   transition:color .15s,transform .15s;}
 #scoreTxt.bump{transform:scale(1.25);}
-#livesTxt{display:flex;gap:2px;align-items:center;min-width:64px;justify-content:flex-end;}
+#livesRow{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 66px);display:none;justify-content:center;pointer-events:none;z-index:20;}
+#livesTxt{display:flex;gap:3px;align-items:center;justify-content:center;background:rgba(20,10,2,.45);border:1px solid rgba(255,230,160,.3);border-radius:16px;padding:3px 10px;}
 #livesTxt svg{width:19px;height:19px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6));}
 #bestTxt{position:fixed;left:0;right:0;text-align:center;top:calc(env(safe-area-inset-top,0px) + 46px);font-size:.62rem;color:rgba(255,235,180,.8);
   font-weight:800;letter-spacing:2px;text-shadow:0 1px 3px #000;pointer-events:none;z-index:20;display:none;}
@@ -212,9 +213,10 @@ canvas{display:block;position:fixed;top:0;left:0;image-rendering:auto;}
 <div id="hud">
   <span class="pill" id="lvlTxt">LVL 1</span>
   <span id="scoreTxt">0</span>
-  <span id="livesTxt"></span>
+  <span class="pill" id="coinTxt">🪙 0</span>
 </div>
 <div id="bestTxt"></div>
+<div id="livesRow"><span id="livesTxt"></span></div>
 <div id="themeLabel"></div>
 <div id="lvlBanner"></div>
 
@@ -275,7 +277,7 @@ function $(id){ return document.getElementById(id); }
 const PLAY_URL='https://play.google.com/store/apps/details?id=com.infraxcoders.eggclimb';
 const SITE_URL='https://www.orthochronicles.info/egg-bucket-game.html';
 function isApp(){ try{ return !!(window.Capacitor && typeof Capacitor.isNativePlatform==='function' && Capacitor.isNativePlatform()); }catch(e){ return false; } }
-const G=0.26;          // slow gravity → big arcs
+const G=0.34;          // slow gravity → big arcs
 let FL=0, FW;          // field left=0 (full width), field width=W
 let YPOS;              // [bottom, mid, top] fixed Y for bowl rims
 
@@ -435,6 +437,7 @@ function _bakeEggBodySprite(type){
   c.fillStyle=sp1;c.beginPath();c.arc(-r*.22,-r*.28,r*.30,0,Math.PI*2);c.fill();
   c.fillStyle='rgba(255,255,255,.75)';c.beginPath();c.arc(-r*.06,-r*.50,r*.07,0,Math.PI*2);c.fill();
   c.fillStyle='rgba(255,255,255,.10)';c.beginPath();c.arc(r*.12,r*.50,r*.14,0,Math.PI*2);c.fill();
+  _paintEggFace(c,r);
   // Also bake glow sprites
   const col=_eggGlowColorStatic(type);
   const fr=Math.ceil(r*2.6)+2,fd=fr*2;
@@ -531,6 +534,7 @@ let streak=0, streakBonus=0;
 })();
 /* ── Coins, skins, daily missions ───────────────────────────────────── */
 let coins=(+lsGet('ec_coins')||0), runCoins=0, slowT=0, _coinUsed=false;
+let tapBuf=0, gems=[];
 let puWide=0, puX2=0, tutOn=(lsGet('ec_tut')!=='1'), tutCatches=0;
 function coachShow(t,hand){ const c=$('coach'); if(!c) return; c.innerHTML=(hand?'<span class="hand">👆</span>':'')+t; c.style.display='block'; }
 function coachHide(){ const c=$('coach'); if(c) c.style.display='none'; }
@@ -704,10 +708,10 @@ let scoreFxQueue=[];  // [{txt, col, x, y, life}]
 let squishT=0;        // landing squish countdown
 
 /* ── Speed helpers ───────────────────────────────────────────────────── */
-const SPD_MULTS=[0.4, 0.55, 0.75, 0.95, 1.2, 1.55, 1.95, 2.4];
-function randSpd(base){ return base*SPDK*SPD_MULTS[Math.floor(Math.random()*SPD_MULTS.length)]; }
+const SPD_MULTS=[0.9, 1.05, 1.25, 1.5, 1.8, 2.15, 2.55, 3.0];   // no more crawling buckets
+function randSpd(base){ return Math.min(13*SPDK, base*SPDK*SPD_MULTS[Math.floor(Math.random()*SPD_MULTS.length)]); }
 // Speed grows with level (faster buckets), capping at the high end
-function baseSpd(l){ return l<=5 ? 1.4 : Math.min(1.4+(l-5)*0.010, 5.0); }
+function baseSpd(l){ return l<=3 ? 1.35 : Math.min(1.35+(l-3)*0.02, 5.2); }
 
 function mkBowl(y, stat){
   const spd = stat ? 0 : randSpd(baseSpd(level));
@@ -728,9 +732,17 @@ function seatY(b){ return b.y; }
 // picked each level from the full set.
 let arcadeMode=false, _arcadeTheme='beigewood';
 const ALL_THEMES=['beigewood','stones','forest','flowers','mountains','clouds','fog','snow','rain','space','moon','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','sun','universe'];
+let _arcadeNext=null;
+function _rndTheme(not){ let n; do{ n=ALL_THEMES[Math.floor(Math.random()*ALL_THEMES.length)]; }while(n===not && ALL_THEMES.length>1); return n; }
 function pickArcadeTheme(){
-  let n; do{ n=ALL_THEMES[Math.floor(Math.random()*ALL_THEMES.length)]; }while(n===_arcadeTheme && ALL_THEMES.length>1);
-  _arcadeTheme=n;
+  _arcadeTheme=(_arcadeNext&&_arcadeNext!==_arcadeTheme)?_arcadeNext:_rndTheme(_arcadeTheme);
+  _arcadeNext=_rndTheme(_arcadeTheme);
+}
+function prebakeAhead(){
+  setTimeout(()=>{ try{
+    if(arcadeMode){ if(_arcadeNext&&!bgCache[_arcadeNext]) bgCache[_arcadeNext]=makeBg(_arcadeNext); }
+    else for(let d=1;d<=8;d++){ const t=getTheme(level+d); if(!bgCache[t]){ bgCache[t]=makeBg(t); break; } }
+  }catch(e){} },500);
 }
 function getTheme(l){
   if(arcadeMode) return _arcadeTheme;
@@ -792,6 +804,7 @@ function showCtl(on){
   ['muteBtn','vibeBtn','pauseBtn'].forEach(id=>{ const e=$(id); if(e) e.style.display=on?'flex':'none'; });
   const vb=$('vibeBtn'); if(vb) vb.textContent=_vibeOn?'📳':'📴';
   const bt=$('bestTxt'); if(bt){ bt.style.display=on?'block':'none'; bt.textContent='BEST '+hiScore.toLocaleString(); }
+  const lr=$('livesRow'); if(lr) lr.style.display=on?'flex':'none';
 }
 function showAbout(){ document.getElementById('about').style.display='flex'; }
 function hideAbout(){ document.getElementById('about').style.display='none'; }
@@ -880,7 +893,7 @@ function startGame(arcade){
   level=1; lives=3+streakBonus; score=0; combo=0; _lastScore=-1;
   milestonesEarned=new Set();
   bgCache={}; particles=[]; curTheme='';
-  slideAnim=null; squishT=0; scoreFxQueue=[]; fx=[]; trail=[]; shakeT=0;
+  slideAnim=null; squishT=0; scoreFxQueue=[]; fx=[]; trail=[]; shakeT=0; gems=[]; tapBuf=0;
   $('pause').style.display='none'; $('lvlBanner').style.display='none';
 
   document.getElementById('menu').style.display='none';
@@ -968,8 +981,8 @@ function update(){
 
   // ── Hen intro animation ──
   if(henAnim){
-    henAnim.t+=2.4;                       // hen lays the egg faster (was 1×)
-    if(henAnim.t>=200){ henAnim=null; eggState='sitting'; }
+    henAnim.t+=3.8;                       // hen lays the egg faster (was 1×)
+    if(henAnim.t>=200){ henAnim=null; eggState='sitting'; spawnGem(); }
     return; // freeze game during intro
   }
 
@@ -987,6 +1000,7 @@ function update(){
     return;
   }
 
+  if(tapBuf && eggState==='sitting' && !slideAnim){ const age=Date.now()-tapBuf; tapBuf=0; if(age<420) tap(); }
   // ── All bowls move ──
   if(slowT>0) slowT--;
   const _tg=bowls[tgtIdx];
@@ -1012,6 +1026,7 @@ function update(){
     const tb=bowls[tgtIdx];
 
     trail.push({x:egg.x,y:egg.y}); if(trail.length>10) trail.shift();
+    for(let gi=gems.length-1;gi>=0;gi--){ const g=gems[gi]; if(Math.hypot(egg.x-g.x,egg.y-g.y)<EGG_R+13*GS){ gems.splice(gi,1); addCoins(5); sfxPerfect(); burst(g.x,g.y,14,['#7ae9ff','#ffffff'],'star'); addScoreFx('💎 +5 🪙','#7fe9ff',g.x,g.y-14); buzz1(); } }
     // Pure physics — no deceleration
     egg.vy+=G;
     egg.x+=egg.vx; egg.y+=egg.vy;
@@ -1053,7 +1068,7 @@ function update(){
   else if(eggState==='rolling'){
     const cb=bowls[curIdx];
     // Egg rolls to center of current bowl
-    egg.offsetX*=0.82;
+    egg.offsetX*=0.70;
     egg.angV=egg.offsetX*0.038;
     egg.angle+=egg.angV;
     egg.x=cb.x+BOWL_W/2+egg.offsetX;
@@ -1124,12 +1139,13 @@ function catchBowl(){
   egg.vx=0; egg.vy=0;
   squishT=14; eggState='rolling';
   curIdx=tgtIdx; tgtIdx++;
+  if(tgtIdx<=2) spawnGem(); else gems=[];
   updateHUD();
 }
 
 /* ── Slide (top bowl caught → shift everything down) ─────────────────── */
 function startSlide(){
-  slideAnim={t:0, total:52};
+  slideAnim={t:0, total:32};
 }
 function finishSlide(){
   const nextL=level+1;
@@ -1160,7 +1176,7 @@ function finishSlide(){
   curIdx=1; tgtIdx=2;
   egg.y=seatY(bowls[1]); egg.x=bowls[1].x+BOWL_W/2;
   egg.offsetX=0; egg.angV=0;
-  eggState='sitting'; slideAnim=null;
+  eggState='sitting'; slideAnim=null; spawnGem();
   level++; checkMilestones(); updateHUD(); themeCheck(false); levelUpFx();
 }
 
@@ -1218,7 +1234,7 @@ function checkMilestones(){
   }
 }
 function themeCheck(force){
-  if(arcadeMode) pickArcadeTheme();      // fresh random background each level
+  if(arcadeMode && (force || level%5===1)) pickArcadeTheme();   // new world only every 5 climbs
   const t=getTheme(level);
   if(t!==curTheme||force){
     curTheme=t;
@@ -1226,6 +1242,7 @@ function themeCheck(force){
     spawnParticles(t);
     if(!bgCache[t]) bgCache[t]=makeBg(t);
   }
+  prebakeAhead();
 }
 
 /* ── Input ───────────────────────────────────────────────────────────── */
@@ -1237,13 +1254,16 @@ document.addEventListener('visibilitychange',()=>{ if(document.hidden){ saveStat
 window.addEventListener('blur',()=>{ pauseGame(); });
 document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='ArrowUp')&&running){e.preventDefault();tap();}});
 
+function buzz1(){ if(_vibeOn && navigator.vibrate){ try{ navigator.vibrate(12); }catch(e){} } }
 function tap(){
+  // tap during the roll-in / slide is remembered and fired the instant the egg is ready → fluid, no "dead" taps
+  if(running && !dying && !henAnim && (eggState==='rolling' || slideAnim)){ tapBuf=Date.now(); return; }
   if(eggState!=='sitting'||slideAnim||dying||henAnim) return;
   if(tutOn && tutCatches===0) coachHide();
   const tb=bowls[tgtIdx]; if(!tb) return;
   const dy=tb.y-egg.y; if(dy>=0) return;
   // Arc ABOVE bowl — egg goes straight up, bowl must be aligned at landing
-  const OVERSHOOT=90*GS;
+  const OVERSHOOT=72*GS;
   const peakY=tb.y-OVERSHOOT;
   const peakDy=peakY-egg.y;
   const vy=-Math.sqrt(2*G*Math.abs(peakDy));
@@ -1255,6 +1275,46 @@ function tap(){
   sfxTap();
 }
 
+/* ── cute egg face (drawn in the egg's stretched coordinate space) ── */
+function _paintEggFace(c,r){
+  c.save();
+  c.fillStyle='rgba(255,120,130,.38)';
+  c.beginPath();c.ellipse(-r*.52,r*.30,r*.15,r*.09,0,0,Math.PI*2);c.fill();
+  c.beginPath();c.ellipse(r*.52,r*.30,r*.15,r*.09,0,0,Math.PI*2);c.fill();
+  c.fillStyle='#2b1a10';
+  c.beginPath();c.ellipse(-r*.28,r*.04,r*.10,r*.15,0,0,Math.PI*2);c.fill();
+  c.beginPath();c.ellipse(r*.28,r*.04,r*.10,r*.15,0,0,Math.PI*2);c.fill();
+  c.fillStyle='#fff';
+  c.beginPath();c.arc(-r*.25,-r*.02,r*.04,0,Math.PI*2);c.fill();
+  c.beginPath();c.arc(r*.31,-r*.02,r*.04,0,Math.PI*2);c.fill();
+  c.strokeStyle='#2b1a10';c.lineWidth=Math.max(.8,r*.07);c.lineCap='round';
+  c.beginPath();c.arc(0,r*.20,r*.20,Math.PI*.12,Math.PI*.88);c.stroke();
+  c.restore();
+}
+/* ── collectible gems: fly through them for bonus coins ── */
+function spawnGem(){
+  gems=[]; if(Math.random()>.55) return;
+  const tb=bowls[tgtIdx], cb=bowls[curIdx]; if(!tb||!cb) return;
+  gems.push({x:FL+34*GS+Math.random()*(FW-68*GS), y:cb.y+(tb.y-cb.y)*(.35+Math.random()*.35), ph:Math.random()*6});
+}
+function renderGems(){
+  const t=Date.now()*.004;
+  for(const g of gems){
+    const bob=Math.sin(t+g.ph)*3, s=9*GS;
+    ctx.save(); ctx.translate(g.x,g.y+bob);
+    const gl=ctx.createRadialGradient(0,0,2,0,0,s*2.2); gl.addColorStop(0,'rgba(120,235,255,.55)'); gl.addColorStop(1,'rgba(120,235,255,0)'); ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(0,0,s*2.2,0,Math.PI*2); ctx.fill();
+    ctx.rotate(Math.sin(t*.7)*.15);
+    ctx.fillStyle='#7ae9ff'; ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*.8,0); ctx.lineTo(0,s); ctx.lineTo(-s*.8,0); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.7)'; ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*.8,0); ctx.lineTo(0,-s*.05); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#0b7ea3'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*.8,0); ctx.lineTo(0,s); ctx.lineTo(-s*.8,0); ctx.closePath(); ctx.stroke();
+    ctx.restore();
+  }
+}
+function drawLandGuide(){
+  const tb=bowls[tgtIdx]; if(!tb||eggState!=='flying'||egg.missed) return;
+  ctx.save(); ctx.globalAlpha=.32; ctx.strokeStyle='#ffffff'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.ellipse(egg.x,tb.y,EGG_R*1.15,EGG_R*.38,0,0,Math.PI*2); ctx.stroke(); ctx.restore();
+}
 /* ── Juice: bursts, shake, trail, level banner ───────────────────────── */
 function burst(x,y,n,cols,kind){
   for(let i=0;i<n;i++){
@@ -1300,6 +1360,7 @@ function renderTrail(){
 }
 function levelUpFx(){
   sfxLevel(); mProg('level',level);
+  if(level%10===0){ burst(W*.3,H*.35,20,['#ffd36a','#ffffff','#7af08a'],'star'); burst(W*.7,H*.35,20,['#ff9a40','#ffffff','#6ac8ff'],'star'); shake(12,4*GS); showToast('🏆 Level '+level+' reached!'); }
   const b=$('lvlBanner'); if(!b) return;
   b.innerHTML='LEVEL '+level+'<small>'+(THEME_LABELS[curTheme]||'')+'</small>';
   b.style.display='block'; b.style.animation='none'; void b.offsetWidth;
@@ -1567,6 +1628,9 @@ function makeBg(theme){
     if(theme==='earth'){bx.fillStyle='rgba(14,58,145,.5)';bx.fillRect(0,h*.62,w,h*.12);bClouds(bx,w,h,'rgba(255,255,255,.36)');}
     bStars(bx,w,h,22);
   }
+  // cinematic finish: soft vignette + top light, baked once per world
+  const vg=bx.createRadialGradient(w/2,h*.45,Math.min(w,h)*.25,w/2,h*.5,Math.max(w,h)*.78); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.36)'); bx.fillStyle=vg; bx.fillRect(0,0,w,h);
+  const lg=bx.createLinearGradient(0,0,0,h*.38); lg.addColorStop(0,'rgba(255,255,255,.10)'); lg.addColorStop(1,'rgba(255,255,255,0)'); bx.fillStyle=lg; bx.fillRect(0,0,w,h*.38);
   return bc;
 }
 function bClouds(bx,w,h,col){for(let i=0;i<6;i++){const cx=Math.random()*w,cy=h*(.04+Math.random()*.18),cw=44+Math.random()*78;bx.fillStyle=col;bx.beginPath();bx.ellipse(cx,cy,cw/2,10,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx-cw*.17,cy+5,cw*.26,7,0,0,Math.PI*2);bx.fill();bx.beginPath();bx.ellipse(cx+cw*.17,cy+5,cw*.26,7,0,0,Math.PI*2);bx.fill();}}
@@ -1617,6 +1681,7 @@ function render(alpha){
   // ── Hen intro (replaces egg during intro) ──
   if(henAnim){ renderHenIntro(); }
 
+  renderGems(); drawLandGuide();
   renderTrail();
   // ── EGG (hidden during intro) ──
   if(!henAnim&&(eggState==='sitting'||eggState==='rolling')){
@@ -1925,6 +1990,7 @@ function drawEgg(sx,sy){
     ctx.fillStyle=sp1; ctx.beginPath(); ctx.arc(-r*.22,-r*.28,r*.30,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='rgba(255,255,255,.75)'; ctx.beginPath(); ctx.arc(-r*.06,-r*.50,r*.07,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='rgba(255,255,255,.10)'; ctx.beginPath(); ctx.arc(r*.12,r*.50,r*.14,0,Math.PI*2); ctx.fill();
+    _paintEggFace(ctx,r);
   } else if(_eggBodySprite) {
     // Static egg — single drawImage blit (no gradient creation)
     const sp=_eggBodySprite;
@@ -2124,7 +2190,8 @@ function updateHUD(){
   if(score!==_lastScore && _lastScore>=0){ st.classList.add('bump'); setTimeout(()=>st.classList.remove('bump'),140); }
   _lastScore=score;
   $('livesTxt').innerHTML = lives<=5 ? HEART_ON.repeat(Math.max(0,lives)) : HEART_ON+'<b style="color:#fff;font-size:.9rem;margin-left:3px;text-shadow:0 1px 2px #000">×'+lives+'</b>';
-  const bt=$('bestTxt'); if(bt) bt.textContent='BEST '+Math.max(hiScore,score).toLocaleString()+'  ·  🪙 '+coins.toLocaleString();
+  const bt=$('bestTxt'); if(bt) bt.textContent='BEST '+Math.max(hiScore,score).toLocaleString();
+  const ct=$('coinTxt'); if(ct) ct.textContent='🪙 '+coins.toLocaleString();
 }
 function showToast(m){
   const el=document.getElementById('toast');
