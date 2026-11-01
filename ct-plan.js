@@ -212,7 +212,7 @@ function planSchedHTML(){
   p.slots.slice().sort((a,b)=>tmin(a.time)-tmin(b.time)).forEach((s,ix)=>{
     const kc=slotKcal(s);
     h+='<div class="slot'+(s.on?'':' off')+'"><div class="sr"><div class="sn">'+(ix+1)+'</div><input class="si" value="'+esc(s.name)+'" data-chg="slotName" data-s="'+s.id+'" maxlength="24"><input class="st" type="time" value="'+s.time+'" data-chg="slotTime" data-s="'+s.id+'"><button class="tg'+(s.on?' on':'')+'" data-act="slotToggle" data-s="'+s.id+'" aria-label="Reminder"></button></div>'+
-       '<div class="fchips">'+(s.foods||[]).map((f,i)=>'<span class="fc">'+esc(f.name.replace(/\s*\(.*?\)/g,''))+(f.qty?' · '+Math.round(f.qty)+'g':'')+'<u data-act="slotFoodDel" data-s="'+s.id+'" data-i="'+i+'">✕</u></span>').join('')+'<span class="fc add" data-act="slotAdd" data-s="'+s.id+'">＋ Add food</span></div>'+
+       '<div class="fchips">'+(s.foods||[]).map((f,i)=>'<span class="fc">'+esc(f.name.replace(/\s*\(.*?\)/g,''))+(f.qty?' · '+Math.round(f.qty)+(f.u||'g'):'')+'<u data-act="slotFoodDel" data-s="'+s.id+'" data-i="'+i+'">✕</u></span>').join('')+'<span class="fc add" data-act="slotAdd" data-s="'+s.id+'">＋ Add food</span></div>'+
        '<div class="sub" style="margin-top:8px">'+(kc?'🔥 ~'+kc+' kcal':'No foods yet')+' · 🔔 '+(s.on?'reminder on':'reminder off')+'</div></div>';
   });
   // calendar

@@ -6,7 +6,7 @@ const MEALS=[
   {id:'snacks',n:'Snacks',e:'🥪',bg:'#EDE9FE'},
   {id:'dinner',n:'Dinner',e:'🌙',bg:'#DBEAFE'}
 ];
-const CAT_EMOJI={fruit:'🍎',vegetable:'🥦',salad:'🥗',grain:'🌾',legume:'🫘',dairy:'🥛',protein:'🍗',snack:'🍛',italian:'🍕',southindian:'🥥',northindian:'🫓',asian:'🥢',western:'🍔',european:'🥐',seafood:'🦐',beverage:'☕',supplement:'💪',softdrink:'🥤',alcohol:'🍺',custom:'⭐'};
+const CAT_EMOJI={fruit:'🍎',vegetable:'🥦',salad:'🥗',grain:'🌾',legume:'🫘',dairy:'🥛',protein:'🍗',snack:'🍛',packaged:'🍪',sabzi:'🍛',bread:'🫓',italian:'🍕',southindian:'🥥',northindian:'🫓',asian:'🥢',western:'🍔',european:'🥐',seafood:'🦐',beverage:'☕',supplement:'💪',softdrink:'🥤',alcohol:'🍺',custom:'⭐'};
 const GLASS_ML=300;
 const IN_APP=!!window.AndroidApp;
 let state={}, selDate='', curTab='home';
@@ -248,7 +248,7 @@ function renderDiary(){
     h+='<div class="card"><h3><span style="font-size:1.3rem">'+m.e+'</span>'+m.n+'<span class="more num" style="color:var(--ink)">'+Math.round(kc)+' kcal</span></h3>';
     if(!items.length) h+='<div class="sub" style="padding:2px 0 10px">Nothing logged yet.</div>';
     items.forEach((i,ix)=>{
-      h+='<div class="foodrow"><div class="fi"><b>'+esc(i.name)+'</b><span>'+(i.qty?Math.round(i.qty)+' g · ':'')+'P '+r1(i.prot||0)+' · C '+r1(i.carb||0)+' · F '+r1(i.fat||0)+(i.slot?' · from plan':'')+'</span></div><div class="fk num">'+Math.round(i.cal||0)+'</div><button class="xbtn" data-act="delFood" data-meal="'+m.id+'" data-i="'+ix+'" aria-label="Remove">✕</button></div>';
+      h+='<div class="foodrow"><div class="fi"><b>'+esc(i.name)+'</b><span>'+(i.qty?Math.round(i.qty)+' '+(i.u||'g')+' · ':'')+'P '+r1(i.prot||0)+' · C '+r1(i.carb||0)+' · F '+r1(i.fat||0)+(i.slot?' · from plan':'')+'</span></div><div class="fk num">'+Math.round(i.cal||0)+'</div><button class="xbtn" data-act="delFood" data-meal="'+m.id+'" data-i="'+ix+'" aria-label="Remove">✕</button></div>';
     });
     h+='<button class="btn sec sm" style="margin-top:8px" data-act="addFood" data-meal="'+m.id+'">＋ Add food</button></div>';
   });
@@ -282,6 +282,10 @@ function waterUndo(){
 /* ── food picker ── */
 let pk={cat:'all',q:'',cb:null,title:''};
 function allFoods(){return state.custom.concat(FOODS);}
+function isLiquid(f){return !!(f&&(f.ml||f.cat==='alcohol'));}
+function uOf(f){return isLiquid(f)?'ml':'g';}
+function defQty(f){return isLiquid(f)?(f.sv||(f.cat==='alcohol'?30:200)):100;}
+function qtyChips(f){if(!isLiquid(f))return [50,100,150,200,250];const s=f.sv||0;if(f.cat==='alcohol'){return s>=300?[330,500,650,1000]:s>=100?[150,250,375,750]:[30,60,90,180,375];}return [100,150,200,250,300];}
 function foodEmoji(f){const u=COUNTABLE_UNITS[f.id];return u?u.icon:(CAT_EMOJI[f.cat]||'🍽️');}
 function autoMeal(){const h=new Date().getHours();return h<11?'breakfast':h<16?'lunch':h<19?'snacks':'dinner';}
 function openPicker(title,cb){
@@ -308,13 +312,13 @@ function renderPickerList(){
   }
   const box=$('pkl');
   if(!list.length){box.innerHTML='<div class="empty"><i>🔎</i>No match. <br><button class="btn sm" style="margin-top:10px" data-act="customFood">＋ Create custom food</button></div>';return;}
-  box.innerHTML=list.slice(0,80).map(f=>'<div class="fitem" data-act="pickFood" data-id="'+f.id+'"><div class="fe">'+foodEmoji(f)+'</div><div><b>'+esc(f.name)+'</b><span>P '+f.prot+' · C '+f.carb+' · F '+f.fat+' per 100 g</span></div><div class="fa num">'+f.cal+'<br><span style="color:var(--mut);font-weight:500">kcal/100g</span></div></div>').join('')+
+  box.innerHTML=list.slice(0,80).map(f=>'<div class="fitem" data-act="pickFood" data-id="'+f.id+'"><div class="fe">'+foodEmoji(f)+'</div><div><b>'+esc(f.name)+'</b><span>P '+f.prot+' · C '+f.carb+' · F '+f.fat+' per 100 '+uOf(f)+'</span></div><div class="fa num">'+f.cal+'<br><span style="color:var(--mut);font-weight:500">kcal/100'+uOf(f)+'</span></div></div>').join('')+
     (list.length>80?'<div class="empty">Showing 80 of '+list.length+' — refine your search</div>':'')+
     '<div style="text-align:center;padding:12px"><button class="btn ghost sm" data-act="customFood">＋ Can\'t find it? Add custom food</button></div>';
 }
 let qf=null,qn=100,qc=1;
 function openQty(food,cb){
-  qf=food;const u=COUNTABLE_UNITS[food.id];qc=1;qn=u?u.g:100;
+  qf=food;const u=COUNTABLE_UNITS[food.id];qc=1;qn=u?u.g:defQty(food);
   const ov=openSheet('<div id="qbody"></div>');ov.querySelector('.sheet').style.paddingBottom='18px';
   qf._cb=cb;renderQty();
 }
@@ -323,8 +327,8 @@ function renderQty(){
   const u=COUNTABLE_UNITS[qf.id], g=qGrams(), r=g/100;
   const n={c:Math.round(qf.cal*r),p:r1(qf.prot*r),cb:r1(qf.carb*r),f:r1(qf.fat*r)};
   $('qbody').innerHTML='<div class="sh"><h2>'+foodEmoji(qf)+' '+esc(qf.name)+'</h2><button class="xclose" data-act="closeSheet">✕</button></div><div class="sb">'+
-    (u?'<div class="sub" style="text-align:center">How many '+esc(u.label)+'?</div><div class="qrow"><button data-act="qc" data-d="-1">−</button><input id="qv" type="number" value="'+qc+'" min="1" inputmode="numeric"><button data-act="qc" data-d="1">＋</button></div><div class="sub" style="text-align:center">≈ '+g+' g total</div>'
-      :'<div class="sub" style="text-align:center">Quantity (grams)</div><div class="qrow"><button data-act="qn" data-d="-25">−</button><input id="qv" type="number" value="'+qn+'" min="1" inputmode="decimal"><button data-act="qn" data-d="25">＋</button></div><div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap">'+[50,100,150,200,250].map(x=>'<button class="cat" data-act="qset" data-v="'+x+'">'+x+' g</button>').join('')+'</div>')+
+    (u?'<div class="sub" style="text-align:center">How many '+esc(u.label)+'?</div><div class="qrow"><button data-act="qc" data-d="-1">−</button><input id="qv" type="number" value="'+qc+'" min="1" inputmode="numeric"><button data-act="qc" data-d="1">＋</button></div><div class="sub" style="text-align:center">≈ '+g+' '+uOf(qf)+' total</div>'
+      :'<div class="sub" style="text-align:center">Quantity ('+(isLiquid(qf)?'ml':'grams')+')</div><div class="qrow"><button data-act="qn" data-d="-25">−</button><input id="qv" type="number" value="'+qn+'" min="1" inputmode="decimal"><button data-act="qn" data-d="25">＋</button></div><div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap">'+qtyChips(qf).map(x=>'<button class="cat" data-act="qset" data-v="'+x+'">'+x+' '+uOf(qf)+'</button>').join('')+'</div>')+
     '<div class="nutr"><div><b class="num">'+n.c+'</b><span>KCAL</span></div><div><b>'+n.p+'g</b><span>PROTEIN</span></div><div><b>'+n.cb+'g</b><span>CARBS</span></div><div><b>'+n.f+'g</b><span>FAT</span></div></div>'+
     '<button class="btn" data-act="qok">Add '+n.c+' kcal</button></div>';
   const qv=$('qv');if(qv)qv.addEventListener('input',()=>{const v=parseFloat(qv.value)||0;if(COUNTABLE_UNITS[qf.id])qc=Math.max(0,Math.round(v));else qn=Math.max(0,v);refreshQtyNums();});
@@ -336,7 +340,7 @@ function refreshQtyNums(){ // update numbers without re-rendering (keeps keyboar
 }
 function foodItem(food,grams,extra){
   const r=grams/100;
-  return Object.assign({id:food.id,name:food.name,qty:grams,cal:Math.round(food.cal*r),prot:r1(food.prot*r),carb:r1(food.carb*r),fat:r1(food.fat*r),fiber:r1((food.fiber||0)*r),t:Date.now()},extra||{});
+  return Object.assign({id:food.id,name:food.name,qty:grams,cal:Math.round(food.cal*r),prot:r1(food.prot*r),carb:r1(food.carb*r),fat:r1(food.fat*r),fiber:r1((food.fiber||0)*r),t:Date.now()},isLiquid(food)?{u:'ml'}:{},extra||{});
 }
 function addFoodToLog(item,meal,date){
   date=date||selDate;const l=dayLog(date,true);
