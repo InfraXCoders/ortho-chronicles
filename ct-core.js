@@ -200,6 +200,7 @@ function renderHome(){
      '<button data-act="addFood" data-meal=""><i style="background:#FFEDD5">🍽️</i>Add food</button>'+
      '<button data-act="water" data-ml="200"><i style="background:#E0F2FE">💧</i>+200 ml</button>'+
      '<button data-act="weight"><i style="background:#F3E8FF">⚖️</i>Weight</button></div>';
+  if(typeof curatedHTML==='function'){try{h+=curatedHTML();}catch(e){}}
   // next reminder
   const nx=(d===today())?nextSlotInfo():null;
   if(nx){

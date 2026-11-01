@@ -2,11 +2,11 @@
    • HTML: network-first (always the latest app when online, cached copy offline)
    • JS/CSS/images: stale-while-revalidate
    • Notification buttons (web reminders): Ate / Later / Skip, water 100 / 200 ml / Skip */
-const CACHE = 'ct-v7';
+const CACHE = 'ct-v8';
 const PRECACHE = [
   '/calorie-tracker.html',
-  '/ct-app.css?v=7','/ct-data.js?v=7','/ct-fotd.js?v=7','/ct-core.js?v=7','/ct-plan.js?v=7',
-  '/ct-charts.js?v=7','/ct-scan-ai.js?v=7','/ct-scan.js?v=7','/ct-app.js?v=7',
+  '/ct-app.css?v=8','/ct-data.js?v=8','/ct-curated.js?v=8','/ct-fotd.js?v=8','/ct-core.js?v=8','/ct-plan.js?v=8',
+  '/ct-charts.js?v=8','/ct-scan-ai.js?v=8','/ct-scan.js?v=8','/ct-app.js?v=8',
   '/assets/ct-icon-192.png','/assets/ct-icon-512.png'
 ];
 

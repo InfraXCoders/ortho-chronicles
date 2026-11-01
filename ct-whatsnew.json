@@ -1,0 +1,32 @@
+{
+ "versionName": "5.3",
+ "versionCode": 18,
+ "title": "What's new",
+ "items": [
+  [
+   "🍽️",
+   "Curated meals with photos",
+   "Hand-picked breakfast, lunch, snack and dinner ideas on your dashboard — tap to add."
+  ],
+  [
+   "🥘",
+   "300+ new foods",
+   "Biscuits, namkeen & chana, sabzi and dal in katori, roti & paratha by number."
+  ],
+  [
+   "☕",
+   "Tea, drinks & liquor in ml",
+   "Chai with or without sugar or gurh, whisky, beer, coffee, juices — all in ml."
+  ],
+  [
+   "⚡",
+   "Zero-sugar & energy drinks",
+   "Coke Zero, Diet Coke, Pepsi Zero, Red Bull, Monster, Hell and more."
+  ],
+  [
+   "🔔",
+   "Update alerts",
+   "Get told about new versions as soon as they are ready."
+  ]
+ ]
+}
