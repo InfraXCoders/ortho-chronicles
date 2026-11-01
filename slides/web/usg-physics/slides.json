@@ -1,0 +1,260 @@
+[
+    {
+        "n":  1,
+        "title":  "USG Physics",
+        "text":  "Dr. Swapnil Sidana\nJunior Resident\nM.D. Radiodiagnosis",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "What is ultrasound?",
+        "text":  "Ultrasound is a diagnostic imaging technique that uses high frequency sound waves and their echoes to generate real time images of internal body structures.\nKey Features:\nNon-Ionizing radiation\nProvides real-time imaging\nUseful for soft tissues, fluid filled structures, vascular flow",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Types of ultrasound",
+        "text":  "A (amplitude) mode is one dimensional representation of structures and is used In ophthalmology to measure the axial length of the eyeball.\nB (brightness) mode Displays two dimensional images in which echo amplitude is depicted as dots of different brightness. The routine Grayscale ultrasound examination is B mode USG.\nM (motion) mode shows movement as a function of time And is used in Cardiac imaging.\nDoppler mode Is used to measure blood flow and velocity.",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Principle of ultrasound",
+        "text":  "Ultrasound works on the principle of pulse echo principle which is facilitated by Piezoelectric material in the ultrasound probe crystal. When piezoelectric crystal is electrically pulsed, it changes shape and vibrates, producing a sound beam that propagates through the tissues. The reflected echoes reach the transducer causing its vibrations which produces electrical voltage comparable to the returning echo.",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Properties of sound",
+        "text":  "Unlike X Rays, the sound is a mechanical energy that requires a medium for travel, it has tissue dependent velocity and does not cause ionisation. Sound wave travels as a longitudinal wave with peaks and troughs.",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "The propagation velocity depends on Tissue and is constant for a particular tissue. It is inversely proportional to the compressibility and density of the tissue And is directly proportional to The stiffness of tissue. Thus, the velocity of sound is less in air, which has high compressibility and in soft tissues it is 1540 m/s. Thus, To get best images of soft issues USG machines are calibrated to this speed (1540 m/s).",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Acoustic Impedence and Acoustic Impedence Mismatch",
+        "text":  "The resistance offered by the tissues to the movement of particles caused by ultrasound waves is called the acoustic impedance.\nZ = 𝜌c, 𝜌 is the density of tissue and c is the speed of ultrasound wave in the tissue.\nMeasured in Rayl/kg/m2s\nThus, acoustic impedance is directly proportional to the density, rigidity of tissue and speed of sound in a material.\nAcoustic impedance mismatch is the difference in acoustic impedance at interface of two tissues and determines the amount of energy reflected at the interface which in turn is detected and is displayed as images in ultrasound imaging.",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "If the mismatch is high (air-bone interface) almost 100 % sound is reflected back with almost no transmission.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  9,
+        "title":  "Interactions with Tissues",
+        "text":  "Absorption: it is the major mechanism, the higher the frequency the greater the absorption.\nReflection: the higher the acoustic impedance mismatch, the greater the reflection. Thus, to decrease the acoustic impedance mismatch and thereby allow better sound transmission between the transducer and the skin, the ultrasound gel is used. It also decreases the amount of trapped air between the transducer and the skin. The other practical application is when examining the pelvis, the urinary bladder should be as full as possible to lift the intestine out of the way.\nUltrasound reflection also depends on the size and surface features of the interface, reflecting surfaces can be specular or diffuse reflectors.\nThe specular reflector is large and smooth like the mirror and forms an image only when incident sound wave is perpendicular to the surface because with an oblique incident sound wave, the reflected sound is reflected away from the transducer and no image is formed. For example diaphragm, foetal skull \u0026 vessel wall.",
+        "notes":  ""
+    },
+    {
+        "n":  10,
+        "title":  "Diffuse reflector: It is more frequently encountered and is made up of small interfaces, each being much smaller than the incident sound wavelength, echo is scattered in all directions with only a portion of reflected waves reaching the transducer and forming an image. The characteristic echopattern of solid organs and tissues such as liver is attributable to the diffuse reflection.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  11,
+        "title":  "Refraction: The change in velocity and angle as beam crosses an interface.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  12,
+        "title":  "Transducer",
+        "text":  "An ultrasound transducer converts electrical energy into mechanical (sound) energy and back again, based on the piezoelectric effect. It is the hand-held part of the ultrasound machine that is responsible for the production and detection of ultrasound waves.\nComponents\nA transducer consists of five main components:\nCrystal/ceramic element with piezoelectric properties\nusually lead zirconate titanate (PbZT) \nmay consist of a single element or be a broadband transducer with multiple elements\npiezoelectric polyvinylidene fluoride (PVDF) is useful in those high frequency, high bandwidth transducer that needs focusing to a certain region. PVDF also has low acoustic impedance similar to water, thus is useful in making ultrasound pulses with good temporal resolution.",
+        "notes":  ""
+    },
+    {
+        "n":  13,
+        "title":  "element thickness is determined by what resonance frequency is desired",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  14,
+        "title":  "Matching layer",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  15,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  16,
+        "title":  "Ultrasound beam production ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  17,
+        "title":  "Linear Array Transducer",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  18,
+        "title":  "Phased Array Transducer",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  19,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  20,
+        "title":  "Image Quality",
+        "text":  "The quality of an ultrasound image is determined by spatial resolution, contrast resolution, temporal resolution and absence of certain artefacts.\nSpatial resolution is the ability to differentiate too closely situated Objects as distinct structures. It is considered in three planes With different determinants of resolution for each. Resolution along the axis of the ultrasound beam is axial resolution, resolution in the plane perpendicular to the beam and parallel to the transducer is lateral resolution, and resolution in the plane perpendicular to the beam and to the transducer is azimuth or elevational resolution or slice thickness.\nAxial Resolution is the ability to separate two objects lying along the axis of the beam. It can be improved by a higher frequency and shorter length of pulse. But the problem with the high frequency transducers is poor penetration.",
+        "notes":  ""
+    },
+    {
+        "n":  21,
+        "title":  "Lateral resolution is the ability to resolve two adjacent objects and is best achieved within the focal zone. Its key determinant is width of the ultrasound beam, which can be altered by focusing the beam usually by electronic phasing. It can be improved by using focused transducers, a distinct focal position and using multiple focal lengths. However, this reduces frame rate.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  22,
+        "title":  "Doppler Physics",
+        "text":  "Core Principle – Doppler effect: the doppler effect is the change in frequency of a wave when the source or reflector is moving relative to the observer.\nUltrasound waves hit moving RBCs → reflected waves return with changed frequency.\nDoppler Shift Equation",
+        "notes":  ""
+    },
+    {
+        "n":  23,
+        "title":  "Types of Doppler",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  24,
+        "title":  "Color Doppler",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  25,
+        "title":  "Key parameters to be taken care of:",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  26,
+        "title":  "Spectral Doppler ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  27,
+        "title":  "Practical Obstetric Applications",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  28,
+        "title":  "Ultrasound Gel",
+        "text":  "Gel is needed to remove pockets of air between probe and patient’s skin, which would otherwise prevent sound transmission into patient’s body. Thus Ultrasound gel acts as a medium to transmit sound And as a lubricant.\nLiquids such as water and alcohols are suitable media, however, being volatile and having low viscosity makes them inappropriate. That is why specific gels have been developed.\nIngredients of ultrasound gel include: Distilled water, Carbomer, Ethylenediamine tetra-acetic acid (EDTA), Propylene glycol, glycerin and trolamine. Occasionally, a colourant is used, usually a blue colour.\nIn case of a patient having an open wound or a skin rash or any other risk of infection, the transducer or patient’s skin should be covered with plastic and gel should be used on both sides of the plastic.\nThe transducer must be cleaned after every patient.",
+        "notes":  ""
+    },
+    {
+        "n":  29,
+        "title":  "Artefacts",
+        "text":  "Artefacts are incorrect representation of anatomy or function which can enhance or degrade the diagnostic value of the ultrasound image.\nThe causes are machine \u0026 operator related, as well as intrinsic to the characteristics and interaction of ultrasound with the tissues. So, removing the potentially avoidable artefacts is important for maximising image quality and thereby increasing the diagnostic accuracy.",
+        "notes":  ""
+    },
+    {
+        "n":  30,
+        "title":  "Assumptions in ultrasound imaging",
+        "text":  "Sonographic instruments are based on following assumptions, violation of which results in artefacts.\nVelocity of sound: Sound travels at uniform speed of 1540 m/s throughout the tissues. Alteration in the velocity results in propagation velocity artefact. It is also assumed that the longer the round trip travel time of ultrasound wave the deeper the object or target is situated.\nAttenuation of sound: Sound waves decrease in intensity at constant rate as they travel through tissues. If the wave travels through tissues that do not attenuate much or attenuate more then artefacts like increased through transmission/enhancement (PAE) and shadowing (DAS) arise respectively.\nPath of sound: Soundwave travels in a straight line, is reflected off a reflector only once Returns directly back to the probe at the same angle, exactly to the point from which it left the probe And echoes originate only from objects located along the beam axis. If the sound wave undergoes more than one reflection then artefacts such as mirror image, reverberation or comet-tail occur. And if the direction of the beam or its echo is altered, Refraction or anisotropy artefact may be produced.\nBeam Profile: Sound beam generated by the transducer is a narrow line. Violation results in Side lobe or Grating lobe artefacts.",
+        "notes":  ""
+    },
+    {
+        "n":  31,
+        "title":  "Classification of ultrasound artefacts",
+        "text":  "Propagation of velocity artefacts: In the case of a fatty lesion, the slow speed of propagation \n(1450 m/s) means that the echo take longer to return to the transducer, thus the lesion is displayed deeper in the image then its true location (e.g. focal fatty lesion in liver). This can be minimised by using multibeam features and improved signal processing.",
+        "notes":  ""
+    },
+    {
+        "n":  32,
+        "title":  "Attenuation Errors",
+        "text":  "Shadowing results when there is marked reduction in the intensity of the ultrasound deep to a strong reflector, consequently, no information received from the area behind that structure.",
+        "notes":  ""
+    },
+    {
+        "n":  33,
+        "title":  "Enhancement is seen when there is less attenuating object as compared to the surrounding tissues. Consequently, increased amplitude of beam reaches and is returned from the area deep to this object as compared to the surrounding tissues. Therefore, this area appears bright as compared to the surrounding tissues.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  34,
+        "title":  "Path of sound related artefacts",
+        "text":  "Mirror image artefact/multipath artefact : When the ultrasound beam encounters a highly reflective surface, the reflected echoes then encounter another reflective structure on their way back and are reflected back towards the reflective interface before being reflected to the transducer, where they are detected. This display show a duplicate structure equidistant but on opposite side of the reflector creating a mirror image. This most often happens at the diaphragm wherein the liver is seen in the chest cavity due to sound waves being reflected off the diaphragm.",
+        "notes":  ""
+    },
+    {
+        "n":  35,
+        "title":  "Reverbration artefact: It arises when the ultrasound signal reflects repeatedly between highly reflective interfaces near the transducer, resulting in delayed echo return to the transducer. This appears in the image as a series of regularly spaced echoes at increasing depth. It can be reduced by changing the scanning angle or placing the transducer in such a way so as to widen the parallel interface that contribute to the artefact. Reverberation may be helpful In identification of a specific type of reflectors such as surgical clip or needle during biopsy.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  36,
+        "title":  "Refraction: When an ultrasound beam is incident on a boundary between two tissues at an angle other than 90 degree and if these tissues do not have same speed of sound, there is a change in the direction of ultrasound beam, this results in artifactual representation of objects on the display even when they are not truly in the scanned field of view (Refraction). Thus, refraction can cause object misregistration or duplication or lateral defocusing at the edge of curved structures. This artefact is most often observed in pelvic structures deep to the rectus muscles and midline fat. It can be minimised by increasing the scan angle so that sound waves travel perpendicular to the interface.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  37,
+        "title":  "Anisotropy: Anisotropy is an artefact caused by structures that are composed of bundles of highly reflective fibres running parallel to each other such as tendons and ligaments. If the sound beam hits the tendon or ligament fibres perpendicular to their length, it is reflected directly back resulting in an echogenic appearance but if the angle of insonation is not perpendicular to the tendon fibres, the beam is reflected away from transducer leading to generation of an image with an artifactual hypoechogenicity within the tendon",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  38,
+        "title":  "Beam width Artefact/ Side lobe and grating lobe : Although most of the energy generated by a transducer is emitted in a beam along the central axis of the transducer However some energies also emitted at the periphery of the primary beam. These are called side lobes or grating lobes and are lower in intensity than the primary beam. Side lobes or grating lobes may interact with strong reflector that lie outside scan plane and produce artefacts that are displayed in the ultrasound image. They are more evident when misplaced echoes overlap and expected anechoic structure. It can be minimised by placing the transducer at the centre of the object of interest and adjusting the focal zone to appropriate depth.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  39,
+        "title":  "Doppler Artefacts",
+        "text":  "Aliasing \nMechanism: Occurs when Doppler shift exceeds Nyquist limit (PRF/2)\nAppearance\nSpectral: waveform “wraps around” baseline\nColor: mosaic pattern (red-blue mix)\nSeen in : High velocity flow (stenosis) and Low PRF settings\nCorrection: ↑ PRF (scale), ↓ transducer frequency and by Shift baseline\nSpectral Broadening\nMechanism: Range of velocities within sample volume and Large gate or turbulent flow.\nAppearance\nFilling of spectral window (loss of clear black window)\nCauses : True turbulence (stenosis)  and Instrumental (large sample volume, high gain)",
+        "notes":  ""
+    },
+    {
+        "n":  40,
+        "title":  "Mirror Image Artifact",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  41,
+        "title":  "Range Ambiguity (PW Doppler)",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  42,
+        "title":  "Ultrasound safety and Bioeffects",
+        "text":  "Although ultrasound is generally safe, there are some theoretical risks. To reduce the probability of these risks, a few values that must be monitored and kept within certain limits as follows:\nThermal index: It measures the ability of the ultrasound wave to heat up the local tissue. Its value should be \u003c/= 0.7 (very safe), can be used upto 1.0 in routine scans and ANC scans.  (2.0 is the upper limit – use ALARA principle)\nMechanical Index: Measures the maximum amplitude of pressure pulse indicates the risk of cavitation\n(should not be \u003e 1.0)\nComplications of ultrasound:\nLocal heating :This is more with Doppler imaging because of large duration of pulse and high PRF are used Thereby increasing The amount of energy introduced in scanning. \nCavitation: This is the action of acoustic field within a fluid to generate bubbles. The pressure changes causes microbubbles in a liquid to expand increasingly and then collapse. For example: Gas containing structures such as bowel \u0026 lungs.",
+        "notes":  ""
+    },
+    {
+        "n":  43,
+        "title":  "Thank You!",
+        "text":  "If you don’t understand something, it’s probably physics….not you.",
+        "notes":  ""
+    }
+]

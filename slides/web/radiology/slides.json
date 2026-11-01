@@ -1,0 +1,50 @@
+[
+    {
+        "n":  1,
+        "title":  "Reading Orthopedic X-rays\nA Systematic Approach",
+        "text":  "Dr. Maninder Singh, MS Orthopaedics | GMCH Amritsar",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Basics: X-ray Physics \u0026 Quality",
+        "text":  "• X-rays pass through tissue; attenuated by density — bone (white), air (black), soft tissue (grey)\n• 5 radiographic densities: Air \u003c Fat \u003c Soft tissue \u003c Bone \u003c Metal\n• AP and lateral views minimum for any bone/joint injury\n• Check for: Correct patient, date, side marker (R/L), adequate penetration and exposure\n• ABCDE systematic approach: Alignment, Bone, Cartilage, Disc/soft tissue, Everything else\n• Compare with contralateral side whenever possible\n• Technical errors: Rotation, under/over-exposure, incomplete views — request repeat if needed",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Trauma X-ray — ABCD Approach",
+        "text":  "• A — Alignment: Cortical continuity, joint alignment, angulation/displacement\n• B — Bones: Cortex irregularity, periosteal reaction, lucent/sclerotic lines\n  — Fracture description: Location (proximal/mid/distal 1/3), pattern, displacement, angulation\n• C — Cartilage: Joint space width; loss = arthritis; asymmetric = ligament injury\n• D — Density: Lucency = lytic lesion/osteomyelitis; Sclerosis = healing/AVN/OA\n• E — Extras: Foreign bodies, gas, effusion, calcification\n• Soft tissue signs: Fat pad sign (elbow), sail sign, periosteal reaction",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Hip \u0026 Pelvis X-ray",
+        "text":  "• AP pelvis: Ilioischial/iliopectineal lines; Shenton\u0027s line; teardrop figure\n  — Disruption indicates acetabular fracture or dislocation\n• Neck-shaft angle: Normal 120–135°; Coxa vara \u003c120°; Coxa valga \u003e135°\n• Hip OA: Joint space loss (superior/medial), subchondral sclerosis, osteophytes\n• NOF fracture: Garden classification — undisplaced (I/II) vs displaced (III/IV)\n• Pauwels: I (\u003c30°), II (30–50°), III (\u003e50°) — predicts stability\n• Pelvic fractures: Tile classification; look for SI joint disruption, ramus fractures\n• Judet views (45° oblique): Assess anterior/posterior column of acetabulum",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Knee X-ray",
+        "text":  "• Standard views: Weight-bearing AP, lateral 30° flexion, Merchant (skyline) for patella\n• Joint space: Medial 4–5 mm, lateral 4–5 mm; loss = OA/meniscal tear\n• Alignment: Mechanical axis (hip-knee-ankle); normal = 3° valgus\n• Tibial slope: Lateral 7–10° posterior; increased slope = ACL risk\n• Fracture pearls: Lipohaemarthrosis on lateral film (fat fluid level = intraarticular fracture)\n• Tibial plateau: Schatzker I–VI; look for lateral condyle depression \u003e2 mm\n• Patella fracture: Bipartite (superolateral — normal variant) vs acute (irregular margins)\n• Distal femur fractures: AO/OTA classification; supracondylar vs intercondylar",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Spine X-ray",
+        "text":  "• Cervical AP, lateral, odontoid peg view (open mouth)\n• Lateral: Anterior vertebral line, posterior vertebral line, spinolaminar line — all should be smooth\n• Disc space: C5/6 and C6/7 most common OA; loss with infection/degeneration\n• Instability: \u003e3.5 mm translation or \u003e11° angulation between adjacent vertebrae\n• Denis 3-column model: Anterior (AVL–mid), Middle (mid–PVL), Posterior (neural arch)\n• Cobb angle: Scoliosis — perpendicular from end vertebrae; \u003e10° = scoliosis\n• Thoracolumbar fractures: AO classification; TLICS scoring for management\n• Harris ring (C2): Disruption = odontoid fracture",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Post-operative \u0026 Implant X-rays",
+        "text":  "• TKR: Check alignment, cement mantle, tibial slope, patellar tracking\n  — Radiolucent lines \u003e2 mm around tibial component = loosening\n• THR: Cup angle (acetabular inclination 40–45°, anteversion 15–20°), stem position (neutral ± 2°)\n  — Periprosthetic fractures: Vancouver classification (A, B1/B2/B3, C)\n• Fracture healing: Callus formation 3–6 wk; remodelling 6–12 wk\n• Implant failure signs: Broken screws, lucent lines, implant migration\n• Osteomyelitis: Periosteal reaction, bone destruction, sequestrum/involucrum\n• AVN (Osteonecrosis): Subchondral lucency → crescent sign → collapse (Ficat staging)",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "Summary",
+        "text":  "• Always take two views at right angles — AP and lateral\n• Use ABCDE approach for every X-ray\n• Know normal anatomy before identifying pathology\n• Compare with contralateral side when uncertain\n• Describe fractures: Site, pattern, displacement, angulation, special features\n• Post-op X-rays: Assess alignment, implant position, complications\n• Reference: Apley \u0026 Solomon — System of Orthopaedics; Rockwood Fractures in Adults",
+        "notes":  ""
+    }
+]

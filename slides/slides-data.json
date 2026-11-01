@@ -6,11 +6,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "USG Physics",
-    "slideCount": 20,
+    "slideCount": 43,
     "cover": "orange",
     "status": "available",
     "file": "usg-physics.pptx",
-    "date": "2026-06-20"
+    "date": "2026-06-20",
+    "page": "deck-usg-physics.html"
   },
   {
     "id": "spine-fractures",
@@ -23,7 +24,8 @@
     "cover": "gray",
     "status": "available",
     "file": "spine-fractures.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-spine-fractures.html"
   },
   {
     "id": "acl-reconstruction",
@@ -36,7 +38,8 @@
     "cover": "orange",
     "status": "available",
     "file": "acl-reconstruction.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-acl-reconstruction.html"
   },
   {
     "id": "osteoporosis-bone-health",
@@ -49,7 +52,8 @@
     "cover": "gray",
     "status": "available",
     "file": "osteoporosis-bone-health.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-osteoporosis-bone-health.html"
   },
   {
     "id": "pediatric-orthopedics",
@@ -62,7 +66,8 @@
     "cover": "orange",
     "status": "available",
     "file": "pediatric-orthopedics.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-pediatric-orthopedics.html"
   },
   {
     "id": "hand-wrist-injuries",
@@ -75,7 +80,8 @@
     "cover": "gray",
     "status": "available",
     "file": "hand-wrist-injuries.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-hand-wrist-injuries.html"
   },
   {
     "id": "ante-postnatal-hdn",
@@ -84,11 +90,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "ANTE & POSTNATAL HDN",
-    "slideCount": 20,
+    "slideCount": 31,
     "cover": "orange",
     "status": "available",
     "file": "ante-postnatal-hdn.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-ante-postnatal-hdn.html"
   },
   {
     "id": "mri-sequences-presentation",
@@ -97,11 +104,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "MRI SEQUENCES PRESENTATION",
-    "slideCount": 20,
+    "slideCount": 93,
     "cover": "orange",
     "status": "available",
     "file": "mri-sequences-presentation.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-mri-sequences-presentation.html"
   },
   {
     "id": "imaging-of-solitary-pulmonary-nodule",
@@ -110,11 +118,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "IMAGING OF SOLITARY PULMONARY NODULE",
-    "slideCount": 20,
+    "slideCount": 87,
     "cover": "orange",
     "status": "available",
     "file": "imaging-of-solitary-pulmonary-nodule.pptx",
-    "date": "2026-06-15"
+    "date": "2026-06-15",
+    "page": "deck-imaging-of-solitary-pulmonary-nodule.html"
   },
   {
     "id": "computer-radiography-vs-digital-radiography-better-slide",
@@ -123,11 +132,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Computer Radiography vs Digital Radiography better slide",
-    "slideCount": 20,
+    "slideCount": 25,
     "cover": "orange",
     "status": "available",
     "file": "computer-radiography-vs-digital-radiography-better-slide.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-computer-radiography-vs-digital-radiography-better-slide.html"
   },
   {
     "id": "computer-radiography-vs-digital-radiography",
@@ -149,11 +159,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Comprehensive guide to soft tissue injuries â classification, clinical assessment, management principles, and rehabilitation of sprains, strains, contusions, and ligament injuries.",
-    "slideCount": 20,
+    "slideCount": 44,
     "cover": "orange",
     "status": "available",
     "file": "soft-tissue-injuries.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-soft-tissue-injuries.html"
   },
   {
     "id": "tkr",
@@ -162,11 +173,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Step-by-step TKR technique covering medial parapatellar approach, bone cuts, implant selection (CR vs PS), cemented vs cementless fixation, gap balancing, and post-op protocol.",
-    "slideCount": 30,
+    "slideCount": 8,
     "cover": "gray",
     "status": "available",
     "file": "total-knee-replacement.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-tkr.html"
   },
   {
     "id": "femur",
@@ -175,11 +187,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Garden & AO/OTA classification, DHS vs PFNA decision-making, hemiarthroplasty indications, intramedullary nailing technique, and peri-operative management.",
-    "slideCount": 25,
+    "slideCount": 8,
     "cover": "orange",
     "status": "available",
     "file": "proximal-femur-fractures.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-femur.html"
   },
   {
     "id": "shoulder",
@@ -188,11 +201,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Glenohumeral joint anatomy, rotator cuff muscles, neurovascular supply, and biomechanical principles for surgical planning.",
-    "slideCount": 40,
+    "slideCount": 8,
     "cover": "gray",
     "status": "available",
     "file": "shoulder-anatomy.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-shoulder.html"
   },
   {
     "id": "rehab",
@@ -201,11 +215,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Phase-wise rehabilitation protocol for TKR and THR â exercise progressions, physiotherapy milestones, and return-to-function criteria.",
-    "slideCount": 20,
+    "slideCount": 7,
     "cover": "orange",
     "status": "available",
     "file": "post-operative-rehabilitation.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-rehab.html"
   },
   {
     "id": "radiology",
@@ -214,11 +229,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Systematic X-ray analysis framework, fracture classification systems, implant assessment, and post-operative imaging interpretation.",
-    "slideCount": 35,
+    "slideCount": 8,
     "cover": "gray",
     "status": "available",
     "file": "reading-orthopedic-xrays.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-radiology.html"
   },
   {
     "id": "thr",
@@ -227,11 +243,12 @@
     "author": "Dr. Maninder Singh",
     "institution": "GMCH Amritsar",
     "description": "Posterior vs anterolateral approach comparison, cup & stem fixation techniques, bearing surfaces, and 10-year outcome data.",
-    "slideCount": 28,
+    "slideCount": 7,
     "cover": "orange",
     "status": "available",
     "file": "total-hip-arthroplasty.pptx",
-    "date": "2026-06-08"
+    "date": "2026-06-08",
+    "page": "deck-thr.html"
   },
   {
     "id": "cpam-antenatal-case",
@@ -244,7 +261,8 @@
     "cover": "orange",
     "status": "available",
     "file": "CPAM_ePaper_CaseReport.pptx",
-    "date": "2026-10-14"
+    "date": "2026-10-14",
+    "page": "deck-cpam-antenatal-case.html"
   },
   {
     "id": "calcaneum-fractures",
@@ -257,6 +275,7 @@
     "cover": "orange",
     "status": "available",
     "file": "Calcaneum_Fractures.pptx",
-    "date": "2026-10-14"
+    "date": "2026-10-14",
+    "page": "deck-calcaneum-fractures.html"
   }
 ]

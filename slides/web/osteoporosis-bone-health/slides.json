@@ -1,0 +1,128 @@
+[
+    {
+        "n":  1,
+        "title":  "OSTEOPOROSIS",
+        "text":  "Diagnosis · FRAX · Pharmacotherapy · Fracture Management · Fracture Liaison Service\nDr. Maninder Singh  |  MS Orthopedics  |  GMCH Amritsar  |  2026",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Global \u0026 Indian Burden of Osteoporosis",
+        "text":  "200M\nPeople with\nosteoporosis globally\n50M+\nIndians with\nosteoporosis\n8.9M\nFragility fractures\nper year globally\n1 in 3\nWomen over 50\nwill fracture\nHip fracture mortality: 20–30% at 1 year (India: up to 40%)\nIndia-specific: vitamin D deficiency in 70–90% of population exacerbates bone loss\nFragility fracture economic burden India: USD 3.5 billion/year\nPost-fracture treatment gap: \u003c 20% of eligible patients receive anti-osteoporosis medication\nAverage age at hip fracture: India — 65 yrs (10 years younger than Western countries)\nVertebral fractures: 50% undiagnosed; each fracture doubles risk of next fracture",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Bone Remodelling \u0026 Pathophysiology of Osteoporosis",
+        "text":  "Normal Remodelling\nNormal Bone Remodelling Cycle:\nOsteoclasts (resorption) ↔ Osteoblasts (formation)\nBalanced in young adults: net zero loss\nRate of remodelling: 10% of skeleton per year\nControlled by: RANK-RANKL-OPG system\nPTH, estrogen, calcium, vitamin D — key regulators\nIn Osteoporosis:\nOsteoclast activity \u003e Osteoblast activity\nNet bone loss: trabecular \u003e cortical (initially)\nTrabecular loss: thinning, perforation, loss of connectivity\nCortical loss: thinning and increased porosity\nOsteoporosis Types\nTypes of Osteoporosis:\nType I (Postmenopausal):\n- Estrogen deficiency → ↑ RANKL → ↑ osteoclast activity\n- Age 50–65; predominantly trabecular loss (spine, wrist)\nType II (Senile):\n- Both sexes \u003e 70 yrs; cortical + trabecular loss\n- ↓ Ca absorption, ↑ PTH, ↓ Vit D\nSecondary Osteoporosis:\nGlucocorticoid (most common secondary cause)\nHypogonadism, hyperparathyroidism, malabsorption\nAnticonvulsants, aromatase inhibitors, PPIs\nCKD: renal osteodystrophy (high vs low turnover)",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Risk Factors \u0026 FRAX Tool",
+        "text":  "Risk Factor Assessment\nClinical Risk Factors for FRAX:\nAge\nBMI (low BMI = higher risk)\nPrevious fragility fracture\nParental history of hip fracture\nCurrent glucocorticoid use\nRheumatoid arthritis\nSecondary osteoporosis\nSmoking (active)\nAlcohol ≥ 3 units/day\nNon-FRAX Risk Factors:\nFalls history\nLow muscle mass (sarcopenia)\nVitamin D deficiency\nImmobility / institutionalisation\nVisual impairment\nFRAX Tool Application\nFRAX (WHO Fracture Risk Assessment Tool):\nCalculates 10-year probability of:\n- Major osteoporotic fracture (hip + spine + humerus + wrist)\n- Hip fracture alone\nInput: age, sex, weight, height + clinical risk factors\nDXA femoral neck T-score optional\nIntervention Thresholds (UK NOGG):\nBelow lower: lifestyle advice only\nBetween thresholds: DXA recommended\nAbove upper: treat without DXA\nFRAX limitation: underestimates risk with high fall burden\nDoes not account for recent fracture timing\nIndia: use FRAX with Indian Caucasian / South Asian reference",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "DXA Scan — Interpretation \u0026 WHO Criteria",
+        "text":  "DXA Reporting Requirements",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Pharmacotherapy — Drug Comparison Table",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Bisphosphonate Evidence — Key Trials",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "Treatment Algorithm — Post-menopausal Osteoporosis",
+        "text":  "FRAGILITY FRACTURE OR DXA T-SCORE ≤ −2.5\nFRAX ≥ INTERVENTION THRESHOLD\nor T-score ≤ −2.5\nOSTEOPENIA + LOW FRAX\n(Below intervention threshold)\nCalcium + Vit D → START PHARMACOTHERAPY\nOral bisphosphonate (1st line)\nCalcium + Vit D + Lifestyle\nReassess DXA in 3–5 years\nIf GI intolerance: IV Zoledronic acid\nIf very high risk: Teriparatide / Romosozumab\nIf fails 5-year reassessment:\nTreat as high risk\nMONITOR: DXA at 2 years — if stable/improving: continue; if losing bone: switch or combine\nDRUG HOLIDAY: After 5 yrs oral / 3 yrs IV bisphosphonate — reassess FRAX — resume if re-fractures",
+        "notes":  ""
+    },
+    {
+        "n":  9,
+        "title":  "Hip Fracture — Emergency Management (Fragility)",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  10,
+        "title":  "Perioperative Hip Fracture Care — Best Practice",
+        "text":  "Pre-operative\nPre-operative Targets:\nHb \u003e 8 g/dL (transfuse if Hb \u003c 8 with symptoms)\nCorrect anticoagulation (warfarin: Vit K; DOAC: 24–48h pause)\nOptimise electrolytes, blood glucose (target 6–10 mmol/L)\nCardiac assessment: only if it changes management\nTime to surgery: \u003c 48h from admission (NHFD standard)\nSpinal anaesthesia preferred over GA (REGAIN trial)\nPain Management:\nFemoral nerve block / FICB on admission\nRegular paracetamol\nAvoid NSAIDs and opioids if possible in elderly\nRegional anaesthesia first-line for surgery\nPost-operative \u0026 Secondary Prevention\nPost-operative Best Practice:\nWeight-bearing as tolerated — Day 1\nVTE prophylaxis: LMWH 28–35 days (hip fracture)\nDelirium prevention: early mobilisation, orientation, sleep hygiene\nPressure area care, catheter care bundle\nCognitive assessment (AMTS) pre- and post-op\nNutritional supplement (protein) — reduces complications\nSecondary Prevention:\nAnti-osteoporosis medication BEFORE discharge\nFalls assessment and intervention\nFLS (Fracture Liaison Service) referral\nVitamin D supplementation (800–1000 IU/day)\nTarget 25-OH VitD \u003e 50 nmol/L\nHome modification, walking aids assessment",
+        "notes":  ""
+    },
+    {
+        "n":  11,
+        "title":  "Osteoporotic Vertebral Compression Fractures (VCF)",
+        "text":  "Natural History \u0026 Conservative\nNatural History:\n50% of VCFs are asymptomatic / incidental finding\nEach VCF: 5-fold increase in subsequent VCF risk\n50% height reduction predicts poor conservative outcome\nKyphotic progression: up to 10° at 2 years\nConservative Management (6 weeks):\nBed rest (minimal) + analgesics\nTLSO brace: 6–8 weeks\nRegular analgesia: paracetamol + weak opioid\nCalcitonin nasal spray: acute pain relief (4 weeks)\nReassess at 6 weeks: if VAS \u003e 5/10 → intervention\nAugmentation Techniques\nVertebroplasty vs Kyphoplasty:\nVertebroplasty: cement injection under pressure\nKyphoplasty: balloon creates void → low-pressure cement injection\nPain relief: equivalent (Level I evidence)\nKyphoplasty: better height restoration (40–60% of loss)\nKyphoplasty: lower cement leak rate (2% vs 8%)\nIndications for Augmentation:\nAcute fracture (\u003c 6–8 weeks)\nVAS pain ≥ 5/10 despite conservative\nNo posterior wall breach\nNo neurological deficit\nVERTOS IV: sham vs vertebroplasty — limited pain benefit\nSelect acute, bone-oedema-positive (STIR +) patients",
+        "notes":  ""
+    },
+    {
+        "n":  12,
+        "title":  "Falls Prevention — Integrated Approach",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  13,
+        "title":  "Fracture Liaison Service (FLS) — Reducing Treatment Gap",
+        "text":  "FLS Concept\nThe Treatment Gap:\n\u003c 20% of fragility fracture patients receive treatment\n80% who sustain hip fracture had prior fracture — missed opportunity\nEach missed fracture: 5× higher risk of subsequent fracture\nFLS = systematic capture of ALL fragility fractures\nFLS Model (3i):\n1. IDENTIFY: Flag all fragility fractures in hospital system\n2. INVESTIGATE: DXA + blood tests (calcium, Vit D, renal)\n3. INITIATE: Start treatment before discharge + FLS follow-up\nFLS models A–D based on service intensity (IOF classification)\nEvidence \u0026 Protocol\nFLS Evidence:\nFracture reduction: 23% over 2 years (McLellan et al.)\nRe-fracture rate 50% lower vs standard care\nMortality reduction: 21% (hip fracture in FLS patients)\nNHS: FLS is cost-effective — saves £16 per quality-adjusted life year\nClinical Investigation Protocol:\nBloods: Ca, PO4, ALP, albumin, Cr, 25-OH Vit D, PTH, testosterone (M), TSH\nDXA: spine + hip + optionally 1/3 distal radius\nInvestigate secondary causes if DXA unexpectedly low\nDEXA repeat: 2 years after starting pharmacotherapy",
+        "notes":  ""
+    },
+    {
+        "n":  14,
+        "title":  "Non-Pharmacological Bone Health Strategies",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  15,
+        "title":  "Treatment Monitoring \u0026 Drug Holidays",
+        "text":  "Monitoring\nMonitoring on Treatment:\nDXA: Repeat at 2 years on pharmacotherapy\nBiochemical markers: CTX (bone resorption) + P1NP (formation)\nCTX: ↓ 50% confirms bisphosphonate effect\nP1NP: ↑ 25% confirms teriparatide/romosozumab effect\nAnnual Ca, renal function, Vit D level\nDental check before bisphosphonate start\nDefining Treatment Response:\nSuccess: stable or ↑ BMD + no new fractures\nFailure: \u003e 5% BMD loss or re-fracture on adequate therapy\nSwitch: if fail oral → IV, or antiresorptive → anabolic\nDrug Holidays\nBisphosphonate Drug Holiday:\nAfter 5 years oral (alendronate/risedronate)\nAfter 3 years IV (zoledronic acid)\nIf: low-risk patient (no fractures, T-score \u003e −2.5 at hip)\nDuration: 2–3 years\nContinue: if high-risk (prior fracture, T-score \u003c −2.5)\nDenosumab — Do NOT Stop Abruptly:\nRebound: vertebral fracture within 6–18 months of stopping\nMultiple vertebral fractures reported (15× baseline risk)\nAlways transition to bisphosphonate before discontinuing denosumab\nGive zoledronic acid 6–12 months after last denosumab dose",
+        "notes":  ""
+    },
+    {
+        "n":  16,
+        "title":  "Secondary Osteoporosis — Causes \u0026 Management",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  17,
+        "title":  "BMD Gains with Pharmacotherapy — Spine vs Hip",
+        "text":  "Key Points:\nAnabolics \u003e antiresorptives for BMD gain\nRomosozumab gains: dual mechanism\nSequential therapy essential\nTPTd: must follow with antiresorptive\nRomosozumab → Denosumab: additive BMD\nTime to Effect:\nFracture reduction: seen at 6–12 months\nBMD increase: measurable at 2 years",
+        "notes":  ""
+    },
+    {
+        "n":  18,
+        "title":  "CASE STUDY 1 — Postmenopausal Hip Fracture",
+        "text":  "PRESENTATION\n67F, fall from standing height\nHPF (hypertension, on amlodipine + atorvastatin)\nLeft hip pain, shortening, external rotation\nNo previous fractures documented\nINVESTIGATIONS\nX-ray: Garden III intracapsular hip fracture\nDXA: T-score femoral neck −2.8 (osteoporosis)\nVit D: 22 nmol/L (deficient)\nRenal: CrCl 58 mL/min\nMANAGEMENT\nFICB on admission, surgery at 30h (\u003c 48h target)\nSpinal anaesthesia + hemiarthroplasty (Thompson)\nPre-op: Vit D 50,000 IU loading dose\nPost-op: Weight-bearing day 1\nSECONDARY PREVENTION\nAlendronate 70mg weekly + Ca 1000mg + Vit D 800IU\nFLS referral at discharge\nFalls physio + home assessment\nDXA repeat at 2 years: T-score improved to −2.3",
+        "notes":  ""
+    },
+    {
+        "n":  19,
+        "title":  "CASE STUDY 2 — Glucocorticoid-Induced OP",
+        "text":  "PRESENTATION\n48M, rheumatoid arthritis on prednisolone 10mg/day × 3 years\nBack pain x 6 weeks after lifting box\nDXA: T-score spine −2.9, hip −1.8\nINVESTIGATIONS\nMRI: L2 acute vertebral compression fracture (STIR+)\nNo neurological deficit\nVit D: 31 nmol/L, ALP elevated\nMANAGEMENT\nConservative: TLSO brace + analgesia\nPain not controlled at 6 weeks (VAS 6/10)\nKyphoplasty L2 — pain VAS 8 → 2/10 at 48h\nPost-procedure: mobilised same day\nSECONDARY PREVENTION\nZoledronic acid 5mg IV (GIOP guidelines)\nCalcitriol 0.5μg daily (secondary due to RA)\nCalcium 1200mg daily + Vit D 2000 IU\nRheumatology: minimise steroid dose",
+        "notes":  ""
+    },
+    {
+        "n":  20,
+        "title":  "Emerging Therapies \u0026 Future Directions",
+        "text":  "Novel Agents\nNovel Mechanisms:\nCathepsin K inhibitor (odanacatib) — osteoclast specific, but CV concerns\nWnt pathway activators (beyond romosozumab)\nDKK-1 inhibitors: early clinical trials\nAbaloparatide (PTH-rP analogue) — approved USA, not yet India\nBiomarker-guided therapy: CTX + P1NP to personalise dose\nIndia-Specific Developments:\nGeneric zoledronic acid: improving access\nICMR guidelines for Indian FRAX reference database\nUrban–rural osteoporosis awareness programmes\nCalcium fortification policy initiatives\nTechnology \u0026 Research\nTechnology:\nHigh-resolution peripheral QCT (HR-pQCT): microarchitecture assessment\nFinite element analysis: fracture risk beyond BMD\nAI-based vertebral fracture detection from chest X-rays\nContinuous glucose monitor analogy for bone turnover markers\nResearch Directions:\nOptimal duration of each drug class still debated\nSequential vs combination therapy comparative trials\nFracture prevention in males underrepresented — more data needed\nPaediatric and young-adult osteoporosis management guidelines",
+        "notes":  ""
+    },
+    {
+        "n":  21,
+        "title":  "CONCLUSIONS",
+        "text":  "DXA T-score ≤ −2.5 or fragility fracture = diagnosis of osteoporosis — treatment mandatory\nFRAX is a validated, individualised 10-year risk calculator — use it to guide pharmacotherapy decisions\nBisphosphonates are first-line; anabolics (teriparatide, romosozumab) for high-risk / severe disease\nDrug holidays after 5 years oral bisphosphonate; NEVER stop denosumab abruptly\nHip fracture surgery within 48 hours reduces mortality — secondary prevention must start before discharge\nFracture Liaison Service (FLS) closes the treatment gap — every hospital should have one\nFalls prevention is as important as pharmacotherapy — multifactorial assessment reduces falls 24%\nVitamin D adequacy (\u003e 50 nmol/L) is foundational — correct before starting pharmacotherapy",
+        "notes":  ""
+    }
+]

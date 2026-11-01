@@ -1,0 +1,44 @@
+[
+    {
+        "n":  1,
+        "title":  "Post-operative Rehabilitation\nAfter Joint Replacement",
+        "text":  "Dr. Maninder Singh, MS Orthopaedics | GMCH Amritsar",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Goals of Rehabilitation",
+        "text":  "• Restore range of motion, strength and functional independence\n• Prevent complications: DVT, pneumonia, wound problems, stiffness\n• Achieve pain-free activities of daily living\n• Return to recreational activities and work\n• Education: Joint protection, activity modification, home exercise programme\n• Expected outcomes: TKR — 120°+ flexion; THR — full ADLs, no dislocation\n• Multidisciplinary team: Surgeon, physiotherapist, occupational therapist, nurse",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "TKR Rehabilitation — Phase 1 (Day 0–6 weeks)",
+        "text":  "• Day 0–1: Ankle pumps, quadriceps sets, bed exercises, ice therapy\n• Day 1–2: Sitting up, leg dangling, standing with support (walker)\n• Target: Knee flexion 90° by Day 3–5; full passive extension\n• Exercises: SLR, terminal knee extension, heel slides, prone hangs\n• CPM (Continuous Passive Motion): Controversial; current evidence does not support routine use\n• Wound care: Waterproof dressing; watch for signs of infection\n• DVT prophylaxis: LMWH/Aspirin + TED stockings + early ambulation\n• Scar management from Week 3: Massage to prevent adhesions",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "TKR Rehabilitation — Phase 2 \u0026 3 (6–12 weeks / 3–6 months)",
+        "text":  "• Phase 2 (Wk 6–12): Stationary cycling, pool walking, proprioception exercises\n  — Target: 120°+ flexion; minimal swelling; walk without aids\n  — Stair climbing with reciprocal pattern\n• Phase 3 (3–6 months): Progressive strengthening — leg press, mini squats\n  — Functional training: Rising from chair, car transfers, kerb steps\n  — Hydrotherapy: Reduces joint load, improves motion\n• MUA (Manipulation Under Anaesthesia): If \u003c90° at 3 months\n• Return to driving: 6 weeks (left TKR automatic) / 8–10 weeks (right TKR)",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "THR Rehabilitation — Precautions \u0026 Protocol",
+        "text":  "• Posterior approach precautions (6 weeks): No hip flexion \u003e90°, no adduction past midline, no IR\n• Anterior approach: No extension + ER (impingement risk); fewer restrictions than posterior\n• Day 1: Mobilize with frame; partial weight-bearing (cemented: FWB immediately)\n• Cementless stems: Partial WB 6 weeks; cemented: FWB Day 1–2\n• Phase 1 (0–6 wk): Abductor strengthening, hip extension, stationary bike\n• Phase 2 (6–12 wk): Gait re-education, progressive strengthening, water exercises\n• Phase 3 (3+ months): Sports-specific training; walking, swimming, golf, cycling allowed\n• Avoid: High-impact activities (running, jumping), contact sports",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Outcome Measures \u0026 Assessment",
+        "text":  "• Oxford Knee/Hip Score (OKS/OHS): 12-item PRO; out of 48; higher = better\n• WOMAC (Western Ontario McMaster): Pain, stiffness, function subscales\n• KOOS/HOOS: Knee/Hip injury and Osteoarthritis Outcome Score\n• VAS Pain Score: 0–10; expect \u003c3 at 6 months\n• Timed-Up-and-Go (TUG) test: Normal \u003c12 seconds\n• 6-Minute Walk Test: Functional endurance\n• ROM measurement: Goniometry at each visit\n• Patient satisfaction: 85–90% in TKR; \u003e90% in THR",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Summary",
+        "text":  "• Rehabilitation is as important as the surgical procedure itself\n• TKR: Target 90° by Day 5; 120°+ by 3 months\n• THR posterior: Hip precautions mandatory 6 weeks\n• Early mobilization reduces DVT, pneumonia, stiffness\n• Multidisciplinary rehabilitation improves outcomes\n• MUA for TKR stiffness if ROM \u003c90° at 3 months\n• Reference: Brander VA — Rehabilitation After TJR; Physiotherapy Journal",
+        "notes":  ""
+    }
+]

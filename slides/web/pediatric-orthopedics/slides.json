@@ -1,0 +1,128 @@
+[
+    {
+        "n":  1,
+        "title":  "PAEDIATRIC",
+        "text":  "Growth Plates · DDH · SCFE · Perthes · Clubfoot · Fractures · Infections\nDr. Maninder Singh  |  MS Orthopedics  |  GMCH Amritsar  |  2026",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Paediatric vs Adult Orthopaedics — Key Differences",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Salter-Harris Classification — Growth Plate Injuries",
+        "text":  "Peterson Type VI: periosteal bridge injuries can cause progressive angular deformity — monitor with annual X-rays\nPhyseal bar formation: partial → angular deformity; complete → LLD. Bar resection if \u003c 50% area, \u003e 2yr growth remaining",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "DDH — Diagnosis by Age \u0026 Imaging",
+        "text":  "\u003c 6 Months\nBarlow \u0026 Ortolani Tests (0–3 months):\nOrtolani: Abduct + lift → clunk = relocation\nBarlow: Adduct + push → clunk = dislocation\nSensitivity drops after 3 months (soft tissue tightens)\nGraf Ultrasound Classification:\nType Ia: Normal (α \u003e 60°, β \u003c 55°)\nType Ib: Normal, not fully ossified\nType IIa: Immature (4–12 wks) (α 50–59°)\nType IIb: Delayed ossification (\u003e 12 wks) — treat\nType III: Subluxed (α \u003c 43°, β \u003e 77°) — treat\nType IV: Dislocated — urgent treatment\n\u003e 6 Months X-ray \u0026 MRI\nX-ray Assessment (\u003e 4–6 months):\nHilgenreiner\u0027s line: horizontal through triradiate cartilage\nPerkin\u0027s line: vertical through superolateral acetabular edge\nShenton\u0027s arc: smooth curve femoral neck to obturator foramen\nAcetabular index: normal \u003c 30° (\u003c 1yr), \u003c 25° (2yr), \u003c 22° (3+yr)\nCE angle (Centre-Edge of Wiberg): \u003c 20° = dysplastic\nMRI Indications:\nPost-reduction assessment (closed or open)\nAssess labrum, cartilage (limbus), reduction quality\n3D MRI for complex cases, pre-surgical planning\nCT: post-ORIF implant check (brief study, radiation minimised)",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "DDH Treatment Algorithm",
+        "text":  "0–6 MONTHS\nPavlik Harness\n6–12 weeks\nGraf IIb:\nPavlik 6wk\nGraf III/IV:\nPavlik or\nClosed Reduc.\n6–18 MONTHS\nClosed reduction\nunder GA\nHip spica cast\n12–14 weeks\nMRI to confirm\nreduction\n18 MONTHS –\n3 YEARS\nOpen reduction\n(medial or\nanterolateral)\n+/- Pelvic\nosteotomy\n(Salter or\nPemberton)\n\u003e 3 YEARS\nOpen reduction\n+ Pelvic\nosteotomy\n+ Femoral\nvarus\nderotation\nosteotomy\n\u003e 8 YEARS\nSalvage\nprocedures:\nChiari\nosteotomy\nShelf\naugment\nGoal: Concentric reduction maintained → normal acetabular development. Earlier intervention = simpler surgery + better outcome.",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "SCFE — Classification, Imaging \u0026 Management",
+        "text":  "Pathology \u0026 Classification\nPathoanatomy:\nFailure through hypertrophic zone of physis\nFemoral neck displaces anterosuperior; epiphysis remains in acetabulum\n\u0027Ice cream falling off a cone\u0027 — posterior and inferior slip\nClassification:\nLoder Classification:\n- Stable: able to bear weight with/without crutches (AVN risk \u003c 1%)\n- Unstable: cannot bear weight (AVN risk 20–50%)\nRadiological Assessment:\nKlein\u0027s line (AP): line along superior femoral neck should intersect epiphysis\nSlippage angle (Southwick): lateral view — severity\nGrade I \u003c 30°; Grade II 30–60°; Grade III \u003e 60°\nTreatment\nTreatment Principles:\nAll SCFE: non-weight-bearing IMMEDIATELY\nStable SCFE: in-situ fixation with single cannulated screw (centre-centre)\nUnstable SCFE: emergency surgery (6–24h)\nNEVER attempt forceful reduction — increases AVN risk\nTechnique:\nSupine on fracture table\nFluoroscopy: AP + frog-leg\nSingle screw: 6.5 mm or 7.5 mm cannulated\nScrew perpendicular to physis, tip in central epiphysis\nBoth hips? Prophylactic pinning contralateral if \u003c 10 years / high-risk (obesity, endocrinopathy)\nMonitor for avascular necrosis: MRI at 3 months if unstable",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Perthes Disease — Classification \u0026 Management",
+        "text":  "Pathology \u0026 Catterall\nPathophysiology:\nIdiopathic avascular necrosis of femoral head\nVascular event → bone death → revascularisation → repair\nChildren 4–8 years; Boys \u003e Girls (4:1)\nBilateral: 10–12% (not synchronous)\nStaging (Waldenstrom / Catterall):\nStage I: Synovitis, density change on MRI\nStage II: Fragmentation — extent of head involvement\nStage III: Re-ossification\nStage IV: Healed — residual deformity\nCatterall Classification:\nI: Anterior head involved only\nII: Anterior 50% + lateral pillar spared\nIII: 75% involvement, partial lateral pillar\nIV: Entire head involved\nHerring \u0026 Treatment\nHerring Lateral Pillar Classification:\nGroup A: Lateral pillar fully maintained\nGroup B: \u003e 50% height preserved\nGroup B/C: Borderline — between B and C\nGroup C: \u003c 50% lateral pillar height\nTreatment by Age + Herring:\n\u003c 6 years: All groups → observation\n6–8 years: A/B: observe; B/C or C: osteotomy\n8–12 years: A: observe; B/C/C: containment surgery\nContainment Goal:\nKeep femoral head within acetabulum during healing phase\nFemoral varus derotation osteotomy (FVDO)\nSalter pelvic osteotomy — \u0027shelf\u0027 osteotomy\nAbduction brace (Petrie cast): limited compliance\nPrognostic Factor:\nYounger age + Group A: excellent outcome\nOlder + Group C: residual deformity, early OA",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "Supracondylar Humerus Fracture — Paediatric Emergency",
+        "text":  "Vascular Compromise Assessment — 5 Ps:\nPallor, Pulselessness, Pain on passive stretch, Paraesthesia, Paralysis\nPulseless + pink hand: proceed to urgent reduction → check pulse → if no return → vascular exploration\nPulseless + pale hand: immediate surgical vascular exploration + fracture fixation\nAnterior Interosseous Nerve (AIN) Injury:\nWeakness of thumb IP flexion (FPL) + index DIP flexion (FDP)\nNo sensory loss (pure motor branch of median nerve)\n95% recover spontaneously by 3 months — observe; EMG at 3 months if no recovery",
+        "notes":  ""
+    },
+    {
+        "n":  9,
+        "title":  "Common Paediatric Fractures — Summary Table",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  10,
+        "title":  "Non-Accidental Injury (NAI) — Recognition \u0026 Action",
+        "text":  "Fracture Patterns \u0026 History\nRed Flag Fracture Patterns:\nClassic metaphyseal lesions (CML / \u0027corner fractures\u0027) — highly specific for NAI\nPosterior rib fractures (CPR excluded) — pathognomonic\nBilateral or multiple fractures at different stages of healing\nLong bone fractures in pre-ambulatory children\nPeriosteal reaction without trauma history\nRed Flag History Features:\nInconsistent or changing history\nDelay in presentation\nInjury inconsistent with developmental stage\nHistory of previous unexplained injuries\nInvestigations \u0026 Safeguarding\nInvestigation Protocol (if NAI suspected):\nSkeletal survey: full radiographic survey (not bone scan)\nLateral skull X-ray + intracranial CT\nOphthalmology: retinal haemorrhages (Shaken Baby Syndrome)\nHepatic enzymes (occult abdominal injury)\nCoagulation screen, FBC (exclude haematological cause)\nAction if NAI Suspected:\nDo NOT confront parents\nDocument thoroughly and objectively\nSenior paediatric consultation\nMulti-agency safeguarding team (MAST) referral\nPolice referral if immediate risk\nChild must not be discharged until safeguarding plan in place",
+        "notes":  ""
+    },
+    {
+        "n":  11,
+        "title":  "Clubfoot (CTEV) — Ponseti Method Detail",
+        "text":  "Deformity \u0026 Casting\nCAVE Deformity Components:\nCavus (high arch — medial column)\nAdductus (forefoot medial displacement)\nVarus (hindfoot inversion)\nEquinus (plantarflexion of ankle)\nPonseti Method Steps:\n1. Cavus — correct first: supinate forefoot\n2. Adductus + Varus — abduct foot against stable lateral head of talus\n3. Equinus — correct LAST (once abducted to 70°)\nCasts: changed weekly × 5–8 casts\nCast material: fibreglass or plaster above-knee in knee flex\nFoot held in corrected position at each stage\nTenotomy \u0026 Bracing\nAchilles Tenotomy:\n90% require percutaneous tenotomy after casting\nLocal or GA; 70° abduction, 20° dorsiflexion achievable after\nPost-tenotomy: 3 weeks final cast\nBracing: Foot Abduction Brace (Denis-Browne)\nFirst 3 months: 23 hr/day; then nights + naps till age 4–5 years\nFailure Modes \u0026 Relapse:\nRelapse: most common in first 2 years; 30% need re-casting\nTreat relapse with re-casting +/- tibialis anterior transfer (age 2–3 yrs)\nAvoid posteromedial release (PMR) — high recurrence, stiff scarred foot\nPirani score: monitors correction (0 = fully corrected)\nFrench Functional Method: alternative physio-based approach",
+        "notes":  ""
+    },
+    {
+        "n":  12,
+        "title":  "Septic Arthritis — Kocher Criteria \u0026 Management",
+        "text":  "Kocher Score Interpretation:\n0 criteria: \u003c 2% probability of septic arthritis\n1 criterion: 9.5%\n2 criteria: 35%\n3 criteria: 72.8%\n4 criteria: 93–99.6% — emergency surgical washout\nHip: URGENT Surgical Washout (All 4 Kocher):\nCapsular pressure → AVN if not decompressed within hours\nAnterior approach (Smith-Petersen) or posterior (Gibson)\nSend synovial fluid: Gram stain, C\u0026S, cell count\nIV antibiotics: Flucloxacillin (Staph) + Gentamicin (Gram neg) — adjust on culture\nContinue IV until CRP normalising; total course 3–6 weeks",
+        "notes":  ""
+    },
+    {
+        "n":  13,
+        "title":  "Acute Haematogenous Osteomyelitis — Diagnosis \u0026 Treatment",
+        "text":  "Pathology \u0026 Organisms\nPathophysiology:\nMetaphysis: terminal capillary loops — sluggish blood flow\nBacteria arrested → microabscess → subperiosteal extension\nMost common site: distal femur \u003e proximal tibia \u003e proximal humerus\nOrganisms by Age:\nNeonates (\u003c 1 month): GBS, Staph aureus, Gram-negative\nInfants (1–18 months): Staph aureus; also Kingella kingae\nChildren (\u003e 18 months): Staph aureus (most common)\nSickle cell: Salmonella spp.\nMRSA: community-acquired increasing (PVL toxin)\nInvestigation \u0026 Treatment\nInvestigations:\nWBC + CRP + ESR (daily CRP monitors response)\nBlood cultures: positive in 50–60% (before antibiotics)\nX-ray: normal first 7–10 days; periosteal reaction later\nMRI: MOST SENSITIVE — early bone oedema (day 1–2)\nBone scan (Tc-99m): useful if multifocal / MRI unavailable\nTreatment:\nIV antibiotics: Flucloxacillin (MSSA) or Vancomycin (MRSA)\nSwitch to oral: when CRP \u003c 20, apyrexial, clinically improving\nTotal antibiotic duration: 3 weeks (uncomplicated)\nSurgical drainage: if subperiosteal abscess, no response 48h\nChronic OM: Garre sclerosing, Brodie abscess — sequestrectomy + saucerisation",
+        "notes":  ""
+    },
+    {
+        "n":  14,
+        "title":  "Paediatric Bone Tumours — Recognition \u0026 Referral",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  15,
+        "title":  "Normal Development — Gait \u0026 Lower Limb Alignment",
+        "text":  "Gait \u0026 Rotation\nNormal Gait Development:\nWalking: 9–15 months (normal up to 18 months)\nMature gait pattern: 7 years\nToe-walking \u003c 3 years: usually physiological\nPersistent toe-walking: rule out CP, muscular dystrophy, Achilles contracture\nLower Limb Rotational Profile:\nIn-toeing causes by level:\nFemur: femoral anteversion (age 3–7, resolves by 10 years)\nTibia: internal tibial torsion (birth – 2 years; resolves)\nFoot: metatarsus adductus (see also neonatal foot)\nOut-toeing: usually femoral retroversion; normal variant up to age 8\nVarus, Valgus \u0026 Guided Growth\nGenu Varum (Bow legs):\nPhysiological: \u003c 2 years; resolves by 18 months\nPathological: Blount disease (infantile vs adolescent)\nBlount: Langenskiöld classification I–VI\nTreatment: tibial osteotomy if severe; guided growth (8-plate) in adolescent\nGenu Valgum (Knock knees):\nPhysiological: 3–7 years; resolves by 7–8 years\nIntercondylar distance \u003e 8 cm at 7+ years: refer\nCauses: rickets, renal osteodystrophy, Morquio syndrome\nTreatment: 8-plate (guided growth, reversible) or osteotomy\nLLD \u003e 2 cm: epiphysiodesis contralateral limb",
+        "notes":  ""
+    },
+    {
+        "n":  16,
+        "title":  "Ponseti Method Outcomes — Evidence Base",
+        "text":  "Data: Laaveg \u0026 Ponseti (1980), Dobbs et al. (2004), Goksan et al. systematic review (2006). Relapse highest with non-compliance with foot abduction brace.",
+        "notes":  ""
+    },
+    {
+        "n":  17,
+        "title":  "Cerebral Palsy — Orthopaedic Considerations",
+        "text":  "Classification \u0026 Problems\nClassification:\nGMFCS (Gross Motor Function Classification System) I–V\nMACS for upper limb\nTopographic: hemiplegia, diplegia, quadriplegia\nCommon Orthopaedic Problems:\nSpastic hip dislocation (Reimers migration index)\nHip surveillance programme: 6-monthly X-rays GMFCS III–V\nSpastic equinus foot (equinus varus / valgus)\nScoliosis (C-shaped, long curve, respiratory compromise in GMFCS IV–V)\nCrouch gait: hamstring contracture + hip flexion deformity\nInterventions\nInterventions:\nBotulinum toxin: temporary, grade evidence B, reduce spasticity\nSerial casting: for equinus\nOrthotics: AFO, KAFO, TLSO for scoliosis\nSDR (Selective Dorsal Rhizotomy): diplegia, GMFCS II–III\nSEMLS (Single Event Multi-Level Surgery): correct gait deviations all at once; not piecemeal\nHip Dislocation Prevention:\nReimers Index \u003e 30%: consider surgery\nAdductor tenotomy / iliopsoas recession\nVarus derotation femoral osteotomy\nAcetabular reconstruction if needed\nGoal: maintain seated stability and pain-free range",
+        "notes":  ""
+    },
+    {
+        "n":  18,
+        "title":  "CASE STUDY 1 — Unstable SCFE (Emergency)",
+        "text":  "PRESENTATION\n13M, obese (BMI 31), RTA\nRight hip pain, unable to bear weight\nHip: ER, shortened, fixed flexion 20°\nIMAGING\nAP X-ray: Klein\u0027s line misses epiphysis right\nFrog-leg: severe slippage (Grade III \u003e 60°)\nLeft hip: borderline Klein\u0027s line\nMANAGEMENT\nNon-weight-bearing immediately\nEmergency surgery (4 hours from presentation)\nGentle positioning, NO forceful reduction\nIn-situ fixation: single 7.5mm cannulated screw\nOUTCOME\nPost-op AVN monitoring: MRI at 3 months — clear\nProphylactic fixation left hip (age \u003c 14, obese, high risk)\nEndocrine referral: hypothyroidism excluded\nMobility regained at 6 weeks",
+        "notes":  ""
+    },
+    {
+        "n":  19,
+        "title":  "CASE STUDY 2 — NAI / Safeguarding Alert",
+        "text":  "PRESENTATION\n7-month-old male, brought by mother\n\u0027Fell from sofa\u0027 — arm not moving\nNot yet crawling (pre-ambulatory)\nIMAGING\nSpiral humeral shaft fracture (transverse)\nChest X-ray: posterior rib fractures (bilateral)\nX-ray right leg: corner metaphyseal lesion distal femur\nRED FLAGS\n3 different injuries at different healing stages\nMechanism inconsistent with development stage\nDelay in seeking treatment (48 hours)\nSAFEGUARDING ACTION\nSenior paediatric consult immediately\nSkeletal survey: further occult fractures found\nChild protection team + police referral\nChild admitted, safeguarding plan activated",
+        "notes":  ""
+    },
+    {
+        "n":  20,
+        "title":  "Paediatric Orthopaedics — Quick Reference Summary",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  21,
+        "title":  "CONCLUSIONS",
+        "text":  "Children are NOT small adults — growth plate injuries, remodelling, and developmental timing change management at every level\nSalter-Harris III \u0026 IV are intra-articular — anatomic reduction is mandatory to prevent OA and physeal arrest\nDDH: earlier diagnosis = simpler treatment; Pavlik harness is first-line for \u003c 6 months\nSCFE: non-weight-bearing + in-situ fixation immediately — never forceful reduction (AVN risk)\nKocher 4 criteria = emergency hip washout — delay risks avascular necrosis of femoral head\nPonseti method is gold standard for CTEV — 95% correction, avoids posteromedial release surgery\nAlways consider NAI in pre-ambulatory children with long-bone fractures or inconsistent history\nPaediatric bone tumours: Codman triangle / sunburst on X-ray = urgent malignancy referral",
+        "notes":  ""
+    }
+]

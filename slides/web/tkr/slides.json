@@ -1,0 +1,50 @@
+[
+    {
+        "n":  1,
+        "title":  "Indications for TKR",
+        "text":  "• Severe osteoarthritis of the knee — Kellgren-Lawrence Grade III/IV\n• Rheumatoid arthritis with joint destruction\n• Post-traumatic arthritis\n• Osteonecrosis of femoral condyle\n• Failed conservative management (\u003e6 months)\n• Pain at rest, night pain, significant functional limitation\n• Contraindications: Active infection, poor vascular supply, severe malalignment (relative)",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Pre-operative Planning \u0026 Templating",
+        "text":  "• Weight-bearing AP, lateral and skyline X-rays (bilateral)\n• Full-length lower limb alignment X-ray (HKA angle)\n• Normal HKA: 5–7° valgus\n• Templating: Femoral and tibial component sizing on X-ray overlay\n• Assess bone stock, deformity, ligament integrity\n• Pre-op blood workup, cardiac clearance, dental clearance\n• Skin condition assessment — avoid surgery over abrasions/cellulitis",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Surgical Approach — Medial Parapatellar",
+        "text":  "• Most widely used approach for primary TKR\n• Skin incision: Midline anterior, 15–20 cm\n• Arthrotomy: Medial to patella, dividing quadriceps tendon superiorly\n• Advantages: Excellent exposure, extensile\n• Alternatives: Midvastus (muscle-splitting) or Subvastus approaches\n• Tourniquet at 250–300 mmHg\n• Eversion of patella to expose the joint",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Bone Cuts — Distal Femur \u0026 Proximal Tibia",
+        "text":  "• Distal femoral cut: 5–7° valgus, 3° flexion, resect 9–10 mm\n• Femoral sizing (AP dimension) — avoid overstuffing\n• Posterior femoral cuts determine flexion gap\n• Proximal tibial cut: 90° to mechanical axis, 3–5° posterior slope\n• Resect 8–10 mm from less worn compartment\n• Tibial sizing — avoid medial/lateral overhang\n• Equal flexion and extension gaps = balanced knee",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Gap Balancing vs Measured Resection",
+        "text":  "• Measured Resection: Bone cuts made to anatomic landmarks; equal to resected bone\n• Gap Balancing: Extension gap established first; flexion gap matched to it\n• Both techniques aim for rectangular equal gaps in flex and extension\n• Soft tissue releases guided by deformity pattern\n• Varus knee: MCL pie-crusting, posteromedial capsule release\n• Valgus knee: Lateral release, LCL, popliteus\n• Goal: Full extension, 120°+ flexion with stable balanced gaps",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Implant Types \u0026 Selection",
+        "text":  "• CR (Cruciate-Retaining): PCL intact; natural feel, more complex balancing\n• PS (Posterior-Stabilized): PCL sacrificed; cam-post mechanism; easier balancing\n• CS (Constrained): Fixed hinge for severe instability — revision cases\n• Unicompartmental: Medial or lateral compartment only — strict indications\n• Cemented vs Cementless: Cemented gold standard in elderly; cementless in young active\n• Mobile bearing vs Fixed bearing: Similar long-term outcomes\n• All-poly tibia vs Metal-backed tibia — cost vs longevity",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Complications \u0026 Outcomes",
+        "text":  "• Infection: Most feared — 1–2%; requires 2-stage revision\n• DVT/PE: Prophylaxis with LMWH/aspirin, TED stockings, early mobilisation\n• Stiffness: MUA if ROM \u003c90° at 3 months\n• Periprosthetic fracture, aseptic loosening (5% at 10 years)\n• Component malalignment, bearing wear\n• Outcomes: 90%+ satisfied; survivorship \u003e95% at 15 years\n• Average flexion 110–120°; WOMAC and KSS scores improve significantly",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "Summary",
+        "text":  "• TKR is the gold standard for end-stage knee OA\n• Success depends on: correct indication, meticulous technique, balanced gaps\n• Implant selection tailored to patient age, activity, bone stock\n• CR vs PS choice based on PCL status and surgeon preference\n• Rigorous post-op rehab essential for optimal outcome\n• Expected survivorship \u003e95% at 15 years with modern implants\n• Reference: Insall \u0026 Scott Surgery of the Knee, 5th Ed.",
+        "notes":  ""
+    }
+]

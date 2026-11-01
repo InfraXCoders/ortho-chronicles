@@ -1,0 +1,560 @@
+[
+    {
+        "n":  1,
+        "title":  "MRI SEQUENCES",
+        "text":  "PRESENTER: Dr Sabah\nJunior Resident\nDepartment of radiodiagnosis\nGMC \u0026 RH Patiala",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "PULSE SEQUENCE",
+        "text":  "Is a sequence of events, which are needed to acquire MRI images. \nThese events are: RF pulses, gradient switches and signal collecting",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "PULSE SEQUENCES",
+        "text":  "SPIN ECHO(SE)\nGRADIENT ECHO(GE)\nINVERSION RECOVERY(IR)\nECHO PLANAR IMAGING(EPI) – BOLD, DWI, PI\nMR SPECTROSCOPY\nMR ANGIOGRAPHY",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "The NMR Phenomenon – Bo",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "To localize from where in the body signals are coming three more magnetic fields are superimposed on main magnetic field along X, Y, and Z axes",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "IMAGE FORMATION :",
+        "text":  "Image formation can be divided into the following steps :\nExcitation, \nRelaxation,\n Acquisition, \nComputing and Display.",
+        "notes":  ""
+    },
+    {
+        "n":  9,
+        "title":  "BASIC SEQUENCE",
+        "text":  "1) Switching on the slice select gradient (GSS).\n2) Simultaneously a 90º RF-pulse was given to ‘flip’ the net-magnetization into the x-y plane. \n3) The phase encoding gradient (gpe) was switched on to do the first phase encoding.\n4) The frequency encoding or read out gradient (gro) was switched on during which the signal, the free induction decay (fid), was sampled.",
+        "notes":  ""
+    },
+    {
+        "n":  10,
+        "title":  "“SEQUENCE DIAGRAM”",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  11,
+        "title":  "Very simple and basic sequence.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  12,
+        "title":  "SPIN ECHO SEQUENCE",
+        "text":  "It consists of 90º and 180º RF pulses \nAfter the 90º-excitation pulse, the net-magnetization is in the X-Y plane (Transverse plane).\n It immediately starts to dephase due to T2 relaxation (spin-spin interactions). \nIt is because of this dephasing that the signal drops \nTherefore,a short time after the 90º RF-pulse, a rephasing  180° pulse is sent to bring protons back into phase.\nThe 180º pulse causes the spins to rephase. When all the spins are rephased the signal is high again-which is sampled.\nThe time between 90° pulse and reception of echo (signal) is TE (time to echo).\nFor localization of signal, slice selection gradient is turned on when pulse is sent. Phase encoding gradient is turned on between excitation pulse (90° pulse) and signal measurement. Phase encoding gradient has different strength for each TR. Frequency encoding (read out Gradient) is turned out during signal measurement.",
+        "notes":  ""
+    },
+    {
+        "n":  13,
+        "title":  "Advantages: ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  14,
+        "title":  "Modifications of SE sequences",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  15,
+        "title":  "1. DUAL SPIN ECHO Sequence",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  16,
+        "title":  "2. FAST (TURBO) SPIN ECHO Sequence",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  17,
+        "title":  "3. SINGLE SHOT FAST SPIN ECHO Sequence",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  18,
+        "title":  "T1 Contrast",
+        "text":  "T1-weighted images usually have excellent contrast: fluids are very dark (unless they are flowing into the imaging volume), water-based tissues are mid-grey and fat-based tissues are very bright.",
+        "notes":  ""
+    },
+    {
+        "n":  19,
+        "title":  "PROTON DENSITY",
+        "text":  "Proton Density (PD) with Fat Saturation: It offers high spatial resolution and excellent contrast for imaging of articular cartilage which appear bright against dark joint fluid and subchondral bone.\n2D fast spin echo (FSE) fat-suppressed intermediate-weighted (IW) sequences are considered the cornerstone for clinical morphological assessment of articular cartilage, offering the best balance of sensitivity and specificity for detecting defects, synovitis, and bone marrow changes.",
+        "notes":  ""
+    },
+    {
+        "n":  20,
+        "title":  "Other sequences used for imaging cartilages-",
+        "text":  "3D Spoiled Gradient Echo (SPGR/FLASH): Provides high spatial resolution and isotropic voxels for multiplanar reformatting, though it may have lower contrast between cartilage and fluid.\nDual Echo in the Steady State (DESS): A 3D coherent gradient echo sequence with high contrast between cartilage and synovial fluid, commonly used in large studies like the Osteoarthritis Initiative.\n3D Balanced Steady-State Free Precession (SSFP): Offers high signal-to-noise ratio and good cartilage-fluid contrast but is vulnerable to off-resonance artifacts.",
+        "notes":  ""
+    },
+    {
+        "n":  21,
+        "title":  "Advanced compositional sequences",
+        "text":  "T2 mapping : Assesses collagen orientation and organization.\nT1 rho and Sodium imaging: Evaluares gyycosaminoglycan (GAG) content.\ndGEMRIC (delayed gadolinium-enhanced MRI of cartilage): Measures GAG content by assessing the distribution of contrast agents.",
+        "notes":  ""
+    },
+    {
+        "n":  22,
+        "title":  "SS FSE/HASTE",
+        "text":  "The HASTE sequence allows acquisitions of 2D slices in less than a second. Because of its long echo train (all the echoes take place in a single TR), HASTE images will be T2-weighted.\nUSES:\nThe HASTE sequence provides strong T2 weighting and is used in MR cholangiopancreatography and MR urography to demonstrate stones and other filling defects as areas of low signal intensity within bright fluid-filled structures . \nHigh speed makes the HASTE sequence a suitable choice for uncooperative patients, Bowel, Cardiac MRI and Fetal imaging.\nLIMITATIONS:\nLess signal to noise ratio and resolution, (E.g CMD is not well appretiated)",
+        "notes":  ""
+    },
+    {
+        "n":  23,
+        "title":  "PROPELLER/ BLADE",
+        "text":  "MRI sequence that uses a radial k-space sampling technique designed to reduce motion artifacts and improve image quality. Instead of acquiring data line-by-line, BLADE collects it in rotating rectangular strips—or “blades”—that overlap at the center of k-space, which is sampled repeatedly to enhance signal averaging and artifact suppression. This method is commonly applied to turbo spin echo (TSE) sequences, including T2-weighted, T1-weighted, and FLAIR imaging.\nUSES:\nMinimize motion-related artifacts from patient movement, respiration, or swallowing, making it highly valuable in applications such as brain, spine, head and neck, and pediatric imaging.\nParticularly useful in patients who have difficulty remaining still.",
+        "notes":  ""
+    },
+    {
+        "n":  24,
+        "title":  "Gradient Echo Sequence",
+        "text":  "They differ from the Spin Echo sequence in the way the echo is formed. \nBasic differences between SE and GRE sequences-\n1. There is no 180 degree pulse in GRE. Rephasing is done by gradients; particularly by reversal of the frequency encoding gradient. Since rephasing by gradient gives signal, this sequence is called as Gradient echo sequence.\n2. Th flip angle in GRE is smaller than 90°. Since flip angle is smaller there will be early recovery of longitudinal magnetization (LM) such that TR can be reduced, and hence the scanning time.\n3. Transverse relaxation can be caused by-\nIrreversible dephasing of TM resulting from nuclear, molecular and macromolecular magnetic interactions with protons.\nDephasing caused by magnetic field inhomogeneties which translates into the presence of artifacts in the image.\nBecause gradients do not refocus field inhomogeneities, GRE sequences with long TEs are T2* weighted (because of magnetic susceptibility) rather than T2 weighted like SE sequences",
+        "notes":  ""
+    },
+    {
+        "n":  25,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  26,
+        "title":  "IMAGE CONTRAST",
+        "text":  "The image contrast of GE sequences is determined mainly by FA (Flip angle) and TE . \nA high FA and short TE gives T1 weighted contrast. \nA medium FA and short TE gives pd contrast. \nA low FA and long TE gives T2 weighted contrast.",
+        "notes":  ""
+    },
+    {
+        "n":  27,
+        "title":  "GE",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  28,
+        "title":  "TYPES OF GRE Sequences",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  29,
+        "title":  "1. Spoiled gradient echo- SPGR",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  30,
+        "title":  "2. Balanced SSFP- FID\n       Steady state GRE sequence",
+        "text":  "It’s a T2WI Sequence\nResidual TM is rephased like in coherent GRE.\nFast sequence. Hence, can be used in breath holding. Signal to noise ratio is better than that of a spoiled gradient-echo (FLASH) sequence.\nMotion insensitive as all three axes gradients are balanced.\nSequence of choice in : \nCardiac MRI\nImaging of bowel.\nFetal imaging\nTo demonstrate vascular anatomy.\nLimitations: Poor internal spatial resolution. CMD and G-W matter junction differentiation ill-defined.",
+        "notes":  ""
+    },
+    {
+        "n":  31,
+        "title":  "Enterography MRI",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  32,
+        "title":  "CISS- Constructive Interference in the steady State.",
+        "text":  "Balanced SSFP sequences are subject to a \"banding artifact.\" In the CISS sequence, two balanced SSFP images in each acquisition are obtained. One image is acquired with an \"alternating phase\" RF pulse as in a standard balanced SSFP sequence, and the other is acquired with a non–alternating phase RF pulse. The banding artifact in each image will be displaced relative to the banding artifact in the other image. By combining the two images, the banding artifact is eliminated.\nFeatures:\n The CISS sequence provides T2-weighted 3D images with submillimeter resolution and is used for imaging the cochlea, labyrinth, and cerebellum.\nAlso useful in imaging of CP angle, Internal acoustic meatus and optic nerves.\n  Slower than balanced SSFP, it uses a longer TR.",
+        "notes":  ""
+    },
+    {
+        "n":  33,
+        "title":  "Inversion Recovery Sequence",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  34,
+        "title":  "INVERSION RECOVERY",
+        "text":  "",
+        "notes":  "Inversion recovery (IR) is a conventional spin echo (SE) sequence preceded by a 180° inverting pulse.\rThe time between the 180° inverting pulse and the 90°-pulse is called the inversion time (TI). The repetition time (TR) and echo time (TE) are defined as they are for spin echo."
+    },
+    {
+        "n":  35,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  36,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  37,
+        "title":  "INVERSION RECOVERY",
+        "text":  "Selective Tissue Suppression",
+        "notes":  ""
+    },
+    {
+        "n":  38,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  39,
+        "title":  "STIR- Short TI Inversion Recovery",
+        "text":  "An inversion-recovery pulse is used to null the signal from fat .TI of 140ms is used.\nSTIR sequences provide excellent depiction of bone marrow edema  which may be the only indication of an occult fracture.\n Unlike conventional fat-saturation sequences , STIR sequences are not affected by magnetic field inhomogeneities, so they are more efficient for nulling the signal from fat\nUSES:\nBone marrow- Edema, Bony metastasis in whole body MRI\nOptic neuritis in multiple sclerosis\nAnkylosing spondylitis- Sacroiliac joint edema.",
+        "notes":  ""
+    },
+    {
+        "n":  40,
+        "title":  "(a) Diagram of the STIR sequence (TI  100–180 msec for fat). (b, c) Coronal",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  41,
+        "title":  "OTHER FAT SUPPRESSION METHODS",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  42,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  43,
+        "title":  "CHEMICAL SHIFT TECHNIQUES",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  44,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  45,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  46,
+        "title":  "2. DIXON METHOD",
+        "text":  "Based on in phase and out of phase imaging \nTwo sets of images are acquired – one at  ‘ in phase  ‘ TE and other at ‘ out of phase ‘ TE \nAddition of these two sets  = ‘ water only” image \nSubtraction of these two sets = “ fat only “ image",
+        "notes":  ""
+    },
+    {
+        "n":  47,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  48,
+        "title":  "FLAIR",
+        "text":  "An inversion recovery pulse is used to null the signal from cerebrospinal fluid .\nTI of 1700 to 2200 ms is used\nElimination of the signal from cerebrospinal fluid is useful for detecting lesions that otherwise are not easily distinguishable or for delineating hyperintense lesions that border fluid-containing spaces such as sulci or ventricles in the brain\nUSES:\nCSF partial volume effects and artifacts are removed.\nPerilesional edema.\nBrain infarcts.\nMS.\nMesial temporal sclerosis.\nSAH.",
+        "notes":  ""
+    },
+    {
+        "n":  49,
+        "title":  "(a) Diagram of the FLAIR sequence shows a TI of 1700–2200 msec for",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  50,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  51,
+        "title":  "MEDIUM TI IR sequence\nE.g- MPRAGE",
+        "text":  "Shows anatomy very well as there is increased contrast between gray-white matter. \nUSES:\nEpilepsy\nCortical dysplasias.",
+        "notes":  ""
+    },
+    {
+        "n":  52,
+        "title":  "ECHO PLANAR IMAGING",
+        "text":  "A single echo train is used to collect data from all lines of k-space during one TR.\n Use of this technique shortens the acquisition time substantially.\n There are two types of echo-planar imaging sequences: SE and GRE sequences.\n All the lines of k-space can be acquired in a single TR (in single-shot echo-planar imaging) or in two or more TRs (in multishot echo-planar imaging).",
+        "notes":  ""
+    },
+    {
+        "n":  53,
+        "title":  "In single-shot EPI, TR is effectively infinite.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  54,
+        "title":  "USES:",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  55,
+        "title":  "Gradient echo sequence – first 8 of  typically 64 or 128 readout gradient lobes shown. The dotted lines indicate continuance of the sequence.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  56,
+        "title":  "(24a) Echo-planar imaging sequence diagram. (24b) Axial T2-weighted echo-planar image (EPI) of the brain, obtained with the pulse sequence shown in 24a.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  57,
+        "title":  "Diffusion-weighted Imaging",
+        "text":  "Enables one to distinguish between rapid diffusion of protons (unrestricted diffusion) and slow diffusion of protons (restricted diffusion) .\n For diffusion-weighted imaging, either an echo-planar or a fast GRE sequence is used , and two equal gradient pulses are applied (one on each side of the 180° RF pulse in echo-planar sequences).",
+        "notes":  ""
+    },
+    {
+        "n":  58,
+        "title":  "If no net movement of spinning nuclei occurs between the applications of the gradient pulses, the first gradient dephases the spins and the second rephases them; therefore, high signal intensity is seen.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  59,
+        "title":  "Diffusion-weighted imaging sequence diagram. (25b) Axial diffusion-weighted brain image shows areas of restricted diffusion with high signal intensity.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  60,
+        "title":  "One of the major uses for diffusion-weighted imaging sequences is in the diagnosis of recent stroke. ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  61,
+        "title":  "The ADC calculation is based on the negative logarithm of the ratio of those two image sets (images obtained with diffusion weighting compared with those obtained without diffusion weighting).",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  62,
+        "title":  "Sometimes, the appearance of high signal intensity on diffusion-weighted images also may be due to T2 effects, or so-called T2 shine-through.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  63,
+        "title":  "USES OF DWI:",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  64,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  65,
+        "title":  "Combination of FLAIR and diffusion-weighted imaging with ADC mapping for depiction of effects of multiple strokes. (a) Axial T2-weighted FLAIR image shows three areas affected by strokes (arrows). (b, c) Axial diffusion-weighted echo-planar image (b) and ADC map (c) allow determination of the age of the strokes: The affected areas of the right frontal operculum and left frontal lobe (single arrows) show no evidence of restricted diffusion;",
+        "text":  "",
+        "notes":  "this finding indicates that the stroke is old. In contrast, the affected area of the left parietal lobe (double arrows) appears bright in b and dark in c, evidence of restricted diffusion indicative of the most recent stroke. The area of the second most recent stroke, that in the left frontal lobe (single arrow), appears bright in both b and c; and the area of the oldest stroke, that in the right frontal operculum (single arrow),appears dark in b and bright in c."
+    },
+    {
+        "n":  66,
+        "title":  "PERFUSION IMAGING",
+        "text":  "Perfusion refers to the capillary blood supply to a tissue\nTwo MRI techniques for imaging perfusion have been developed in the last few years, both using a contrast agent to distinguish perfused tissue from unperfused, primarily for neurological applications.",
+        "notes":  ""
+    },
+    {
+        "n":  67,
+        "title":  "The quicker method is to image the required slices rapidly and repeatedly during the first pass of a gadolinium bolus, sometimes referred to as ‘dynamic susceptibility contrast MRI’ (DSC-MRI).",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  68,
+        "title":  "Dynamic susceptibility contrast MRI",
+        "text":  "In DSC-MRI a volume of tissue, usually only a few slices, is imaged repeatedly using an EPI sequence.\n After a few images have been collected as a baseline, a bolus of gadolinium is injected as fast as possible. \nDuring the first pass through the intracranial circulation the gadolinium remains in the vasculature, causing a reduction of T2 and T2*. \nThe second pass may also be detected as a slight drop in intensity, before the signal returns to baseline.",
+        "notes":  ""
+    },
+    {
+        "n":  69,
+        "title":  "The whole imaging sequence takes no more than 2–3 min.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  70,
+        "title":  "There should be at least five images (time points) in the baseline section for analysis purposes; since a bolus injection in the antecubital vein typically takes 8–10 s to reach the brain, the injection should be started soon after the start of the imaging sequence.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  71,
+        "title":  "USES OF PERFUSION IMAGING",
+        "text":  "1. PWI is more sensitive than DWI for detecting ischemia in early period after the onset of arterial occlusion.\n2. Grading Tumours \n3 Guiding biospies \n4 . Differentiation of recurrent tumour vs radiation necrosis",
+        "notes":  ""
+    },
+    {
+        "n":  72,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  73,
+        "title":  "Pic of perfusion imaging",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  74,
+        "title":  "ARTERIAL SPIN LABELLING",
+        "text":  "TAGGED IMAGE – CONTROL IMAGE = TAGGED BLOOD",
+        "notes":  ""
+    },
+    {
+        "n":  75,
+        "title":  "Functional MRI",
+        "text":  "In recent years the term functional MRI or fMRI has become synonymous with brain activation imaging using the BOLD effect.",
+        "notes":  ""
+    },
+    {
+        "n":  76,
+        "title":  "The BOLD effect",
+        "text":  "BOLD (BloodOxygenation Level Dependent) \nOxyhaemoglobin is diamagnetic (i.e. essentially nonmagnetic) and that deoxyhaemoglobin is paramagnetic. \nThis means that deoxygenated blood has a shorter T2* and hence lower MR signal than fully oxygenated blood.\n That the opposite was observed in visual cortex during sensory stimulation was initially surprising – the MR signal increasing or ‘lighting up’ at times when oxygen consumption was heightened due to neuronal activity",
+        "notes":  ""
+    },
+    {
+        "n":  77,
+        "title":  "The scientific consensus is now that the increased consumption of oxygen by neurons during activation is accompanied by a disproportionate increase in the supply of fully oxygenated blood, so that downstream from the site of activation the concentration of deoxyhaemoglobin decreases and so T2* is elevated and the MR signal increases. ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  78,
+        "title":  "DTI – DIFFUSION TENSOR IMAGING",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  79,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  80,
+        "title":  "SWI- Susceptibility weighted imaging",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  81,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  82,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  83,
+        "title":  "MR Angiography",
+        "text":  "The most common MR angiographic     \n     techniques are\n Time-of-flight imaging, multiple overlapping thin-slab acquisitions (MOTSA)\n Phase-contrast imaging,\n Contrast-enhanced MR angiography.",
+        "notes":  ""
+    },
+    {
+        "n":  84,
+        "title":  "Time-of-Flight Imaging and MOTSA",
+        "text":  "In these sequences, multiple RF pulses applied with short TRs saturate the spins in stationary tissues \n This results in suppression of the signal from stationary tissues in the imaging slab.\n Inflowing blood is unaffected by the repetitive RF pulses; therefore, as it enters the imaging slab, its signal is not suppressed and appears hyperintense compared with that of stationary tissue.",
+        "notes":  ""
+    },
+    {
+        "n":  85,
+        "title":  "Time-of flight imaging may be 2D, with section-by-section acquisition or 3D, with acquisition of a larger volume. ",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  86,
+        "title":  "Phase-Contrast Imaging",
+        "text":  "Provides information about the phase (or direction) of flow and the velocity (or magnitude) of flow.\n It requires two measurements that are sensitized to flow in different directions; typically, one measurement is sensitized to flow in one direction, and the second is sensitized equally to flow in the opposite direction.\n Both measurements are subtracted to eliminate any contribution to image phase that does not arise from flow or motion.\n As a result, no signal is detected from stationary tissue; signal is received only from flowing blood.",
+        "notes":  ""
+    },
+    {
+        "n":  87,
+        "title":  "Subtraction of the phase data yields spatial measures of flow velocity.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  88,
+        "title":  "Different conventions exist for the interpretation of signal seen on directional and velocity phase-contrast images.",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  89,
+        "title":  "Contrast-enhanced MR Angiography",
+        "text":  "An intravenous contrast material (usually gadopentetate dimeglumine or another gadolinium-based agent) is used . \nSuch agents typically shorten the T1  of blood (ie, hasten the recovery of longitudinal magnetization), so a higher-magnitude net magnetization vector is available to be flipped with the next TR, a condition that results in high signal intensity on T1-weighted images .\n Contrast- enhanced MR angiography also can be performed with 2D or 3D methods",
+        "notes":  ""
+    },
+    {
+        "n":  90,
+        "title":  "Comparison of MR angiographic images obtained with different sequences. (a) Maximum",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  91,
+        "title":  "(d) Phasecontrast image shows left subclavian steal syndrome. In this example, caudal-to-cranial flow appears",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  92,
+        "title":  "",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  93,
+        "title":  "Thank you",
+        "text":  "",
+        "notes":  ""
+    }
+]

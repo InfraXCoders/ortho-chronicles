@@ -1,0 +1,44 @@
+[
+    {
+        "n":  1,
+        "title":  "Total Hip Arthroplasty\nApproaches \u0026 Outcomes",
+        "text":  "Dr. Maninder Singh, MS Orthopaedics | GMCH Amritsar",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Indications \u0026 Pre-operative Planning",
+        "text":  "• Indications: End-stage hip OA, AVN femoral head, RA, post-traumatic arthritis, failed hemiarthroplasty\n• Relative: Age, activity level, BMI, bone stock\n• Pre-op planning: Template on AP pelvis X-ray — select cup size, femoral stem, neck length\n• Leg length discrepancy: Assess and plan correction\n• Templating: Acetabular cup 40–45° inclination, 15–20° anteversion; Combined anteversion 25–40°\n• Investigations: CBC, ESR, CRP, coagulation, chest X-ray, ECG\n• Optimize: Control diabetes, stop anticoagulants 5 days pre-op, pre-donate blood",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Surgical Approaches",
+        "text":  "• Posterior (Moore/Southern): Most widely used; excellent access; higher dislocation risk (posterior)\n  — Internervous: None — splits gluteus maximus fibres\n  — Repair posterior capsule + external rotators reduces dislocation to \u003c1%\n• Lateral/Hardinge (Direct Lateral, Transgluteal): Detaches anterior gluteus medius\n  — Advantage: Lower dislocation risk; Disadvantage: Abductor weakness (Trendelenburg gait)\n• Anterolateral (Watson-Jones): Between TFL and gluteus medius (superior gluteal nerve)\n• Direct Anterior Approach (DAA/Smith-Petersen): Internervous (LFCN/femoral + gluteal)\n  — Supine position; allows intraoperative C-arm leg length check\n  — LFCN (lateral femoral cutaneous nerve) at risk; steep learning curve\n• Mini-incision approaches: Faster recovery; same outcomes if experienced",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Implant Options \u0026 Fixation",
+        "text":  "• Cemented: PMMA cement; immediate fixation; preferred in elderly osteoporotic bone\n  — Cement mantle 2–3 mm; Cement gun, pressurization\n• Cementless (Press-fit): HA/porous coating; bone ingrowth; preferred in younger active patients\n  — Initial press-fit stability essential for ingrowth\n• Hybrid: Cemented stem + cementless cup (most common in UK)\n• Cup materials: UHMWPE, Ceramic, Metal; Crosslinked PE = gold standard; reduces wear\n• Femoral head: 28/32/36 mm; larger head = more ROM, less dislocation; more wear\n• Bearing surfaces: Metal-on-PE, Ceramic-on-Ceramic (least wear), Metal-on-Metal (avoid — ARMD risk)\n• Stems: Collared, collarless, modular, monoblock",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Complications",
+        "text":  "• Dislocation: Most common complication (posterior approach 3–6%); Reduce with capsule repair\n• Leg length discrepancy: Measure intraoperatively; aim \u003c1 cm\n• Nerve injury: Sciatic nerve (posterior) / femoral nerve (anterior) — 1–2%\n• Vascular injury: Rare; acetabular screw direction critical (posterior quadrant safe zone)\n• DVT/PE: Prophylaxis — LMWH 28–35 days; Aspirin alternative\n• Periprosthetic fracture: Vancouver A (trochanter) / B (stem) / C (below stem)\n• Aseptic loosening: Osteolysis from polyethylene wear; revision surgery required\n• Periprosthetic joint infection (PJI): \u003c1–2%; Treatment: irrigation+debridement or 2-stage revision",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Outcomes \u0026 Results",
+        "text":  "• Patient satisfaction: \u003e90% at 10 years; pain relief excellent\n• Survivorship: 95% at 10 years; \u003e85% at 20 years (modern implants)\n• Harris Hip Score (HHS): Out of 100; excellent \u003e90; poor \u003c70\n• WOMAC, Oxford Hip Score — patient-reported outcomes\n• Return to activity: Walking unlimited; cycling, golf, swimming allowed\n• High-impact activities: Running, contact sports discouraged\n• NJR (National Joint Registry) data: Cementless most implanted worldwide\n• Revision rate: 1% per year; higher in young (\u003c55 yrs) active males",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Summary",
+        "text":  "• THR = gold standard for end-stage hip disease\n• Posterior approach: Most common; repair capsule to reduce dislocation\n• DAA: Growing popularity; less restriction, faster recovery, LFCN risk\n• Cementless stems preferred in younger patients; cemented in elderly\n• Crosslinked PE bearing = best wear profile\n• Combined anteversion concept (25–40°) critical to prevent impingement/dislocation\n• Reference: Surgical Approaches to the Hip — Hoppenfeld; Biomechanics of the Hip — Pauwels",
+        "notes":  ""
+    }
+]

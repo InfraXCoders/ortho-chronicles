@@ -1,0 +1,50 @@
+[
+    {
+        "n":  1,
+        "title":  "Anatomy \u0026 Blood Supply",
+        "text":  "• Proximal femur: Femoral head, neck, greater/lesser trochanter, subtrochanteric region\n• Blood supply of femoral head: Medial circumflex femoral artery (dominant)\n• Lateral epiphyseal vessels — critical; damaged in displaced neck fractures\n• Artery of ligamentum teres — minor contribution\n• Calcar femorale: Dense medial cortical bone — key to stability\n• 130° neck-shaft angle; 10–15° anteversion\n• High-risk: Elderly osteoporotic patients — fragility fractures",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Classification — Femoral Neck Fractures",
+        "text":  "• Garden Classification (most used):\n  Grade I: Incomplete/valgus impacted — undisplaced\n  Grade II: Complete, undisplaced\n  Grade III: Complete, partial displacement\n  Grade IV: Complete, full displacement — worst prognosis\n• Pauwels Classification (based on fracture angle):\n  Type 1: \u003c30° (compression)  |  Type 2: 30–50°  |  Type 3: \u003e50° (shear)\n• AO/OTA: B1 (subcapital)  B2 (transcervical)  B3 (basicervical)",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "Classification — Trochanteric Fractures",
+        "text":  "• Evans Classification: Stable vs Unstable based on medial wall integrity\n• Boyd \u0026 Griffin: Types I–IV based on pattern\n• AO/OTA Classification: 31-A1, A2, A3\n  A1: Simple 2-part intertrochanteric\n  A2: Multifragmentary with posteromedial comminution (unstable)\n  A3: Reverse oblique/transverse — most unstable\n• Subtrochanteric (Seinsheimer): Types I–V\n• Stability determined by: Medial wall, lateral wall, posteromedial fragment",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Clinical Assessment \u0026 Imaging",
+        "text":  "• History: Mechanism (fall, high-energy), co-morbidities, pre-injury mobility\n• Examination: Shortened, externally rotated limb (displaced)\n  — Groin pain, inability to weight-bear, greater trochanter tenderness\n• Imaging:\n  X-ray: AP pelvis + lateral hip — standard; cross-table lateral\n  CT scan: Occult fractures, comminution assessment\n  MRI: Most sensitive for occult undisplaced neck fractures\n• Parker Mobility Score, Nottingham Hip Score — pre-op function\n• Pre-op workup: ECG, Echo, renal function, anticoagulation status",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Management — Femoral Neck Fractures",
+        "text":  "• Undisplaced (Garden I–II):\n  — DHS or cancellous screws (3 screws in inverted triangle)\n  — Cannulated screw fixation — minimal surgery, preserve blood supply\n• Displaced (Garden III–IV):\n  — Young patient (\u003c55 yr): Urgent ORIF within 6–12 hrs (attempt head preservation)\n  — Elderly: Hemiarthroplasty (unipolar/bipolar) or THA\n  — THA preferred if: pre-existing OA, active patient, \u003e70 years\n• Hemiarthroplasty: Thompson (cemented) or Austin Moore (press-fit)\n• Timing: Within 48 hrs to reduce mortality; optimise medically first",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "Management — Intertrochanteric Fractures",
+        "text":  "• Operative management: Gold standard — early surgery reduces mortality\n• DHS (Dynamic Hip Screw):\n  — Ideal for stable A1 and A2 fractures\n  — Controlled collapse along screw axis\n  — 135° or 150° plate angle; tip-apex distance \u003c25 mm (prevents cut-out)\n• Proximal Femoral Nail (PFN/PFNA):\n  — Preferred for unstable A2, A3, reverse oblique\n  — Biomechanically superior (intramedullary load sharing)\n  — Shorter lever arm, reduced blood loss\n• Early mobilization: Weight-bearing as tolerated Day 1",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Complications \u0026 Outcomes",
+        "text":  "• Avascular necrosis (AVN): 15–35% in displaced neck fractures\n• Non-union: 10–30% especially in displaced neck # with poor blood supply\n• Cut-out of DHS/PFNA screw: TAD \u003e25 mm, poor bone quality, unstable fracture\n• Leg length discrepancy, coxa vara deformity\n• DVT/PE: Aggressive prophylaxis mandatory\n• 1-year mortality: 20–30% in elderly hip fractures\n• Hip fracture programme: Geriatrician co-management reduces complications\n• Early surgery (\u003c48 hrs) and early mobilization = best outcomes",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "Summary",
+        "text":  "• Proximal femur fractures = major public health problem in elderly\n• Classification guides treatment: Garden (neck), AO/OTA (trochanteric)\n• Displaced neck #: Arthroplasty in elderly; urgent ORIF in young\n• Stable trochanteric #: DHS; unstable/reverse oblique: IMN\n• Tip-apex distance \u003c25 mm mandatory to prevent screw cut-out\n• 1-year mortality 20–30%; multidisciplinary approach reduces this\n• Reference: Rockwood \u0026 Green Fractures, 8th Ed.",
+        "notes":  ""
+    }
+]

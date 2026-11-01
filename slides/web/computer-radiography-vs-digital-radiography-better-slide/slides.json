@@ -1,0 +1,152 @@
+[
+    {
+        "n":  1,
+        "title":  "COMPUTER RADIOGRAPHY",
+        "text":  "\u0026 DIGITAL RADIOGRAPHY\nA Comprehensive Overview\nPrepared by\nDr. Ramandeep Kaur\nJunior Resident\nDepartment of Radiodiagnosis\nGovernment Medical College \u0026 Hospital, Patiala",
+        "notes":  ""
+    },
+    {
+        "n":  2,
+        "title":  "Presentation Outline",
+        "text":  "1\nIntroduction to Digital Projection Radiography\n2\nComputed Radiography (CR) -- History and Overview\n3\nCR Cassette and Plate Construction\n4\nDigital Radiography (DR) -- Overview\n5\nFlat Plate Detectors and CCD Technology\n6\nAdvantages of Digital Radiography\n7\nCR vs DR -- Comparative Analysis",
+        "notes":  ""
+    },
+    {
+        "n":  3,
+        "title":  "01",
+        "text":  "DIGITAL PROJECTION RADIOGRAPHY\nComputed Radiography (CR)\nPSP plate | Cassette-based | Requires plate reader\nDigital Radiography (DR)\nFPD or CCD | Direct capture | Instant display",
+        "notes":  ""
+    },
+    {
+        "n":  4,
+        "title":  "Computed Radiography (CR) -- History and Overview",
+        "text":  "•  Introduced in 1980-81 by Fuji Photo Film -- a landmark in digital diagnostic imaging\n•  Uses the same conventional X-ray equipment -- no hardware replacement required\n•  Replaces radiographic film with a Photostimulable Phosphor (PSP) imaging plate\n•  Requires a dedicated cassette reader (plate digitizer) for image processing\n•  Cassette design is nearly identical to conventional radiographic cassettes\n•  Processing time is comparable to conventional film-screen systems\n•  Slightly higher radiation exposure than standard film-screen systems",
+        "notes":  ""
+    },
+    {
+        "n":  5,
+        "title":  "Computed Radiography (CR) System",
+        "text":  "CR reader unit with imaging plates and diagnostic workstation\nA complete CR system pairs a plate reader (digitizer) with a review workstation. Exposed PSP imaging plates are fed into the reader, scanned by a laser, and the digital image is displayed for interpretation.",
+        "notes":  ""
+    },
+    {
+        "n":  6,
+        "title":  "CR Cassette Construction",
+        "text":  "HOUSING AND FRONT PANEL\nMaterials:\n•  Lightweight aluminium\n•  Plastic casing\n•  Steel frame\n\nFront Panel:\n•  Low attenuation carbon fibre\n•  Minimises beam attenuation\n•  Comparable to conventional cassette\nBACK PANEL AND CHIP\nBack Panel:\n•  Lead foil lining\n•  Shields PSP from backscatter radiation\n\nEmbedded Chip:\n•  Stores patient demographic data\n•  Auto image-to-patient matching\n\n•  Ergonomic design for daily use",
+        "notes":  ""
+    },
+    {
+        "n":  7,
+        "title":  "Cross-Section of the CR Imaging Plate",
+        "text":  "Anti-Halo and Reflective Layer\nPrevents fogging; reflects stimulated light back to phosphor\nProtective Layer\nGuards phosphor from physical damage and contamination\nPhosphor Layer -- BaFBr:Eu\nCore diagnostic layer -- stores latent image as trapped electrons\nBase\nStructural support; transparent to the reading laser beam\nBacking Layer\nProtects the plate from mechanical stress from the rear",
+        "notes":  ""
+    },
+    {
+        "n":  8,
+        "title":  "CR Reader and Imaging Plates",
+        "text":  "Tabletop CR plate reader\nReusable PSP imaging plates",
+        "notes":  ""
+    },
+    {
+        "n":  9,
+        "title":  "CR Image Acquisition Workflow",
+        "text":  "X-rays → CR plate → laser scanner → ADC → digital image",
+        "notes":  ""
+    },
+    {
+        "n":  10,
+        "title":  "Digital Radiography (DR) -- Overview",
+        "text":  "•  Operates on the same principle as a digital camera -- direct electronic image capture\n•  Eliminates wet processing, PSP plate handling, and cassette transport entirely\n•  Two primary detector technologies:\n      --  CCD (Charge-Coupled Device) detectors\n      --  Digital Flat Plate Detectors (FPD)\n•  Images appear on the workstation display within seconds of exposure\n•  Fully compatible with PACS (Picture Archiving and Communication System)\n•  Enables teleradiology, multi-site image sharing, and electronic reporting",
+        "notes":  ""
+    },
+    {
+        "n":  11,
+        "title":  "DR Image Acquisition Workflow",
+        "text":  "X-rays → detector → ADC → instant digital image — no plate handling",
+        "notes":  ""
+    },
+    {
+        "n":  12,
+        "title":  "Digital Radiography in Practice",
+        "text":  "DR chest imaging suite\nMulti-monitor reporting workstation",
+        "notes":  ""
+    },
+    {
+        "n":  13,
+        "title":  "Digital Flat Plate Detectors (FPD)",
+        "text":  "•  High capital cost -- typically USD 80,000 to 120,000\n•  Significantly reduced patient radiation dose\n•  No anti-scatter grid required -- software compensates for scatter\n\nCONVERSION METHODS:\n  DIRECT  :  X-rays -\u003e Electrical signal  (amorphous selenium a-Se)\n  INDIRECT:  X-rays -\u003e Light (CsI scintillator) -\u003e Electrical signal (a-Si TFT)\n\n•  Superior spatial resolution and dynamic range versus CR and film-screen",
+        "notes":  ""
+    },
+    {
+        "n":  14,
+        "title":  "CCD (Charge-Coupled Device) Technology",
+        "text":  "•  Sold as an integrated component bundled with the X-ray system\n•  CCD camera is mounted beneath the examination table prior to installation\n•  Considerably less expensive than digital flat plate detector systems\n•  Uses optical coupling (lens/mirror) between scintillator and CCD chip\n\nLIMITATION:\n•  Requires approximately 2x the mAs compared to flat plate detectors\n     (increased patient radiation dose -- a significant clinical consideration)\n\n•  Best suited for fixed radiography rooms and fluoroscopy suites",
+        "notes":  ""
+    },
+    {
+        "n":  15,
+        "title":  "DR Portable Systems",
+        "text":  "Portable DR with rugged laptop option\nPortable DR with carrier",
+        "notes":  ""
+    },
+    {
+        "n":  16,
+        "title":  "Advantages of Digital Radiography",
+        "text":  "CLINICAL ADVANTAGES\n•  Reduced patient radiation dose\n•  Lower retake rate\n•  Immediate image availability\n•  Wide dynamic range\n•  Post-processing capability\n•  Image enhancement and window-levelling\n•  No film-related artefacts\nOPERATIONAL ADVANTAGES\n•  No film or chemical processing costs\n•  No darkroom space required\n•  No processor maintenance\n•  No physical film storage or filing\n•  No film jacket expenses\n•  Increased departmental throughput\n•  PACS / HIS / RIS integration",
+        "notes":  ""
+    },
+    {
+        "n":  17,
+        "title":  "CR vs DR -- Comparative Analysis",
+        "text":  "",
+        "notes":  ""
+    },
+    {
+        "n":  18,
+        "title":  "CR vs DR -- Performance Score Comparison",
+        "text":  "0%\n25%\n50%\n75%\n100%\nImage Quality\n78%\n95%\nWorkflow Speed\n60%\n97%\nDose Reduction\n55%\n88%\nPortability\n95%\n42%\nCost Efficiency\n88%\n55%\nPACS Integration\n70%\n98%\nComputed Radiography (CR)\nDigital Radiography (DR)",
+        "notes":  ""
+    },
+    {
+        "n":  19,
+        "title":  "Comparative Exam Times",
+        "text":  "Average examination time by imaging technique\nDigital detectors dramatically cut examination time versus conventional screen-film and even CR, improving departmental throughput.",
+        "notes":  ""
+    },
+    {
+        "n":  20,
+        "title":  "DR Systems — Representative Product Range",
+        "text":  "Fixed and mobile digital radiography systems across power ratings",
+        "notes":  ""
+    },
+    {
+        "n":  21,
+        "title":  "CR System Manufacturers",
+        "text":  "Leading vendors in the computed radiography market",
+        "notes":  ""
+    },
+    {
+        "n":  22,
+        "title":  "Global X-Ray Market Outlook",
+        "text":  "X-ray systems revenue forecast\nMarket drivers and industry challenges",
+        "notes":  ""
+    },
+    {
+        "n":  23,
+        "title":  "Radiation Safety",
+        "text":  "Controlled-area warning signage\nAlthough digital systems can lower dose, radiation protection remains essential: controlled access, ALARA practice, shielding, and dose monitoring apply to every CR and DR installation.",
+        "notes":  ""
+    },
+    {
+        "n":  24,
+        "title":  "CONCLUSION",
+        "text":  "Digital radiography -- both CR and DR -- represents a paradigm shift in diagnostic imaging. CR provides an affordable entry point using existing X-ray hardware, while DR delivers superior workflow efficiency and the lowest achievable patient radiation dose. Understanding the technical basis of each modality empowers radiologists and clinicians to select the most appropriate system for their practice setting.\nThank You\nDr. Ramandeep Kaur  |  Junior Resident  |  Dept. of Radiodiagnosis  |  GMCH Patiala",
+        "notes":  ""
+    },
+    {
+        "n":  25,
+        "title":  "References",
+        "text":  "1.  Bushberg JT, Seibert JA, Leidholdt EM, Boone JM. The Essential Physics of Medical Imaging. 3rd ed.\n     Lippincott Williams and Wilkins; 2012. ISBN 978-0-7817-8057-5.\n\n2.  Rowlands JA. The physics of computed radiography. Phys Med Biol. 2002;47(23):R123-R166.\n     DOI: 10.1088/0031-9155/47/23/201\n\n3.  Chotas HG, Dobbins JT, Ravin CE. Principles of digital radiography with large-area electronically\n     readable detectors. Radiology. 1999;210(3):595-599.\n\n4.  Fischbach F, et al. Comparison of indirect CsI/a-Si flat panel and screen film radiography.\n     Eur Radiol. 2002;12(12):2949-2956.\n\n5.  Seibert JA. Digital Radiography: The bottom line comparison of CR and DR technology.\n     Applied Radiology. 2009;38(5):21-30.\n\n6.  American College of Radiology (ACR). ACR-AAPM-SIIM Practice Parameter for Digital Radiography. 2017.",
+        "notes":  ""
+    }
+]
