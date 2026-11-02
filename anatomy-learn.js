@@ -221,17 +221,27 @@
   stage.appendChild(tools);
   bTools.onclick = () => { tools.classList.toggle('on'); if (tools.classList.contains('on')) lrn.classList.remove('on'); };
   const allMeshes = fn => Object.values(STRUCTURES).forEach(d => d.object && d.object.traverse(o => { if (o.isMesh && o.material) fn(o, d); }));
-  /* ghost */
-  let ghostOn = false;
+  /* ghost + per-layer transparency share one opacity pass */
+  let ghostOn = false; const layerOp = {};
   function applyGhost() {
     const sel = A.getSelected && A.getSelected();
     allMeshes((m, d) => {
       const mat = m.material; if (!mat.userData) mat.userData = {}; if (mat.userData._g === undefined) mat.userData._g = { t: mat.transparent, o: mat.opacity, w: mat.depthWrite };
-      if (ghostOn && sel && d.id !== sel) { mat.transparent = true; mat.opacity = 0.08; mat.depthWrite = false; } else { mat.transparent = mat.userData._g.t; mat.opacity = mat.userData._g.o; mat.depthWrite = mat.userData._g.w; }
+      const f = (ghostOn && sel && d.id !== sel ? 0.08 : 1) * (layerOp[d.layer] == null ? 1 : layerOp[d.layer]);
+      if (f < 0.999) { mat.transparent = true; mat.opacity = mat.userData._g.o * f; mat.depthWrite = f > 0.6 && mat.userData._g.w; } else { mat.transparent = mat.userData._g.t; mat.opacity = mat.userData._g.o; mat.depthWrite = mat.userData._g.w; }
       mat.needsUpdate = true;
     });
   }
   $('#tGhost').onchange = e => { ghostOn = e.target.checked; applyGhost(); };
+  /* layer transparency control (added to the Body Systems rail) */
+  (function () {
+    const rail = $('#rail'); if (!rail) return; const box = document.createElement('div'); box.className = 'rail-sub';
+    box.innerHTML = '<label>Layer transparency</label><select id="lyrSel" style="width:100%;background:rgba(255,255,255,.07);color:#E8EDF6;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px;margin-bottom:6px">' + LAYERS.map(L => '<option value="' + L.id + '">' + L.name + '</option>').join('') + '</select><input type="range" id="lyrOp" min="5" max="100" value="100" style="width:100%;accent-color:#2DD4BF">';
+    rail.appendChild(box);
+    const sel = $('#lyrSel', box), rg = $('#lyrOp', box);
+    sel.onchange = () => { rg.value = Math.round((layerOp[sel.value] == null ? 1 : layerOp[sel.value]) * 100); };
+    rg.oninput = () => { layerOp[sel.value] = +rg.value / 100; applyGhost(); };
+  })();
   /* isolate */
   let isoOn = false;
   function applyIso() { const sel = A.getSelected && A.getSelected(); Object.values(STRUCTURES).forEach(d => { if (d.object) d.object.visible = isoOn && sel ? d.id === sel : !hidden.has(baseId(d.id)); }); }
@@ -246,7 +256,7 @@
     const sgn = $('#tFlip').checked ? -1 : 1; const [lo, hi] = RANGE[axis]; const v = lo + (hi - lo) * (+$('#tClipS').value / 100);
     plane.normal.set(axis === 'x' ? -sgn : 0, axis === 'y' ? -sgn : 0, axis === 'z' ? -sgn : 0); plane.constant = sgn * v;
     renderer.clippingPlanes = clipOn ? [plane] : [];
-    if (clipOn !== dbl) { allMeshes(m => { const mat = m.material; if (mat.userData._side === undefined) mat.userData._side = mat.side; mat.side = clipOn ? THREE.DoubleSide : mat.userData._side; mat.needsUpdate = true; }); dbl = clipOn; }
+    if (clipOn !== dbl) { allMeshes(m => { if (m.userData.isOutline) return; const mat = m.material; if (mat.userData._side === undefined) mat.userData._side = mat.side; mat.side = clipOn ? THREE.DoubleSide : mat.userData._side; mat.needsUpdate = true; }); dbl = clipOn; }
   }
   $('#tClip').onchange = e => { clipOn = e.target.checked; applyClip(); }; $('#tClipS').oninput = applyClip; $('#tFlip').onchange = applyClip;
   $('#tAx').onclick = e => { const b = e.target.closest('button'); if (!b) return; axis = b.dataset.a; $$('#tAx button').forEach(x => x.classList.toggle('on', x === b)); applyClip(); };

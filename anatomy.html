@@ -558,8 +558,8 @@ float boneH(vec3 p){
 { float hb = boneH(vBPos);
   vec3 vp=-vViewPosition; vec3 sx=dFdx(vp), sy=dFdy(vp);
   float hx=dFdx(hb), hy=dFdy(hb);
-  vec3 n0=normalize(normal); vec3 r1=cross(sy,n0), r2=cross(n0,sx);
-  float det=dot(sx,r1); vec3 grad=sign(det)*(hx*r1+hy*r2);
+  vec3 n0=normalize(normal); vec3 rr1=cross(sy,n0), rr2=cross(n0,sx);
+  float det=dot(sx,rr1); vec3 grad=sign(det)*(hx*rr1+hy*rr2);
   float fw=fwidth(vBPos.x)+fwidth(vBPos.y)+fwidth(vBPos.z);
   float aa=clamp(1.0-smoothstep(0.06,0.22,fw),0.0,1.0);   // fade grain at distance/grazing
   normal=normalize(abs(det)*n0 - (0.055*aa)*grad);
@@ -678,9 +678,9 @@ float mFasc(float ring,float len,float w){ return mBundle(ring,len,w)*0.6 + mFin
   vec3  sx = dFdx(vp), sy = dFdy(vp);
   float hx = dFdx(hb), hy = dFdy(hb);
   vec3  n0 = normalize(normal);
-  vec3  r1 = cross(sy, n0), r2 = cross(n0, sx);
-  float det = dot(sx, r1);
-  vec3  grad = sign(det) * (hx*r1 + hy*r2);
+  vec3  rr1 = cross(sy, n0), rr2 = cross(n0, sx);   // NB: not r1/r2 — cube-UV env code #defines r1,r2
+  float det = dot(sx, rr1);
+  vec3  grad = sign(det) * (hx*rr1 + hy*rr2);
   float aa = clamp(1.0 - smoothstep(0.012,0.044,fwidth(vRing)), 0.0, 1.0); // fade relief when fibres pack tight
   // Kill relief where the GEOMETRY itself is noisy (fast per-pixel normal change) —
   // the loaded deep striated meshes have crinkled ribbon surfaces the bump turns
@@ -3417,6 +3417,7 @@ function swapInModel(d, root, entry, glob){
     tintMuscle(d._mat, d.id, 0.7);     // per-muscle variation so neighbours separate
   }
   refitLandmarks(d, oldBox);
+  if(window.__anatomyOnSwap){ try{ window.__anatomyOnSwap(d); }catch(e){ console.error(e); } }
 }
 
 /**
@@ -3531,6 +3532,7 @@ function showFallback(msg){
 <ul><li>Rotate, zoom and pan the model to inspect any region.</li><li>Use it alongside our guides on <a href="shoulder-replacement.html">shoulder</a>, <a href="knee-replacement.html">knee</a> and <a href="hip-replacement-recovery.html">hip</a> surgery.</li><li>Pair it with the <a href="radio-anatomy.html">radiographic anatomy atlas</a> to connect the 3D model with what you see on X-ray.</li></ul>
 <p style="font-size:.85rem;color:#64748B;">Educational tool created under the supervision of Dr. Maninder Singh, MS Orthopaedics, GMCH Amritsar. Not a substitute for professional medical advice — see the <a href="terms.html">medical disclaimer</a> and our <a href="editorial-policy.html">editorial policy</a>.</p>
 </section>
+<script src="anatomy-pro.js"></script>
 <script src="anatomy-learn.js"></script>
 </body>
 </html>
