@@ -2967,6 +2967,7 @@ let activeLabels=[], showLabels=true;
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function select(id){
+  if(window.__anatomyIntercept && window.__anatomyIntercept(id)) return;   // quiz mode may swallow the click
   const d=STRUCTURES[id]; if(!d) return;
   if(selectedId && selectedId!==id) paint(selectedId,false);
   selectedId=id; paint(id,true);
@@ -3019,6 +3020,7 @@ function select(id){
 
   buildLabels(d);
   focusOn(d.focus, id.indexOf('skull')===0?150:200);
+  if(window.__anatomyOnSelect){ try{ window.__anatomyOnSelect(d,id); }catch(e){ console.error(e); } }
 }
 
 function deselect(){
@@ -3498,14 +3500,13 @@ loadHighDetailModels();
 
 /* Optional debug handle (?debug=1) — used for diagnostics and automated checks.
    Also renders on demand, which is useful when rAF is throttled in a hidden tab. */
-if(/debug=1/.test(location.search + location.hash)){
-  window.__anatomy = {
-    scene, camera, renderer, STRUCTURES, layerGroups,
-    select, deselect, focusOn,
-    count:()=>Object.keys(STRUCTURES).length,
-    frame:(n)=>{ for(let i=0;i<(n||1);i++){ resize(); applyCamera(); updateLabels(); renderer.render(scene,camera);} }
-  };
-}
+window.__anatomy = {
+  scene, camera, renderer, STRUCTURES, layerGroups, LAYERS, want, sph, canvas,
+  select, deselect, focusOn, paint, loadLayerModels,
+  getSelected:()=>selectedId,
+  count:()=>Object.keys(STRUCTURES).length,
+  frame:(n)=>{ for(let i=0;i<(n||1);i++){ resize(); applyCamera(); updateLabels(); renderer.render(scene,camera);} }
+};
 
 /* reveal */
 setTimeout(()=>{
@@ -3530,5 +3531,6 @@ function showFallback(msg){
 <ul><li>Rotate, zoom and pan the model to inspect any region.</li><li>Use it alongside our guides on <a href="shoulder-replacement.html">shoulder</a>, <a href="knee-replacement.html">knee</a> and <a href="hip-replacement-recovery.html">hip</a> surgery.</li><li>Pair it with the <a href="radio-anatomy.html">radiographic anatomy atlas</a> to connect the 3D model with what you see on X-ray.</li></ul>
 <p style="font-size:.85rem;color:#64748B;">Educational tool created under the supervision of Dr. Maninder Singh, MS Orthopaedics, GMCH Amritsar. Not a substitute for professional medical advice — see the <a href="terms.html">medical disclaimer</a> and our <a href="editorial-policy.html">editorial policy</a>.</p>
 </section>
+<script src="anatomy-learn.js"></script>
 </body>
 </html>
